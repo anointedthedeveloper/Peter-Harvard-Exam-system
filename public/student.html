@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Portal – Peter Harvard International Schools</title>
-<link rel="icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/png" href="Badgejet.jpg">
 <style>
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -162,6 +162,17 @@ body {
   cursor: pointer; transition: all .2s; box-shadow: var(--shadow);
 }
 .exam-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(99,102,241,.1); }
+.exam-card.taken {
+  opacity: 0.8;
+  background: #F8FAFC;
+  border-color: var(--muted);
+  cursor: default;
+}
+.exam-card.taken:hover {
+  transform: none;
+  border-color: var(--muted);
+  box-shadow: var(--shadow);
+}
 .exam-icon {
   width: 48px; height: 48px; border-radius: 10px;
   background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
@@ -178,6 +189,11 @@ body {
   cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .2s;
 }
 .btn-start:hover { background: #4F46E5; }
+.btn-start:disabled {
+  background: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 .empty-exams {
   text-align: center; padding: 60px 20px;
   background: var(--bg); border: 1.5px dashed var(--border); border-radius: var(--radius);
@@ -953,13 +969,29 @@ function showLoader(text) {
 function hideLoader() { document.getElementById('loaderOverlay').style.display = 'none'; }
 
 // ══════════════════════════════════
-// EXAM SELECT - Filtered by class
+// CHECK TAKEN EXAMS
+// ══════════════════════════════════
+async function checkTakenExams() {
+  try {
+    const res = await fetch(`/api/student-taken-exams/${encodeURIComponent(S.studentId)}`);
+    const data = await res.json();
+    return data.takenExams || [];
+  } catch {
+    return [];
+  }
+}
+
+// ══════════════════════════════════
+// EXAM SELECT - Filtered by class and taken status
 // ══════════════════════════════════
 async function loadExams() {
   document.getElementById('examList').innerHTML = '<div class="loading-state">Loading…</div>';
   try {
     const url = S.studentClass ? `/api/exams?class=${encodeURIComponent(S.studentClass)}` : '/api/exams';
     const exams = await fetch(url).then(r => r.json());
+    
+    // Get exams the student has already taken
+    const takenExams = await checkTakenExams();
     
     // Only show active exams
     const activeExams = exams.filter(e => e.active !== false);
@@ -969,11 +1001,13 @@ async function loadExams() {
       return;
     }
     
-    document.getElementById('examList').innerHTML = activeExams.map(e => `
-      <div class="exam-card">
-        <div class="exam-icon">📝</div>
+    document.getElementById('examList').innerHTML = activeExams.map(e => {
+      const hasTaken = takenExams.includes(e.filename);
+      return `
+      <div class="exam-card ${hasTaken ? 'taken' : ''}">
+        <div class="exam-icon">${hasTaken ? '✅' : '📝'}</div>
         <div class="exam-info">
-          <div class="exam-name">${e.name}</div>
+          <div class="exam-name">${e.name} ${hasTaken ? '<span style="color:var(--muted);font-size:11px;margin-left:8px;">(Completed)</span>' : ''}</div>
           <div class="exam-meta">
             <span>⏱️ ${e.duration} minutes</span>
             <span>❓ ${e.questionCount} questions</span>
@@ -981,8 +1015,12 @@ async function loadExams() {
             ${e.class ? `<span>🏫 ${e.class}</span>` : '<span>🏫 All Classes</span>'}
           </div>
         </div>
-        <button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start →</button>
-      </div>`).join('');
+        ${hasTaken 
+          ? '<button class="btn-start" style="background:var(--muted);cursor:not-allowed;" disabled>Already Taken</button>'
+          : `<button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start →</button>`
+        }
+      </div>`;
+    }).join('');
     
     document.getElementById('selectSub').textContent = `${activeExams.length} exam${activeExams.length>1?'s':''} available for your class`;
   } catch {
@@ -994,12 +1032,32 @@ async function loadExams() {
 // RULES / WAITING ROOM
 // ══════════════════════════════════
 function openRules(filename, name, qcount, duration) {
-  S.examFile = filename;
-  S.examName = name;
-  document.getElementById('rulesExamName').textContent = name;
-  document.getElementById('rulesQcount').textContent = qcount;
-  document.getElementById('rulesDuration').textContent = duration;
-  showScreen('s-rules');
+  // Double-check if exam has been taken (in case the list was stale)
+  fetch(`/api/has-taken-exam/${encodeURIComponent(S.studentId)}/${encodeURIComponent(filename)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.hasTaken) {
+        toast('You have already taken this exam', 'err');
+        loadExams(); // Refresh the list
+        return;
+      }
+      
+      S.examFile = filename;
+      S.examName = name;
+      document.getElementById('rulesExamName').textContent = name;
+      document.getElementById('rulesQcount').textContent = qcount;
+      document.getElementById('rulesDuration').textContent = duration;
+      showScreen('s-rules');
+    })
+    .catch(() => {
+      // If check fails, still allow (server might be down)
+      S.examFile = filename;
+      S.examName = name;
+      document.getElementById('rulesExamName').textContent = name;
+      document.getElementById('rulesQcount').textContent = qcount;
+      document.getElementById('rulesDuration').textContent = duration;
+      showScreen('s-rules');
+    });
 }
 function backToSelect() {
   showScreen('s-select');
@@ -1367,6 +1425,17 @@ async function doSubmit() {
 }
 
 // ══════════════════════════════════
+// TOAST
+// ══════════════════════════════════
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg; 
+  el.className = 'show ' + type;
+  setTimeout(() => el.className = '', 3000);
+}
+
+// ══════════════════════════════════
 // MODALS
 // ══════════════════════════════════
 function openModal(id) { document.getElementById(id).classList.add('show'); }
@@ -1418,6 +1487,13 @@ document.addEventListener('keydown', e => {
 // ══════════════════════════════════
 document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
 document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// Create toast element if not exists
+if (!document.getElementById('toast')) {
+  const toastEl = document.createElement('div');
+  toastEl.id = 'toast';
+  document.body.appendChild(toastEl);
+}
 
 // On page load, check if we have a saved session
 window.addEventListener('load', async () => {

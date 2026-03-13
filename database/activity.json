@@ -1,324 +1,765 @@
 [
   {
-    "time": "2026-03-12T21:56:16.175Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T10:31:06.799Z",
+    "studentId": "PHIS/PP/966",
+    "studentName": "DAVID DARREN",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T21:57:47.110Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
+    "time": "2026-03-13T11:26:04.861Z",
+    "studentId": "phis/pp/203",
+    "studentName": "KOLAWOLE-OJO BISOLA RACHAEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T21:57:57.925Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
+    "time": "2026-03-13T11:26:39.611Z",
+    "studentId": "PHIS/PP/902",
+    "studentName": "ALHASSAN DAVID LOYE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T21:57:59.752Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #3"
+    "time": "2026-03-13T11:27:12.328Z",
+    "studentId": "Phis/pp/383",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T21:58:24.098Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:27:21.615Z",
+    "studentId": "PHIS/PP/902",
+    "studentName": "ALHASSAN DAVID LOYE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:27:39.931Z",
+    "studentId": "PHIS/PP/902",
+    "studentName": "ALHASSAN DAVID LOYE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:28:22.712Z",
+    "studentId": "PHIS/PP/1055",
+    "studentName": "OLADIPO ENIOLA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:29:09.034Z",
+    "studentId": "phis/pp/203",
+    "studentName": "KOLAWOLE-OJO BISOLA RACHAEL",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Digital Technology | Violation #1"
+  },
+  {
+    "time": "2026-03-13T11:29:09.046Z",
+    "studentId": "phis/pp/203",
+    "studentName": "KOLAWOLE-OJO BISOLA RACHAEL",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Digital Technology | Violation #2"
+  },
+  {
+    "time": "2026-03-13T11:30:32.778Z",
+    "studentId": "PHIS/PP/057",
+    "studentName": "DOGARI PROSPER SHIKUMI",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:30:38.782Z",
+    "studentId": "Phis/pp/264",
+    "studentName": "ABDULKAREEM UNAZE ZAINAB",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:34:11.823Z",
+    "studentId": "PHIS/PP/1228",
+    "studentName": "ENENCHE SHALOM OWOICHO",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:37:59.781Z",
+    "studentId": "PHIS/PP/1014",
+    "studentName": "IBRAHIM AHUOIZA BASHEERA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:39:52.350Z",
+    "studentId": "Phis/pp/264",
+    "studentName": "ABDULKAREEM UNAZE ZAINAB",
     "action": "SUBMIT",
-    "detail": "Exam: Mathematics | Score: 1/5 (20%)"
+    "detail": "Exam: Networking Systems II | Score: 46/50 (92%) | Class: SS 3"
   },
   {
-    "time": "2026-03-12T22:05:38.373Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:39:54.034Z",
+    "studentId": "PHIS/PP/1030",
+    "studentName": "CHINEDU KAMSIRIOCHUKWU ALLWELL",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T22:05:53.433Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
+    "time": "2026-03-13T11:40:40.284Z",
+    "studentId": "PHIS/PP/1232",
+    "studentName": "BENSON LUCKY INALEGWO",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T22:05:57.124Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
+    "time": "2026-03-13T11:42:04.113Z",
+    "studentId": "PHIS/PP/058",
+    "studentName": "ATANDA OLUWAFUNMILAYO JEMIMA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T22:05:59.212Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #3"
+    "time": "2026-03-13T11:42:29.556Z",
+    "studentId": "PHIS/PP/850",
+    "studentName": "LAMBERT EMENYONU CHIBUENYIM DAVID",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T22:06:01.511Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #4"
-  },
-  {
-    "time": "2026-03-12T22:06:01.532Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:42:30.727Z",
+    "studentId": "phis/pp/203",
+    "studentName": "KOLAWOLE-OJO BISOLA RACHAEL",
     "action": "SUBMIT",
-    "detail": "Exam: Mathematics | Score: 0/5 (0%)"
+    "detail": "Exam: Digital Technology | Score: 45/50 (90%) | Class: SS 2"
   },
   {
-    "time": "2026-03-12T22:09:41.348Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:43:07.586Z",
+    "studentId": "PHIS/PP/1072",
+    "studentName": "IKENNA-ANYA DESTINY-SHARON",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-12T22:41:22.087Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-12T22:42:22.606Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-12T22:43:57.280Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-12T22:45:27.419Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
-  },
-  {
-    "time": "2026-03-12T22:50:27.056Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-12T22:51:16.533Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
-  },
-  {
-    "time": "2026-03-12T22:51:21.814Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
-  },
-  {
-    "time": "2026-03-12T22:51:23.083Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #3"
-  },
-  {
-    "time": "2026-03-12T22:51:31.472Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #4"
-  },
-  {
-    "time": "2026-03-12T22:51:31.504Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:43:50.203Z",
+    "studentId": "PHIS/PP/057",
+    "studentName": "DOGARI PROSPER SHIKUMI",
     "action": "SUBMIT",
-    "detail": "Exam: Mathematics | Score: 1/5 (20%) | Class: "
+    "detail": "Exam: Networking Systems II | Score: 43/50 (86%) | Class: SS 3"
   },
   {
-    "time": "2026-03-12T22:53:47.409Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
-  },
-  {
-    "time": "2026-03-12T22:53:48.747Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #3"
-  },
-  {
-    "time": "2026-03-12T22:53:49.797Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #4"
-  },
-  {
-    "time": "2026-03-12T22:53:49.862Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:44:51.105Z",
+    "studentId": "PHIS/PP/1228",
+    "studentName": "ENENCHE SHALOM OWOICHO",
     "action": "SUBMIT",
-    "detail": "Exam: Mathematics | Score: 1/5 (20%) | Class: "
+    "detail": "Exam: Digital Technology | Score: 44/50 (88%) | Class: SS 2"
   },
   {
-    "time": "2026-03-12T23:02:13.003Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:45:19.094Z",
+    "studentId": "PHIS/PP/686",
+    "studentName": "ADEYINKA JESUNIFEMI",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T06:41:12.926Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:47:39.297Z",
+    "studentId": "Phis/pp/383",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 43/50 (86%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T11:47:56.815Z",
+    "studentId": "PHIS/PP/1014",
+    "studentName": "IBRAHIM AHUOIZA BASHEERA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 47/50 (94%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T11:48:06.561Z",
+    "studentId": "PHIS/PP/1053",
+    "studentName": "EZEKIEL OJOCHEGBE SUCCESS",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T07:03:59.774Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:48:21.120Z",
+    "studentId": "Phis/pp/384",
+    "studentName": "AKUNNE KAYLA CHISOM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:49:33.306Z",
+    "studentId": "PHIS/PP/1146",
+    "studentName": "DIRISU DANIEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:50:20.268Z",
+    "studentId": "PHIS/PP/1072",
+    "studentName": "IKENNA-ANYA DESTINY-SHARON",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 41/50 (82%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T11:51:59.208Z",
+    "studentId": "PHIS/PP/1055",
+    "studentName": "OLADIPO ENIOLA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 50/50 (100%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T11:53:44.581Z",
+    "studentId": "PHIS/PP/1030",
+    "studentName": "CHINEDU KAMSIRIOCHUKWU ALLWELL",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 37/50 (74%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T11:54:27.219Z",
+    "studentId": "Phis/pp/353",
+    "studentName": "AKINLADE HAROLD OLUWASEYI",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:54:56.294Z",
+    "studentId": "PHIS/PP/967",
+    "studentName": "OGBOGU IFAKACHUKWU EMMANUEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:54:57.551Z",
+    "studentId": "PHIS/PP/615",
+    "studentName": "ANTE NEMINE GRACE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:54:59.416Z",
+    "studentId": "PHIS/PP/838",
+    "studentName": "SAFIRU A IBRAHIM EWELA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:55:13.359Z",
+    "studentId": "PHIS/PP/684",
+    "studentName": "APOI FEGIRO DAVID",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:56:19.869Z",
+    "studentId": "PHIS/PP/967",
+    "studentName": "OGBOGU IFAKACHUKWU EMMANUEL",
     "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
+    "detail": "Exam: Networking Systems II | Violation #1"
   },
   {
-    "time": "2026-03-13T07:07:16.145Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:56:38.157Z",
+    "studentId": "PHIS/PP/1064",
+    "studentName": "EWUZIE EMMANUEL KENECHUKWU",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T07:11:11.766Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
+    "time": "2026-03-13T11:57:09.599Z",
+    "studentId": "PHIS/PP/850",
+    "studentName": "LAMBERT EMENYONU CHIBUENYIM DAVID",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 41/50 (82%) | Class: SS 3"
   },
   {
-    "time": "2026-03-13T07:26:09.818Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:57:54.089Z",
+    "studentId": "PHIS/PP/1049",
+    "studentName": "UGWU TREASURE EKPEREAMAKA",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T08:04:14.431Z",
-    "studentId": "student1",
-    "studentName": "Student One",
+    "time": "2026-03-13T11:58:05.645Z",
+    "studentId": "PHIS/PP/966",
+    "studentName": "DAVID DARREN",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T08:05:20.045Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #1"
+    "time": "2026-03-13T11:58:07.506Z",
+    "studentId": "PHIS/PP/686",
+    "studentName": "ADEYINKA JESUNIFEMI",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 39/50 (78%) | Class: SS 3"
   },
   {
-    "time": "2026-03-13T08:05:37.825Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "action": "TAB_VIOLATION",
-    "detail": "Exam: Mathematics | Violation #2"
+    "time": "2026-03-13T11:58:10.205Z",
+    "studentId": "PHIS/PP/1053",
+    "studentName": "EZEKIEL OJOCHEGBE SUCCESS",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 48/50 (96%) | Class: SS 2"
   },
   {
-    "time": "2026-03-13T08:17:51.029Z",
-    "studentId": "student77",
+    "time": "2026-03-13T11:58:26.984Z",
+    "studentId": "PHIS/PP/058",
+    "studentName": "ATANDA OLUWAFUNMILAYO JEMIMA",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 38/50 (76%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T11:58:38.933Z",
+    "studentId": "Phis/pp/379",
+    "studentName": "IBRAHIM AISHA JIBRIN",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T11:59:32.521Z",
+    "studentId": "PHIS/PP/399",
+    "studentName": "DIVINE OMOKHAGBO ARIJE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:00:13.980Z",
+    "studentId": "PHIS/PP/1038",
+    "studentName": "APOI RURO OBINNA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:00:56.119Z",
+    "studentId": "PHIS/PP/805",
+    "studentName": "OLOMOLA JOSHUA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:04:45.472Z",
+    "studentId": "Phis/pp/384",
+    "studentName": "AKUNNE KAYLA CHISOM",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 39/50 (78%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:04:48.937Z",
+    "studentId": "PHIS/PP/1232",
+    "studentName": "BENSON LUCKY INALEGWO",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 25/50 (50%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:06:36.973Z",
+    "studentId": "PHIS/PP/1146",
+    "studentName": "DIRISU DANIEL",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 32/50 (64%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:07:19.916Z",
+    "studentId": "PHIS/PP/615",
+    "studentName": "ANTE NEMINE GRACE",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 43/50 (86%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:07:32.264Z",
+    "studentId": "PHIS/PP/638",
+    "studentName": "AKANDE DANIEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:07:34.158Z",
+    "studentId": "Phis/pp/379",
+    "studentName": "IBRAHIM AISHA JIBRIN",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 42/50 (84%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:07:36.642Z",
+    "studentId": "Phis/pp/443",
+    "studentName": "EGWURUBE DIVINE OTSAPA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:07:40.193Z",
+    "studentId": "PHIS/PP/1400",
+    "studentName": "JUDITH UTTONJ",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:08:11.977Z",
+    "studentId": "PHIS/PP/1038",
+    "studentName": "APOI RURO OBINNA",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 43/50 (86%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:09:03.067Z",
+    "studentId": "PHIS/PP/684",
+    "studentName": "APOI FEGIRO DAVID",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 46/50 (92%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:09:13.570Z",
+    "studentId": "PHIS/PP/1153",
+    "studentName": "OKLOBIA BISHOP AKONDU",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:09:29.210Z",
+    "studentId": "phis/pp/188",
+    "studentName": "EMMANUEL WISDOM ATEKOJO",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:10:16.669Z",
+    "studentId": "PHIS/PP/1049",
+    "studentName": "UGWU TREASURE EKPEREAMAKA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 37/50 (74%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:10:36.476Z",
+    "studentId": "PHIS/PP/902",
+    "studentName": "ALHASSAN DAVID LOYE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:11:06.084Z",
+    "studentId": "PHIS/PP/636",
+    "studentName": "ANTE FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:11:21.479Z",
+    "studentId": "PHIS/PP/1212",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:11:32.230Z",
+    "studentId": "PHIS/PP/687",
     "studentName": "UBAH FRANCIS",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T08:18:18.145Z",
+    "time": "2026-03-13T12:12:24.637Z",
+    "studentId": "PHIS/PP/1064",
+    "studentName": "EWUZIE EMMANUEL KENECHUKWU",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 40/50 (80%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:13:21.062Z",
+    "studentId": "PHIS/PP/966",
+    "studentName": "DAVID DARREN",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 45/50 (90%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:13:28.295Z",
+    "studentId": "PHIS/PP/1224",
+    "studentName": "ALEGE FAWAZ OLAWALE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:13:51.458Z",
+    "studentId": "PHIS/PP/838",
+    "studentName": "SAFIRU A IBRAHIM EWELA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 46/50 (92%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:14:21.794Z",
+    "studentId": "PHIS/PP/966",
+    "studentName": "DAVID DARREN",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:14:49.424Z",
+    "studentId": "Phis/pp/353",
+    "studentName": "AKINLADE HAROLD OLUWASEYI",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 40/50 (80%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:15:39.617Z",
+    "studentId": "PHIS/PP/901",
+    "studentName": "UMAR ABDULJABAAR",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:15:51.793Z",
+    "studentId": "PHIS/PP/0570",
+    "studentName": "ORISAKWE CHIDINMA MIRACLE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:16:03.803Z",
+    "studentId": "PHIS/PP/1159",
+    "studentName": "OBASANYA EZEKIEL ADEFOLARIN",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:17:23.121Z",
+    "studentId": "Phis/pp/493",
+    "studentName": "SAMALI DEBORAH",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:17:28.606Z",
+    "studentId": "PHIS/PP/805",
+    "studentName": "OLOMOLA JOSHUA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 34/50 (68%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:18:06.089Z",
+    "studentId": "PHIS/PP/399",
+    "studentName": "DIVINE OMOKHAGBO ARIJE",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 42/50 (84%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:18:59.043Z",
+    "studentId": "PHIS/PP/1006",
+    "studentName": "SULEIMON BOLUWATIFE MISTURA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:20:04.480Z",
+    "studentId": "PHIS/PP/1063",
+    "studentName": "UGWU RITA CHINAZA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:21:01.107Z",
+    "studentId": "Phis/pp/443",
+    "studentName": "EGWURUBE DIVINE OTSAPA",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 38/50 (76%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:22:36.054Z",
+    "studentId": "phis/pp/188",
+    "studentName": "EMMANUEL WISDOM ATEKOJO",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 44/50 (88%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:22:47.087Z",
+    "studentId": "PHIS/PP/894",
+    "studentName": "EJILOGO PETER OCHANYI",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:24:42.194Z",
+    "studentId": "PHIS/PP/1153",
+    "studentName": "OKLOBIA BISHOP AKONDU",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 44/50 (88%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:24:51.682Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 44/50 (88%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:25:44.514Z",
+    "studentId": "phis/pp/097",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:25:46.438Z",
+    "studentId": "PHIS/PP/636",
+    "studentName": "ANTE FRANCIS",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 46/50 (92%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:26:00.568Z",
+    "studentId": "PHIS/PP/1400",
+    "studentName": "JUDITH UTTONJ",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 24/50 (48%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:26:39.575Z",
+    "studentId": "PHIS/PP/967",
+    "studentName": "OGBOGU IFAKACHUKWU EMMANUEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:27:06.396Z",
+    "studentId": "PHIS/PP/685",
+    "studentName": "UMEGBORO PEARL CHIAMAKA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:27:15.684Z",
+    "studentId": "PHIS/PP/1063",
+    "studentName": "UGWU RITA CHINAZA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 42/50 (84%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:27:49.227Z",
+    "studentId": "PHIS/PP/967",
+    "studentName": "OGBOGU IFAKACHUKWU EMMANUEL",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:28:12.154Z",
+    "studentId": "PHIS/PP/901",
+    "studentName": "UMAR ABDULJABAAR",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 48/50 (96%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:28:32.038Z",
+    "studentId": "PHIS/PP/638",
+    "studentName": "AKANDE DANIEL",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 44/50 (88%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:28:50.213Z",
+    "studentId": "PHIS/PP/1212",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 33/50 (66%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:28:59.068Z",
+    "studentId": "PHIS/PP/902",
+    "studentName": "ALHASSAN DAVID LOYE",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 38/50 (76%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:29:38.582Z",
+    "studentId": "PHIS/PP/1224",
+    "studentName": "ALEGE FAWAZ OLAWALE",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 27/50 (54%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:32:50.849Z",
+    "studentId": "PHIS/PP/1159",
+    "studentName": "OBASANYA EZEKIEL ADEFOLARIN",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 41/50 (82%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:34:26.271Z",
+    "studentId": "PHIS/PP/0570",
+    "studentName": "ORISAKWE CHIDINMA MIRACLE",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 34/50 (68%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:35:06.548Z",
+    "studentId": "PHIS/PP/685",
+    "studentName": "UMEGBORO PEARL CHIAMAKA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 41/50 (82%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:36:06.504Z",
+    "studentId": "PHIS/PP/894",
+    "studentName": "EJILOGO PETER OCHANYI",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 30/50 (60%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:36:26.323Z",
+    "studentId": "PHIS/PP/894",
+    "studentName": "EJILOGO PETER OCHANYI",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T12:36:28.670Z",
     "studentId": "student1",
     "studentName": "Student One",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T08:18:24.748Z",
-    "studentId": "student2",
+    "time": "2026-03-13T12:37:43.747Z",
+    "studentId": "phis/pp/097",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 34/50 (68%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:37:45.375Z",
+    "studentId": "Phis/pp/493",
+    "studentName": "SAMALI DEBORAH",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 16/50 (32%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:38:53.633Z",
+    "studentId": "PHIS/PP/967",
+    "studentName": "OGBOGU IFAKACHUKWU EMMANUEL",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 28/50 (56%) | Class: SS 3"
+  },
+  {
+    "time": "2026-03-13T12:41:25.334Z",
+    "studentId": "PHIS/PP/1006",
+    "studentName": "SULEIMON BOLUWATIFE MISTURA",
+    "action": "SUBMIT",
+    "detail": "Exam: Digital Technology | Score: 36/50 (72%) | Class: SS 2"
+  },
+  {
+    "time": "2026-03-13T12:52:36.516Z",
+    "studentId": "PHIS/PP/966",
+    "studentName": "DAVID DARREN",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T14:59:20.117Z",
+    "studentId": "PHIS/PP/1213",
     "studentName": "ABDULWAHAB RAHAMA OYIZA",
     "action": "LOGIN",
     "detail": "Student logged in"
   },
   {
-    "time": "2026-03-13T08:22:22.077Z",
-    "studentId": "PHIS/PP/687",
-    "studentName": "UBAH FRANCIS",
+    "time": "2026-03-13T15:36:11.883Z",
+    "studentId": "student1",
+    "studentName": "Student One",
     "action": "LOGIN",
     "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T08:40:08.429Z",
-    "studentId": "PHIS/PP/1235",
-    "studentName": "SAMUEL BLOSSOM CHUKWUEMEKA",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T08:51:56.195Z",
-    "studentId": "PHIS/PP/687",
-    "studentName": "UBAH FRANCIS",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T08:58:27.243Z",
-    "studentId": "PHIS/PP/687",
-    "studentName": "UBAH FRANCIS",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T09:02:58.363Z",
-    "studentId": "PHIS/PP/687",
-    "studentName": "UBAH FRANCIS",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T09:21:35.196Z",
-    "studentId": "PHIS/PP/687",
-    "studentName": "UBAH FRANCIS",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T09:29:11.990Z",
-    "studentId": "PHIS/PP/953",
-    "studentName": "UGWU SOMTOCHUKWU",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-03-13T09:29:41.956Z",
-    "studentId": "PHIS/PP/953",
-    "studentName": "UGWU SOMTOCHUKWU",
-    "action": "SUBMIT",
-    "detail": "Exam: Mathematics | Score: 2/5 (40%) | Class: SS 1"
   }
 ]

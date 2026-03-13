@@ -1,6 +1,6 @@
 {
-  "exam": "DT",
-  "subject": "General",
+  "exam": "Networking Systems II",
+  "subject": "Computer Science",
   "class": "SS 3",
   "duration": 30,
   "questions": [
@@ -404,5 +404,6 @@
       "D": "d) secrecy",
       "answer": "B"
     }
-  ]
+  ],
+  "teacherId": "Teacher One"
 }

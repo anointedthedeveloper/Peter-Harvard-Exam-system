@@ -1,0 +1,14 @@
+[
+  {
+    "ip": "127.0.0.1",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "DESKTOP-L5RHF9S",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-03-13T15:36:11.870Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "firstSeen": "2026-03-13T15:36:11.870Z",
+    "lastSeen": "2026-03-13T15:36:11.870Z"
+  }
+]

@@ -109,6 +109,7 @@ tr:hover td{background:#F8FAFC;}
 .pill.red{background:#FEE2E2;color:#991B1B;}
 .pill.blue{background:#DBEAFE;color:#1E40AF;}
 .pill.yellow{background:#FEF3C7;color:#92400E;}
+.pill.purple{background:#EDE9FE;color:#5B21B6;}
 .pill.gray{background:var(--surface);color:var(--muted);}
 
 /* ── UPLOAD ZONE ── */
@@ -139,6 +140,7 @@ tr:hover td{background:#F8FAFC;}
 .student-mon-card.active::before{background:var(--correct);}
 .student-mon-card.submitted::before{background:var(--accent);}
 .student-mon-card.violated::before{background:var(--warn);}
+.student-mon-card.retake-allowed::before{background:var(--warn);}
 .smc-name{font-size:14px;font-weight:700;margin-bottom:4px;}
 .smc-exam{font-size:12px;color:var(--muted);margin-bottom:10px;}
 .smc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
@@ -174,6 +176,7 @@ tr:hover td{background:#F8FAFC;}
 .modal-actions{display:flex;gap:10px;margin-top:16px;}
 .modal-actions button{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text);transition:all .15s;}
 .modal-actions button.primary{background:var(--accent);border-color:var(--accent);color:white;}
+.modal-actions button.warn{background:var(--warn);border-color:var(--warn);color:white;}
 
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
 .refresh-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
@@ -204,6 +207,13 @@ tr:hover td{background:#F8FAFC;}
 /* ── CSV FORMAT INFO ── */
 .csv-info{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:20px;}
 .csv-info pre{background:#1E293B;color:#A5F3FC;padding:12px;border-radius:6px;font-size:11px;overflow-x:auto;margin-top:8px;}
+
+/* ── EXPORT BUTTONS ── */
+.export-dropdown{position:relative;display:inline-block;}
+.export-dropdown-content{display:none;position:absolute;right:0;background:var(--bg);min-width:180px;box-shadow:var(--shadow);border:1px solid var(--border);border-radius:6px;z-index:1;}
+.export-dropdown-content a{color:var(--text);padding:8px 12px;text-decoration:none;display:block;font-size:12px;}
+.export-dropdown-content a:hover{background:var(--surface);}
+.export-dropdown:hover .export-dropdown-content{display:block;}
 </style>
 </head>
 <body>
@@ -479,12 +489,20 @@ single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic c
         <div class="card">
           <div class="card-header">
             <h3>Submissions</h3>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
               <button class="btn outline sm" onclick="loadResults()">&#8635; Refresh</button>
-              <button class="btn accent sm" onclick="downloadCSV()">&#8595; CSV</button>
-              <button class="btn outline sm" onclick="downloadJSON()">&#8595; JSON</button>
-              <button class="btn outline sm" onclick="downloadStudentList()">&#8595; Student List</button>
-              <button class="btn danger sm" onclick="clearAllResults()">&#10005; Clear All</button>
+              <div class="export-dropdown">
+                <button class="btn accent sm">📥 Export ▼</button>
+                <div class="export-dropdown-content">
+                  <a href="/api/results/csv" onclick="event.preventDefault(); downloadResultsCSV()">📊 Export All as CSV</a>
+                  <a href="#" onclick="event.preventDefault(); downloadResultsFilteredCSV()">📊 Export Filtered as CSV</a>
+                  <a href="/api/results/json" onclick="event.preventDefault(); downloadResultsJSON()">📄 Export All as JSON</a>
+                  <a href="#" onclick="event.preventDefault(); downloadResultsFilteredJSON()">📄 Export Filtered as JSON</a>
+                  <a href="/api/student-list/csv" onclick="event.preventDefault(); downloadStudentList()">👥 Student List CSV</a>
+                </div>
+              </div>
+              <button class="btn outline sm" onclick="downloadAllResults()">📋 Summary Report</button>
+              <button class="btn danger sm" onclick="clearAllResults()">🗑️ Clear All</button>
             </div>
           </div>
           <div id="resultsTableWrap"><div class="empty">Loading…</div></div>
@@ -556,6 +574,23 @@ single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic c
   </div>
 </div>
 
+<!-- ═══ MODAL: Retake Confirmation ═══ -->
+<div class="modal-overlay" id="retakeModal">
+  <div class="modal">
+    <div class="modal-h">
+      <h3>Allow Retake</h3>
+      <p id="retakeMsg">Allow student to retake this exam?</p>
+    </div>
+    <div class="modal-b">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">The student will be able to start the exam again from the beginning. Their previous result will be preserved.</p>
+      <div class="modal-actions">
+        <button onclick="closeRetakeModal()">Cancel</button>
+        <button class="warn" id="confirmRetakeBtn">Allow Retake</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -566,6 +601,7 @@ let pendingCsvFile = null;
 let monitorTimer = null;
 let sessionToken = localStorage.getItem('teacherSessionToken') || null;
 let uploadTab = 'json';
+let currentResults = []; // Store current results for filtering
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 async function api(path, opts = {}) {
@@ -591,6 +627,15 @@ function openModal(title, msg, okLabel, okFn, okClass = 'primary') {
   document.getElementById('confirmModal').classList.add('show');
 }
 function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
+function openRetakeModal(studentId, studentName, exam, examFilename) {
+  document.getElementById('retakeMsg').textContent = `Allow ${studentName} to retake "${exam}"?`;
+  document.getElementById('confirmRetakeBtn').onclick = () => {
+    closeRetakeModal();
+    resetStudent(studentId, studentName, exam, examFilename);
+  };
+  document.getElementById('retakeModal').classList.add('show');
+}
+function closeRetakeModal() { document.getElementById('retakeModal').classList.remove('show'); }
 function fmtTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleTimeString(); }
 function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
 
@@ -837,7 +882,7 @@ async function loadOverview() {
   }
   const recent = rArr.slice(-6).reverse();
   document.getElementById('recentSubs').innerHTML = recent.length ? `
-    <table><thead><tr><th>Student</th><th>Exam</th><th>Score</th><th>%</th><th>Tab Violations</th><th>Time</th></tr></thead>
+    <table><thead><tr><th>Student</th><th>Exam</th><th>Score</th><th>%</th><th>Tab Violations</th><th>Time</th><th>Retake</th></tr></thead>
     <tbody>${recent.map(r => `<tr>
       <td><strong>${r.student}</strong></td>
       <td>${r.exam}</td>
@@ -845,20 +890,36 @@ async function loadOverview() {
       <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
       <td><span class="pill ${(r.tabViolations||0) > 0 ? 'yellow' : 'gray'}">${r.tabViolations || 0}</span></td>
       <td style="color:var(--muted);font-size:12px;">${fmtTime(r.submittedAt)}</td>
+      <td><button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')">↺ Retake</button></td>
     </tr>`).join('')}</tbody></table>` : '<div class="empty">No results yet</div>';
 }
 
 // ── EXAMS ─────────────────────────────────────────────────────────────────────
 async function loadExams() {
   const exams = await api('/api/exams');
+  const results = await api('/api/results');
+  const rArr = Array.isArray(results) ? results : [];
+  
+  // Count submissions per exam
+  const examCounts = {};
+  rArr.forEach(r => {
+    const filename = r.examFilename;
+    if (filename) {
+      examCounts[filename] = (examCounts[filename] || 0) + 1;
+    }
+  });
+  
   document.getElementById('examTableWrap').innerHTML = Array.isArray(exams) && exams.length ? `
-    <table><thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>${exams.map(e => `<tr>
+    <table><thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Duration</th><th>Taken</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${exams.map(e => {
+      const takenCount = examCounts[e.filename] || 0;
+      return `<tr>
       <td><strong>${e.name}</strong></td>
       <td>${e.subject || '<span style="color:var(--muted)">—</span>'}</td>
       <td><span class="pill ${e.class ? 'blue' : 'gray'}">${e.class || 'All Classes'}</span></td>
       <td>${e.questionCount}</td>
       <td>${e.duration} min</td>
+      <td><span class="pill ${takenCount > 0 ? 'green' : 'gray'}">${takenCount} student${takenCount !== 1 ? 's' : ''}</span></td>
       <td>
         <label class="toggle-switch" title="${e.active ? 'Click to disable' : 'Click to enable'}">
           <input type="checkbox" ${e.active ? 'checked' : ''} onchange="toggleExamStatus('${e.filename}', this.checked)">
@@ -867,7 +928,7 @@ async function loadExams() {
         <span style="font-size:11px;color:var(--muted);margin-left:6px;">${e.active ? 'Active' : 'Inactive'}</span>
       </td>
       <td><button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')">&#128465; Delete</button></td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No exams uploaded yet</div>';
+    </tr>`}).join('')}</tbody></table>` : '<div class="empty">No exams uploaded yet</div>';
 }
 async function toggleExamStatus(filename, active) {
   const res = await fetch('/api/exam-status/' + encodeURIComponent(filename), {
@@ -909,7 +970,7 @@ async function loadMonitor() {
         <div class="smc-row"><span class="smc-key">Time Left</span><span class="smc-val">${String(mLeft).padStart(2,'0')}:${String(sLeft).padStart(2,'0')}</span></div>
         <div class="smc-row"><span class="smc-key">Tab Violations</span><span class="smc-val"><span class="pill ${violations > 0 ? 'yellow' : 'gray'}">${violations}</span></span></div>
         <div class="smc-actions">
-          <button class="btn warn sm" style="flex:1" onclick="resetStudent('${s.studentId || s.student}','${s.student}','${s.exam}')">↺ Reset</button>
+          <button class="btn warn sm" style="flex:1" onclick="openRetakeModal('${s.studentId || s.student}','${s.student}','${s.exam}','${s.examFile}')">↺ Allow Retake</button>
           <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${s.studentId || s.student}','${s.student}')">Activity</button>
         </div>
       </div>`;
@@ -930,7 +991,7 @@ async function loadMonitor() {
         <div class="smc-row"><span class="smc-key">Violations</span><span class="smc-val"><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></span></div>
         <div class="smc-row"><span class="smc-key">Submitted</span><span class="smc-val" style="font-size:11px">${fmtTime(r.submittedAt)}</span></div>
         <div class="smc-actions">
-          <button class="btn warn sm" style="flex:1" onclick="resetStudent('${r.studentId||r.student}','${r.student}','${r.exam}')">↺ Reset Exam</button>
+          <button class="btn warn sm" style="flex:1" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')">↺ Allow Retake</button>
           <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${r.studentId||r.student}','${r.student}')">Activity</button>
         </div>
       </div>`).join('');
@@ -949,10 +1010,14 @@ function startMonitorRefresh() {
   }, 15000);
 }
 
-async function resetStudent(studentId, studentName, exam) {
+async function resetStudent(studentId, studentName, exam, examFilename) {
   openModal('Reset Student Exam', `Reset ${studentName}'s exam "${exam}"? They will be able to retake it from the beginning.`, 'Reset Now', async () => {
-    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam }) });
-    if (res.ok) { toast(`${studentName}'s exam has been reset`, 'ok'); loadMonitor(); }
+    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam: examFilename || exam }) });
+    if (res.ok) { 
+      toast(`${studentName} can now retake ${exam}`, 'ok'); 
+      loadMonitor();
+      loadResults();
+    }
     else toast('Reset failed', 'err');
   });
 }
@@ -994,9 +1059,14 @@ async function viewStudentActivity(studentId, studentName) {
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 async function loadResults() {
   const results = await api('/api/results');
-  const rArr = Array.isArray(results) ? results : [];
+  currentResults = Array.isArray(results) ? results : [];
+  renderResultsTable(currentResults);
+}
+
+function renderResultsTable(results) {
+  const rArr = results;
   document.getElementById('resultsTableWrap').innerHTML = rArr.length ? `
-    <table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Subject</th><th>Score</th><th>%</th><th>Violations</th><th>Submitted</th><th></th></tr></thead>
+    <table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Subject</th><th>Score</th><th>%</th><th>Violations</th><th>Submitted</th><th>Actions</th></tr></thead>
     <tbody>${rArr.map(r => `<tr>
       <td><strong>${r.student}</strong></td>
       <td style="font-size:11px;color:var(--muted)">${r.studentId||'—'}</td>
@@ -1008,8 +1078,8 @@ async function loadResults() {
       <td><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></td>
       <td style="font-size:11px;color:var(--muted)">${fmtDateTime(r.submittedAt)}</td>
       <td style="white-space:nowrap">
-        <button class="btn outline sm" title="Download this result" onclick="window.location='/api/results/csv/${r.id}'" style="margin-right:3px">&#8595;</button>
-        <button class="btn outline sm" title="Reset exam" onclick="resetStudentResult('${r.studentId||r.student}','${r.student}','${r.exam}')" style="margin-right:3px">&#8635;</button>
+        <button class="btn outline sm" title="Download this result" onclick="downloadSingleResultCSV(${r.id})" style="margin-right:3px">&#8595;</button>
+        <button class="btn warn sm" title="Allow retake" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')" style="margin-right:3px">↺</button>
         <button class="btn danger sm" onclick="deleteResult(${r.id})">&#10005;</button>
       </td>
     </tr>`).join('')}</tbody></table>` : '<div class="empty">No submissions yet</div>';
@@ -1019,21 +1089,115 @@ async function deleteResult(id) {
   await fetch('/api/result/' + id, { method: 'DELETE' });
   toast('Result deleted'); loadResults();
 }
+
 function clearAllResults() {
   openModal('Clear All Results', 'This will delete ALL student results permanently. This cannot be undone.', 'Clear All', async () => {
     await fetch('/api/results', { method: 'DELETE' });
     toast('All results cleared'); loadResults();
   });
 }
-function downloadCSV() { window.location = '/api/results/csv'; }
-function downloadJSON() { window.location = '/api/results/json'; }
-function downloadStudentList() { window.location = '/api/student-list/csv'; }
-function resetStudentResult(studentId, studentName, exam) {
-  openModal('Reset Exam', `Allow ${studentName} to retake "${exam}"?`, 'Reset', async () => {
-    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam }) });
-    if (res.ok) toast(`${studentName} can now retake ${exam}`, 'ok');
-    else toast('Reset failed', 'err');
+
+// ── ENHANCED EXPORT FUNCTIONS ────────────────────────────────────────────────
+function downloadResultsCSV() {
+  window.location = '/api/results/csv';
+}
+
+function downloadResultsFilteredCSV() {
+  if (!currentResults.length) {
+    toast('No results to export', 'err');
+    return;
+  }
+  
+  // Create CSV from current results (which may be filtered by search)
+  const rows = [
+    'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
+    ...currentResults.map(r => [
+      `"${(r.student || '').replace(/"/g, '""')}"`,
+      `"${r.studentId || ''}"`,
+      `"${r.studentClass || ''}"`,
+      `"${(r.exam || '').replace(/"/g, '""')}"`,
+      `"${r.subject || ''}"`,
+      `"${r.examClass || ''}"`,
+      r.score,
+      r.total || '',
+      r.percentage != null ? r.percentage + '%' : '',
+      r.tabViolations || 0,
+      r.timeTaken || '',
+      `"${r.submittedAt || ''}"`
+    ].join(','))
+  ];
+  
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `filtered_results_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadResultsJSON() {
+  window.location = '/api/results/json';
+}
+
+function downloadResultsFilteredJSON() {
+  if (!currentResults.length) {
+    toast('No results to export', 'err');
+    return;
+  }
+  
+  const blob = new Blob([JSON.stringify(currentResults, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `filtered_results_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadStudentList() {
+  window.location = '/api/student-list/csv';
+}
+
+function downloadAllResults() {
+  if (!currentResults.length) {
+    toast('No results to export', 'err');
+    return;
+  }
+  
+  // Create summary report
+  const exams = [...new Set(currentResults.map(r => r.exam))];
+  const totalStudents = [...new Set(currentResults.map(r => r.studentId))].length;
+  const avgScore = Math.round(currentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / currentResults.length);
+  
+  let summary = `PETER HARVARD INTERNATIONAL SCHOOLS - RESULTS SUMMARY\n`;
+  summary += `Generated: ${new Date().toLocaleString()}\n`;
+  summary += `Total Submissions: ${currentResults.length}\n`;
+  summary += `Unique Students: ${totalStudents}\n`;
+  summary += `Exams: ${exams.join(', ')}\n`;
+  summary += `Average Score: ${avgScore}%\n`;
+  summary += `\n--- DETAILED BREAKDOWN ---\n\n`;
+  
+  exams.forEach(exam => {
+    const examResults = currentResults.filter(r => r.exam === exam);
+    const examAvg = Math.round(examResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / examResults.length);
+    summary += `\n${exam} (${examResults.length} submissions, Avg: ${examAvg}%)\n`;
+    examResults.forEach(r => {
+      summary += `  ${r.student} (${r.studentId}): ${r.score}/${r.total} (${r.percentage}%) - Violations: ${r.tabViolations || 0}\n`;
+    });
   });
+  
+  const blob = new Blob([summary], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `summary_report_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadSingleResultCSV(id) {
+  window.location = '/api/results/csv/' + id;
 }
 
 // ── STUDENT LIST ─────────────────────────────────────────────────────────────

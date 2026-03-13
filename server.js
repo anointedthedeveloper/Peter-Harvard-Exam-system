@@ -3,8 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const { exec } = require('child_process');
 
 const PORT = 3000;
+const VERSION = '2.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const DATABASE_DIR = path.join(__dirname, 'database');
@@ -17,29 +19,27 @@ const AUDIT_FILE = path.join(DATABASE_DIR, 'audit.json');
 const EXAM_STATUS_FILE = path.join(DATABASE_DIR, 'exam_status.json');
 const SESSIONS_FILE = path.join(DATABASE_DIR, 'sessions.json');
 const DROPBOX_FILE = path.join(DATABASE_DIR, 'dropbox.json');
+const COMPUTERS_FILE = path.join(DATABASE_DIR, 'computers.json');
+const SUBMITTED_EXAMS_FILE = path.join(DATABASE_DIR, 'submitted_exams.json');
 
 // Live in-memory sessions (for active exam monitoring)
 const liveSessions = {};
+const activeTokens = new Map(); // Track active tokens per user
 
 [PUBLIC_DIR, UPLOADS_DIR, DATABASE_DIR].forEach(d => {
   if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
 });
 
 // Initialize files if they don't exist
-if (!fs.existsSync(RESULTS_FILE)) fs.writeFileSync(RESULTS_FILE, '[]');
-if (!fs.existsSync(LOGS_FILE)) fs.writeFileSync(LOGS_FILE, '[]');
-if (!fs.existsSync(ACTIVITY_FILE)) fs.writeFileSync(ACTIVITY_FILE, '[]');
-if (!fs.existsSync(RESETS_FILE)) fs.writeFileSync(RESETS_FILE, '{}');
-if (!fs.existsSync(AUDIT_FILE)) fs.writeFileSync(AUDIT_FILE, '[]');
-if (!fs.existsSync(EXAM_STATUS_FILE)) fs.writeFileSync(EXAM_STATUS_FILE, '{}');
-if (!fs.existsSync(SESSIONS_FILE)) fs.writeFileSync(SESSIONS_FILE, '{}');
-if (!fs.existsSync(DROPBOX_FILE)) fs.writeFileSync(DROPBOX_FILE, '[]');
+const files = [RESULTS_FILE, LOGS_FILE, ACTIVITY_FILE, RESETS_FILE, AUDIT_FILE, 
+               EXAM_STATUS_FILE, SESSIONS_FILE, DROPBOX_FILE, COMPUTERS_FILE, SUBMITTED_EXAMS_FILE];
+files.forEach(f => { if (!fs.existsSync(f)) fs.writeFileSync(f, '[]'); });
 
 // Create initial users if not exists
 if (!fs.existsSync(USERS_FILE)) {
   const initialUsers = {
     teachers: [
-      { id: 'teacher1', password: 'pass123', name: 'Teacher One' }
+      { id: 'teacher1', password: 'pass123', name: 'Teacher One', subject: 'Computer Science' }
     ],
     students: [],
     admins: [
@@ -122,20 +122,18 @@ if (!fs.existsSync(USERS_FILE)) {
     { id: 'PHIS/PP/967', name: 'OGBOGU IFAKACHUKWU EMMANUEL', class: 'SS 3' },
     { id: 'Phis/pp/270', name: 'OKHUOYA THANKGOD MIZITA JOEL', class: 'SS 3' },
     { id: 'PHIS/PP/1153', name: 'OKLOBIA BISHOP AKONDU', class: 'SS 3' },
-    { id: 'Phis/pp/399', name: 'DOGARI PROSPER SHIKUMI', class: 'SS 3' },
+    { id: 'PHIS/PP/399', name: 'DIVINE OMOKHAGBO ARIJE', class: 'SS 3' },
     { id: 'PHIS/PP/1235', name: 'SAMUEL BLOSSOM CHUKWUEMEKA', class: 'SS 3' },
-    { id: 'PHIS/PP/687', name: 'UBAH FRANCIS', class: 'SS 3' }
+    { id: 'PHIS/PP/687', name: 'UBAH FRANCIS', class: 'SS 3' },
+    { id: 'PHIS/PP/1400', name: 'JUDITH UTTONJ', class: 'SS 3' }
   ];
   
   initialUsers.students = studentData.map(s => ({
     id: s.id,
-    password: '',
+    password: '', // No password required for students
     name: s.name,
     class: s.class
   }));
-  
-  // Add the default student1 for testing
-  initialUsers.students.unshift({ id: 'student1', password: '', name: 'Student One', class: 'SS 1' });
   
   fs.writeFileSync(USERS_FILE, JSON.stringify(initialUsers, null, 2));
 }
@@ -182,11 +180,40 @@ function getNetworkInfo() {
       if (iface.family === 'IPv4' && !iface.internal) {
         const lname = name.toLowerCase();
         const type = (lname.includes('wi') || lname.includes('wlan') || lname.includes('wlp') || lname.includes('airport')) ? 'wifi' : 'ethernet';
-        results.push({ name, address: iface.address, type });
+        results.push({ name, address: iface.address, type, mac: iface.mac });
       }
     }
   }
   return results;
+}
+function getComputerInfo(ip) {
+  try {
+    const hostname = os.hostname();
+    const networkInterfaces = os.networkInterfaces();
+    let mac = '00:00:00:00:00:00';
+    let interfaceName = 'Unknown';
+    
+    for (const [name, interfaces] of Object.entries(networkInterfaces)) {
+      for (const iface of interfaces) {
+        if (iface.address === ip && !iface.internal) {
+          mac = iface.mac;
+          interfaceName = name;
+          break;
+        }
+      }
+    }
+    
+    return {
+      ip,
+      mac,
+      hostname,
+      interface: interfaceName,
+      platform: os.platform(),
+      timestamp: new Date().toISOString()
+    };
+  } catch {
+    return { ip, mac: 'Unknown', hostname: 'Unknown', timestamp: new Date().toISOString() };
+  }
 }
 function generateSessionToken() {
   return crypto.randomBytes(32).toString('hex');
@@ -254,7 +281,6 @@ function parseCSVLine(line) {
   return result;
 }
 function send(req, res, status, data, type = 'application/json') {
-  // Add security headers
   const headers = {
     'Content-Type': type,
     'Access-Control-Allow-Origin': '*',
@@ -266,7 +292,6 @@ function send(req, res, status, data, type = 'application/json') {
     'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
   };
   
-  // For network connections, add upgrade-insecure-requests hint
   if (req && req.headers && req.headers.host && !req.headers.host.includes('localhost')) {
     headers['Content-Security-Policy'] = "upgrade-insecure-requests";
   }
@@ -287,13 +312,13 @@ function serveFile(res, filePath) {
     '.jpeg': 'image/jpeg', 
     '.gif': 'image/gif', 
     '.svg': 'image/svg+xml', 
-    '.ico': 'image/x-icon' 
+    '.ico': 'image/x-icon',
+    '.webp': 'image/webp'
   };
   
   fs.readFile(filePath, (err, data) => {
     if (err) { send(null, res, 404, { error: 'Not found' }); return; }
     
-    // Add security headers
     const headers = {
       'Content-Type': types[ext] || 'text/plain',
       'X-Content-Type-Options': 'nosniff',
@@ -310,35 +335,49 @@ function serveFile(res, filePath) {
 // Session management
 function saveSession(token, data) {
   const sessions = readJSON(SESSIONS_FILE) || {};
+  const userId = data.id;
+  
+  // Check if user already has an active session
+  if (activeTokens.has(userId)) {
+    const oldToken = activeTokens.get(userId);
+    delete sessions[oldToken];
+  }
+  
   sessions[token] = { ...data, lastAccessed: Date.now() };
+  activeTokens.set(userId, token);
   writeJSON(SESSIONS_FILE, sessions);
 }
 function getSession(token) {
   const sessions = readJSON(SESSIONS_FILE) || {};
   const session = sessions[token];
-  if (session && Date.now() - session.lastAccessed < 86400000) { // 24 hour expiry
+  if (session && Date.now() - session.lastAccessed < 86400000) {
     return session;
   }
   return null;
 }
 function deleteSession(token) {
   const sessions = readJSON(SESSIONS_FILE) || {};
-  delete sessions[token];
-  writeJSON(SESSIONS_FILE, sessions);
+  const session = sessions[token];
+  if (session) {
+    activeTokens.delete(session.id);
+    delete sessions[token];
+    writeJSON(SESSIONS_FILE, sessions);
+  }
 }
 function cleanupSessions() {
   const sessions = readJSON(SESSIONS_FILE) || {};
   let changed = false;
   const now = Date.now();
   for (const [token, data] of Object.entries(sessions)) {
-    if (now - data.lastAccessed > 86400000) { // Remove sessions older than 24 hours
+    if (now - data.lastAccessed > 86400000) {
+      activeTokens.delete(data.id);
       delete sessions[token];
       changed = true;
     }
   }
   if (changed) writeJSON(SESSIONS_FILE, sessions);
 }
-setInterval(cleanupSessions, 3600000); // Cleanup every hour
+setInterval(cleanupSessions, 3600000);
 
 // Dropbox functions
 function saveToDropbox(filename, data, uploadedBy) {
@@ -360,6 +399,42 @@ function deleteDropboxFile(id) {
   let dropbox = readJSON(DROPBOX_FILE) || [];
   dropbox = dropbox.filter(f => f.id !== id);
   writeJSON(DROPBOX_FILE, dropbox);
+}
+
+// Computers tracking
+function trackComputer(ip, studentId, studentName) {
+  const computers = readJSON(COMPUTERS_FILE) || [];
+  const computerInfo = getComputerInfo(ip);
+  
+  const existing = computers.find(c => c.ip === ip && c.studentId === studentId);
+  if (existing) {
+    existing.lastSeen = new Date().toISOString();
+  } else {
+    computers.push({
+      ...computerInfo,
+      studentId,
+      studentName,
+      firstSeen: new Date().toISOString(),
+      lastSeen: new Date().toISOString()
+    });
+  }
+  
+  writeJSON(COMPUTERS_FILE, computers);
+}
+
+// Submitted exams tracking
+function saveSubmittedExam(data) {
+  const submitted = readJSON(SUBMITTED_EXAMS_FILE) || [];
+  submitted.push({
+    ...data,
+    id: Date.now(),
+    recordedAt: new Date().toISOString()
+  });
+  if (submitted.length > 1000) submitted.splice(0, submitted.length - 1000);
+  writeJSON(SUBMITTED_EXAMS_FILE, submitted);
+}
+function getSubmittedExams() {
+  return readJSON(SUBMITTED_EXAMS_FILE) || [];
 }
 
 const server = http.createServer(async (req, res) => {
@@ -384,17 +459,29 @@ const server = http.createServer(async (req, res) => {
     send(req, res, 404, { error: 'Not found' }); return;
   }
 
-  // AUTH - Login
+  // AUTH - Login (Students no password)
   if (req.method === 'POST' && pathname === '/api/login') {
     const body = await parseBody(req);
     const users = readJSON(USERS_FILE);
     const role = body.role;
     const list = users[role + 's'] || [];
     
-    // Case-insensitive ID matching
-    const user = list.find(u => u.id.toLowerCase() === body.id.toLowerCase() && u.password === (body.password || ''));
+    let user;
+    if (role === 'student') {
+      // Students don't need password
+      user = list.find(u => u.id.toLowerCase() === body.id.toLowerCase());
+    } else {
+      // Teachers and admins need password
+      user = list.find(u => u.id.toLowerCase() === body.id.toLowerCase() && u.password === (body.password || ''));
+    }
     
     if (user) {
+      // Check if user already has an active session
+      if (activeTokens.has(user.id)) {
+        send(req, res, 409, { ok: false, error: 'User already logged in on another device' });
+        return;
+      }
+      
       const token = generateSessionToken();
       const sessionData = { 
         id: user.id, 
@@ -404,6 +491,11 @@ const server = http.createServer(async (req, res) => {
         class: user.class || ''
       };
       saveSession(token, sessionData);
+      
+      // Track computer for students
+      if (role === 'student') {
+        trackComputer(req.socket.remoteAddress, user.id, user.name);
+      }
       
       sysLog('LOGIN', `${role}: ${user.id} (${user.name})`, user.id);
       auditLog('LOGIN', user.id, `${role} "${user.name}" logged in`, { role, ip: req.socket.remoteAddress });
@@ -448,6 +540,29 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // FORCE LOGOUT (Admin function)
+  if (req.method === 'POST' && pathname === '/api/force-logout') {
+    const body = await parseBody(req);
+    const userId = body.userId;
+    
+    const sessions = readJSON(SESSIONS_FILE) || {};
+    let tokenToDelete = null;
+    for (const [token, data] of Object.entries(sessions)) {
+      if (data.id === userId) {
+        tokenToDelete = token;
+        break;
+      }
+    }
+    
+    if (tokenToDelete) {
+      deleteSession(tokenToDelete);
+      send(req, res, 200, { ok: true });
+    } else {
+      send(req, res, 404, { ok: false, error: 'User not logged in' });
+    }
+    return;
+  }
+
   // SERVER INFO
   if (req.method === 'GET' && pathname === '/api/info') {
     send(req, res, 200, {
@@ -459,8 +574,50 @@ const server = http.createServer(async (req, res) => {
       hostname: os.hostname(),
       totalMemory: os.totalmem(),
       freeMemory: os.freemem(),
-      cpus: os.cpus().length
+      cpus: os.cpus().length,
+      version: VERSION
     });
+    return;
+  }
+
+  // COMPUTERS LIST
+  if (req.method === 'GET' && pathname === '/api/computers') {
+    send(req, res, 200, readJSON(COMPUTERS_FILE) || []);
+    return;
+  }
+
+  // SUBMITTED EXAMS
+  if (req.method === 'GET' && pathname === '/api/submitted-exams') {
+    send(req, res, 200, getSubmittedExams());
+    return;
+  }
+
+  // SUBMITTED EXAMS BY CLASS/SUBJECT
+  if (req.method === 'GET' && pathname === '/api/submitted-exams/grouped') {
+    const exams = getSubmittedExams();
+    const results = readJSON(RESULTS_FILE) || [];
+    
+    const grouped = {
+      byClass: {},
+      bySubject: {},
+      byExam: {}
+    };
+    
+    results.forEach(r => {
+      const studentClass = r.studentClass || 'Unassigned';
+      const subject = r.subject || 'General';
+      const exam = r.exam || 'Unknown';
+      
+      if (!grouped.byClass[studentClass]) grouped.byClass[studentClass] = [];
+      if (!grouped.bySubject[subject]) grouped.bySubject[subject] = [];
+      if (!grouped.byExam[exam]) grouped.byExam[exam] = [];
+      
+      grouped.byClass[studentClass].push(r);
+      grouped.bySubject[subject].push(r);
+      grouped.byExam[exam].push(r);
+    });
+    
+    send(req, res, 200, grouped);
     return;
   }
 
@@ -486,22 +643,18 @@ const server = http.createServer(async (req, res) => {
         };
       });
       
-      // Filter by student class if provided - exact match with normalization
+      // Filter by student class if provided
       if (studentClass) {
         const normalizedStudentClass = studentClass.trim().toLowerCase();
         exams = exams.filter(e => {
-          // If exam has no class specified, show to all
           if (!e.class) return true;
-          // Normalize exam class
           const normalizedExamClass = e.class.toLowerCase();
-          // Check if exam class matches student class
           return normalizedExamClass === normalizedStudentClass;
         });
       }
       
       send(req, res, 200, exams);
     } catch (e) { 
-      console.error('Error loading exams:', e);
       send(req, res, 200, []); 
     }
     return;
@@ -547,18 +700,15 @@ const server = http.createServer(async (req, res) => {
       const content = file.content.toString('utf8');
       const lines = content.split('\n').filter(line => line.trim());
       
-      // Parse CSV header
       const header = parseCSVLine(lines[0]);
       const requiredColumns = ['question_type', 'question_group', 'question_level', 'question', 'mark', 'option_1', 'option_2', 'option_3', 'option_4', 'answer'];
       
-      // Validate header
       const missingColumns = requiredColumns.filter(col => !header.includes(col));
       if (missingColumns.length > 0) {
         send(req, res, 400, { error: `Missing required columns: ${missingColumns.join(', ')}` });
         return;
       }
       
-      // Parse questions
       const questions = [];
       for (let i = 1; i < lines.length; i++) {
         const values = parseCSVLine(lines[i]);
@@ -570,27 +720,18 @@ const server = http.createServer(async (req, res) => {
           }
         });
         
-        // Convert answer from "option_1" to actual option letter
-        const answerMap = {
-          'option_1': 'A',
-          'option_2': 'B',
-          'option_3': 'C',
-          'option_4': 'D'
-        };
-        
+        const answerMap = { 'option_1': 'A', 'option_2': 'B', 'option_3': 'C', 'option_4': 'D' };
         const answerKey = question.answer;
         question.answer = answerMap[answerKey] || 'A';
         
         questions.push(question);
       }
       
-      // Get exam metadata from form fields
       const subject = url.searchParams.get('subject') || 'General';
       const examClass = url.searchParams.get('class') || '';
       const examName = url.searchParams.get('name') || `CSV Exam ${new Date().toLocaleDateString()}`;
       const duration = parseInt(url.searchParams.get('duration')) || 30;
       
-      // Create JSON exam format
       const examData = {
         exam: examName,
         subject: subject,
@@ -606,7 +747,6 @@ const server = http.createServer(async (req, res) => {
         }))
       };
       
-      // Save as JSON file
       const saveName = file.filename.replace(/\.csv$/i, '.json').replace(/[^a-zA-Z0-9._-]/g, '_');
       fs.writeFileSync(path.join(UPLOADS_DIR, saveName), JSON.stringify(examData, null, 2));
       
@@ -614,7 +754,6 @@ const server = http.createServer(async (req, res) => {
       examStatus[saveName] = true;
       writeJSON(EXAM_STATUS_FILE, examStatus);
       
-      // Save to dropbox
       saveToDropbox(saveName, examData, 'teacher');
       
       sysLog('UPLOAD_CSV', `CSV Exam: ${saveName} | Questions: ${questions.length} | Duration: ${duration} min`, 'teacher');
@@ -624,6 +763,60 @@ const server = http.createServer(async (req, res) => {
     } catch (e) { 
       send(req, res, 400, { error: 'Invalid CSV file: ' + e.message }); 
     }
+    return;
+  }
+
+  // CHECK IF STUDENT HAS TAKEN EXAM
+  if (req.method === 'GET' && pathname.startsWith('/api/has-taken-exam/')) {
+    const parts = pathname.replace('/api/has-taken-exam/', '').split('/');
+    const studentId = decodeURIComponent(parts[0]);
+    const examFilename = decodeURIComponent(parts[1]);
+    
+    const results = readJSON(RESULTS_FILE) || [];
+    const hasTaken = results.some(r => 
+      r.studentId === studentId && r.examFilename === examFilename
+    );
+    
+    send(req, res, 200, { hasTaken });
+    return;
+  }
+
+  // GET ALL TAKEN EXAMS FOR A STUDENT
+  if (req.method === 'GET' && pathname.startsWith('/api/student-taken-exams/')) {
+    const studentId = decodeURIComponent(pathname.replace('/api/student-taken-exams/', ''));
+    const results = readJSON(RESULTS_FILE) || [];
+    const takenExams = results
+      .filter(r => r.studentId === studentId)
+      .map(r => r.examFilename);
+    
+    send(req, res, 200, { takenExams, count: takenExams.length });
+    return;
+  }
+
+  // GET AVAILABLE EXAMS COUNT
+  if (req.method === 'GET' && pathname.startsWith('/api/available-exams-count/')) {
+    const studentId = decodeURIComponent(pathname.replace('/api/available-exams-count/', ''));
+    const studentClass = url.searchParams.get('class');
+    
+    const results = readJSON(RESULTS_FILE) || [];
+    const takenExams = results
+      .filter(r => r.studentId === studentId)
+      .map(r => r.examFilename);
+    
+    const files = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
+    const examStatus = readJSON(EXAM_STATUS_FILE) || {};
+    
+    let available = files.filter(f => {
+      if (examStatus[f] === false) return false;
+      if (takenExams.includes(f)) return false;
+      
+      const data = readJSON(path.join(UPLOADS_DIR, f));
+      if (data?.class && studentClass && data.class.toLowerCase() !== studentClass.toLowerCase()) return false;
+      
+      return true;
+    });
+    
+    send(req, res, 200, { available: available.length });
     return;
   }
 
@@ -677,6 +870,7 @@ const server = http.createServer(async (req, res) => {
     let examSubject = body.subject || '';
     let examClass = body.examClass || '';
     const examFilename = body.examFilename || '';
+    
     if (examFilename) {
       const examData = readJSON(path.join(UPLOADS_DIR, examFilename));
       if (examData) {
@@ -684,6 +878,7 @@ const server = http.createServer(async (req, res) => {
         examClass = examData.class || examClass;
       }
     }
+    
     const entry = {
       ...body,
       studentClass,
@@ -692,15 +887,48 @@ const server = http.createServer(async (req, res) => {
       submittedAt: new Date().toISOString(),
       id: Date.now()
     };
+    
     results.push(entry);
     writeJSON(RESULTS_FILE, results);
+    
+    // Save to submitted exams for tracking
+    saveSubmittedExam(entry);
+    
     sysLog('SUBMIT', `Student: ${body.student} | Exam: ${body.exam} | Score: ${body.score}/${body.total} (${body.percentage}%) | Class: ${studentClass}`, body.studentId);
     auditLog('EXAM_SUBMIT', body.studentId || body.student, `Submitted "${body.exam}" — Score: ${body.score}/${body.total} (${body.percentage}%)`, { exam: body.exam, score: body.score, total: body.total, percentage: body.percentage, tabViolations: body.tabViolations, studentClass });
     logActivity(body.studentId, body.student, 'SUBMIT', `Exam: ${body.exam} | Score: ${body.score}/${body.total} (${body.percentage}%) | Class: ${studentClass}`);
+    
     delete liveSessions[body.studentId || body.student];
     const resets = readJSON(RESETS_FILE) || {};
     delete resets[body.studentId || body.student];
     writeJSON(RESETS_FILE, resets);
+    
+    send(req, res, 200, { ok: true }); return;
+  }
+
+  // END EXAM (Teacher function)
+  if (req.method === 'POST' && pathname === '/api/end-exam') {
+    const body = await parseBody(req);
+    const studentId = body.studentId;
+    
+    delete liveSessions[studentId];
+    
+    // Force logout the student
+    const sessions = readJSON(SESSIONS_FILE) || {};
+    let tokenToDelete = null;
+    for (const [token, data] of Object.entries(sessions)) {
+      if (data.id === studentId) {
+        tokenToDelete = token;
+        break;
+      }
+    }
+    
+    if (tokenToDelete) {
+      deleteSession(tokenToDelete);
+    }
+    
+    auditLog('EXAM_ENDED', body.teacherId || 'teacher', `Ended exam for student: ${studentId}`, { studentId });
+    
     send(req, res, 200, { ok: true }); return;
   }
 
@@ -717,13 +945,18 @@ const server = http.createServer(async (req, res) => {
     send(req, res, 200, active); return;
   }
 
-  // TAB VIOLATION
+  // TAB VIOLATION (Now auto-submits immediately)
   if (req.method === 'POST' && pathname === '/api/tabviolation') {
     const body = await parseBody(req);
+    
     logActivity(body.studentId, body.student, 'TAB_VIOLATION', `Exam: ${body.exam} | Violation #${body.count}`);
     sysLog('TAB_VIOLATION', `${body.student} - #${body.count} in ${body.exam}`, body.studentId);
     auditLog('TAB_VIOLATION', body.studentId || body.student, `Tab switch violation #${body.count} during "${body.exam}"`, { exam: body.exam, count: body.count });
-    if (liveSessions[body.studentId || body.student]) liveSessions[body.studentId || body.student].tabViolations = body.count;
+    
+    if (liveSessions[body.studentId || body.student]) {
+      liveSessions[body.studentId || body.student].tabViolations = body.count;
+    }
+    
     send(req, res, 200, { ok: true }); return;
   }
 
@@ -863,6 +1096,99 @@ const server = http.createServer(async (req, res) => {
     res.end(rows.join('\n')); return;
   }
 
+  // RESULTS EXCEL (XLSX) - Actually CSV but with .xls extension for Excel
+  if (req.method === 'GET' && pathname === '/api/results/excel') {
+    const results = readJSON(RESULTS_FILE) || [];
+    const rows = [
+      'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
+      ...results.map(r => [
+        `"${(r.student || '').replace(/"/g, '""')}"`,
+        `"${r.studentId || ''}"`,
+        `"${r.studentClass || ''}"`,
+        `"${(r.exam || '').replace(/"/g, '""')}"`,
+        `"${r.subject || ''}"`,
+        `"${r.examClass || ''}"`,
+        r.score,
+        r.total || '',
+        r.percentage != null ? r.percentage + '%' : '',
+        r.tabViolations || 0,
+        r.timeTaken || '',
+        `"${r.submittedAt || ''}"`
+      ].join(','))
+    ];
+    res.writeHead(200, { 
+      'Content-Type': 'application/vnd.ms-excel', 
+      'Content-Disposition': 'attachment; filename="results.xls"', 
+      'Access-Control-Allow-Origin': '*',
+      'X-Content-Type-Options': 'nosniff'
+    });
+    res.end(rows.join('\n')); return;
+  }
+
+  // RESULTS BY CLASS CSV
+  if (req.method === 'GET' && pathname === '/api/results/by-class') {
+    const studentClass = url.searchParams.get('class');
+    const results = readJSON(RESULTS_FILE) || [];
+    const filtered = studentClass ? results.filter(r => r.studentClass === studentClass) : results;
+    
+    const rows = [
+      'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
+      ...filtered.map(r => [
+        `"${(r.student || '').replace(/"/g, '""')}"`,
+        `"${r.studentId || ''}"`,
+        `"${r.studentClass || ''}"`,
+        `"${(r.exam || '').replace(/"/g, '""')}"`,
+        `"${r.subject || ''}"`,
+        `"${r.examClass || ''}"`,
+        r.score,
+        r.total || '',
+        r.percentage != null ? r.percentage + '%' : '',
+        r.tabViolations || 0,
+        r.timeTaken || '',
+        `"${r.submittedAt || ''}"`
+      ].join(','))
+    ];
+    res.writeHead(200, { 
+      'Content-Type': 'text/csv', 
+      'Content-Disposition': `attachment; filename="results_${studentClass || 'all'}.csv"`, 
+      'Access-Control-Allow-Origin': '*',
+      'X-Content-Type-Options': 'nosniff'
+    });
+    res.end(rows.join('\n')); return;
+  }
+
+  // RESULTS BY SUBJECT CSV
+  if (req.method === 'GET' && pathname === '/api/results/by-subject') {
+    const subject = url.searchParams.get('subject');
+    const results = readJSON(RESULTS_FILE) || [];
+    const filtered = subject ? results.filter(r => r.subject === subject) : results;
+    
+    const rows = [
+      'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
+      ...filtered.map(r => [
+        `"${(r.student || '').replace(/"/g, '""')}"`,
+        `"${r.studentId || ''}"`,
+        `"${r.studentClass || ''}"`,
+        `"${(r.exam || '').replace(/"/g, '""')}"`,
+        `"${r.subject || ''}"`,
+        `"${r.examClass || ''}"`,
+        r.score,
+        r.total || '',
+        r.percentage != null ? r.percentage + '%' : '',
+        r.tabViolations || 0,
+        r.timeTaken || '',
+        `"${r.submittedAt || ''}"`
+      ].join(','))
+    ];
+    res.writeHead(200, { 
+      'Content-Type': 'text/csv', 
+      'Content-Disposition': `attachment; filename="results_${subject || 'all'}.csv"`, 
+      'Access-Control-Allow-Origin': '*',
+      'X-Content-Type-Options': 'nosniff'
+    });
+    res.end(rows.join('\n')); return;
+  }
+
   // SINGLE RESULT CSV
   if (req.method === 'GET' && pathname.startsWith('/api/results/csv/')) {
     const resultId = parseInt(pathname.replace('/api/results/csv/', ''));
@@ -950,45 +1276,38 @@ const server = http.createServer(async (req, res) => {
   send(req, res, 404, { error: 'Unknown endpoint' });
 });
 
-// Override send function
-function send(req, res, status, data, type = 'application/json') {
-  const headers = {
-    'Content-Type': type,
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Credentials': 'true',
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
-  };
-  
-  if (req && req.headers && req.headers.host && !req.headers.host.includes('localhost')) {
-    headers['Content-Security-Policy'] = "upgrade-insecure-requests";
-  }
-  
-  const body = type === 'application/json' ? JSON.stringify(data) : data;
-  res.writeHead(status, headers);
-  res.end(body);
-}
-
 server.listen(PORT, '0.0.0.0', () => {
   const ip = getServerIP();
-  console.log('\n╔══════════════════════════════════════════════════╗');
-  console.log('║   PETER HARVARD INTERNATIONAL SCHOOLS            ║');
-  console.log('║           EXAM SYSTEM  v1.0                      ║');
-  console.log('╠══════════════════════════════════════════════════╣');
-  console.log(`║  Local:    http://localhost:${PORT}                 ║`);
-  console.log(`║  Network:  http://${ip}:${PORT}              ║`);
-  console.log('╠══════════════════════════════════════════════════╣');
-  console.log(`║  Student : http://localhost:${PORT}/student.html                         ║`);
-  console.log(`║  Teacher : http://localhost:${PORT}/teacher.html                         ║`);
-  console.log(`║  Admin   : http://localhost:${PORT}/admin.html                           ║`);
-  console.log('╠══════════════════════════════════════════════════╣');
-  console.log('║  Developed by: anointedthedeveloper              ║');
-  console.log('╚══════════════════════════════════════════════════╝\n');
-  console.log('📁 CSV Import Format: question_type,question_group,question_level,question,mark,option_1,option_2,option_3,option_4,answer');
-  console.log('🔒 Security headers enabled for all responses');
-  console.log('📤 Results export available in CSV and JSON formats');
-  console.log('🗑️ Dropbox feature enabled for exam archiving\n');
+  console.log('\n╔══════════════════════════════════════════════════════════════╗');
+  console.log('║            PETER HARVARD INTERNATIONAL SCHOOLS                ║');
+  console.log('║                 EXAM SYSTEM  v2.0.0                           ║');
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log(`║  🌐 Local:    http://localhost:${PORT}                       ║`);
+  console.log(`║  🌍 Network:  http://${ip}:${PORT}                           ║`);
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log(`║  👨‍🎓 Student : http://localhost:${PORT}/student.html          ║`);
+  console.log(`║  👩‍🏫 Teacher : http://localhost:${PORT}/teacher.html         ║`);
+  console.log(`║  🔐 Admin   : http://localhost:${PORT}/admin.html           ║`);
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log('║  ✨ New Features:                                           ║');
+  console.log('║  • No password for students                                  ║');
+  console.log('║  • Single session per user                                   ║');
+  console.log('║  • Auto-redirect after exam completion                       ║');
+  console.log('║  • End exam button for teachers                              ║');
+  console.log('║  • Computer tracking for admin                               ║');
+  console.log('║  • Submitted exams page                                      ║');
+  console.log('║  • Excel export for results                                  ║');
+  console.log('║  • Group results by class/subject                            ║');
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log('║  📁 CSV Import Format:                                       ║');
+  console.log('║  question_type,question_group,question_level,question,mark,  ║');
+  console.log('║  option_1,option_2,option_3,option_4,answer                  ║');
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log('║  🔒 Security: Single session, auto-logout,                   ║');
+  console.log('║     tab violation auto-submit                                 ║');
+  console.log('╠══════════════════════════════════════════════════════════════╣');
+  console.log('║  👨‍💻 Developed by: anointedthedeveloper                       ║');
+  console.log('║  🏫 Peter Harvard International Schools                       ║');
+  console.log('║  📅 2026 - All Rights Reserved                                ║');
+  console.log('╚══════════════════════════════════════════════════════════════╝\n');
 });
