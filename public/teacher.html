@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teacher Dashboard – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
@@ -81,7 +82,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 /* ── CARDS ── */
 .card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
-.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .card-header h3{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;}
 .card-body{padding:20px;}
 
@@ -111,16 +112,28 @@ tr:hover td{background:#F8FAFC;}
 .pill.gray{background:var(--surface);color:var(--muted);}
 
 /* ── UPLOAD ZONE ── */
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:48px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:48px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-top:16px;}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:#F5F3FF;}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .uz-icon{font-size:40px;margin-bottom:12px;}
 .uz-title{font-size:15px;font-weight:600;margin-bottom:6px;}
 .uz-sub{font-size:13px;color:var(--muted);}
-.json-preview{background:var(--primary);color:#A5F3FC;font-family:'Courier New',monospace;font-size:12px;border-radius:8px;padding:16px;overflow:auto;max-height:260px;white-space:pre;line-height:1.6;}
+.json-preview{background:#1E293B;color:#A5F3FC;font-family:'Courier New',monospace;font-size:12px;border-radius:8px;padding:16px;overflow:auto;max-height:260px;white-space:pre;line-height:1.6;}
+
+/* ── UPLOAD TABS ── */
+.upload-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+.upload-tab{background:none;border:none;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:6px;font-family:inherit;}
+.upload-tab.active{background:var(--accent);color:white;}
+.upload-tab:hover:not(.active){background:var(--surface);color:var(--text);}
+
+/* ── UPLOAD FIELDS ── */
+.upload-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.upload-fields input,.upload-fields select{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);width:100%;}
+.upload-fields input:focus,.upload-fields select:focus{border-color:var(--accent);}
+.upload-fields label{font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:4px;}
 
 /* ── MONITOR CARDS ── */
-.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
 .student-mon-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
 .student-mon-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .student-mon-card.active::before{background:var(--correct);}
@@ -188,10 +201,9 @@ tr:hover td{background:#F8FAFC;}
 .toggle-switch input:checked + .toggle-slider{background:var(--correct);}
 .toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
 
-/* ── SUBJECT / CLASS FIELDS ── */
-.upload-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-.upload-fields select,.upload-fields input[type=text]{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);}
-.upload-fields select:focus,.upload-fields input[type=text]:focus{border-color:var(--accent);}
+/* ── CSV FORMAT INFO ── */
+.csv-info{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:20px;}
+.csv-info pre{background:#1E293B;color:#A5F3FC;padding:12px;border-radius:6px;font-size:11px;overflow-x:auto;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -272,73 +284,150 @@ tr:hover td{background:#F8FAFC;}
 
       <!-- UPLOAD -->
       <div class="page" id="page-upload">
-        <div class="page-header"><h2>Upload Exam</h2><p>Upload a JSON file to publish an exam for students</p></div>
-        <div class="card" style="margin-bottom:20px;">
-          <div class="card-header"><h3>Select File</h3></div>
-          <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Optionally set subject and class — these can also be included directly in the JSON file.</p>
-            <div class="upload-fields">
-              <div>
-                <label style="font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:6px;">Subject</label>
-                <input type="text" id="uploadSubject" placeholder="e.g. Mathematics" list="subjectList">
-                <datalist id="subjectList">
-                  <option value="Mathematics"><option value="English Language"><option value="Basic Science"><option value="Social Studies">
-                  <option value="Civic Education"><option value="Agricultural Science"><option value="Business Studies">
-                  <option value="Computer Science"><option value="Physics"><option value="Chemistry"><option value="Biology">
-                  <option value="Economics"><option value="Government"><option value="Literature in English">
-                  <option value="Further Mathematics"><option value="Geography"><option value="History">
-                </datalist>
-              </div>
-              <div>
-                <label style="font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:6px;">Target Class</label>
-                <select id="uploadClass">
-                  <option value="">All Classes</option>
-                  <optgroup label="Junior Secondary">
-                    <option value="JSS1">JSS1</option><option value="JSS2">JSS2</option><option value="JSS3">JSS3</option>
-                  </optgroup>
-                  <optgroup label="Senior Secondary">
-                    <option value="SS1">SS1</option><option value="SS2">SS2</option><option value="SS3">SS3</option>
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-            <div class="upload-zone" id="uploadZone">
-              <input type="file" accept=".json" id="fileInput" onchange="handleFile(this.files[0])">
-              <div class="uz-icon">&#128196;</div>
-              <div class="uz-title">Drop JSON file here or click to browse</div>
-              <div class="uz-sub">Only .json files accepted</div>
-            </div>
-            <div id="uploadPreview" style="display:none;margin-top:20px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div class="page-header"><h2>Upload Exam</h2><p>Upload a JSON or CSV file to publish an exam for students</p></div>
+        
+        <div class="upload-tabs">
+          <button class="upload-tab active" onclick="switchUploadTab('json')">📄 JSON Upload</button>
+          <button class="upload-tab" onclick="switchUploadTab('csv')">📊 CSV Upload</button>
+        </div>
+        
+        <!-- JSON Upload -->
+        <div id="jsonUploadSection">
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h3>Upload JSON File</h3></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Set exam details below. These will override values in the JSON file.</p>
+              <div class="upload-fields">
                 <div>
-                  <strong id="prevName">—</strong>
-                  <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="prevMeta"></span>
+                  <label>Exam Name</label>
+                  <input type="text" id="jsonExamName" placeholder="e.g. Mathematics Exam">
                 </div>
-                <div style="display:flex;gap:8px;">
-                  <button class="btn outline sm" onclick="clearUpload()">Clear</button>
-                  <button class="btn accent sm" onclick="doUpload()">Upload &rarr;</button>
+                <div>
+                  <label>Subject</label>
+                  <input type="text" id="jsonSubject" placeholder="e.g. Mathematics" list="subjectList">
+                </div>
+                <div>
+                  <label>Target Class</label>
+                  <select id="jsonClass">
+                    <option value="">All Classes</option>
+                    <option value="SS 1">SS 1</option>
+                    <option value="SS 2">SS 2</option>
+                    <option value="SS 3">SS 3</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Duration (minutes)</label>
+                  <input type="number" id="jsonDuration" value="30" min="1" max="180">
                 </div>
               </div>
-              <div class="json-preview" id="prevJSON"></div>
+              <datalist id="subjectList">
+                <option value="Mathematics"><option value="English Language"><option value="Physics"><option value="Chemistry">
+                <option value="Biology"><option value="Economics"><option value="Government"><option value="Literature">
+                <option value="Further Mathematics"><option value="Geography"><option value="History"><option value="Computer Science">
+              </datalist>
+              <div class="upload-zone" id="jsonUploadZone">
+                <input type="file" accept=".json" id="jsonFileInput" onchange="handleJsonFile(this.files[0])">
+                <div class="uz-icon">📄</div>
+                <div class="uz-title">Drop JSON file here or click to browse</div>
+                <div class="uz-sub">Only .json files accepted</div>
+              </div>
+              <div id="jsonPreview" style="display:none;margin-top:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <div>
+                    <strong id="jsonPrevName">—</strong>
+                    <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="jsonPrevMeta"></span>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn outline sm" onclick="clearJsonUpload()">Clear</button>
+                    <button class="btn accent sm" onclick="doJsonUpload()">Upload &rarr;</button>
+                  </div>
+                </div>
+                <div class="json-preview" id="jsonPrevContent"></div>
+              </div>
             </div>
           </div>
         </div>
+        
+        <!-- CSV Upload -->
+        <div id="csvUploadSection" style="display:none;">
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h3>Upload CSV File</h3></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">CSV must follow the format below.</p>
+              <div class="upload-fields">
+                <div>
+                  <label>Exam Name</label>
+                  <input type="text" id="csvExamName" placeholder="e.g. Networking Exam" value="Networking Systems II">
+                </div>
+                <div>
+                  <label>Subject</label>
+                  <input type="text" id="csvSubject" placeholder="e.g. Computer Science" value="Computer Science">
+                </div>
+                <div>
+                  <label>Target Class</label>
+                  <select id="csvClass">
+                    <option value="">All Classes</option>
+                    <option value="SS 1">SS 1</option>
+                    <option value="SS 2" selected>SS 2</option>
+                    <option value="SS 3">SS 3</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Duration (minutes)</label>
+                  <input type="number" id="csvDuration" value="30" min="1" max="180">
+                </div>
+              </div>
+              <div class="upload-zone" id="csvUploadZone">
+                <input type="file" accept=".csv" id="csvFileInput" onchange="handleCsvFile(this.files[0])">
+                <div class="uz-icon">📊</div>
+                <div class="uz-title">Drop CSV file here or click to browse</div>
+                <div class="uz-sub">Only .csv files accepted</div>
+              </div>
+              <div id="csvPreview" style="display:none;margin-top:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <div>
+                    <strong id="csvPrevName">—</strong>
+                    <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="csvPrevMeta"></span>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn outline sm" onclick="clearCsvUpload()">Clear</button>
+                    <button class="btn accent sm" onclick="doCsvUpload()">Upload &rarr;</button>
+                  </div>
+                </div>
+                <div class="json-preview" id="csvPrevContent"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header"><h3>CSV Format Template</h3></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Your CSV file must have these columns. The answer column should be "option_1", "option_2", "option_3", or "option_4".</p>
+              <div class="csv-info">
+                <pre>question_type,question_group,question_level,question,mark,option_1,option_2,option_3,option_4,answer
+single_choice,medium,SS3,"A networking system is best described as",1,"a) a single standalone computer","b) interconnected devices sharing data and resources","c) a software application","d) an operating system",option_2
+single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic computer use","b) advanced concepts and applications of networks","c) typing skills","d) hardware repairs",option_2</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div class="card">
           <div class="card-header"><h3>JSON Template</h3></div>
           <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Use this format for your exam file. The <code style="background:var(--surface);padding:1px 5px;border-radius:3px">subject</code> and <code style="background:var(--surface);padding:1px 5px;border-radius:3px">class</code> fields are optional but recommended:</p>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">For JSON uploads, use this format:</p>
             <div class="json-preview">{
-  "exam": "Mathematics – Third Term",
-  "subject": "Mathematics",
-  "class": "JSS2",
+  "exam": "Networking Systems II",
+  "subject": "Computer Science",
+  "class": "SS 2",
   "duration": 30,
   "questions": [
     {
-      "question": "What is 2 + 2?",
-      "A": "3",
-      "B": "4",
-      "C": "5",
-      "D": "6",
+      "question": "A networking system is best described as",
+      "A": "a) a single standalone computer",
+      "B": "b) interconnected devices sharing data and resources",
+      "C": "c) a software application",
+      "D": "d) an operating system",
       "answer": "B"
     }
   ]
@@ -472,12 +561,19 @@ tr:hover td{background:#F8FAFC;}
 <script>
 // ── STATE ────────────────────────────────────────────────────────────────────
 let teacherName = '';
-let pendingFile = null;
+let pendingJsonFile = null;
+let pendingCsvFile = null;
 let monitorTimer = null;
+let sessionToken = localStorage.getItem('teacherSessionToken') || null;
+let uploadTab = 'json';
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 async function api(path, opts = {}) {
-  const r = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  const headers = { 'Content-Type': 'application/json' };
+  if (sessionToken) {
+    headers['Authorization'] = 'Bearer ' + sessionToken;
+  }
+  const r = await fetch(path, { headers, ...opts });
   return r.json().catch(() => ({}));
 }
 function toast(msg, type = '') {
@@ -498,13 +594,44 @@ function closeModal() { document.getElementById('confirmModal').classList.remove
 function fmtTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleTimeString(); }
 function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
 
+// ── SESSION CHECK ────────────────────────────────────────────────────────────
+async function checkSession() {
+  if (!sessionToken) return false;
+  
+  try {
+    const res = await api('/api/check-session', { 
+      method: 'POST',
+      body: JSON.stringify({ token: sessionToken })
+    });
+    
+    if (res.ok) {
+      teacherName = res.name || res.id;
+      document.getElementById('teacherName').textContent = teacherName;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      updateNet();
+      setInterval(updateNet, 15000);
+      loadOverview();
+      startMonitorRefresh();
+      return true;
+    }
+  } catch (e) {}
+  
+  localStorage.removeItem('teacherSessionToken');
+  sessionToken = null;
+  return false;
+}
+
 // ── AUTH ─────────────────────────────────────────────────────────────────────
 async function doLogin() {
   const id = document.getElementById('inId').value.trim();
   const pass = document.getElementById('inPass').value;
   if (!id) return;
+  
   const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ id, password: pass, role: 'teacher' }) });
   if (res.ok) {
+    sessionToken = res.token;
+    localStorage.setItem('teacherSessionToken', res.token);
     teacherName = res.name || id;
     document.getElementById('teacherName').textContent = teacherName;
     document.getElementById('loginScreen').style.display = 'none';
@@ -515,7 +642,13 @@ async function doLogin() {
     startMonitorRefresh();
   } else { document.getElementById('loginErr').style.display = 'block'; }
 }
-function doLogout() {
+
+async function doLogout() {
+  if (sessionToken) {
+    await api('/api/logout', { method: 'POST', body: JSON.stringify({ token: sessionToken }) });
+  }
+  localStorage.removeItem('teacherSessionToken');
+  sessionToken = null;
   clearInterval(monitorTimer);
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
@@ -536,6 +669,143 @@ async function updateNet() {
     document.getElementById('netLabel').textContent = eth ? '🔌 Ethernet' : wifi ? '📶 Wi-Fi' : 'No Network';
   } catch {}
 }
+
+// ── UPLOAD TAB SWITCHING ─────────────────────────────────────────────────────
+function switchUploadTab(tab) {
+  uploadTab = tab;
+  document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.upload-tab')[tab === 'json' ? 0 : 1].classList.add('active');
+  document.getElementById('jsonUploadSection').style.display = tab === 'json' ? 'block' : 'none';
+  document.getElementById('csvUploadSection').style.display = tab === 'csv' ? 'block' : 'none';
+}
+
+// ── JSON UPLOAD ───────────────────────────────────────────────────────────────
+function handleJsonFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      pendingJsonFile = { file, data };
+      document.getElementById('jsonPrevName').textContent = data.exam || file.name;
+      document.getElementById('jsonPrevMeta').textContent = `${data.questions?.length || 0} questions · ${data.duration || 30} min`;
+      document.getElementById('jsonPrevContent').textContent = JSON.stringify(data, null, 2).slice(0, 900) + (JSON.stringify(data, null, 2).length > 900 ? '...' : '');
+      document.getElementById('jsonPreview').style.display = 'block';
+      
+      // Pre-fill form with data from JSON
+      if (data.exam) document.getElementById('jsonExamName').value = data.exam;
+      if (data.subject) document.getElementById('jsonSubject').value = data.subject;
+      if (data.class) document.getElementById('jsonClass').value = data.class;
+      if (data.duration) document.getElementById('jsonDuration').value = data.duration;
+    } catch { toast('Invalid JSON file', 'err'); }
+  };
+  reader.readAsText(file);
+}
+function clearJsonUpload() {
+  pendingJsonFile = null;
+  document.getElementById('jsonPreview').style.display = 'none';
+  document.getElementById('jsonFileInput').value = '';
+}
+async function doJsonUpload() {
+  if (!pendingJsonFile) return;
+  
+  // Get form values (override JSON)
+  const examName = document.getElementById('jsonExamName').value.trim();
+  const subject = document.getElementById('jsonSubject').value.trim();
+  const examClass = document.getElementById('jsonClass').value;
+  const duration = parseInt(document.getElementById('jsonDuration').value) || 30;
+  
+  let uploadData = { ...pendingJsonFile.data };
+  if (examName) uploadData.exam = examName;
+  if (subject) uploadData.subject = subject;
+  if (examClass) uploadData.class = examClass;
+  uploadData.duration = duration;
+  uploadData.teacherId = teacherName;
+  
+  // Create a new file blob with updated JSON
+  const updatedBlob = new Blob([JSON.stringify(uploadData, null, 2)], { type: 'application/json' });
+  const updatedFile = new File([updatedBlob], pendingJsonFile.file.name, { type: 'application/json' });
+  const form = new FormData();
+  form.append('exam', updatedFile);
+  
+  document.getElementById('loaderOverlay').style.display = 'flex';
+  document.getElementById('loaderText').textContent = 'Uploading exam…';
+  
+  const res = await fetch('/api/upload', { method: 'POST', body: form }).then(r => r.json());
+  
+  document.getElementById('loaderOverlay').style.display = 'none';
+  if (res.ok) { 
+    toast('Exam uploaded!', 'ok'); 
+    clearJsonUpload(); 
+    loadExams();
+  } else toast('Upload failed: ' + (res.error || ''), 'err');
+}
+
+// ── CSV UPLOAD ───────────────────────────────────────────────────────────────
+function handleCsvFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const content = e.target.result;
+      const lines = content.split('\n').filter(l => l.trim());
+      const questionCount = lines.length - 1; // Subtract header
+      
+      pendingCsvFile = { file, content };
+      document.getElementById('csvPrevName').textContent = file.name;
+      document.getElementById('csvPrevMeta').textContent = `${questionCount} questions`;
+      
+      // Show preview of first few lines
+      const previewLines = lines.slice(0, 5).join('\n');
+      document.getElementById('csvPrevContent').textContent = previewLines + (lines.length > 5 ? '\n...' : '');
+      document.getElementById('csvPreview').style.display = 'block';
+    } catch { toast('Invalid CSV file', 'err'); }
+  };
+  reader.readAsText(file);
+}
+function clearCsvUpload() {
+  pendingCsvFile = null;
+  document.getElementById('csvPreview').style.display = 'none';
+  document.getElementById('csvFileInput').value = '';
+}
+async function doCsvUpload() {
+  if (!pendingCsvFile) return;
+  
+  // Get form values
+  const examName = document.getElementById('csvExamName').value.trim();
+  const subject = document.getElementById('csvSubject').value.trim();
+  const examClass = document.getElementById('csvClass').value;
+  const duration = parseInt(document.getElementById('csvDuration').value) || 30;
+  
+  if (!examName) { toast('Please enter an exam name', 'err'); return; }
+  
+  const form = new FormData();
+  form.append('exam', pendingCsvFile.file);
+  
+  document.getElementById('loaderOverlay').style.display = 'flex';
+  document.getElementById('loaderText').textContent = 'Processing CSV and uploading…';
+  
+  const url = `/api/upload-csv?name=${encodeURIComponent(examName)}&subject=${encodeURIComponent(subject)}&class=${encodeURIComponent(examClass)}&duration=${duration}`;
+  const res = await fetch(url, { method: 'POST', body: form }).then(r => r.json());
+  
+  document.getElementById('loaderOverlay').style.display = 'none';
+  if (res.ok) { 
+    toast(`Exam uploaded with ${res.questions} questions!`, 'ok'); 
+    clearCsvUpload(); 
+    loadExams();
+  } else toast('Upload failed: ' + (res.error || ''), 'err');
+}
+
+// ── DROPZONE SETUP ───────────────────────────────────────────────────────────
+const jsonZone = document.getElementById('jsonUploadZone');
+jsonZone.addEventListener('dragover', e => { e.preventDefault(); jsonZone.classList.add('drag'); });
+jsonZone.addEventListener('dragleave', () => jsonZone.classList.remove('drag'));
+jsonZone.addEventListener('drop', e => { e.preventDefault(); jsonZone.classList.remove('drag'); handleJsonFile(e.dataTransfer.files[0]); });
+
+const csvZone = document.getElementById('csvUploadZone');
+csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag'); });
+csvZone.addEventListener('dragleave', () => csvZone.classList.remove('drag'));
+csvZone.addEventListener('drop', e => { e.preventDefault(); csvZone.classList.remove('drag'); handleCsvFile(e.dataTransfer.files[0]); });
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
 function goPage(name, btn) {
@@ -578,53 +848,6 @@ async function loadOverview() {
     </tr>`).join('')}</tbody></table>` : '<div class="empty">No results yet</div>';
 }
 
-// ── UPLOAD ────────────────────────────────────────────────────────────────────
-function handleFile(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      pendingFile = { file, data };
-      document.getElementById('prevName').textContent = data.exam || file.name;
-      document.getElementById('prevMeta').textContent = `${data.questions?.length || 0} questions · ${data.duration || 30} min`;
-      document.getElementById('prevJSON').textContent = JSON.stringify(data, null, 2).slice(0, 900);
-      document.getElementById('uploadPreview').style.display = 'block';
-    } catch { toast('Invalid JSON file', 'err'); }
-  };
-  reader.readAsText(file);
-}
-function clearUpload() {
-  pendingFile = null;
-  document.getElementById('uploadPreview').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-}
-async function doUpload() {
-  if (!pendingFile) return;
-  // Inject subject and class into the JSON if set
-  const subject = document.getElementById('uploadSubject').value.trim();
-  const cls = document.getElementById('uploadClass').value;
-  let uploadData = { ...pendingFile.data };
-  if (subject) uploadData.subject = subject;
-  if (cls) uploadData.class = cls;
-  uploadData.teacherId = teacherName;
-  // Create a new file blob with updated JSON
-  const updatedBlob = new Blob([JSON.stringify(uploadData, null, 2)], { type: 'application/json' });
-  const updatedFile = new File([updatedBlob], pendingFile.file.name, { type: 'application/json' });
-  const form = new FormData();
-  form.append('exam', updatedFile);
-  document.getElementById('loaderOverlay').style.display = 'flex';
-  document.getElementById('loaderText').textContent = 'Uploading exam…';
-  const res = await fetch('/api/upload', { method: 'POST', body: form }).then(r => r.json());
-  document.getElementById('loaderOverlay').style.display = 'none';
-  if (res.ok) { toast('Exam uploaded!', 'ok'); clearUpload(); document.getElementById('uploadSubject').value=''; document.getElementById('uploadClass').value=''; }
-  else toast('Upload failed: ' + (res.error || ''), 'err');
-}
-const uz = document.getElementById('uploadZone');
-uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
-uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
-uz.addEventListener('drop', e => { e.preventDefault(); uz.classList.remove('drag'); handleFile(e.dataTransfer.files[0]); });
-
 // ── EXAMS ─────────────────────────────────────────────────────────────────────
 async function loadExams() {
   const exams = await api('/api/exams');
@@ -633,7 +856,7 @@ async function loadExams() {
     <tbody>${exams.map(e => `<tr>
       <td><strong>${e.name}</strong></td>
       <td>${e.subject || '<span style="color:var(--muted)">—</span>'}</td>
-      <td>${e.class || '<span style="color:var(--muted)">All</span>'}</td>
+      <td><span class="pill ${e.class ? 'blue' : 'gray'}">${e.class || 'All Classes'}</span></td>
       <td>${e.questionCount}</td>
       <td>${e.duration} min</td>
       <td>
@@ -822,7 +1045,7 @@ async function loadStudentList() {
     <tbody>${sArr.map(s => `<tr>
       <td style="font-family:monospace;font-size:12px"><strong>${s.studentId}</strong></td>
       <td>${s.studentName}</td>
-      <td><span class="pill gray">${s.class||'—'}</span></td>
+      <td><span class="pill ${s.class ? 'blue' : 'gray'}">${s.class||'—'}</span></td>
       <td><span class="pill ${s.passwordSet?'blue':'gray'}">${s.passwordSet?'Set':'None'}</span></td>
     </tr>`).join('')}</tbody></table>` : '<div class="empty">No students found</div>';
 }
@@ -906,6 +1129,16 @@ function drawChart(canvasId, { labels, data, colors, title, type='bar' }) {
 // ── BOOT ─────────────────────────────────────────────────────────────────────
 document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
 document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// Check for existing session on load
+window.addEventListener('load', async () => {
+  document.getElementById('loaderOverlay').style.display = 'flex';
+  const hasSession = await checkSession();
+  document.getElementById('loaderOverlay').style.display = 'none';
+  if (!hasSession) {
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+});
 </script>
 </body>
 </html>

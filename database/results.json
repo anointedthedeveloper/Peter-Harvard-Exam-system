@@ -95,5 +95,27 @@
     "examClass": "JSS1",
     "submittedAt": "2026-03-12T22:53:49.855Z",
     "id": 1773356029855
+  },
+  {
+    "student": "UGWU SOMTOCHUKWU",
+    "studentId": "PHIS/PP/953",
+    "exam": "Mathematics",
+    "examFilename": "deepseek_json_20260312_0d07d1.json",
+    "score": 2,
+    "total": 5,
+    "percentage": 40,
+    "answers": [
+      "A",
+      "C",
+      "C",
+      "C",
+      "D"
+    ],
+    "tabViolations": 0,
+    "studentClass": "SS 1",
+    "subject": "",
+    "examClass": "",
+    "submittedAt": "2026-03-13T09:29:41.951Z",
+    "id": 1773394181951
   }
 ]

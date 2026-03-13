@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
-const https = require('https');
 
 const PORT = 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -254,7 +253,7 @@ function parseCSVLine(line) {
   result.push(current);
   return result;
 }
-function send(res, status, data, type = 'application/json') {
+function send(req, res, status, data, type = 'application/json') {
   // Add security headers
   const headers = {
     'Content-Type': type,
@@ -268,7 +267,7 @@ function send(res, status, data, type = 'application/json') {
   };
   
   // For network connections, add upgrade-insecure-requests hint
-  if (req && req.headers.host && !req.headers.host.includes('localhost')) {
+  if (req && req.headers && req.headers.host && !req.headers.host.includes('localhost')) {
     headers['Content-Security-Policy'] = "upgrade-insecure-requests";
   }
   
@@ -292,7 +291,7 @@ function serveFile(res, filePath) {
   };
   
   fs.readFile(filePath, (err, data) => {
-    if (err) { send(res, 404, { error: 'Not found' }); return; }
+    if (err) { send(null, res, 404, { error: 'Not found' }); return; }
     
     // Add security headers
     const headers = {
@@ -382,7 +381,7 @@ const server = http.createServer(async (req, res) => {
     const file = pathname === '/' ? '/student.html' : pathname;
     const filePath = path.join(PUBLIC_DIR, file);
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) { serveFile(res, filePath); return; }
-    send(res, 404, { error: 'Not found' }); return;
+    send(req, res, 404, { error: 'Not found' }); return;
   }
 
   // AUTH - Login
@@ -479,7 +478,7 @@ const server = http.createServer(async (req, res) => {
           filename: f,
           name: data?.exam || f,
           subject: data?.subject || '',
-          class: data?.class || '',
+          class: data?.class ? data.class.trim() : '',
           teacherId: data?.teacherId || '',
           duration: data?.duration || 30,
           questionCount: data?.questions?.length || 0,
@@ -487,18 +486,24 @@ const server = http.createServer(async (req, res) => {
         };
       });
       
-      // Filter by student class if provided
+      // Filter by student class if provided - exact match with normalization
       if (studentClass) {
+        const normalizedStudentClass = studentClass.trim().toLowerCase();
         exams = exams.filter(e => {
           // If exam has no class specified, show to all
           if (!e.class) return true;
-          // Check if exam class matches student class (case-insensitive)
-          return e.class.toLowerCase() === studentClass.toLowerCase();
+          // Normalize exam class
+          const normalizedExamClass = e.class.toLowerCase();
+          // Check if exam class matches student class
+          return normalizedExamClass === normalizedStudentClass;
         });
       }
       
       send(req, res, 200, exams);
-    } catch { send(req, res, 200, []); }
+    } catch (e) { 
+      console.error('Error loading exams:', e);
+      send(req, res, 200, []); 
+    }
     return;
   }
 
@@ -583,13 +588,14 @@ const server = http.createServer(async (req, res) => {
       const subject = url.searchParams.get('subject') || 'General';
       const examClass = url.searchParams.get('class') || '';
       const examName = url.searchParams.get('name') || `CSV Exam ${new Date().toLocaleDateString()}`;
+      const duration = parseInt(url.searchParams.get('duration')) || 30;
       
       // Create JSON exam format
       const examData = {
         exam: examName,
         subject: subject,
         class: examClass,
-        duration: 30,
+        duration: duration,
         questions: questions.map(q => ({
           question: q.question,
           A: q.option_1,
@@ -611,8 +617,8 @@ const server = http.createServer(async (req, res) => {
       // Save to dropbox
       saveToDropbox(saveName, examData, 'teacher');
       
-      sysLog('UPLOAD_CSV', `CSV Exam: ${saveName} | Questions: ${questions.length}`, 'teacher');
-      auditLog('EXAM_UPLOAD_CSV', 'teacher', `Uploaded CSV exam: ${examName}`, { filename: saveName, questions: questions.length, subject, class: examClass });
+      sysLog('UPLOAD_CSV', `CSV Exam: ${saveName} | Questions: ${questions.length} | Duration: ${duration} min`, 'teacher');
+      auditLog('EXAM_UPLOAD_CSV', 'teacher', `Uploaded CSV exam: ${examName}`, { filename: saveName, questions: questions.length, subject, class: examClass, duration });
       
       send(req, res, 200, { ok: true, filename: saveName, questions: questions.length });
     } catch (e) { 
@@ -944,9 +950,8 @@ const server = http.createServer(async (req, res) => {
   send(req, res, 404, { error: 'Unknown endpoint' });
 });
 
-// Add send function to req object for headers
+// Override send function
 function send(req, res, status, data, type = 'application/json') {
-  // Add security headers
   const headers = {
     'Content-Type': type,
     'Access-Control-Allow-Origin': '*',
@@ -958,7 +963,6 @@ function send(req, res, status, data, type = 'application/json') {
     'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
   };
   
-  // For network connections, add upgrade-insecure-requests hint
   if (req && req.headers && req.headers.host && !req.headers.host.includes('localhost')) {
     headers['Content-Security-Policy'] = "upgrade-insecure-requests";
   }

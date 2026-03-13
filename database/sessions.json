@@ -7,14 +7,6 @@
     "class": "",
     "lastAccessed": 1773391534475
   },
-  "77fbbda83cb6c3f967aed4504c9f8dd3d50e4d87e2e7a4b93afbcd3f9815a7d3": {
-    "id": "PHIS/PP/687",
-    "name": "UBAH FRANCIS",
-    "role": "student",
-    "subject": "",
-    "class": "SS 3",
-    "lastAccessed": 1773391916190
-  },
   "94c3a4ce0f13fcb75750a7c884064e8c925bc14ef45dc07742072b46b0466270": {
     "id": "teacher1",
     "name": "Teacher One",
@@ -30,5 +22,37 @@
     "subject": "",
     "class": "SS 3",
     "lastAccessed": 1773392307239
+  },
+  "c3f79b00a192d29a817ea59e3cb770516be9b11044e5bd3c453768f2523099bb": {
+    "id": "admin",
+    "name": "Administrator",
+    "role": "admin",
+    "subject": "",
+    "class": "",
+    "lastAccessed": 1773392646775
+  },
+  "f6aef75e2fabc63f8e17149bd1fcc2634fd1bc0f21a793e560d31b11a4795c74": {
+    "id": "PHIS/PP/687",
+    "name": "UBAH FRANCIS",
+    "role": "student",
+    "subject": "",
+    "class": "SS 3",
+    "lastAccessed": 1773393695189
+  },
+  "72b2e97e7a167c08c749c9eb680e1e635f04a4ed319149562c2dde21823330aa": {
+    "id": "teacher1",
+    "name": "Teacher One",
+    "role": "teacher",
+    "subject": "",
+    "class": "",
+    "lastAccessed": 1773393698884
+  },
+  "54466fc260faf5dcc550f561c301bd3578d77cc68422a1c00556c09d23ee3216": {
+    "id": "teacher1",
+    "name": "Teacher One",
+    "role": "teacher",
+    "subject": "",
+    "class": "",
+    "lastAccessed": 1773394107158
   }
 }

@@ -292,5 +292,33 @@
     "studentName": "UBAH FRANCIS",
     "action": "LOGIN",
     "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T09:02:58.363Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T09:21:35.196Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T09:29:11.990Z",
+    "studentId": "PHIS/PP/953",
+    "studentName": "UGWU SOMTOCHUKWU",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T09:29:41.956Z",
+    "studentId": "PHIS/PP/953",
+    "studentName": "UGWU SOMTOCHUKWU",
+    "action": "SUBMIT",
+    "detail": "Exam: Mathematics | Score: 2/5 (40%) | Class: SS 1"
   }
 ]

@@ -1,5 +1,236 @@
 [
   {
+    "id": 1773394181955.1343,
+    "time": "2026-03-13T09:29:41.955Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "PHIS/PP/953",
+    "detail": "Submitted \"Mathematics\" — Score: 2/5 (40%)",
+    "metadata": {
+      "exam": "Mathematics",
+      "score": 2,
+      "total": 5,
+      "percentage": 40,
+      "tabViolations": 0,
+      "studentClass": "SS 1"
+    }
+  },
+  {
+    "id": 1773394151988.4111,
+    "time": "2026-03-13T09:29:11.988Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/953",
+    "detail": "student \"UGWU SOMTOCHUKWU\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.5"
+    }
+  },
+  {
+    "id": 1773394120111.1548,
+    "time": "2026-03-13T09:28:40.111Z",
+    "action": "EXAM_UPLOAD",
+    "actor": "teacher",
+    "detail": "Uploaded exam: Mathematics",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json",
+      "questions": 5
+    }
+  },
+  {
+    "id": 1773394107161.9045,
+    "time": "2026-03-13T09:28:27.161Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773393761946.7886,
+    "time": "2026-03-13T09:22:41.946Z",
+    "action": "EXAM_UPLOAD_CSV",
+    "actor": "teacher",
+    "detail": "Uploaded CSV exam: DT",
+    "metadata": {
+      "filename": "deepseek_csv_20260313_56e461.txt",
+      "questions": 50,
+      "subject": "General",
+      "class": "SS 3",
+      "duration": 30
+    }
+  },
+  {
+    "id": 1773393706762.6162,
+    "time": "2026-03-13T09:21:46.762Z",
+    "action": "EXAM_DELETE",
+    "actor": "teacher",
+    "detail": "Deleted exam: Mathematics",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json"
+    }
+  },
+  {
+    "id": 1773393698887.077,
+    "time": "2026-03-13T09:21:38.887Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773393695194.8052,
+    "time": "2026-03-13T09:21:35.194Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/687",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773393184113.7422,
+    "time": "2026-03-13T09:13:04.113Z",
+    "action": "EXAM_UPLOAD_CSV",
+    "actor": "teacher",
+    "detail": "Uploaded CSV exam: Networking Systems II",
+    "metadata": {
+      "filename": "deepseek_csv_20260313_56e461.txt",
+      "questions": 50,
+      "subject": "Computer Science",
+      "class": "SS 2",
+      "duration": 30
+    }
+  },
+  {
+    "id": 1773392912000.8303,
+    "time": "2026-03-13T09:08:32.000Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773392788885.3955,
+    "time": "2026-03-13T09:06:28.885Z",
+    "action": "EXAM_UPLOAD",
+    "actor": "teacher",
+    "detail": "Uploaded exam: Mathematics",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json",
+      "subject": "Civic Education",
+      "class": "SS3",
+      "questions": 5
+    }
+  },
+  {
+    "id": 1773392646777.539,
+    "time": "2026-03-13T09:04:06.777Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392636197.7634,
+    "time": "2026-03-13T09:03:56.197Z",
+    "action": "LOGIN_FAIL",
+    "actor": "ADMIN",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392635908.5051,
+    "time": "2026-03-13T09:03:55.908Z",
+    "action": "LOGIN_FAIL",
+    "actor": "ADMIN",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392635379.8884,
+    "time": "2026-03-13T09:03:55.379Z",
+    "action": "LOGIN_FAIL",
+    "actor": "ADMIN",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392634108.8784,
+    "time": "2026-03-13T09:03:54.108Z",
+    "action": "LOGIN_FAIL",
+    "actor": "ADMIN",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392613072.219,
+    "time": "2026-03-13T09:03:33.072Z",
+    "action": "LOGIN_FAIL",
+    "actor": "ADMIN",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392578362.0254,
+    "time": "2026-03-13T09:02:58.362Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/687",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.5"
+    }
+  },
+  {
+    "id": 1773392562238.6365,
+    "time": "2026-03-13T09:02:42.238Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/647",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.5"
+    }
+  },
+  {
+    "id": 1773392542204.1736,
+    "time": "2026-03-13T09:02:22.204Z",
+    "action": "LOGIN_FAIL",
+    "actor": "STU001",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.5"
+    }
+  },
+  {
     "id": 1773392307242.1726,
     "time": "2026-03-13T08:58:27.242Z",
     "action": "LOGIN",

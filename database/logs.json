@@ -397,5 +397,83 @@
     "action": "LOGIN",
     "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
     "actor": "PHIS/PP/687"
+  },
+  {
+    "time": "2026-03-13T09:02:58.360Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
+    "actor": "PHIS/PP/687"
+  },
+  {
+    "time": "2026-03-13T09:04:06.776Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T09:06:28.882Z",
+    "action": "UPLOAD",
+    "detail": "Exam: deepseek_json_20260312_0d07d1.json | Subject: Civic Education | Class: SS3",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T09:08:31.998Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T09:13:04.111Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: deepseek_csv_20260313_56e461.txt | Questions: 50 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-03-13T09:21:35.192Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
+    "actor": "PHIS/PP/687"
+  },
+  {
+    "time": "2026-03-13T09:21:38.886Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T09:21:46.760Z",
+    "action": "DELETE_EXAM",
+    "detail": "deepseek_json_20260312_0d07d1.json",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T09:22:41.939Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: deepseek_csv_20260313_56e461.txt | Questions: 50 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-03-13T09:28:27.159Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T09:28:40.110Z",
+    "action": "UPLOAD",
+    "detail": "Exam: deepseek_json_20260312_0d07d1.json | Subject: N/A | Class: N/A",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T09:29:11.985Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/953 (UGWU SOMTOCHUKWU)",
+    "actor": "PHIS/PP/953"
+  },
+  {
+    "time": "2026-03-13T09:29:41.953Z",
+    "action": "SUBMIT",
+    "detail": "Student: UGWU SOMTOCHUKWU | Exam: Mathematics | Score: 2/5 (40%) | Class: SS 1",
+    "actor": "PHIS/PP/953"
   }
 ]

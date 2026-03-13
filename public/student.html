@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Portal – Peter Harvard International Schools</title>
-<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="icon" type="image/png" href="logo.png">
 <style>
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,6 +29,7 @@ body {
   --border: #E2E8F0;
   --correct: #22C55E;
   --wrong: #EF4444;
+  --warn: #F59E0B;
   --radius: 10px;
   --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
 }
@@ -260,8 +261,12 @@ body {
 .et-right { display: flex; align-items: center; gap: 10px; }
 .violation-badge {
   background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px;
-  padding: 5px 10px; font-size: 11px; font-weight: 600; color: #92400E; display: none;
+  padding: 5px 10px; font-size: 11px; font-weight: 600; color: #92400E; 
+  transition: all .3s;
 }
+.violation-badge.warn-3 { background: #F59E0B; color: white; animation: pulse 1s infinite; }
+.violation-badge.danger { background: var(--wrong); color: white; animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
 
 .exam-layout { display: flex; flex: 1; overflow: hidden; }
 
@@ -417,6 +422,8 @@ body {
 .modal-actions { display: flex; gap: 10px; }
 .modal-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); transition: all .15s; }
 .modal-actions button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+.modal-actions button.warn { background: var(--warn); border-color: var(--warn); color: white; }
+.modal-actions button.danger { background: var(--wrong); border-color: var(--wrong); color: white; }
 .modal-actions button:hover { opacity: .85; }
 
 /* Warning modal */
@@ -437,6 +444,29 @@ body {
 .net-dot.ethernet { background: var(--correct); }
 .net-dot.wifi { background: #3B82F6; }
 .net-dot.offline { background: #94A3B8; }
+
+/* ══════════════════════════════════
+   TAB EXIT WARNING BAR
+══════════════════════════════════ */
+.tab-warning-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #F59E0B;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.tab-warning-bar.show { transform: translateY(0); }
+.tab-warning-bar.danger { background: var(--wrong); animation: pulse-warning 1s infinite; }
+@keyframes pulse-warning { 0%,100%{opacity:1} 50%{opacity:.8} }
 
 /* ══════════════════════════════════
    MISC
@@ -478,6 +508,11 @@ body {
 <div class="loader-overlay" id="loaderOverlay" style="display:none">
   <div class="loader-spinner"></div>
   <div class="loader-text" id="loaderText">Loading…</div>
+</div>
+
+<!-- ═══ TAB WARNING BAR ═══ -->
+<div class="tab-warning-bar" id="tabWarningBar">
+  ⚠️ WARNING: Do not leave this tab! If you switch tabs again, your exam will be submitted automatically!
 </div>
 
 <!-- ═══ LOGIN ═══ -->
@@ -550,11 +585,12 @@ body {
         <li><div class="rule-num">1</div><div>Ensure you are connected to the school network before starting. Do not disconnect during the exam.</div></li>
         <li><div class="rule-num">2</div><div>Read each question carefully before selecting your answer. You can navigate freely between questions.</div></li>
         <li><div class="rule-num">3</div><div>Use the <strong>Mark for Review</strong> button to flag questions you want to revisit.</div></li>
-        <li><div class="rule-num warn">4</div><div>Do <strong>not</strong> switch to another tab or window during the exam. Each switch is recorded as a violation.</div></li>
+        <li><div class="rule-num warn">4</div><div>Do <strong>NOT</strong> switch to another tab or window during the exam. Each switch is recorded as a violation.</div></li>
         <li><div class="rule-num warn">5</div><div>After <strong>3 tab violations</strong>, you will receive a final warning. A 4th violation will <strong>auto-submit</strong> your exam immediately.</div></li>
-        <li><div class="rule-num danger">6</div><div>Copying, right-clicking, and keyboard shortcuts are disabled during the exam. Any attempt is logged.</div></li>
-        <li><div class="rule-num">7</div><div>Your answers are saved automatically. If the browser closes, your progress is preserved locally.</div></li>
-        <li><div class="rule-num">8</div><div>When the timer reaches zero, your exam will be submitted automatically with your current answers.</div></li>
+        <li><div class="rule-num danger">6</div><div>If you attempt to leave this tab, a warning bar will appear. Return immediately to avoid auto-submission.</div></li>
+        <li><div class="rule-num danger">7</div><div>Copying, right-clicking, and keyboard shortcuts are disabled during the exam. Any attempt is logged.</div></li>
+        <li><div class="rule-num">8</div><div>Your answers are saved automatically. If the browser closes, your progress is preserved locally.</div></li>
+        <li><div class="rule-num">9</div><div>When the timer reaches zero, your exam will be submitted automatically with your current answers.</div></li>
       </ul>
     </div>
     <div class="rules-footer">
@@ -574,7 +610,7 @@ body {
     </div>
     <div class="timer" id="timer">00:00</div>
     <div class="et-right">
-      <div class="violation-badge" id="violBadge">⚠ Violations: 0</div>
+      <div class="violation-badge" id="violBadge">⚠️ Violations: 0</div>
       <div class="net-indicator" id="netIndicator2"><div class="net-dot offline" id="netDot2"></div><span id="netLabel2">—</span></div>
     </div>
   </div>
@@ -611,9 +647,9 @@ body {
         <div class="options-list" id="optsList"></div>
       </div>
       <div class="exam-controls">
-        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)"><span style="font-size:16px">&#8592;</span> Previous <span style="font-size:10px;color:var(--muted);margin-left:4px">[P]</span></button>
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)"><span style="font-size:16px">←</span> Previous <span style="font-size:10px;color:var(--muted);margin-left:4px">[P]</span></button>
         <div style="font-size:11px;color:var(--muted);text-align:center;line-height:1.5">Keys: P prev · N next<br>A B C D select option</div>
-        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next <span style="font-size:16px">&#8594;</span> <span style="font-size:10px;color:var(--muted);margin-left:4px">[N]</span></button>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next <span style="font-size:16px">→</span> <span style="font-size:10px;color:var(--muted);margin-left:4px">[N]</span></button>
       </div>
     </div>
   </div>
@@ -672,7 +708,7 @@ body {
     </div>
     <div class="modal-body">
       <div class="modal-actions">
-        <button class="primary" style="background:#F59E0B;border-color:#F59E0B" onclick="closeModal('modalTabWarn')">I Understand — Return to Exam</button>
+        <button class="warn" style="background:#F59E0B;border-color:#F59E0B" onclick="closeModal('modalTabWarn')">I Understand — Return to Exam</button>
       </div>
     </div>
   </div>
@@ -683,12 +719,30 @@ body {
   <div class="modal danger-modal">
     <div class="modal-header">
       <div class="modal-icon">🚨</div>
-      <h3>Final Warning!</h3>
-      <p>This is your <strong>last warning</strong>. If you switch tabs one more time, your exam will be <strong>automatically submitted immediately</strong>.</p>
+      <h3>FINAL WARNING!</h3>
+      <p>This is your <strong>LAST WARNING</strong>. If you switch tabs one more time, your exam will be <strong>AUTOMATICALLY SUBMITTED IMMEDIATELY</strong>.</p>
+      <p style="margin-top:10px;font-weight:700;color:var(--wrong)">Do NOT leave this tab!</p>
     </div>
     <div class="modal-body">
       <div class="modal-actions">
-        <button class="primary" style="background:var(--wrong);border-color:var(--wrong)" onclick="closeModal('modalTabFinal')">I Understand — Stay Here</button>
+        <button class="danger" onclick="closeModal('modalTabFinal')">I Understand — I WILL STAY HERE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Tab Exit Attempt ═══ -->
+<div class="modal-overlay" id="modalTabExit">
+  <div class="modal danger-modal">
+    <div class="modal-header">
+      <div class="modal-icon">🚨🚨🚨</div>
+      <h3>⚠️ WARNING ⚠️</h3>
+      <p>You are trying to leave the exam tab!</p>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:16px;margin-bottom:20px;text-align:center;font-weight:700;color:var(--wrong)">If you leave, your exam will be submitted immediately!</p>
+      <div class="modal-actions">
+        <button class="primary" onclick="returnToExam()">RETURN TO EXAM NOW</button>
       </div>
     </div>
   </div>
@@ -707,9 +761,16 @@ document.addEventListener('keydown', e => {
     e.ctrlKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
     e.metaKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
     e.key === 'F12', e.key === 'F5',
-    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())
+    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase()),
+    e.altKey && e.key === 'Tab'
   ];
-  if (blocked.some(Boolean)) e.preventDefault();
+  if (blocked.some(Boolean)) { 
+    e.preventDefault(); 
+    if (document.getElementById('s-exam').style.display !== 'none') {
+      // Simulate tab violation for Alt+Tab attempt
+      simulateTabViolation();
+    }
+  }
 });
 
 // ══════════════════════════════════
@@ -722,7 +783,9 @@ const S = {
   current: 0, timeLeft: 0, timer: null,
   tabViolations: 0, submitted: false,
   sessionInterval: null, netInterval: null,
-  sessionToken: localStorage.getItem('examSessionToken') || null
+  sessionToken: localStorage.getItem('examSessionToken') || null,
+  tabWarningBarTimeout: null,
+  isLeaving: false
 };
 
 // ══════════════════════════════════
@@ -856,9 +919,11 @@ async function doLogout() {
   clearInterval(S.timer); 
   clearInterval(S.sessionInterval); 
   clearInterval(S.netInterval);
+  if (S.tabWarningBarTimeout) clearTimeout(S.tabWarningBarTimeout);
   S.submitted = false; 
   S.tabViolations = 0;
   document.removeEventListener('visibilitychange', onVisibilityChange);
+  document.removeEventListener('beforeunload', onBeforeUnload);
   document.exitFullscreen?.();
   
   Object.assign(S, { 
@@ -866,8 +931,12 @@ async function doLogout() {
     examFile:null, examName:null, 
     questions:[], answers:{}, marked:new Set(), 
     current:0, timeLeft:0, timer:null, 
-    sessionInterval:null, sessionToken: null
+    sessionInterval:null, sessionToken: null,
+    isLeaving: false
   });
+  
+  // Hide warning bar
+  document.getElementById('tabWarningBar').classList.remove('show', 'danger');
   
   showScreen('s-login');
   document.getElementById('inId').value = '';
@@ -906,18 +975,18 @@ async function loadExams() {
         <div class="exam-info">
           <div class="exam-name">${e.name}</div>
           <div class="exam-meta">
-            <span>&#9203; ${e.duration} minutes</span>
-            <span>&#10067; ${e.questionCount} questions</span>
-            ${e.subject ? `<span>&#128218; ${e.subject}</span>` : ''}
-            ${e.class ? `<span>&#127979; ${e.class}</span>` : '<span>&#127979; All Classes</span>'}
+            <span>⏱️ ${e.duration} minutes</span>
+            <span>❓ ${e.questionCount} questions</span>
+            ${e.subject ? `<span>📚 ${e.subject}</span>` : ''}
+            ${e.class ? `<span>🏫 ${e.class}</span>` : '<span>🏫 All Classes</span>'}
           </div>
         </div>
-        <button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start &rarr;</button>
+        <button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start →</button>
       </div>`).join('');
     
     document.getElementById('selectSub').textContent = `${activeExams.length} exam${activeExams.length>1?'s':''} available for your class`;
   } catch {
-    document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">&#9888;</div>Could not load exams. Check server connection.</div>`;
+    document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">⚠️</div>Could not load exams. Check server connection.</div>`;
   }
 }
 
@@ -973,6 +1042,8 @@ async function beginExam() {
     document.getElementById('etStudent').textContent = S.studentName;
     document.getElementById('subStudentName').textContent = S.studentName;
     document.getElementById('subExamName').textContent = data.exam;
+    document.getElementById('violBadge').textContent = `⚠️ Violations: 0`;
+    document.getElementById('violBadge').className = 'violation-badge';
 
     buildQGrid();
     renderQuestion();
@@ -989,12 +1060,43 @@ async function beginExam() {
 }
 
 // ══════════════════════════════════
-// TAB TRACKING
+// TAB TRACKING - Enhanced with warning bar
 // ══════════════════════════════════
-function onVisibilityChange() {
-  if (S.submitted || document.visibilityState !== 'hidden') return;
+function simulateTabViolation() {
+  if (S.submitted) return;
   S.tabViolations++;
+  handleTabViolation();
+}
 
+function onVisibilityChange() {
+  if (S.submitted) return;
+  
+  if (document.visibilityState === 'hidden') {
+    // User left the tab
+    S.tabViolations++;
+    handleTabViolation();
+  } else {
+    // User returned to tab - hide warning bar
+    hideTabWarningBar();
+  }
+}
+
+function onBeforeUnload(e) {
+  if (S.submitted) return;
+  
+  // Show exit warning modal
+  if (!S.isLeaving) {
+    S.isLeaving = true;
+    openModal('modalTabExit');
+    
+    // Cancel the unload
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
+}
+
+function handleTabViolation() {
   // Report to server
   fetch('/api/tabviolation', { method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ studentId: S.studentId, student: S.studentName, exam: S.examName, count: S.tabViolations }) }).catch(() => {});
@@ -1002,7 +1104,33 @@ function onVisibilityChange() {
   // Update badge
   const badge = document.getElementById('violBadge');
   badge.style.display = 'flex';
-  badge.textContent = `⚠ Violations: ${S.tabViolations}`;
+  badge.textContent = `⚠️ Violations: ${S.tabViolations}`;
+  
+  // Update badge color based on violation count
+  badge.className = 'violation-badge';
+  if (S.tabViolations === 3) {
+    badge.classList.add('warn-3');
+  } else if (S.tabViolations >= 4) {
+    badge.classList.add('danger');
+  }
+
+  // Show warning bar
+  const warningBar = document.getElementById('tabWarningBar');
+  warningBar.classList.add('show');
+  if (S.tabViolations === 3) {
+    warningBar.classList.add('danger');
+    warningBar.textContent = '🚨🚨🚨 FINAL WARNING! DO NOT LEAVE THIS TAB! NEXT VIOLATION WILL AUTO-SUBMIT! 🚨🚨🚨';
+  } else {
+    warningBar.textContent = `⚠️ WARNING: Tab switch detected (${S.tabViolations}/3). If you leave again, your exam will be submitted!`;
+  }
+  
+  // Auto-hide warning bar after 5 seconds
+  if (S.tabWarningBarTimeout) clearTimeout(S.tabWarningBarTimeout);
+  S.tabWarningBarTimeout = setTimeout(() => {
+    if (!S.submitted) {
+      document.getElementById('tabWarningBar').classList.remove('show', 'danger');
+    }
+  }, 5000);
 
   if (S.tabViolations >= 4) {
     // Auto-submit
@@ -1012,16 +1140,35 @@ function onVisibilityChange() {
 
   if (S.tabViolations === 3) {
     openModal('modalTabFinal');
-    document.getElementById('tabWarnTitle').textContent = 'Final Warning!';
   } else {
     openModal('modalTabWarn');
     document.getElementById('tabWarnTitle').textContent = `Tab Switch Detected (${S.tabViolations}/3)`;
     document.getElementById('tabWarnMsg').textContent = `You have switched tabs ${S.tabViolations} time${S.tabViolations>1?'s':''}. You get ${3 - S.tabViolations} more warning${3-S.tabViolations===1?'':'s'} before your exam is auto-submitted.`;
   }
 }
+
+function hideTabWarningBar() {
+  document.getElementById('tabWarningBar').classList.remove('show', 'danger');
+  if (S.tabWarningBarTimeout) {
+    clearTimeout(S.tabWarningBarTimeout);
+    S.tabWarningBarTimeout = null;
+  }
+}
+
+function returnToExam() {
+  S.isLeaving = false;
+  closeModal('modalTabExit');
+  // Focus back on exam
+  document.getElementById('s-exam').focus();
+}
+
 function setupTabTracking() {
   document.removeEventListener('visibilitychange', onVisibilityChange);
   document.addEventListener('visibilitychange', onVisibilityChange);
+  
+  // Add beforeunload event to catch tab closing attempts
+  window.removeEventListener('beforeunload', onBeforeUnload);
+  window.addEventListener('beforeunload', onBeforeUnload);
 }
 
 // ══════════════════════════════════
@@ -1109,7 +1256,7 @@ function renderQuestion() {
 
   const markBtn = document.getElementById('markBtn');
   markBtn.className = 'q-mark-btn' + (S.marked.has(S.current) ? ' marked' : '');
-  markBtn.textContent = S.marked.has(S.current) ? '⚑ Marked for Review' : '⚑ Mark for Review';
+  markBtn.innerHTML = S.marked.has(S.current) ? '⚑ Marked for Review' : '⚑ Mark for Review';
 
   document.getElementById('optsList').innerHTML = q._options.map(opt => `
     <div class="opt ${S.answers[S.current] === opt.key ? 'selected' : ''}" onclick="selectAns('${opt.key}')">
@@ -1181,10 +1328,15 @@ function confirmSubmit() {
 async function doSubmit() {
   if (S.submitted) return;
   S.submitted = true;
+  S.isLeaving = false;
+  
   clearInterval(S.timer);
   clearInterval(S.sessionInterval);
-  closeModal('modalSubmit'); closeModal('modalTabWarn'); closeModal('modalTabFinal');
+  hideTabWarningBar();
+  closeModal('modalSubmit'); closeModal('modalTabWarn'); closeModal('modalTabFinal'); closeModal('modalTabExit');
   document.removeEventListener('visibilitychange', onVisibilityChange);
+  window.removeEventListener('beforeunload', onBeforeUnload);
+  
   showLoader('Submitting exam…');
 
   let score = 0;
@@ -1226,21 +1378,28 @@ function closeModal(id) { document.getElementById(id).classList.remove('show'); 
 document.addEventListener('keydown', e => {
   const inExam = document.getElementById('s-exam').style.display !== 'none';
   if (!inExam) return;
+  
   // Block standard cheat keys but allow exam navigation
   const blocked = [
     e.ctrlKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
     e.metaKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
-    e.key === 'F12',
-    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())
+    e.key === 'F12', e.key === 'F5',
+    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase()),
+    e.altKey && e.key === 'Tab'
   ];
-  if (blocked.some(Boolean)) { e.preventDefault(); return; }
+  if (blocked.some(Boolean)) { 
+    e.preventDefault(); 
+    simulateTabViolation();
+    return;
+  }
 
   // Navigation - N/P keys and arrows
-  if (e.key === 'n' || e.key === 'N' || e.key === 'ArrowRight') { navigate(1); return; }
-  if (e.key === 'p' || e.key === 'P' || e.key === 'ArrowLeft') { navigate(-1); return; }
+  if (e.key === 'n' || e.key === 'N' || e.key === 'ArrowRight') { navigate(1); e.preventDefault(); return; }
+  if (e.key === 'p' || e.key === 'P' || e.key === 'ArrowLeft') { navigate(-1); e.preventDefault(); return; }
 
   // Option selection by letter key A B C D
   if (['a','b','c','d'].includes(e.key.toLowerCase())) {
+    e.preventDefault();
     const key = e.key.toUpperCase();
     const q = S.questions[S.current];
     if (q && q._options.find(o => o.key === key)) { selectAns(key); return; }
@@ -1248,6 +1407,7 @@ document.addEventListener('keydown', e => {
 
   // Option selection by number 1 2 3 4
   if (['1','2','3','4'].includes(e.key)) {
+    e.preventDefault();
     const q = S.questions[S.current];
     if (q && q._options[parseInt(e.key) - 1]) selectAns(q._options[parseInt(e.key) - 1].key);
   }
