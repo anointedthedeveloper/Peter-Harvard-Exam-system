@@ -1,0 +1,397 @@
+[
+  {
+    "id": 1773385871871.3015,
+    "time": "2026-03-13T07:11:11.871Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #2 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 2
+    }
+  },
+  {
+    "id": 1773385636135.726,
+    "time": "2026-03-13T07:07:16.135Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773385624064.427,
+    "time": "2026-03-13T07:07:04.064Z",
+    "action": "LOGIN_FAIL",
+    "actor": "sTUDENT1",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773385439795.0334,
+    "time": "2026-03-13T07:03:59.795Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773384072925.7534,
+    "time": "2026-03-13T06:41:12.925Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773384060302.1836,
+    "time": "2026-03-13T06:41:00.302Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356611463.5298,
+    "time": "2026-03-12T23:03:31.463Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356607445.9722,
+    "time": "2026-03-12T23:03:27.445Z",
+    "action": "LOGIN_FAIL",
+    "actor": "teacher1",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356545500.2378,
+    "time": "2026-03-12T23:02:25.500Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356533000.0088,
+    "time": "2026-03-12T23:02:13.000Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356493779.882,
+    "time": "2026-03-12T23:01:33.779Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356489385.7693,
+    "time": "2026-03-12T23:01:29.385Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: teacher",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356464048.023,
+    "time": "2026-03-12T23:01:04.048Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773356029859.026,
+    "time": "2026-03-12T22:53:49.859Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "student1",
+    "detail": "Submitted \"Mathematics\" — Score: 1/5 (20%)",
+    "metadata": {
+      "exam": "Mathematics",
+      "score": 1,
+      "total": 5,
+      "percentage": 20,
+      "tabViolations": 4,
+      "studentClass": ""
+    }
+  },
+  {
+    "id": 1773356029801.0547,
+    "time": "2026-03-12T22:53:49.801Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #4 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 4
+    }
+  },
+  {
+    "id": 1773356028749.476,
+    "time": "2026-03-12T22:53:48.749Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #3 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 3
+    }
+  },
+  {
+    "id": 1773356027415.724,
+    "time": "2026-03-12T22:53:47.415Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #2 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 2
+    }
+  },
+  {
+    "id": 1773355891502.3489,
+    "time": "2026-03-12T22:51:31.502Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "student1",
+    "detail": "Submitted \"Mathematics\" — Score: 1/5 (20%)",
+    "metadata": {
+      "exam": "Mathematics",
+      "score": 1,
+      "total": 5,
+      "percentage": 20,
+      "tabViolations": 4,
+      "studentClass": ""
+    }
+  },
+  {
+    "id": 1773355891474.9553,
+    "time": "2026-03-12T22:51:31.474Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #4 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 4
+    }
+  },
+  {
+    "id": 1773355883085.2427,
+    "time": "2026-03-12T22:51:23.085Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #3 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 3
+    }
+  },
+  {
+    "id": 1773355881817.8877,
+    "time": "2026-03-12T22:51:21.817Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #2 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 2
+    }
+  },
+  {
+    "id": 1773355876537.9297,
+    "time": "2026-03-12T22:51:16.537Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773355827055.7122,
+    "time": "2026-03-12T22:50:27.055Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "10.155.79.87"
+    }
+  },
+  {
+    "id": 1773355704826.8088,
+    "time": "2026-03-12T22:48:24.826Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355527426.995,
+    "time": "2026-03-12T22:45:27.426Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773355437279.918,
+    "time": "2026-03-12T22:43:57.279Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355422240.7385,
+    "time": "2026-03-12T22:43:42.240Z",
+    "action": "EXAM_UPLOAD",
+    "actor": "teacher",
+    "detail": "Uploaded exam: Mathematics",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json",
+      "subject": "English Language",
+      "class": "JSS1",
+      "questions": 5
+    }
+  },
+  {
+    "id": 1773355342605.2444,
+    "time": "2026-03-12T22:42:22.605Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355328673.2734,
+    "time": "2026-03-12T22:42:08.673Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355326346.6592,
+    "time": "2026-03-12T22:42:06.346Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355315500.9158,
+    "time": "2026-03-12T22:41:55.500Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "Teacher One",
+    "detail": "Exam \"deepseek_json_20260312_0d07d1.json\" set to INACTIVE",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json",
+      "active": false
+    }
+  },
+  {
+    "id": 1773355299955.555,
+    "time": "2026-03-12T22:41:39.955Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355296556.6558,
+    "time": "2026-03-12T22:41:36.556Z",
+    "action": "LOGIN_FAIL",
+    "actor": "teacher1",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355293238.3892,
+    "time": "2026-03-12T22:41:33.238Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773355282065.2754,
+    "time": "2026-03-12T22:41:22.065Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  }
+]

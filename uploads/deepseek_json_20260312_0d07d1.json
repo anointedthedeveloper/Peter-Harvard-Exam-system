@@ -1,0 +1,49 @@
+{
+  "exam": "Mathematics",
+  "duration": 30,
+  "questions": [
+    {
+      "question": "What is 15 - 7?",
+      "A": "6",
+      "B": "7",
+      "C": "8",
+      "D": "9",
+      "answer": "C"
+    },
+    {
+      "question": "What is 12 ÷ 3?",
+      "A": "2",
+      "B": "3",
+      "C": "4",
+      "D": "6",
+      "answer": "C"
+    },
+    {
+      "question": "What is 7 + 9?",
+      "A": "15",
+      "B": "16",
+      "C": "17",
+      "D": "18",
+      "answer": "B"
+    },
+    {
+      "question": "What is 8 × 6?",
+      "A": "42",
+      "B": "48",
+      "C": "54",
+      "D": "56",
+      "answer": "B"
+    },
+    {
+      "question": "What is 20 - 14?",
+      "A": "4",
+      "B": "5",
+      "C": "6",
+      "D": "7",
+      "answer": "C"
+    }
+  ],
+  "subject": "English Language",
+  "class": "JSS1",
+  "teacherId": "Teacher One"
+}

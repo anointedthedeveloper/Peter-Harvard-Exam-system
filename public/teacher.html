@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard – Peter Harvard International Schools</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#F1F5F9;color:#0F172A;min-height:100vh;}
+:root{
+  --primary:#334155;--accent:#6366F1;--bg:#FFFFFF;--surface:#F1F5F9;
+  --text:#0F172A;--muted:#64748B;--border:#E2E8F0;
+  --correct:#22C55E;--wrong:#EF4444;--warn:#F59E0B;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+}
+
+/* ── LOGIN ── */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#EEF2FF 0%,#FFFFFF 60%);padding:24px;}
+.login-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:420px;box-shadow:var(--shadow);}
+.school-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.sch-logo{width:72px;height:72px;border-radius:12px;object-fit:contain;background:var(--surface);padding:6px;flex-shrink:0;}
+.sch-logo-fb{width:72px;height:72px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:26px;flex-shrink:0;display:none;}
+.sch-info{flex:1;min-width:0;}
+.sch-name{font-size:15px;font-weight:800;color:var(--primary);line-height:1.3;}
+.sch-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;}
+.login-title{font-size:22px;font-weight:700;margin-bottom:6px;}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit;}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.12);}
+.btn-primary{width:100%;padding:13px;border:none;border-radius:8px;background:var(--accent);color:white;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
+.btn-primary:hover{background:#4F46E5;transform:translateY(-1px);}
+.login-error{background:#FEF2F2;border:1px solid #FECACA;border-radius:7px;padding:10px 14px;color:var(--wrong);font-size:13px;margin-bottom:16px;display:none;}
+.login-footer{text-align:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;flex-direction:column;}
+.topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-shrink:0;}
+.tb-brand{display:flex;align-items:center;gap:10px;}
+.tb-logo{width:40px;height:40px;border-radius:8px;object-fit:contain;background:var(--surface);padding:3px;}
+.tb-logo-fb{width:40px;height:40px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;}
+.tb-name{font-size:14px;font-weight:700;color:var(--primary);}
+.tb-name small{display:block;font-size:10px;font-weight:400;color:var(--muted);}
+.tb-right{display:flex;align-items:center;gap:12px;}
+.net-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;color:var(--muted);}
+.net-dot{width:7px;height:7px;border-radius:50%;}
+.nd-ethernet{background:var(--correct);}
+.nd-wifi{background:#3B82F6;}
+.nd-offline{background:#94A3B8;}
+.teacher-name{font-size:13px;font-weight:600;color:var(--text);}
+.btn-out{background:none;border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-out:hover{border-color:var(--primary);color:var(--primary);}
+
+.app-layout{display:flex;flex:1;min-height:0;}
+.sidebar{width:220px;background:var(--bg);border-right:1px solid var(--border);padding:16px 10px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.nav-section-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:12px 12px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;color:var(--muted);border:none;background:none;width:100%;text-align:left;font-family:inherit;}
+.nav-item:hover{background:var(--surface);color:var(--text);}
+.nav-item.active{background:#EEF2FF;color:var(--accent);font-weight:600;}
+.nav-icon{font-size:15px;width:18px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;}
+
+.main-content{flex:1;overflow-y:auto;padding:28px;}
+.page{display:none;}
+.page.active{display:block;}
+.page-header{margin-bottom:24px;}
+.page-header h2{font-size:22px;font-weight:700;}
+.page-header p{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* ── STAT CARDS ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;border-left:4px solid var(--border);box-shadow:var(--shadow);}
+.stat-card.blue{border-left-color:var(--accent);}
+.stat-card.green{border-left-color:var(--correct);}
+.stat-card.red{border-left-color:var(--wrong);}
+.stat-card.yellow{border-left-color:var(--warn);}
+.sc-val{font-size:28px;font-weight:800;color:var(--text);}
+.sc-lbl{font-size:11px;color:var(--muted);font-weight:500;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;}
+
+/* ── CARDS ── */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header h3{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;}
+.card-body{padding:20px;}
+
+/* ── BUTTONS ── */
+.btn{padding:9px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:all .15s;}
+.btn.accent{background:var(--accent);color:white;}
+.btn.accent:hover{background:#4F46E5;}
+.btn.outline{background:none;border:1.5px solid var(--border);color:var(--text);}
+.btn.outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn.danger{background:var(--wrong);color:white;}
+.btn.danger:hover{background:#DC2626;}
+.btn.success{background:var(--correct);color:white;}
+.btn.warn{background:var(--warn);color:white;}
+.btn.sm{padding:6px 12px;font-size:11px;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:var(--surface);}
+td{padding:12px 14px;border-bottom:1px solid var(--surface);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#F8FAFC;}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.pill.green{background:#DCFCE7;color:#166534;}
+.pill.red{background:#FEE2E2;color:#991B1B;}
+.pill.blue{background:#DBEAFE;color:#1E40AF;}
+.pill.yellow{background:#FEF3C7;color:#92400E;}
+.pill.gray{background:var(--surface);color:var(--muted);}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:48px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:#F5F3FF;}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.uz-icon{font-size:40px;margin-bottom:12px;}
+.uz-title{font-size:15px;font-weight:600;margin-bottom:6px;}
+.uz-sub{font-size:13px;color:var(--muted);}
+.json-preview{background:var(--primary);color:#A5F3FC;font-family:'Courier New',monospace;font-size:12px;border-radius:8px;padding:16px;overflow:auto;max-height:260px;white-space:pre;line-height:1.6;}
+
+/* ── MONITOR CARDS ── */
+.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.student-mon-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.student-mon-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.student-mon-card.active::before{background:var(--correct);}
+.student-mon-card.submitted::before{background:var(--accent);}
+.student-mon-card.violated::before{background:var(--warn);}
+.smc-name{font-size:14px;font-weight:700;margin-bottom:4px;}
+.smc-exam{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.smc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.smc-key{font-size:11px;color:var(--muted);font-weight:500;}
+.smc-val{font-size:12px;font-weight:600;}
+.smc-progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px;}
+.smc-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+.smc-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--surface);}
+
+/* ── ACTIVITY ── */
+.activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--surface);}
+.activity-item:last-child{border-bottom:none;}
+.act-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--surface);}
+.act-info{flex:1;}
+.act-name{font-size:13px;font-weight:600;}
+.act-detail{font-size:12px;color:var(--muted);}
+.act-time{font-size:11px;color:var(--muted);}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;transform:translateY(80px);transition:transform .3s;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.15);}
+#toast.show{transform:translateY(0);}
+#toast.ok{background:var(--correct);}
+#toast.err{background:var(--wrong);}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);z-index:999;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--bg);border:1px solid var(--border);border-radius:14px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;}
+.modal-h{padding:24px;border-bottom:1px solid var(--border);}
+.modal-h h3{font-size:17px;font-weight:700;margin-bottom:4px;}
+.modal-h p{font-size:13px;color:var(--muted);}
+.modal-b{padding:20px 24px 24px;}
+.modal-actions{display:flex;gap:10px;margin-top:16px;}
+.modal-actions button{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text);transition:all .15s;}
+.modal-actions button.primary{background:var(--accent);border-color:var(--accent);color:white;}
+
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+.refresh-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) { .stat-row { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 680px) { .sidebar { display: none; } .main-content { padding: 16px; } }
+@media (max-width: 480px) { .stat-row { grid-template-columns: 1fr; } .card-header { flex-wrap: wrap; gap: 8px; } }
+
+/* ── LOADER ── */
+.loader-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.loader-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+.loader-text{font-size:14px;color:var(--muted);font-weight:500;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── CHART ── */
+.chart-wrap{position:relative;height:220px;padding:8px 0;}
+
+/* ── TOGGLE SWITCH ── */
+.toggle-switch{position:relative;display:inline-block;width:42px;height:22px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#CBD5E1;border-radius:22px;transition:.3s;}
+.toggle-slider:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
+.toggle-switch input:checked + .toggle-slider{background:var(--correct);}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
+
+/* ── SUBJECT / CLASS FIELDS ── */
+.upload-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.upload-fields select,.upload-fields input[type=text]{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);}
+.upload-fields select:focus,.upload-fields input[type=text]:focus{border-color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="school-header">
+      <img src="logo.png" class="sch-logo" id="loginLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('loginLogoFb').style.display='flex'">
+      <div class="sch-logo-fb" id="loginLogoFb">P</div>
+      <div class="sch-info">
+        <div class="sch-name">Peter Harvard International Schools</div>
+        <div class="sch-sub">Teacher Dashboard</div>
+      </div>
+    </div>
+    <div class="login-title">Teacher Sign In</div>
+    <div class="login-sub">Access your exam management dashboard</div>
+    <div class="login-error" id="loginErr">Invalid credentials. Please try again.</div>
+    <div class="field"><label>Teacher ID</label><input type="text" id="inId" placeholder="teacher1" autocomplete="off"></div>
+    <div class="field"><label>Password</label><input type="password" id="inPass" placeholder="••••••••"></div>
+    <button class="btn-primary" onclick="doLogin()">Sign In to Dashboard</button>
+    <div class="login-footer">Peter Harvard International Schools · Exam System v1.0<br><span style="color:#94A3B8">Developed by anointedthedeveloper</span></div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+  <div class="loader-overlay" id="loaderOverlay" style="display:none">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loaderText">Loading…</div>
+  </div>
+  <div class="topbar">
+    <div class="tb-brand">
+      <img src="logo.png" class="tb-logo" id="tbLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbLogoFb').style.display='flex'">
+      <div class="tb-logo-fb" id="tbLogoFb" style="display:none">P</div>
+      <div class="tb-name">Teacher Dashboard <small>Peter Harvard International Schools</small></div>
+    </div>
+    <div class="tb-right">
+      <div class="net-pill" id="netPill"><div class="net-dot nd-offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
+      <div class="teacher-name" id="teacherName">—</div>
+      <button class="btn-out" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="nav-section-lbl">Overview</div>
+      <button class="nav-item active" data-page="overview" onclick="goPage('overview',this)"><span class="nav-icon">◈</span>Overview</button>
+      <button class="nav-item" data-page="upload" onclick="goPage('upload',this)"><span class="nav-icon">↑</span>Upload Exam</button>
+      <button class="nav-item" data-page="exams" onclick="goPage('exams',this)"><span class="nav-icon">▦</span>Manage Exams</button>
+      <div class="nav-section-lbl">Live</div>
+      <button class="nav-item" data-page="monitor" onclick="goPage('monitor',this)"><span class="nav-icon">◎</span>Monitor Students <span class="nav-badge" id="activeBadge">0</span></button>
+      <button class="nav-item" data-page="activity" onclick="goPage('activity',this)"><span class="nav-icon">⏱</span>Activity Log</button>
+      <div class="nav-section-lbl">Results</div>
+      <button class="nav-item" data-page="results" onclick="goPage('results',this)"><span class="nav-icon">&#8801;</span>Results</button>
+      <button class="nav-item" data-page="students" onclick="goPage('students',this)"><span class="nav-icon">&#9782;</span>Student List</button>
+      <button class="nav-item" data-page="charts" onclick="goPage('charts',this)"><span class="nav-icon">&#9641;</span>Charts</button>
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+
+      <!-- OVERVIEW -->
+      <div class="page active" id="page-overview">
+        <div class="page-header"><h2>Overview</h2><p>Your exam system at a glance</p></div>
+        <div class="stat-row">
+          <div class="stat-card blue"><div class="sc-val" id="ovExams">0</div><div class="sc-lbl">Exams Uploaded</div></div>
+          <div class="stat-card green"><div class="sc-val" id="ovActive">0</div><div class="sc-lbl">Active Students</div></div>
+          <div class="stat-card accent"><div class="sc-val" id="ovResults">0</div><div class="sc-lbl">Submissions</div></div>
+          <div class="stat-card yellow"><div class="sc-val" id="ovAvg">—</div><div class="sc-lbl">Avg. Score</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Recent Submissions</h3><button class="btn outline sm" onclick="goPage('results',document.querySelector('[data-page=results]'))">View All →</button></div>
+          <div id="recentSubs"><div class="empty">No results yet</div></div>
+        </div>
+      </div>
+
+      <!-- UPLOAD -->
+      <div class="page" id="page-upload">
+        <div class="page-header"><h2>Upload Exam</h2><p>Upload a JSON file to publish an exam for students</p></div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><h3>Select File</h3></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Optionally set subject and class — these can also be included directly in the JSON file.</p>
+            <div class="upload-fields">
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:6px;">Subject</label>
+                <input type="text" id="uploadSubject" placeholder="e.g. Mathematics" list="subjectList">
+                <datalist id="subjectList">
+                  <option value="Mathematics"><option value="English Language"><option value="Basic Science"><option value="Social Studies">
+                  <option value="Civic Education"><option value="Agricultural Science"><option value="Business Studies">
+                  <option value="Computer Science"><option value="Physics"><option value="Chemistry"><option value="Biology">
+                  <option value="Economics"><option value="Government"><option value="Literature in English">
+                  <option value="Further Mathematics"><option value="Geography"><option value="History">
+                </datalist>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:6px;">Target Class</label>
+                <select id="uploadClass">
+                  <option value="">All Classes</option>
+                  <optgroup label="Junior Secondary">
+                    <option value="JSS1">JSS1</option><option value="JSS2">JSS2</option><option value="JSS3">JSS3</option>
+                  </optgroup>
+                  <optgroup label="Senior Secondary">
+                    <option value="SS1">SS1</option><option value="SS2">SS2</option><option value="SS3">SS3</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="upload-zone" id="uploadZone">
+              <input type="file" accept=".json" id="fileInput" onchange="handleFile(this.files[0])">
+              <div class="uz-icon">&#128196;</div>
+              <div class="uz-title">Drop JSON file here or click to browse</div>
+              <div class="uz-sub">Only .json files accepted</div>
+            </div>
+            <div id="uploadPreview" style="display:none;margin-top:20px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div>
+                  <strong id="prevName">—</strong>
+                  <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="prevMeta"></span>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn outline sm" onclick="clearUpload()">Clear</button>
+                  <button class="btn accent sm" onclick="doUpload()">Upload &rarr;</button>
+                </div>
+              </div>
+              <div class="json-preview" id="prevJSON"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>JSON Template</h3></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Use this format for your exam file. The <code style="background:var(--surface);padding:1px 5px;border-radius:3px">subject</code> and <code style="background:var(--surface);padding:1px 5px;border-radius:3px">class</code> fields are optional but recommended:</p>
+            <div class="json-preview">{
+  "exam": "Mathematics – Third Term",
+  "subject": "Mathematics",
+  "class": "JSS2",
+  "duration": 30,
+  "questions": [
+    {
+      "question": "What is 2 + 2?",
+      "A": "3",
+      "B": "4",
+      "C": "5",
+      "D": "6",
+      "answer": "B"
+    }
+  ]
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANAGE EXAMS -->
+      <div class="page" id="page-exams">
+        <div class="page-header"><h2>Manage Exams</h2><p>View, enable/disable, and delete uploaded exam files</p></div>
+        <div class="card">
+          <div class="card-header"><h3>Exam Library</h3><button class="btn outline sm" onclick="loadExams()">&#8635; Refresh</button></div>
+          <div id="examTableWrap"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- MONITOR -->
+      <div class="page" id="page-monitor">
+        <div class="page-header"><h2>Monitor Students</h2><p>Live session view — updates every 15 seconds</p></div>
+        <div class="refresh-hint" id="monLastRefresh">Last updated: —</div>
+        <div id="monitorArea">
+          <div id="monActiveSection">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;">● Active Now</div>
+            <div class="monitor-grid" id="monGrid"><div class="empty">No active students</div></div>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;">✓ Submitted</div>
+            <div class="monitor-grid" id="submGrid"><div class="empty">No submissions yet</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="page" id="page-activity">
+        <div class="page-header"><h2>Activity Log</h2><p>Student actions and events in real time</p></div>
+        <div class="card">
+          <div class="card-header"><h3>All Activity</h3><button class="btn outline sm" onclick="loadActivity()">↻ Refresh</button></div>
+          <div class="card-body" style="padding:0 20px;">
+            <div id="activityList" style="max-height:540px;overflow-y:auto;"><div class="empty">Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="page" id="page-results">
+        <div class="page-header"><h2>Results</h2><p>All student exam submissions</p></div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Submissions</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn outline sm" onclick="loadResults()">&#8635; Refresh</button>
+              <button class="btn accent sm" onclick="downloadCSV()">&#8595; CSV</button>
+              <button class="btn outline sm" onclick="downloadJSON()">&#8595; JSON</button>
+              <button class="btn outline sm" onclick="downloadStudentList()">&#8595; Student List</button>
+              <button class="btn danger sm" onclick="clearAllResults()">&#10005; Clear All</button>
+            </div>
+          </div>
+          <div id="resultsTableWrap"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- STUDENT LIST -->
+      <div class="page" id="page-students">
+        <div class="page-header"><h2>Student List</h2><p>All registered students with their class and ID</p></div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Registered Students</h3>
+            <div style="display:flex;gap:8px;">
+              <button class="btn outline sm" onclick="loadStudentList()">&#8635; Refresh</button>
+              <button class="btn accent sm" onclick="window.location='/api/student-list/csv'">&#8595; CSV</button>
+              <button class="btn outline sm" onclick="window.location='/api/student-list/json'">&#8595; JSON</button>
+            </div>
+          </div>
+          <div id="studentListWrap"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="page" id="page-charts">
+        <div class="page-header"><h2>Charts &amp; Analytics</h2><p>Visual overview of exam performance</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" id="chartsGrid">
+          <div class="card">
+            <div class="card-header"><h3>Score Distribution</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="scoreDistChart"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Average by Exam</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="examAvgChart"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Submissions Over Time</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="timelineChart"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Tab Violations</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="violationsChart"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Confirm ═══ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-h"><h3 id="confirmTitle">Confirm</h3><p id="confirmMsg">—</p></div>
+    <div class="modal-b">
+      <div class="modal-actions">
+        <button onclick="closeModal()">Cancel</button>
+        <button class="primary" id="confirmOkBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Student Activity ═══ -->
+<div class="modal-overlay" id="actModal">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-h"><h3 id="actModalTitle">Student Activity</h3><p id="actModalSub">—</p></div>
+    <div class="modal-b" style="max-height:400px;overflow-y:auto;padding-top:12px;" id="actModalBody"></div>
+    <div style="padding:0 24px 20px;"><button class="btn outline" style="width:100%" onclick="document.getElementById('actModal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────────────────────
+let teacherName = '';
+let pendingFile = null;
+let monitorTimer = null;
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+async function api(path, opts = {}) {
+  const r = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  return r.json().catch(() => ({}));
+}
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show ' + type;
+  setTimeout(() => el.className = '', 3000);
+}
+function openModal(title, msg, okLabel, okFn, okClass = 'primary') {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  const btn = document.getElementById('confirmOkBtn');
+  btn.textContent = okLabel;
+  btn.className = okClass;
+  btn.onclick = () => { closeModal(); okFn(); };
+  document.getElementById('confirmModal').classList.add('show');
+}
+function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
+function fmtTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleTimeString(); }
+function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const id = document.getElementById('inId').value.trim();
+  const pass = document.getElementById('inPass').value;
+  if (!id) return;
+  const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ id, password: pass, role: 'teacher' }) });
+  if (res.ok) {
+    teacherName = res.name || id;
+    document.getElementById('teacherName').textContent = teacherName;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    updateNet();
+    setInterval(updateNet, 15000);
+    loadOverview();
+    startMonitorRefresh();
+  } else { document.getElementById('loginErr').style.display = 'block'; }
+}
+function doLogout() {
+  clearInterval(monitorTimer);
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('inId').value = '';
+  document.getElementById('inPass').value = '';
+}
+
+// ── NETWORK ──────────────────────────────────────────────────────────────────
+async function updateNet() {
+  try {
+    const info = await api('/api/info');
+    const nets = info.networks || [];
+    const eth = nets.find(n => n.type === 'ethernet');
+    const wifi = nets.find(n => n.type === 'wifi');
+    const connected = eth || wifi;
+    const dot = document.getElementById('netDot');
+    dot.className = 'net-dot ' + (eth ? 'nd-ethernet' : wifi ? 'nd-wifi' : 'nd-offline');
+    document.getElementById('netLabel').textContent = eth ? '🔌 Ethernet' : wifi ? '📶 Wi-Fi' : 'No Network';
+  } catch {}
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+function goPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'overview') loadOverview();
+  if (name === 'exams') loadExams();
+  if (name === 'monitor') loadMonitor();
+  if (name === 'results') loadResults();
+  if (name === 'activity') loadActivity();
+  if (name === 'students') loadStudentList();
+  if (name === 'charts') loadCharts();
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────────────────────
+async function loadOverview() {
+  const [exams, results, sessions] = await Promise.all([api('/api/exams'), api('/api/results'), api('/api/sessions')]);
+  document.getElementById('ovExams').textContent = Array.isArray(exams) ? exams.length : 0;
+  const rArr = Array.isArray(results) ? results : [];
+  const sArr = Array.isArray(sessions) ? sessions : [];
+  document.getElementById('ovActive').textContent = sArr.length;
+  document.getElementById('activeBadge').textContent = sArr.length;
+  document.getElementById('ovResults').textContent = rArr.length;
+  if (rArr.length) {
+    const avg = Math.round(rArr.reduce((s, r) => s + (r.percentage || 0), 0) / rArr.length);
+    document.getElementById('ovAvg').textContent = avg + '%';
+  }
+  const recent = rArr.slice(-6).reverse();
+  document.getElementById('recentSubs').innerHTML = recent.length ? `
+    <table><thead><tr><th>Student</th><th>Exam</th><th>Score</th><th>%</th><th>Tab Violations</th><th>Time</th></tr></thead>
+    <tbody>${recent.map(r => `<tr>
+      <td><strong>${r.student}</strong></td>
+      <td>${r.exam}</td>
+      <td>${r.score}/${r.total}</td>
+      <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
+      <td><span class="pill ${(r.tabViolations||0) > 0 ? 'yellow' : 'gray'}">${r.tabViolations || 0}</span></td>
+      <td style="color:var(--muted);font-size:12px;">${fmtTime(r.submittedAt)}</td>
+    </tr>`).join('')}</tbody></table>` : '<div class="empty">No results yet</div>';
+}
+
+// ── UPLOAD ────────────────────────────────────────────────────────────────────
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      pendingFile = { file, data };
+      document.getElementById('prevName').textContent = data.exam || file.name;
+      document.getElementById('prevMeta').textContent = `${data.questions?.length || 0} questions · ${data.duration || 30} min`;
+      document.getElementById('prevJSON').textContent = JSON.stringify(data, null, 2).slice(0, 900);
+      document.getElementById('uploadPreview').style.display = 'block';
+    } catch { toast('Invalid JSON file', 'err'); }
+  };
+  reader.readAsText(file);
+}
+function clearUpload() {
+  pendingFile = null;
+  document.getElementById('uploadPreview').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+}
+async function doUpload() {
+  if (!pendingFile) return;
+  // Inject subject and class into the JSON if set
+  const subject = document.getElementById('uploadSubject').value.trim();
+  const cls = document.getElementById('uploadClass').value;
+  let uploadData = { ...pendingFile.data };
+  if (subject) uploadData.subject = subject;
+  if (cls) uploadData.class = cls;
+  uploadData.teacherId = teacherName;
+  // Create a new file blob with updated JSON
+  const updatedBlob = new Blob([JSON.stringify(uploadData, null, 2)], { type: 'application/json' });
+  const updatedFile = new File([updatedBlob], pendingFile.file.name, { type: 'application/json' });
+  const form = new FormData();
+  form.append('exam', updatedFile);
+  document.getElementById('loaderOverlay').style.display = 'flex';
+  document.getElementById('loaderText').textContent = 'Uploading exam…';
+  const res = await fetch('/api/upload', { method: 'POST', body: form }).then(r => r.json());
+  document.getElementById('loaderOverlay').style.display = 'none';
+  if (res.ok) { toast('Exam uploaded!', 'ok'); clearUpload(); document.getElementById('uploadSubject').value=''; document.getElementById('uploadClass').value=''; }
+  else toast('Upload failed: ' + (res.error || ''), 'err');
+}
+const uz = document.getElementById('uploadZone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
+uz.addEventListener('drop', e => { e.preventDefault(); uz.classList.remove('drag'); handleFile(e.dataTransfer.files[0]); });
+
+// ── EXAMS ─────────────────────────────────────────────────────────────────────
+async function loadExams() {
+  const exams = await api('/api/exams');
+  document.getElementById('examTableWrap').innerHTML = Array.isArray(exams) && exams.length ? `
+    <table><thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${exams.map(e => `<tr>
+      <td><strong>${e.name}</strong></td>
+      <td>${e.subject || '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${e.class || '<span style="color:var(--muted)">All</span>'}</td>
+      <td>${e.questionCount}</td>
+      <td>${e.duration} min</td>
+      <td>
+        <label class="toggle-switch" title="${e.active ? 'Click to disable' : 'Click to enable'}">
+          <input type="checkbox" ${e.active ? 'checked' : ''} onchange="toggleExamStatus('${e.filename}', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+        <span style="font-size:11px;color:var(--muted);margin-left:6px;">${e.active ? 'Active' : 'Inactive'}</span>
+      </td>
+      <td><button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')">&#128465; Delete</button></td>
+    </tr>`).join('')}</tbody></table>` : '<div class="empty">No exams uploaded yet</div>';
+}
+async function toggleExamStatus(filename, active) {
+  const res = await fetch('/api/exam-status/' + encodeURIComponent(filename), {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ active, teacherId: teacherName })
+  }).then(r => r.json());
+  if (res.ok) toast(active ? 'Exam activated' : 'Exam deactivated', 'ok');
+  else { toast('Failed to update status', 'err'); loadExams(); }
+}
+function deleteExam(filename, name) {
+  openModal('Delete Exam', `Delete "${name}"? Students will no longer see it.`, 'Delete', async () => {
+    await fetch('/api/exam/' + encodeURIComponent(filename), { method: 'DELETE' });
+    toast('Exam deleted'); loadExams();
+  }, 'primary danger');
+}
+
+// ── MONITOR ───────────────────────────────────────────────────────────────────
+async function loadMonitor() {
+  const [sessions, results] = await Promise.all([api('/api/sessions'), api('/api/results')]);
+  document.getElementById('monLastRefresh').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+
+  const sArr = Array.isArray(sessions) ? sessions : [];
+  const rArr = Array.isArray(results) ? results : [];
+
+  // Active grid
+  const monGrid = document.getElementById('monGrid');
+  if (sArr.length) {
+    monGrid.innerHTML = sArr.map(s => {
+      const pct = s.total ? Math.round((s.answered / s.total) * 100) : 0;
+      const mLeft = s.timeLeft ? Math.floor(s.timeLeft / 60) : 0;
+      const sLeft = s.timeLeft ? s.timeLeft % 60 : 0;
+      const violations = s.tabViolations || 0;
+      const cardClass = violations >= 3 ? 'violated' : 'active';
+      return `<div class="student-mon-card ${cardClass}">
+        <div class="smc-name">${s.student}</div>
+        <div class="smc-exam">${s.exam}</div>
+        <div class="smc-row"><span class="smc-key">Answered</span><span class="smc-val">${s.answered || 0}/${s.total || '?'}</span></div>
+        <div class="smc-progress"><div class="smc-progress-fill" style="width:${pct}%"></div></div>
+        <div class="smc-row"><span class="smc-key">Time Left</span><span class="smc-val">${String(mLeft).padStart(2,'0')}:${String(sLeft).padStart(2,'0')}</span></div>
+        <div class="smc-row"><span class="smc-key">Tab Violations</span><span class="smc-val"><span class="pill ${violations > 0 ? 'yellow' : 'gray'}">${violations}</span></span></div>
+        <div class="smc-actions">
+          <button class="btn warn sm" style="flex:1" onclick="resetStudent('${s.studentId || s.student}','${s.student}','${s.exam}')">↺ Reset</button>
+          <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${s.studentId || s.student}','${s.student}')">Activity</button>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    monGrid.innerHTML = '<div class="empty">No active students right now</div>';
+  }
+
+  // Submitted grid
+  const submGrid = document.getElementById('submGrid');
+  const recent = rArr.slice(-12).reverse();
+  if (recent.length) {
+    submGrid.innerHTML = recent.map(r => `
+      <div class="student-mon-card submitted">
+        <div class="smc-name">${r.student}</div>
+        <div class="smc-exam">${r.exam}</div>
+        <div class="smc-row"><span class="smc-key">Score</span><span class="smc-val">${r.score}/${r.total} (${r.percentage}%)</span></div>
+        <div class="smc-row"><span class="smc-key">Violations</span><span class="smc-val"><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></span></div>
+        <div class="smc-row"><span class="smc-key">Submitted</span><span class="smc-val" style="font-size:11px">${fmtTime(r.submittedAt)}</span></div>
+        <div class="smc-actions">
+          <button class="btn warn sm" style="flex:1" onclick="resetStudent('${r.studentId||r.student}','${r.student}','${r.exam}')">↺ Reset Exam</button>
+          <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${r.studentId||r.student}','${r.student}')">Activity</button>
+        </div>
+      </div>`).join('');
+  } else {
+    submGrid.innerHTML = '<div class="empty">No submissions yet</div>';
+  }
+
+  document.getElementById('activeBadge').textContent = sArr.length;
+}
+
+function startMonitorRefresh() {
+  clearInterval(monitorTimer);
+  monitorTimer = setInterval(() => {
+    if (document.getElementById('page-monitor').classList.contains('active')) loadMonitor();
+    api('/api/sessions').then(s => { document.getElementById('activeBadge').textContent = Array.isArray(s) ? s.length : 0; });
+  }, 15000);
+}
+
+async function resetStudent(studentId, studentName, exam) {
+  openModal('Reset Student Exam', `Reset ${studentName}'s exam "${exam}"? They will be able to retake it from the beginning.`, 'Reset Now', async () => {
+    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam }) });
+    if (res.ok) { toast(`${studentName}'s exam has been reset`, 'ok'); loadMonitor(); }
+    else toast('Reset failed', 'err');
+  });
+}
+
+// ── ACTIVITY ─────────────────────────────────────────────────────────────────
+async function loadActivity() {
+  const acts = await api('/api/activity');
+  const aArr = Array.isArray(acts) ? acts.slice(0, 80) : [];
+  const actMap = { LOGIN: '🔑', SUBMIT: '✅', TAB_VIOLATION: '⚠️', RESET: '↺', START_EXAM: '📝' };
+  document.getElementById('activityList').innerHTML = aArr.length ? aArr.map(a => `
+    <div class="activity-item">
+      <div class="act-icon">${actMap[a.action] || '◈'}</div>
+      <div class="act-info">
+        <div class="act-name">${a.studentName || a.studentId}</div>
+        <div class="act-detail">${a.detail || a.action}</div>
+      </div>
+      <div class="act-time">${fmtDateTime(a.time)}</div>
+    </div>`).join('') : '<div class="empty">No activity yet</div>';
+}
+
+async function viewStudentActivity(studentId, studentName) {
+  document.getElementById('actModalTitle').textContent = studentName + ' — Activity';
+  document.getElementById('actModalSub').textContent = 'Full event history for this student';
+  document.getElementById('actModalBody').innerHTML = '<div class="empty">Loading…</div>';
+  document.getElementById('actModal').classList.add('show');
+  const acts = await api('/api/activity/' + encodeURIComponent(studentId));
+  const aArr = Array.isArray(acts) ? acts : [];
+  const actMap = { LOGIN: '🔑', SUBMIT: '✅', TAB_VIOLATION: '⚠️', RESET: '↺' };
+  document.getElementById('actModalBody').innerHTML = aArr.length ? aArr.map(a => `
+    <div class="activity-item">
+      <div class="act-icon">${actMap[a.action] || '◈'}</div>
+      <div class="act-info">
+        <div class="act-detail">${a.detail || a.action}</div>
+      </div>
+      <div class="act-time">${fmtDateTime(a.time)}</div>
+    </div>`).join('') : '<div class="empty">No activity recorded for this student</div>';
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+async function loadResults() {
+  const results = await api('/api/results');
+  const rArr = Array.isArray(results) ? results : [];
+  document.getElementById('resultsTableWrap').innerHTML = rArr.length ? `
+    <table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Subject</th><th>Score</th><th>%</th><th>Violations</th><th>Submitted</th><th></th></tr></thead>
+    <tbody>${rArr.map(r => `<tr>
+      <td><strong>${r.student}</strong></td>
+      <td style="font-size:11px;color:var(--muted)">${r.studentId||'—'}</td>
+      <td><span class="pill gray">${r.studentClass||'—'}</span></td>
+      <td>${r.exam}</td>
+      <td style="font-size:12px;color:var(--muted)">${r.subject||'—'}</td>
+      <td>${r.score}/${r.total}</td>
+      <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
+      <td><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${fmtDateTime(r.submittedAt)}</td>
+      <td style="white-space:nowrap">
+        <button class="btn outline sm" title="Download this result" onclick="window.location='/api/results/csv/${r.id}'" style="margin-right:3px">&#8595;</button>
+        <button class="btn outline sm" title="Reset exam" onclick="resetStudentResult('${r.studentId||r.student}','${r.student}','${r.exam}')" style="margin-right:3px">&#8635;</button>
+        <button class="btn danger sm" onclick="deleteResult(${r.id})">&#10005;</button>
+      </td>
+    </tr>`).join('')}</tbody></table>` : '<div class="empty">No submissions yet</div>';
+}
+
+async function deleteResult(id) {
+  await fetch('/api/result/' + id, { method: 'DELETE' });
+  toast('Result deleted'); loadResults();
+}
+function clearAllResults() {
+  openModal('Clear All Results', 'This will delete ALL student results permanently. This cannot be undone.', 'Clear All', async () => {
+    await fetch('/api/results', { method: 'DELETE' });
+    toast('All results cleared'); loadResults();
+  });
+}
+function downloadCSV() { window.location = '/api/results/csv'; }
+function downloadJSON() { window.location = '/api/results/json'; }
+function downloadStudentList() { window.location = '/api/student-list/csv'; }
+function resetStudentResult(studentId, studentName, exam) {
+  openModal('Reset Exam', `Allow ${studentName} to retake "${exam}"?`, 'Reset', async () => {
+    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam }) });
+    if (res.ok) toast(`${studentName} can now retake ${exam}`, 'ok');
+    else toast('Reset failed', 'err');
+  });
+}
+
+// ── STUDENT LIST ─────────────────────────────────────────────────────────────
+async function loadStudentList() {
+  const students = await api('/api/student-list');
+  const sArr = Array.isArray(students) ? students : [];
+  document.getElementById('studentListWrap').innerHTML = sArr.length ? `
+    <table><thead><tr><th>Student ID</th><th>Student Name</th><th>Class</th><th>Password</th></tr></thead>
+    <tbody>${sArr.map(s => `<tr>
+      <td style="font-family:monospace;font-size:12px"><strong>${s.studentId}</strong></td>
+      <td>${s.studentName}</td>
+      <td><span class="pill gray">${s.class||'—'}</span></td>
+      <td><span class="pill ${s.passwordSet?'blue':'gray'}">${s.passwordSet?'Set':'None'}</span></td>
+    </tr>`).join('')}</tbody></table>` : '<div class="empty">No students found</div>';
+}
+
+// ── CHARTS (inline canvas, no CDN) ───────────────────────────────────────────
+let chartInstances = {};
+async function loadCharts() {
+  const results = await api('/api/results');
+  const rArr = Array.isArray(results) ? results : [];
+  if (!rArr.length) {
+    document.getElementById('chartsGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">No results data yet to chart.</div>';
+    return;
+  }
+  Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch {} });
+  chartInstances = {};
+  setTimeout(() => {
+    const buckets = [0,0,0,0];
+    rArr.forEach(r => { const p = r.percentage||0; if(p<50)buckets[0]++; else if(p<70)buckets[1]++; else if(p<90)buckets[2]++; else buckets[3]++; });
+    drawChart('scoreDistChart',{labels:['0-49%','50-69%','70-89%','90-100%'],data:buckets,colors:['#EF4444','#F59E0B','#6366F1','#22C55E'],title:'Score Distribution'});
+    const examMap={};
+    rArr.forEach(r=>{ if(!examMap[r.exam])examMap[r.exam]=[]; examMap[r.exam].push(r.percentage||0); });
+    const eL=Object.keys(examMap),eD=eL.map(e=>Math.round(examMap[e].reduce((a,b)=>a+b,0)/examMap[e].length));
+    drawChart('examAvgChart',{labels:eL,data:eD,colors:eL.map(()=>'#6366F1'),title:'Average % by Exam'});
+    const days={};
+    for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days[d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})]=0;}
+    rArr.forEach(r=>{if(!r.submittedAt)return;const k=new Date(r.submittedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});if(days[k]!==undefined)days[k]++;});
+    drawChart('timelineChart',{labels:Object.keys(days),data:Object.values(days),colors:['#6366F1'],title:'Submissions (7 days)',type:'line'});
+    const vB={'0':0,'1':0,'2':0,'3+':0};
+    rArr.forEach(r=>{const v=r.tabViolations||0;if(v===0)vB['0']++;else if(v===1)vB['1']++;else if(v===2)vB['2']++;else vB['3+']++;});
+    drawChart('violationsChart',{labels:['0 violations','1','2','3+'],data:Object.values(vB),colors:['#22C55E','#F59E0B','#EF4444','#7C3AED'],title:'Tab Violations'});
+  }, 100);
+}
+
+function drawChart(canvasId, { labels, data, colors, title, type='bar' }) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const W = canvas.parentElement.offsetWidth || 300;
+  const H = 200;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const pad = { top:28, right:16, bottom:46, left:36 };
+  const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
+  const max = Math.max(...data, 1);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#334155'; ctx.font='bold 11px system-ui'; ctx.textAlign='center';
+  ctx.fillText(title, W/2, 16);
+  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94A3B8'; ctx.textAlign='right'; ctx.font='9px system-ui';
+    ctx.fillText(Math.round((i/4)*max),pad.left-3,y+3);
+  }
+  const bW=cW/labels.length;
+  if(type==='bar'){
+    labels.forEach((lbl,i)=>{
+      const bH=(data[i]/max)*cH, x=pad.left+i*bW+bW*0.12, y=pad.top+cH-bH;
+      ctx.fillStyle=Array.isArray(colors)?colors[i%colors.length]:colors;
+      ctx.beginPath();
+      if(ctx.roundRect)ctx.roundRect(x,y,bW*0.76,bH,3); else ctx.rect(x,y,bW*0.76,bH);
+      ctx.fill();
+      ctx.fillStyle='#64748B'; ctx.textAlign='center'; ctx.font='9px system-ui';
+      const s=lbl.length>7?lbl.slice(0,6)+'…':lbl;
+      ctx.fillText(s,pad.left+i*bW+bW/2,pad.top+cH+13);
+      ctx.fillStyle='#0F172A'; ctx.font='bold 10px system-ui';
+      if(data[i]>0)ctx.fillText(data[i],pad.left+i*bW+bW/2,y-4);
+    });
+  } else {
+    ctx.beginPath(); ctx.strokeStyle=colors[0]||'#6366F1'; ctx.lineWidth=2;
+    labels.forEach((_,i)=>{ const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    ctx.stroke();
+    labels.forEach((lbl,i)=>{
+      const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH;
+      ctx.fillStyle=colors[0]||'#6366F1'; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#64748B'; ctx.textAlign='center'; ctx.font='9px system-ui';
+      ctx.fillText(lbl,x,pad.top+cH+13);
+    });
+  }
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────────────────
+document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
+document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

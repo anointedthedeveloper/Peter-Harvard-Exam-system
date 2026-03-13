@@ -1,0 +1,99 @@
+[
+  {
+    "student": "Student One",
+    "studentId": "student1",
+    "exam": "Mathematics",
+    "score": 3,
+    "total": 5,
+    "percentage": 60,
+    "answers": [
+      "D",
+      "C",
+      "C",
+      "A",
+      "C"
+    ],
+    "submittedAt": "2026-03-12T21:28:11.427Z",
+    "id": 1773350891427
+  },
+  {
+    "student": "Student One",
+    "studentId": "student1",
+    "exam": "Mathematics",
+    "score": 1,
+    "total": 5,
+    "percentage": 20,
+    "answers": [
+      "C",
+      null,
+      null,
+      null,
+      null
+    ],
+    "tabViolations": 3,
+    "submittedAt": "2026-03-12T21:58:24.094Z",
+    "id": 1773352704094
+  },
+  {
+    "student": "Student One",
+    "studentId": "student1",
+    "exam": "Mathematics",
+    "score": 0,
+    "total": 5,
+    "percentage": 0,
+    "answers": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "tabViolations": 4,
+    "submittedAt": "2026-03-12T22:06:01.524Z",
+    "id": 1773353161524
+  },
+  {
+    "student": "Student One",
+    "studentId": "student1",
+    "exam": "Mathematics",
+    "examFilename": "deepseek_json_20260312_0d07d1.json",
+    "score": 1,
+    "total": 5,
+    "percentage": 20,
+    "answers": [
+      "A",
+      "C",
+      "C",
+      "D",
+      "B"
+    ],
+    "tabViolations": 4,
+    "studentClass": "",
+    "subject": "English Language",
+    "examClass": "JSS1",
+    "submittedAt": "2026-03-12T22:51:31.499Z",
+    "id": 1773355891499
+  },
+  {
+    "student": "Student One",
+    "studentId": "student1",
+    "exam": "Mathematics",
+    "examFilename": "deepseek_json_20260312_0d07d1.json",
+    "score": 1,
+    "total": 5,
+    "percentage": 20,
+    "answers": [
+      "A",
+      "A",
+      "B",
+      "A",
+      "A"
+    ],
+    "tabViolations": 4,
+    "studentClass": "",
+    "subject": "English Language",
+    "examClass": "JSS1",
+    "submittedAt": "2026-03-12T22:53:49.855Z",
+    "id": 1773356029855
+  }
+]

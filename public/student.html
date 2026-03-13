@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Portal – Peter Harvard International Schools</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #FFFFFF;
+  color: #0F172A;
+  min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── CSS Variables ── */
+:root {
+  --primary: #334155;
+  --accent: #6366F1;
+  --bg: #FFFFFF;
+  --surface: #F1F5F9;
+  --text: #0F172A;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --correct: #22C55E;
+  --wrong: #EF4444;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+}
+
+/* ── Screen Manager ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ══════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════ */
+#s-login {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #F1F5F9 0%, #FFFFFF 60%);
+  padding: 24px;
+}
+.login-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+}
+.school-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.school-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: var(--surface);
+  padding: 6px;
+  flex-shrink: 0;
+}
+.school-logo-fallback {
+  width: 72px; height: 72px; border-radius: 12px;
+  background: var(--primary); display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 26px; flex-shrink: 0;
+}
+.school-info { flex: 1; min-width: 0; }
+.school-name { font-size: 15px; font-weight: 800; color: var(--primary); line-height: 1.3; }
+.school-sub { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+.login-title { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.login-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 6px; letter-spacing: .3px; }
+.field input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 14px; color: var(--text); background: var(--bg);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+  font-family: inherit;
+}
+.field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+.btn-primary {
+  width: 100%; padding: 13px; border: none; border-radius: 8px;
+  background: var(--accent); color: white; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all .2s; font-family: inherit;
+  letter-spacing: .2px;
+}
+.btn-primary:hover { background: #4F46E5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,.3); }
+.btn-primary:active { transform: translateY(0); }
+.login-error {
+  background: #FEF2F2; border: 1px solid #FECACA; border-radius: 7px;
+  padding: 10px 14px; color: var(--wrong); font-size: 13px; margin-bottom: 16px; display: none;
+}
+.login-footer {
+  text-align: center; margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--muted); line-height: 1.6;
+}
+
+/* ══════════════════════════════════
+   EXAM SELECT SCREEN
+══════════════════════════════════ */
+#s-select { flex-direction: column; background: var(--surface); }
+.topbar {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 28px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; flex-shrink: 0;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-logo { width: 40px; height: 40px; border-radius: 8px; object-fit: contain; background: var(--surface); padding: 3px; }
+.topbar-logo-fb { width: 40px; height: 40px; border-radius: 8px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 15px; }
+.topbar-name { font-size: 14px; font-weight: 700; color: var(--primary); }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.student-chip {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; color: var(--text);
+}
+.btn-ghost {
+  background: none; border: 1px solid var(--border); border-radius: 7px;
+  padding: 7px 14px; font-size: 12px; font-weight: 500; color: var(--muted);
+  cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+.select-body { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 36px 20px; }
+.select-heading { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.select-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.exam-card {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 22px 24px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 20px;
+  cursor: pointer; transition: all .2s; box-shadow: var(--shadow);
+}
+.exam-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(99,102,241,.1); }
+.exam-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.exam-info { flex: 1; }
+.exam-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.exam-meta { display: flex; gap: 16px; font-size: 12px; color: var(--muted); font-weight: 500; }
+.exam-meta span::before { margin-right: 4px; }
+.btn-start {
+  background: var(--accent); color: white; border: none;
+  padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .2s;
+}
+.btn-start:hover { background: #4F46E5; }
+.empty-exams {
+  text-align: center; padding: 60px 20px;
+  background: var(--bg); border: 1.5px dashed var(--border); border-radius: var(--radius);
+  color: var(--muted); font-size: 14px;
+}
+.empty-exams .e-icon { font-size: 36px; margin-bottom: 12px; }
+
+/* ══════════════════════════════════
+   WAITING ROOM / RULES
+══════════════════════════════════ */
+#s-rules { flex-direction: column; align-items: center; justify-content: center; background: var(--surface); padding: 24px; }
+.rules-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 16px;
+  width: 100%; max-width: 560px; box-shadow: var(--shadow); overflow: hidden;
+}
+.rules-header {
+  background: var(--primary); color: white;
+  padding: 28px 32px; text-align: center;
+}
+.rules-header .r-icon { font-size: 36px; margin-bottom: 10px; }
+.rules-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.rules-header p { font-size: 13px; opacity: .75; }
+.rules-body { padding: 28px 32px; }
+.rules-exam-info {
+  background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 8px;
+  padding: 14px 18px; margin-bottom: 24px;
+  display: flex; justify-content: space-around;
+}
+.rei { text-align: center; }
+.rei .val { font-size: 20px; font-weight: 700; color: var(--accent); }
+.rei .lbl { font-size: 11px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+.rules-list { list-style: none; margin-bottom: 28px; }
+.rules-list li {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid var(--surface); font-size: 13px; line-height: 1.5;
+}
+.rules-list li:last-child { border-bottom: none; }
+.rule-num {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+  color: white; font-size: 11px; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.rule-num.warn { background: #F59E0B; }
+.rule-num.danger { background: var(--wrong); }
+.rules-footer { text-align: center; padding: 0 32px 28px; }
+.btn-begin {
+  width: 100%; padding: 14px; border: none; border-radius: 8px;
+  background: var(--accent); color: white; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all .2s; letter-spacing: .3px;
+}
+.btn-begin:hover { background: #4F46E5; transform: translateY(-1px); }
+.btn-back-rules {
+  background: none; border: none; color: var(--muted); font-size: 13px;
+  cursor: pointer; margin-top: 12px; font-family: inherit; text-decoration: underline;
+}
+
+/* ══════════════════════════════════
+   EXAM ROOM
+══════════════════════════════════ */
+#s-exam { flex-direction: column; background: var(--surface); }
+
+.exam-topbar {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; flex-shrink: 0;
+}
+.et-left { display: flex; flex-direction: column; }
+.et-examname { font-size: 15px; font-weight: 700; color: var(--text); }
+.et-student { font-size: 12px; color: var(--muted); }
+.timer {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 8px 16px;
+  font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
+  color: var(--text); transition: all .3s;
+}
+.timer.warn { border-color: #F59E0B; color: #D97706; background: #FFFBEB; }
+.timer.danger { border-color: var(--wrong); color: var(--wrong); background: #FFF5F5; animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.6} }
+.et-right { display: flex; align-items: center; gap: 10px; }
+.violation-badge {
+  background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px;
+  padding: 5px 10px; font-size: 11px; font-weight: 600; color: #92400E; display: none;
+}
+
+.exam-layout { display: flex; flex: 1; overflow: hidden; }
+
+/* Question nav sidebar */
+.q-sidebar {
+  width: 220px; background: var(--bg); border-right: 1px solid var(--border);
+  padding: 20px 14px; overflow-y: auto; flex-shrink: 0;
+}
+.qs-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 12px; }
+.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 20px; }
+.qb {
+  height: 34px; border-radius: 6px; border: 1.5px solid var(--border);
+  background: var(--bg); font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all .15s; color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+}
+.qb:hover { border-color: var(--accent); color: var(--accent); }
+.qb.answered { background: #EEF2FF; border-color: #C7D2FE; color: var(--accent); }
+.qb.marked { background: #FFFBEB; border-color: #FDE68A; color: #92400E; }
+.qb.current { border-color: var(--accent); background: var(--accent); color: white; }
+.sidebar-legend { display: flex; flex-direction: column; gap: 6px; }
+.leg-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+.leg-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.progress-bar-wrap { margin-bottom: 16px; }
+.progress-bar-track { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s; }
+.progress-text { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+
+/* Main exam area */
+.exam-main { flex: 1; overflow-y: auto; padding: 28px; }
+.question-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px; max-width: 680px;
+  margin: 0 auto; box-shadow: var(--shadow);
+}
+.q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.q-num { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
+.q-mark-btn {
+  background: none; border: 1.5px solid var(--border); border-radius: 6px;
+  padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; font-family: inherit; transition: all .15s; display: flex; align-items: center; gap: 5px;
+}
+.q-mark-btn.marked { border-color: #F59E0B; color: #92400E; background: #FFFBEB; }
+.q-mark-btn:hover { border-color: var(--primary); }
+.q-text { font-size: 18px; font-weight: 500; line-height: 1.65; color: var(--text); margin-bottom: 28px; }
+.options-list { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 14px 18px; cursor: pointer;
+  transition: all .15s;
+}
+.opt:hover { border-color: var(--accent); background: #F5F3FF; }
+.opt.selected { border-color: var(--accent); background: #EEF2FF; }
+.opt-key {
+  width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--muted); flex-shrink: 0;
+}
+.opt.selected .opt-key { background: var(--accent); border-color: var(--accent); color: white; }
+.opt-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+.exam-controls {
+  max-width: 680px; margin: 20px auto 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.btn-nav {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 11px 22px; font-size: 13px; font-weight: 600; color: var(--text);
+  cursor: pointer; font-family: inherit; transition: all .15s; display: flex; align-items: center; gap: 6px;
+}
+.btn-nav:hover { border-color: var(--primary); }
+.btn-nav:disabled { opacity: .4; cursor: not-allowed; }
+.btn-submit-exam {
+  background: var(--accent); color: white; border: none;
+  padding: 11px 28px; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all .2s; display: flex; align-items: center; gap: 8px;
+  position: sticky; bottom: 20px;
+}
+.btn-submit-exam:hover { background: #4F46E5; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,102,241,.35); }
+
+/* ══════════════════════════════════
+   SUBMITTED SCREEN
+══════════════════════════════════ */
+#s-submitted {
+  flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #EEF2FF 0%, #FFFFFF 60%);
+  padding: 24px;
+}
+.submitted-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; width: 100%; max-width: 440px;
+  text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.1);
+  overflow: hidden; animation: slideUp .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes slideUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+.submitted-header {
+  background: linear-gradient(135deg, var(--accent), #818CF8);
+  padding: 40px 32px 32px; color: white;
+}
+.check-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,.25); border: 3px solid rgba(255,255,255,.5);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  animation: popIn .6s .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
+.check-circle svg { width: 36px; height: 36px; }
+.check-circle svg path { animation: drawCheck .4s .7s ease both; stroke-dasharray: 50; stroke-dashoffset: 50; }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+.submitted-header h2 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+.submitted-header p { font-size: 14px; opacity: .85; }
+.submitted-body { padding: 32px; }
+.sub-info { font-size: 15px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
+.sub-name { font-weight: 700; color: var(--text); font-size: 18px; margin-bottom: 4px; }
+.sub-exam { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+.sub-note {
+  background: var(--surface); border-radius: 8px; padding: 14px 18px;
+  font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+}
+.btn-back-home {
+  width: 100%; padding: 13px; border: none; border-radius: 8px;
+  background: var(--accent); color: white; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all .2s;
+}
+.btn-back-home:hover { background: #4F46E5; }
+.submitted-footer {
+  padding: 0 32px 24px; font-size: 11px; color: var(--muted);
+}
+
+/* ══════════════════════════════════
+   MODALS
+══════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,23,42,.5); backdrop-filter: blur(3px);
+  z-index: 999; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 14px; width: 100%; max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15); overflow: hidden;
+  animation: modalIn .25s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes modalIn { from { opacity:0; transform:scale(.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal-header { padding: 24px 24px 0; }
+.modal-icon { font-size: 32px; margin-bottom: 10px; }
+.modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.modal p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.modal-body { padding: 20px 24px 24px; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); transition: all .15s; }
+.modal-actions button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+.modal-actions button:hover { opacity: .85; }
+
+/* Warning modal */
+.warning-modal .modal-header { background: #FFFBEB; border-bottom: 1px solid #FDE68A; padding: 20px 24px; }
+.warning-modal .modal-header h3 { color: #92400E; }
+.warning-modal .modal-header p { color: #B45309; }
+.danger-modal .modal-header { background: #FFF5F5; border-bottom: 1px solid #FECACA; padding: 20px 24px; }
+.danger-modal .modal-header h3 { color: var(--wrong); }
+
+/* ══════════════════════════════════
+   NETWORK INDICATOR
+══════════════════════════════════ */
+.net-indicator {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted); font-weight: 500;
+}
+.net-dot { width: 8px; height: 8px; border-radius: 50%; }
+.net-dot.ethernet { background: var(--correct); }
+.net-dot.wifi { background: #3B82F6; }
+.net-dot.offline { background: #94A3B8; }
+
+/* ══════════════════════════════════
+   MISC
+══════════════════════════════════ */
+.loading-state { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+.dev-tag { font-size: 10px; color: var(--muted); text-align: center; margin-top: 16px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .login-card { padding: 32px 20px; }
+  .school-logo, .school-logo-fallback { width: 56px; height: 56px; }
+  .q-sidebar { width: 180px; min-width: 160px; }
+  .select-body { padding: 20px 14px; }
+  .exam-main { padding: 16px; }
+  .question-card { padding: 20px; }
+  .q-text { font-size: 15px; }
+  .rules-card { margin: 0 12px; }
+  .rules-body { padding: 20px; }
+  .rules-footer { padding: 0 20px 20px; }
+}
+@media (max-width: 560px) {
+  .q-sidebar { display: none; }
+  .topbar-logo, .topbar-logo-fb { display: none !important; }
+  .exam-topbar { flex-wrap: wrap; height: auto; padding: 10px 14px; gap: 8px; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── LOADER ── */
+.loader-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.85); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+.loader-spinner { width: 44px; height: 44px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loader-text { font-size: 14px; color: var(--muted); font-weight: 500; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SUBMIT LOCK INFO ── */
+.submit-lock-info { font-size: 11px; color: var(--muted); text-align: center; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text" id="loaderText">Loading…</div>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="screen active" id="s-login">
+  <div class="login-card">
+    <div class="school-header">
+      <img src="logo.png" class="school-logo" id="schoolLogoLogin" alt="School Logo" onerror="this.style.display='none';document.getElementById('schoolLogoFbLogin').style.display='flex'">
+      <div class="school-logo-fallback" id="schoolLogoFbLogin" style="display:none">P</div>
+      <div class="school-info">
+        <div class="school-name">Peter Harvard International Schools</div>
+        <div class="school-sub">Computer-Based Testing Portal</div>
+      </div>
+    </div>
+    <div class="login-title">Student Sign In</div>
+    <div class="login-sub">Enter your credentials to access your exam</div>
+    <div class="login-error" id="loginErr">Invalid ID or password. Please try again.</div>
+    <div class="field">
+      <label>Student ID</label>
+      <input type="text" id="inId" placeholder="e.g. student1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>Password <span style="font-weight:400;color:var(--muted)">(leave blank if none)</span></label>
+      <input type="password" id="inPass" placeholder="••••••••">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Sign In to Exam Portal</button>
+    <div class="login-footer">
+      Peter Harvard International Schools · Exam System v1.0<br>
+      <span style="color:#94A3B8">Developed by anointedthedeveloper</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EXAM SELECT ═══ -->
+<div class="screen" id="s-select" style="flex-direction:column">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="logo.png" class="topbar-logo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbFb').style.display='flex'">
+      <div class="topbar-logo-fb" id="tbFb" style="display:none">P</div>
+      <div class="topbar-name">Peter Harvard Int'l Schools</div>
+    </div>
+    <div class="topbar-right">
+      <div class="net-indicator" id="netIndicator"><div class="net-dot offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
+      <div class="student-chip" id="studentChip">Student</div>
+      <button class="btn-ghost" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+  <div class="select-body">
+    <div class="select-heading">Available Exams</div>
+    <div class="select-sub" id="selectSub">Select an exam to begin</div>
+    <div id="examList"><div class="loading-state">Loading exams…</div></div>
+  </div>
+</div>
+
+<!-- ═══ RULES / WAITING ROOM ═══ -->
+<div class="screen" id="s-rules" style="display:none;flex-direction:column;align-items:center;justify-content:center">
+  <div class="rules-card">
+    <div class="rules-header">
+      <div class="r-icon">📋</div>
+      <h2>Exam Instructions</h2>
+      <p id="rulesExamName">Please read carefully before starting</p>
+    </div>
+    <div class="rules-body">
+      <div class="rules-exam-info">
+        <div class="rei"><div class="val" id="rulesQcount">—</div><div class="lbl">Questions</div></div>
+        <div class="rei"><div class="val" id="rulesDuration">—</div><div class="lbl">Minutes</div></div>
+        <div class="rei"><div class="val" id="rulesType">MCQ</div><div class="lbl">Type</div></div>
+      </div>
+      <ul class="rules-list">
+        <li><div class="rule-num">1</div><div>Ensure you are connected to the school network before starting. Do not disconnect during the exam.</div></li>
+        <li><div class="rule-num">2</div><div>Read each question carefully before selecting your answer. You can navigate freely between questions.</div></li>
+        <li><div class="rule-num">3</div><div>Use the <strong>Mark for Review</strong> button to flag questions you want to revisit.</div></li>
+        <li><div class="rule-num warn">4</div><div>Do <strong>not</strong> switch to another tab or window during the exam. Each switch is recorded as a violation.</div></li>
+        <li><div class="rule-num warn">5</div><div>After <strong>3 tab violations</strong>, you will receive a final warning. A 4th violation will <strong>auto-submit</strong> your exam immediately.</div></li>
+        <li><div class="rule-num danger">6</div><div>Copying, right-clicking, and keyboard shortcuts are disabled during the exam. Any attempt is logged.</div></li>
+        <li><div class="rule-num">7</div><div>Your answers are saved automatically. If the browser closes, your progress is preserved locally.</div></li>
+        <li><div class="rule-num">8</div><div>When the timer reaches zero, your exam will be submitted automatically with your current answers.</div></li>
+      </ul>
+    </div>
+    <div class="rules-footer">
+      <button class="btn-begin" onclick="beginExam()">I Understand — Start Exam</button>
+      <br>
+      <button class="btn-back-rules" onclick="backToSelect()">← Choose a different exam</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EXAM ROOM ═══ -->
+<div class="screen" id="s-exam" style="display:none;flex-direction:column">
+  <div class="exam-topbar">
+    <div class="et-left">
+      <div class="et-examname" id="etExamName">Exam</div>
+      <div class="et-student" id="etStudent">Student</div>
+    </div>
+    <div class="timer" id="timer">00:00</div>
+    <div class="et-right">
+      <div class="violation-badge" id="violBadge">⚠ Violations: 0</div>
+      <div class="net-indicator" id="netIndicator2"><div class="net-dot offline" id="netDot2"></div><span id="netLabel2">—</span></div>
+    </div>
+  </div>
+
+  <div class="exam-layout">
+    <!-- Sidebar -->
+    <div class="q-sidebar">
+      <div class="progress-text" id="progressText">0 of 0 answered</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="progFill" style="width:0%"></div></div>
+      </div>
+      <div class="qs-label">Questions</div>
+      <div class="q-grid" id="qGrid"></div>
+      <div class="sidebar-legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div> Current</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#EEF2FF;border:1.5px solid #C7D2FE"></div> Answered</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#FFFBEB;border:1.5px solid #FDE68A"></div> Marked</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--bg);border:1.5px solid var(--border)"></div> Unanswered</div>
+      </div>
+      <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);">
+        <button class="btn-submit-exam" id="btnSubmitSidebar" onclick="confirmSubmit()" style="width:100%;opacity:0.4;pointer-events:none;">Submit Exam</button>
+        <div class="submit-lock-info" id="submitLockInfo" style="color:#94A3B8;margin-top:6px;">Answer 60% to unlock</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="exam-main">
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-num" id="qNum">QUESTION 1 OF 1</div>
+          <button class="q-mark-btn" id="markBtn" onclick="toggleMark()">⚑ Mark for Review</button>
+        </div>
+        <div class="q-text" id="qText"></div>
+        <div class="options-list" id="optsList"></div>
+      </div>
+      <div class="exam-controls">
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)"><span style="font-size:16px">&#8592;</span> Previous <span style="font-size:10px;color:var(--muted);margin-left:4px">[P]</span></button>
+        <div style="font-size:11px;color:var(--muted);text-align:center;line-height:1.5">Keys: P prev · N next<br>A B C D select option</div>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next <span style="font-size:16px">&#8594;</span> <span style="font-size:10px;color:var(--muted);margin-left:4px">[N]</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SUBMITTED ═══ -->
+<div class="screen" id="s-submitted" style="display:none;flex-direction:column;align-items:center;justify-content:center">
+  <div class="submitted-card">
+    <div class="submitted-header">
+      <div class="check-circle">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 26L22 34L38 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Exam Submitted!</h2>
+      <p>Your answers have been recorded successfully</p>
+    </div>
+    <div class="submitted-body">
+      <div class="sub-name" id="subStudentName">Student</div>
+      <div class="sub-exam" id="subExamName">Exam</div>
+      <div class="sub-note">
+        Your exam has been submitted to your teacher. Results will be shared by your teacher at an appropriate time. Thank you for participating.
+      </div>
+      <button class="btn-back-home" onclick="doLogout()">Return to Portal</button>
+    </div>
+    <div class="submitted-footer">
+      Peter Harvard International Schools · v1.0 · Developed by anointedthedeveloper
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Submit Confirm ═══ -->
+<div class="modal-overlay" id="modalSubmit">
+  <div class="modal">
+    <div class="modal-header" style="padding:24px 24px 0">
+      <div class="modal-icon">📤</div>
+      <h3>Submit Exam?</h3>
+      <p id="modalSubmitMsg">You are about to submit your exam. This action cannot be undone.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions">
+        <button onclick="closeModal('modalSubmit')">Cancel</button>
+        <button class="primary" onclick="doSubmit()">Submit Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Tab Warning ═══ -->
+<div class="modal-overlay" id="modalTabWarn">
+  <div class="modal warning-modal">
+    <div class="modal-header">
+      <div class="modal-icon">⚠️</div>
+      <h3 id="tabWarnTitle">Tab Switch Detected</h3>
+      <p id="tabWarnMsg">Please stay in this tab during your exam.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions">
+        <button class="primary" style="background:#F59E0B;border-color:#F59E0B" onclick="closeModal('modalTabWarn')">I Understand — Return to Exam</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Tab Final Warning ═══ -->
+<div class="modal-overlay" id="modalTabFinal">
+  <div class="modal danger-modal">
+    <div class="modal-header">
+      <div class="modal-icon">🚨</div>
+      <h3>Final Warning!</h3>
+      <p>This is your <strong>last warning</strong>. If you switch tabs one more time, your exam will be <strong>automatically submitted immediately</strong>.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions">
+        <button class="primary" style="background:var(--wrong);border-color:var(--wrong)" onclick="closeModal('modalTabFinal')">I Understand — Stay Here</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════
+// ANTI-CHEAT: Disable copy/paste/right-click
+// ══════════════════════════════════
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('paste', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  const blocked = [
+    e.ctrlKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
+    e.metaKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
+    e.key === 'F12', e.key === 'F5',
+    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())
+  ];
+  if (blocked.some(Boolean)) e.preventDefault();
+});
+
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+const S = {
+  studentId: null, studentName: null,
+  examFile: null, examName: null,
+  questions: [], answers: {}, marked: new Set(),
+  current: 0, timeLeft: 0, timer: null,
+  tabViolations: 0, submitted: false,
+  sessionInterval: null, netInterval: null
+};
+
+// ══════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  const el = document.getElementById(id);
+  el.style.display = 'flex';
+}
+
+// ══════════════════════════════════
+// NETWORK INDICATOR
+// ══════════════════════════════════
+async function updateNetIndicator() {
+  try {
+    const info = await fetch('/api/info').then(r => r.json());
+    const nets = info.networks || [];
+    const eth = nets.find(n => n.type === 'ethernet');
+    const wifi = nets.find(n => n.type === 'wifi');
+    const connected = eth || wifi;
+    ['netDot','netDot2'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.className = 'net-dot ' + (connected ? (eth ? 'ethernet' : 'wifi') : 'offline');
+    });
+    const label = connected ? (eth ? '🔌 Ethernet' : '📶 Wi-Fi') : 'No Network';
+    ['netLabel','netLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = label; });
+  } catch {
+    ['netDot','netDot2'].forEach(id => { const el = document.getElementById(id); if (el) el.className = 'net-dot offline'; });
+    ['netLabel','netLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 'Offline'; });
+  }
+}
+
+// ══════════════════════════════════
+// AUTH
+// ══════════════════════════════════
+async function doLogin() {
+  const id = document.getElementById('inId').value.trim();
+  const pass = document.getElementById('inPass').value;
+  if (!id) return;
+  try {
+    const res = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, password: pass, role: 'student' }) }).then(r => r.json());
+    if (res.ok) {
+      S.studentId = id;
+      S.studentName = res.name || id;
+      document.getElementById('studentChip').textContent = S.studentName;
+      document.getElementById('loginErr').style.display = 'none';
+      showScreen('s-select');
+      updateNetIndicator();
+      S.netInterval = setInterval(updateNetIndicator, 15000);
+      loadExams();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+    }
+  } catch { document.getElementById('loginErr').textContent = 'Cannot connect to server.'; document.getElementById('loginErr').style.display = 'block'; }
+}
+
+function doLogout() {
+  clearInterval(S.timer); clearInterval(S.sessionInterval); clearInterval(S.netInterval);
+  S.submitted = false; S.tabViolations = 0;
+  document.removeEventListener('visibilitychange', onVisibilityChange);
+  document.exitFullscreen?.();
+  Object.assign(S, { studentId:null, studentName:null, examFile:null, examName:null, questions:[], answers:{}, marked:new Set(), current:0, timeLeft:0, timer:null, sessionInterval:null });
+  showScreen('s-login');
+  document.getElementById('inId').value = '';
+  document.getElementById('inPass').value = '';
+}
+
+// ══════════════════════════════════
+// LOADER
+// ══════════════════════════════════
+function showLoader(text) {
+  document.getElementById('loaderText').textContent = text || 'Loading…';
+  document.getElementById('loaderOverlay').style.display = 'flex';
+}
+function hideLoader() { document.getElementById('loaderOverlay').style.display = 'none'; }
+
+// ══════════════════════════════════
+// EXAM SELECT
+// ══════════════════════════════════
+async function loadExams() {
+  document.getElementById('examList').innerHTML = '<div class="loading-state">Loading…</div>';
+  try {
+    const exams = await fetch('/api/exams').then(r => r.json());
+    // Only show active exams
+    const activeExams = exams.filter(e => e.active !== false);
+    if (!activeExams.length) {
+      document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">📭</div>No exams available yet.<br>Please check with your teacher.</div>`;
+      return;
+    }
+    document.getElementById('examList').innerHTML = activeExams.map(e => `
+      <div class="exam-card">
+        <div class="exam-icon">📝</div>
+        <div class="exam-info">
+          <div class="exam-name">${e.name}</div>
+          <div class="exam-meta">
+            <span>&#9203; ${e.duration} minutes</span>
+            <span>&#10067; ${e.questionCount} questions</span>
+            ${e.subject ? `<span>&#128218; ${e.subject}</span>` : ''}
+            ${e.class ? `<span>&#127979; ${e.class}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start &rarr;</button>
+      </div>`).join('');
+    document.getElementById('selectSub').textContent = `${activeExams.length} exam${activeExams.length>1?'s':''} available`;
+  } catch {
+    document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">&#9888;</div>Could not load exams. Check server connection.</div>`;
+  }
+}
+
+// ══════════════════════════════════
+// RULES / WAITING ROOM
+// ══════════════════════════════════
+function openRules(filename, name, qcount, duration) {
+  S.examFile = filename;
+  S.examName = name;
+  document.getElementById('rulesExamName').textContent = name;
+  document.getElementById('rulesQcount').textContent = qcount;
+  document.getElementById('rulesDuration').textContent = duration;
+  showScreen('s-rules');
+}
+function backToSelect() {
+  showScreen('s-select');
+  loadExams();
+}
+
+// ══════════════════════════════════
+// BEGIN EXAM
+// ══════════════════════════════════
+async function beginExam() {
+  showLoader('Loading exam questions…');
+  try {
+    const data = await fetch('/api/exam/' + encodeURIComponent(S.examFile)).then(r => r.json());
+    hideLoader();
+    if (data.error) { alert(data.error || 'Exam unavailable.'); return; }
+    if (!data || !data.questions || !data.questions.length) { alert('Could not load exam questions. Try again.'); return; }
+
+    // Shuffle questions and options
+    S.questions = shuffle(data.questions).map((q, i) => ({ ...q, _idx: i, _options: shuffleOpts(q) }));
+    S.answers = {};
+    S.marked = new Set();
+    S.current = 0;
+    S.submitted = false;
+    S.tabViolations = 0;
+    S.timeLeft = (data.duration || 30) * 60;
+    S.examName = data.exam;
+
+    // Load draft if exists
+    loadDraft();
+
+    // Setup UI
+    document.getElementById('etExamName').textContent = data.exam;
+    document.getElementById('etStudent').textContent = S.studentName;
+    document.getElementById('subStudentName').textContent = S.studentName;
+    document.getElementById('subExamName').textContent = data.exam;
+
+    buildQGrid();
+    renderQuestion();
+    startTimer();
+    startSessionPing();
+    setupTabTracking();
+
+    showScreen('s-exam');
+    document.documentElement.requestFullscreen?.().catch(() => {});
+  } catch (e) {
+    hideLoader();
+    alert('Error loading exam: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════
+// TAB TRACKING
+// ══════════════════════════════════
+function onVisibilityChange() {
+  if (S.submitted || document.visibilityState !== 'hidden') return;
+  S.tabViolations++;
+
+  // Report to server
+  fetch('/api/tabviolation', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ studentId: S.studentId, student: S.studentName, exam: S.examName, count: S.tabViolations }) }).catch(() => {});
+
+  // Update badge
+  const badge = document.getElementById('violBadge');
+  badge.style.display = 'flex';
+  badge.textContent = `⚠ Violations: ${S.tabViolations}`;
+
+  if (S.tabViolations >= 4) {
+    // Auto-submit
+    doSubmit();
+    return;
+  }
+
+  if (S.tabViolations === 3) {
+    openModal('modalTabFinal');
+    document.getElementById('tabWarnTitle').textContent = 'Final Warning!';
+  } else {
+    openModal('modalTabWarn');
+    document.getElementById('tabWarnTitle').textContent = `Tab Switch Detected (${S.tabViolations}/3)`;
+    document.getElementById('tabWarnMsg').textContent = `You have switched tabs ${S.tabViolations} time${S.tabViolations>1?'s':''}. You get ${3 - S.tabViolations} more warning${3-S.tabViolations===1?'':'s'} before your exam is auto-submitted.`;
+  }
+}
+function setupTabTracking() {
+  document.removeEventListener('visibilitychange', onVisibilityChange);
+  document.addEventListener('visibilitychange', onVisibilityChange);
+}
+
+// ══════════════════════════════════
+// DRAFT SAVE / LOAD
+// ══════════════════════════════════
+function saveDraft() {
+  if (!S.studentId || !S.examFile) return;
+  try {
+    localStorage.setItem(`draft_${S.studentId}_${S.examFile}`, JSON.stringify({
+      answers: S.answers, marked: [...S.marked], timeLeft: S.timeLeft
+    }));
+  } catch {}
+}
+function loadDraft() {
+  try {
+    const d = JSON.parse(localStorage.getItem(`draft_${S.studentId}_${S.examFile}`));
+    if (d) {
+      if (d.answers) S.answers = d.answers;
+      if (d.marked) S.marked = new Set(d.marked);
+      if (d.timeLeft && d.timeLeft > 0) S.timeLeft = d.timeLeft;
+    }
+  } catch {}
+}
+function clearDraft() {
+  try { localStorage.removeItem(`draft_${S.studentId}_${S.examFile}`); } catch {}
+}
+
+// ══════════════════════════════════
+// SESSION PING
+// ══════════════════════════════════
+function startSessionPing() {
+  clearInterval(S.sessionInterval);
+  S.sessionInterval = setInterval(() => {
+    if (S.submitted) { clearInterval(S.sessionInterval); return; }
+    const answered = Object.keys(S.answers).length;
+    fetch('/api/session', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+      studentId: S.studentId, student: S.studentName, exam: S.examName,
+      timeLeft: S.timeLeft, answered, total: S.questions.length,
+      tabViolations: S.tabViolations, status: 'active'
+    }) }).catch(() => {});
+    saveDraft();
+  }, 10000);
+}
+
+// ══════════════════════════════════
+// TIMER
+// ══════════════════════════════════
+function startTimer() {
+  clearInterval(S.timer);
+  updateTimerDisplay();
+  S.timer = setInterval(() => {
+    S.timeLeft--;
+    updateTimerDisplay();
+    if (S.timeLeft <= 0) { clearInterval(S.timer); doSubmit(); }
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.floor(S.timeLeft / 60), s = S.timeLeft % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'timer' + (S.timeLeft < 60 ? ' danger' : S.timeLeft < 300 ? ' warn' : '');
+}
+
+// ══════════════════════════════════
+// QUESTION RENDERING
+// ══════════════════════════════════
+function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
+function shuffleOpts(q) {
+  return shuffle(['A','B','C','D'].filter(k => q[k] !== undefined).map(k => ({ key: k, text: q[k] })));
+}
+
+function buildQGrid() {
+  document.getElementById('qGrid').innerHTML = S.questions.map((_, i) => `
+    <div class="qb ${i === S.current ? 'current' : ''} ${S.answers[i] ? 'answered' : ''} ${S.marked.has(i) ? 'marked' : ''}"
+      onclick="goTo(${i})">${i + 1}</div>`).join('');
+}
+
+function renderQuestion() {
+  const q = S.questions[S.current];
+  const total = S.questions.length;
+  const answered = Object.keys(S.answers).length;
+
+  document.getElementById('qNum').textContent = `QUESTION ${S.current + 1} OF ${total}`;
+  document.getElementById('qText').textContent = q.question;
+
+  const markBtn = document.getElementById('markBtn');
+  markBtn.className = 'q-mark-btn' + (S.marked.has(S.current) ? ' marked' : '');
+  markBtn.textContent = S.marked.has(S.current) ? '⚑ Marked for Review' : '⚑ Mark for Review';
+
+  document.getElementById('optsList').innerHTML = q._options.map(opt => `
+    <div class="opt ${S.answers[S.current] === opt.key ? 'selected' : ''}" onclick="selectAns('${opt.key}')">
+      <div class="opt-key">${opt.key}</div>
+      <div class="opt-text">${opt.text}</div>
+    </div>`).join('');
+
+  document.getElementById('btnPrev').disabled = S.current === 0;
+  document.getElementById('btnNext').disabled = S.current === total - 1;
+
+  document.getElementById('progressText').textContent = `${answered} of ${total} answered`;
+  document.getElementById('progFill').style.width = `${(answered / total) * 100}%`;
+
+  buildQGrid();
+  updateSubmitLock();
+}
+
+function selectAns(key) {
+  if (S.submitted) return;
+  S.answers[S.current] = key;
+  saveDraft();
+  renderQuestion();
+}
+function toggleMark() {
+  if (S.marked.has(S.current)) S.marked.delete(S.current);
+  else S.marked.add(S.current);
+  renderQuestion();
+}
+function navigate(dir) {
+  const next = S.current + dir;
+  if (next >= 0 && next < S.questions.length) { S.current = next; renderQuestion(); }
+}
+function goTo(i) { S.current = i; renderQuestion(); }
+
+function updateSubmitLock() {
+  const answered = Object.keys(S.answers).length;
+  const total = S.questions.length;
+  const pct = total > 0 ? (answered / total) * 100 : 0;
+  const threshold = 60;
+  const unlocked = pct >= threshold;
+  const btn = document.getElementById('btnSubmitSidebar');
+  const info = document.getElementById('submitLockInfo');
+  if (btn) {
+    btn.style.opacity = unlocked ? '1' : '0.4';
+    btn.style.pointerEvents = unlocked ? 'all' : 'none';
+  }
+  if (info) {
+    info.textContent = unlocked
+      ? `${answered}/${total} answered (${Math.round(pct)}%)`
+      : `Answer ${threshold}% to unlock (${answered}/${total})`;
+    info.style.color = unlocked ? 'rgba(255,255,255,0.6)' : '#94A3B8';
+  }
+}
+
+// ══════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════
+function confirmSubmit() {
+  const answered = Object.keys(S.answers).length;
+  const total = S.questions.length;
+  const unanswered = total - answered;
+  document.getElementById('modalSubmitMsg').textContent =
+    unanswered > 0
+      ? `You have answered ${answered} of ${total} questions. ${unanswered} question${unanswered > 1 ? 's are' : ' is'} unanswered. Are you sure you want to submit?`
+      : `You have answered all ${total} questions. Are you sure you want to submit?`;
+  openModal('modalSubmit');
+}
+
+async function doSubmit() {
+  if (S.submitted) return;
+  S.submitted = true;
+  clearInterval(S.timer);
+  clearInterval(S.sessionInterval);
+  closeModal('modalSubmit'); closeModal('modalTabWarn'); closeModal('modalTabFinal');
+  document.removeEventListener('visibilitychange', onVisibilityChange);
+  showLoader('Submitting exam…');
+
+  let score = 0;
+  const answerArr = S.questions.map((q, i) => {
+    const ans = S.answers[i] || null;
+    if (ans === q.answer) score++;
+    return ans;
+  });
+  const total = S.questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  try {
+    await fetch('/api/submit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        student: S.studentName, studentId: S.studentId, exam: S.examName,
+        examFilename: S.examFile,
+        score, total, percentage: pct, answers: answerArr,
+        tabViolations: S.tabViolations
+      })
+    });
+  } catch {}
+
+  hideLoader();
+  clearDraft();
+  document.exitFullscreen?.().catch(() => {});
+  showScreen('s-submitted');
+}
+
+// ══════════════════════════════════
+// MODALS
+// ══════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ══════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ══════════════════════════════════
+document.addEventListener('keydown', e => {
+  const inExam = document.getElementById('s-exam').style.display !== 'none';
+  if (!inExam) return;
+  // Block standard cheat keys but allow exam navigation
+  const blocked = [
+    e.ctrlKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
+    e.metaKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
+    e.key === 'F12',
+    e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())
+  ];
+  if (blocked.some(Boolean)) { e.preventDefault(); return; }
+
+  // Navigation - N/P keys and arrows
+  if (e.key === 'n' || e.key === 'N' || e.key === 'ArrowRight') { navigate(1); return; }
+  if (e.key === 'p' || e.key === 'P' || e.key === 'ArrowLeft') { navigate(-1); return; }
+
+  // Option selection by letter key A B C D
+  if (['a','b','c','d'].includes(e.key.toLowerCase())) {
+    const key = e.key.toUpperCase();
+    const q = S.questions[S.current];
+    if (q && q._options.find(o => o.key === key)) { selectAns(key); return; }
+  }
+
+  // Option selection by number 1 2 3 4
+  if (['1','2','3','4'].includes(e.key)) {
+    const q = S.questions[S.current];
+    if (q && q._options[parseInt(e.key) - 1]) selectAns(q._options[parseInt(e.key) - 1].key);
+  }
+});
+
+// ══════════════════════════════════
+// BOOT
+// ══════════════════════════════════
+document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
+document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+showScreen('s-login');
+</script>
+</body>
+</html>
