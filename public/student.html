@@ -3,26 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam Portal – Peter Harvard International Schools</title>
+<title>Student Portal – Peter Harvard International Schools v2.0</title>
 <link rel="icon" type="image/png" href="Badgejet.jpg">
 <style>
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+html, body { height: 100%; scroll-behavior: smooth; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #0F172A;
   min-height: 100vh;
   user-select: none;
   -webkit-user-select: none;
+  animation: fadeIn 0.8s ease-out;
 }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── CSS Variables ── */
 :root {
-  --primary: #334155;
+  --primary: #4f46e5;
   --accent: #6366F1;
-  --bg: #FFFFFF;
+  --bg: rgba(255, 255, 255, 0.95);
   --surface: #F1F5F9;
   --text: #0F172A;
   --muted: #64748B;
@@ -30,494 +37,685 @@ body {
   --correct: #22C55E;
   --wrong: #EF4444;
   --warn: #F59E0B;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  --radius: 12px;
+  --shadow: 0 10px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.2);
 }
 
 /* ── Screen Manager ── */
 .screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; }
+.screen.active { display: flex; animation: fadeIn 0.5s ease; }
 
 /* ══════════════════════════════════
-   LOGIN SCREEN
+   LOGIN SCREEN - Enhanced
 ══════════════════════════════════ */
 #s-login {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, #F1F5F9 0%, #FFFFFF 60%);
   padding: 24px;
+  backdrop-filter: blur(10px);
 }
 .login-card {
-  background: #FFFFFF;
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
   padding: 48px 40px;
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
   box-shadow: var(--shadow);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+.login-card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(79, 70, 229, 0.3); }
 .school-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
   margin-bottom: 32px;
   padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid rgba(99, 102, 241, 0.2);
 }
 .school-logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 12px;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
   object-fit: contain;
-  background: var(--surface);
-  padding: 6px;
+  background: white;
+  padding: 8px;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .school-logo-fallback {
-  width: 72px; height: 72px; border-radius: 12px;
-  background: var(--primary); display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 700; font-size: 26px; flex-shrink: 0;
+  width: 80px; height: 80px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 800; font-size: 32px; flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
-.school-info { flex: 1; min-width: 0; }
-.school-name { font-size: 15px; font-weight: 800; color: var(--primary); line-height: 1.3; }
-.school-sub { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 500; }
-.login-title { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-.login-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
-.field { margin-bottom: 18px; }
-.field label { display: block; font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 6px; letter-spacing: .3px; }
+.school-info { flex: 1; }
+.school-name { font-size: 18px; font-weight: 800; color: var(--primary); line-height: 1.4; }
+.school-sub { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+.login-title { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.login-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
+.field { margin-bottom: 24px; animation: slideIn 0.5s ease; }
+.field label { 
+  display: block; font-size: 14px; font-weight: 600; color: var(--primary); 
+  margin-bottom: 8px; letter-spacing: .3px; 
+}
 .field input {
-  width: 100%; padding: 11px 14px;
-  border: 1.5px solid var(--border); border-radius: 8px;
-  font-size: 14px; color: var(--text); background: var(--bg);
-  outline: none; transition: border-color .2s, box-shadow .2s;
+  width: 100%; padding: 14px 18px;
+  border: 2px solid var(--border); border-radius: 12px;
+  font-size: 16px; color: var(--text); background: white;
+  outline: none; transition: all 0.3s ease;
   font-family: inherit;
 }
-.field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+.field input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(99,102,241,.15); transform: scale(1.02); }
+.field input:hover { border-color: var(--accent); }
 .btn-primary {
-  width: 100%; padding: 13px; border: none; border-radius: 8px;
-  background: var(--accent); color: white; font-size: 15px; font-weight: 600;
-  cursor: pointer; transition: all .2s; font-family: inherit;
-  letter-spacing: .2px;
+  width: 100%; padding: 16px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white; font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.3s ease; font-family: inherit;
+  letter-spacing: .5px; position: relative; overflow: hidden;
 }
-.btn-primary:hover { background: #4F46E5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,.3); }
+.btn-primary:hover { 
+  background: linear-gradient(135deg, #4338ca, #6366F1);
+  transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99,102,241,.4);
+}
 .btn-primary:active { transform: translateY(0); }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, .5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+.btn-primary:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+@keyframes ripple {
+  0% { transform: scale(0, 0); opacity: 0.5; }
+  20% { transform: scale(25, 25); opacity: 0.3; }
+  100% { opacity: 0; transform: scale(40, 40); }
+}
 .login-error {
-  background: #FEF2F2; border: 1px solid #FECACA; border-radius: 7px;
-  padding: 10px 14px; color: var(--wrong); font-size: 13px; margin-bottom: 16px; display: none;
+  background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px;
+  padding: 12px 16px; color: var(--wrong); font-size: 14px; margin-bottom: 20px; display: none;
+  animation: slideIn 0.3s ease;
 }
 .login-footer {
-  text-align: center; margin-top: 28px; padding-top: 20px;
-  border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--muted); line-height: 1.6;
+  text-align: center; margin-top: 32px; padding-top: 24px;
+  border-top: 2px solid rgba(99, 102, 241, 0.1);
+  font-size: 12px; color: var(--muted); line-height: 1.6;
+}
+.login-footer .dev-tag {
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.example-id {
+  background: #EEF2FF;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--primary);
+  margin-top: 8px;
+  text-align: center;
+  border: 1px dashed var(--accent);
 }
 
 /* ══════════════════════════════════
-   EXAM SELECT SCREEN
+   EXAM SELECT SCREEN - Enhanced
 ══════════════════════════════════ */
-#s-select { flex-direction: column; background: var(--surface); }
+#s-select { flex-direction: column; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 .topbar {
-  background: var(--bg); border-bottom: 1px solid var(--border);
-  padding: 0 28px; height: 60px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0 32px; height: 80px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100; flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-logo { width: 40px; height: 40px; border-radius: 8px; object-fit: contain; background: var(--surface); padding: 3px; }
-.topbar-logo-fb { width: 40px; height: 40px; border-radius: 8px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 15px; }
-.topbar-name { font-size: 14px; font-weight: 700; color: var(--primary); }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { width: 48px; height: 48px; border-radius: 12px; object-fit: contain; background: white; padding: 4px; }
+.topbar-logo-fb { width: 48px; height: 48px; border-radius: 12px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px; }
+.topbar-name { font-size: 16px; font-weight: 700; color: var(--primary); }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
 .student-chip {
-  background: var(--surface); border: 1px solid var(--border);
-  padding: 6px 14px; border-radius: 20px;
-  font-size: 13px; font-weight: 500; color: var(--text);
-  max-width: 200px;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 8px 20px; border-radius: 40px;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .class-badge {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--primary), #818CF8);
   color: white;
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: 8px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 .btn-ghost {
-  background: none; border: 1px solid var(--border); border-radius: 7px;
-  padding: 7px 14px; font-size: 12px; font-weight: 500; color: var(--muted);
-  cursor: pointer; font-family: inherit; transition: all .15s;
+  background: rgba(255,255,255,0.9); border: 1px solid var(--border); border-radius: 30px;
+  padding: 8px 20px; font-size: 13px; font-weight: 600; color: var(--muted);
+  cursor: pointer; font-family: inherit; transition: all 0.2s ease;
 }
-.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn-ghost:hover { background: white; border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-.select-body { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 36px 20px; }
-.select-heading { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-.select-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.select-body { flex: 1; max-width: 900px; width: 100%; margin: 0 auto; padding: 40px 24px; }
+.select-heading { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.select-sub { font-size: 15px; color: rgba(255,255,255,0.9); margin-bottom: 32px; }
 .exam-card {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius);
-  padding: 22px 24px; margin-bottom: 14px;
-  display: flex; align-items: center; gap: 20px;
-  cursor: pointer; transition: all .2s; box-shadow: var(--shadow);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px 28px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 24px;
+  cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  animation: slideIn 0.5s ease;
 }
-.exam-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(99,102,241,.1); }
+.exam-card:hover { 
+  transform: translateY(-4px) scale(1.02); 
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  border-color: var(--primary);
+}
 .exam-card.taken {
   opacity: 0.8;
-  background: #F8FAFC;
+  background: rgba(248, 250, 252, 0.9);
   border-color: var(--muted);
   cursor: default;
 }
 .exam-card.taken:hover {
   transform: none;
   border-color: var(--muted);
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
 }
 .exam-icon {
-  width: 48px; height: 48px; border-radius: 10px;
+  width: 64px; height: 64px; border-radius: 16px;
   background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
+  font-size: 28px; flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
 }
 .exam-info { flex: 1; }
-.exam-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.exam-meta { display: flex; gap: 16px; font-size: 12px; color: var(--muted); font-weight: 500; flex-wrap: wrap; }
-.exam-meta span::before { margin-right: 4px; }
+.exam-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.exam-meta { display: flex; gap: 20px; font-size: 13px; color: var(--muted); font-weight: 500; flex-wrap: wrap; }
+.exam-meta span::before { margin-right: 6px; }
 .btn-start {
-  background: var(--accent); color: white; border: none;
-  padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 600;
-  cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .2s;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white; border: none;
+  padding: 12px 28px; border-radius: 30px; font-size: 14px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
-.btn-start:hover { background: #4F46E5; }
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.5); }
 .btn-start:disabled {
   background: var(--muted);
   cursor: not-allowed;
   opacity: 0.7;
+  box-shadow: none;
 }
 .empty-exams {
-  text-align: center; padding: 60px 20px;
-  background: var(--bg); border: 1.5px dashed var(--border); border-radius: var(--radius);
-  color: var(--muted); font-size: 14px;
+  text-align: center; padding: 80px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 2px dashed var(--glass-border); border-radius: 20px;
+  color: white; font-size: 16px;
+  animation: slideUp 0.5s ease;
 }
-.empty-exams .e-icon { font-size: 36px; margin-bottom: 12px; }
+.empty-exams .e-icon { font-size: 48px; margin-bottom: 16px; }
 
 /* ══════════════════════════════════
-   WAITING ROOM / RULES
+   WAITING ROOM / RULES - Enhanced
 ══════════════════════════════════ */
-#s-rules { flex-direction: column; align-items: center; justify-content: center; background: var(--surface); padding: 24px; }
+#s-rules { flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; }
 .rules-card {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 16px;
-  width: 100%; max-width: 560px; box-shadow: var(--shadow); overflow: hidden;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  width: 100%; max-width: 700px; box-shadow: var(--shadow); overflow: hidden;
+  animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .rules-header {
-  background: var(--primary); color: white;
-  padding: 28px 32px; text-align: center;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white;
+  padding: 40px 40px;
+  text-align: center;
 }
-.rules-header .r-icon { font-size: 36px; margin-bottom: 10px; }
-.rules-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-.rules-header p { font-size: 13px; opacity: .75; }
-.rules-body { padding: 28px 32px; }
+.rules-header .r-icon { font-size: 48px; margin-bottom: 16px; }
+.rules-header h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.rules-header p { font-size: 15px; opacity: .9; }
+.rules-body { padding: 32px 40px; }
 .rules-exam-info {
-  background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 8px;
-  padding: 14px 18px; margin-bottom: 24px;
+  background: white;
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 20px 24px; margin-bottom: 32px;
   display: flex; justify-content: space-around;
 }
 .rei { text-align: center; }
-.rei .val { font-size: 20px; font-weight: 700; color: var(--accent); }
-.rei .lbl { font-size: 11px; color: var(--muted); font-weight: 500; margin-top: 2px; }
-.rules-list { list-style: none; margin-bottom: 28px; }
+.rei .val { font-size: 28px; font-weight: 800; color: var(--primary); }
+.rei .lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.rules-list { list-style: none; margin-bottom: 32px; }
 .rules-list li {
-  display: flex; gap: 12px; padding: 10px 0;
-  border-bottom: 1px solid var(--surface); font-size: 13px; line-height: 1.5;
+  display: flex; gap: 16px; padding: 14px 0;
+  border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.6;
+  animation: slideIn 0.5s ease;
 }
 .rules-list li:last-child { border-bottom: none; }
 .rule-num {
-  width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
-  color: white; font-size: 11px; font-weight: 700; display: flex;
-  align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  width: 28px; height: 28px; border-radius: 50%; background: var(--primary);
+  color: white; font-size: 13px; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
 }
-.rule-num.warn { background: #F59E0B; }
+.rule-num.warn { background: var(--warn); }
 .rule-num.danger { background: var(--wrong); }
-.rules-footer { text-align: center; padding: 0 32px 28px; }
+.rules-footer { text-align: center; padding: 0 40px 40px; }
 .btn-begin {
-  width: 100%; padding: 14px; border: none; border-radius: 8px;
-  background: var(--accent); color: white; font-size: 15px; font-weight: 700;
-  cursor: pointer; font-family: inherit; transition: all .2s; letter-spacing: .3px;
+  width: 100%; padding: 18px; border: none; border-radius: 40px;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white; font-size: 18px; font-weight: 800;
+  cursor: pointer; font-family: inherit; transition: all 0.3s ease; letter-spacing: .5px;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
 }
-.btn-begin:hover { background: #4F46E5; transform: translateY(-1px); }
+.btn-begin:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.6); }
 .btn-back-rules {
-  background: none; border: none; color: var(--muted); font-size: 13px;
-  cursor: pointer; margin-top: 12px; font-family: inherit; text-decoration: underline;
+  background: none; border: none; color: var(--muted); font-size: 14px;
+  cursor: pointer; margin-top: 16px; font-family: inherit; text-decoration: underline;
+  transition: all 0.2s ease;
 }
+.btn-back-rules:hover { color: var(--primary); }
 
 /* ══════════════════════════════════
-   EXAM ROOM
+   EXAM ROOM - Enhanced
 ══════════════════════════════════ */
-#s-exam { flex-direction: column; background: var(--surface); }
+#s-exam { flex-direction: column; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 
 .exam-topbar {
-  background: var(--bg); border-bottom: 1px solid var(--border);
-  padding: 0 24px; height: 64px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0 32px; height: 80px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100; flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 .et-left { display: flex; flex-direction: column; }
-.et-examname { font-size: 15px; font-weight: 700; color: var(--text); }
-.et-student { font-size: 12px; color: var(--muted); }
+.et-examname { font-size: 18px; font-weight: 800; color: var(--primary); }
+.et-student { font-size: 13px; color: var(--muted); }
 .timer {
   display: flex; align-items: center; gap: 8px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; padding: 8px 16px;
-  font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
-  color: var(--text); transition: all .3s;
+  background: white; border: 2px solid var(--border);
+  border-radius: 40px; padding: 10px 24px;
+  font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums;
+  color: var(--text); transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.timer.warn { border-color: #F59E0B; color: #D97706; background: #FFFBEB; }
-.timer.danger { border-color: var(--wrong); color: var(--wrong); background: #FFF5F5; animation: blink 1s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.6} }
-.et-right { display: flex; align-items: center; gap: 10px; }
+.timer.warn { border-color: var(--warn); color: #D97706; background: #FFFBEB; animation: pulse 1s infinite; }
+.timer.danger { border-color: var(--wrong); color: var(--wrong); background: #FFF5F5; animation: pulse 0.5s infinite; }
+.et-right { display: flex; align-items: center; gap: 16px; }
 .violation-badge {
-  background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px;
-  padding: 5px 10px; font-size: 11px; font-weight: 600; color: #92400E; 
-  transition: all .3s;
+  background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 30px;
+  padding: 8px 16px; font-size: 13px; font-weight: 700; color: #92400E; 
+  transition: all 0.3s ease;
 }
-.violation-badge.warn-3 { background: #F59E0B; color: white; animation: pulse 1s infinite; }
+.violation-badge.warn-3 { background: var(--warn); color: white; animation: pulse 1s infinite; }
 .violation-badge.danger { background: var(--wrong); color: white; animation: pulse 0.5s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
 
 .exam-layout { display: flex; flex: 1; overflow: hidden; }
 
 /* Question nav sidebar */
 .q-sidebar {
-  width: 220px; background: var(--bg); border-right: 1px solid var(--border);
-  padding: 20px 14px; overflow-y: auto; flex-shrink: 0;
+  width: 260px; background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid var(--glass-border);
+  padding: 24px 20px; overflow-y: auto; flex-shrink: 0;
 }
-.qs-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 12px; }
-.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 20px; }
+.qs-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
+.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
 .qb {
-  height: 34px; border-radius: 6px; border: 1.5px solid var(--border);
-  background: var(--bg); font-size: 11px; font-weight: 600;
-  cursor: pointer; transition: all .15s; color: var(--muted);
+  height: 44px; border-radius: 10px; border: 2px solid var(--border);
+  background: white; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; color: var(--muted);
   display: flex; align-items: center; justify-content: center;
 }
-.qb:hover { border-color: var(--accent); color: var(--accent); }
-.qb.answered { background: #EEF2FF; border-color: #C7D2FE; color: var(--accent); }
-.qb.marked { background: #FFFBEB; border-color: #FDE68A; color: #92400E; }
-.qb.current { border-color: var(--accent); background: var(--accent); color: white; }
-.sidebar-legend { display: flex; flex-direction: column; gap: 6px; }
-.leg-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
-.leg-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-.progress-bar-wrap { margin-bottom: 16px; }
-.progress-bar-track { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s; }
-.progress-text { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.qb:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+.qb.answered { background: #EEF2FF; border-color: var(--primary); color: var(--primary); }
+.qb.marked { background: #FFFBEB; border-color: var(--warn); color: #92400E; }
+.qb.current { border-color: var(--primary); background: var(--primary); color: white; }
+.sidebar-legend { display: flex; flex-direction: column; gap: 8px; }
+.leg-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+.leg-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+.progress-bar-wrap { margin-bottom: 20px; }
+.progress-bar-track { background: var(--border); border-radius: 6px; height: 8px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #818CF8); border-radius: 6px; transition: width 0.3s ease; }
+.progress-text { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
 
 /* Main exam area */
-.exam-main { flex: 1; overflow-y: auto; padding: 28px; }
+.exam-main { flex: 1; overflow-y: auto; padding: 32px; }
 .question-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 32px; max-width: 680px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px; padding: 40px; max-width: 800px;
   margin: 0 auto; box-shadow: var(--shadow);
+  animation: slideUp 0.5s ease;
 }
-.q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.q-num { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
+.q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.q-num { font-size: 14px; font-weight: 700; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
 .q-mark-btn {
-  background: none; border: 1.5px solid var(--border); border-radius: 6px;
-  padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--muted);
-  cursor: pointer; font-family: inherit; transition: all .15s; display: flex; align-items: center; gap: 5px;
+  background: white; border: 2px solid var(--border); border-radius: 30px;
+  padding: 8px 20px; font-size: 13px; font-weight: 700; color: var(--muted);
+  cursor: pointer; font-family: inherit; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;
 }
-.q-mark-btn.marked { border-color: #F59E0B; color: #92400E; background: #FFFBEB; }
-.q-mark-btn:hover { border-color: var(--primary); }
-.q-text { font-size: 18px; font-weight: 500; line-height: 1.65; color: var(--text); margin-bottom: 28px; }
-.options-list { display: flex; flex-direction: column; gap: 10px; }
+.q-mark-btn.marked { border-color: var(--warn); color: #92400E; background: #FFFBEB; }
+.q-mark-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+.q-text { font-size: 20px; font-weight: 500; line-height: 1.7; color: var(--text); margin-bottom: 32px; }
+.options-list { display: flex; flex-direction: column; gap: 12px; }
 .opt {
-  display: flex; align-items: center; gap: 16px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; padding: 14px 18px; cursor: pointer;
-  transition: all .15s;
+  display: flex; align-items: center; gap: 20px;
+  background: white; border: 2px solid var(--border);
+  border-radius: 16px; padding: 18px 24px; cursor: pointer;
+  transition: all 0.2s ease;
 }
-.opt:hover { border-color: var(--accent); background: #F5F3FF; }
-.opt.selected { border-color: var(--accent); background: #EEF2FF; }
+.opt:hover { border-color: var(--primary); background: #F5F3FF; transform: translateX(5px); }
+.opt.selected { border-color: var(--primary); background: #EEF2FF; box-shadow: 0 4px 12px rgba(99,102,241,0.2); }
 .opt-key {
-  width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border);
+  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--muted); flex-shrink: 0;
+  font-size: 14px; font-weight: 800; color: var(--muted); flex-shrink: 0;
+  background: white;
 }
-.opt.selected .opt-key { background: var(--accent); border-color: var(--accent); color: white; }
-.opt-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+.opt.selected .opt-key { background: var(--primary); border-color: var(--primary); color: white; }
+.opt-text { font-size: 16px; color: var(--text); line-height: 1.6; }
 
 .exam-controls {
-  max-width: 680px; margin: 20px auto 0;
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  max-width: 800px; margin: 24px auto 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
 }
 .btn-nav {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 11px 22px; font-size: 13px; font-weight: 600; color: var(--text);
-  cursor: pointer; font-family: inherit; transition: all .15s; display: flex; align-items: center; gap: 6px;
+  background: white; border: 2px solid var(--border); border-radius: 40px;
+  padding: 14px 28px; font-size: 14px; font-weight: 700; color: var(--text);
+  cursor: pointer; font-family: inherit; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px;
 }
-.btn-nav:hover { border-color: var(--primary); }
-.btn-nav:disabled { opacity: .4; cursor: not-allowed; }
+.btn-nav:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.btn-nav:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 .btn-submit-exam {
-  background: var(--accent); color: white; border: none;
-  padding: 11px 28px; border-radius: 8px; font-size: 14px; font-weight: 700;
-  cursor: pointer; font-family: inherit; transition: all .2s; display: flex; align-items: center; gap: 8px;
-  position: sticky; bottom: 20px;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white; border: none;
+  padding: 14px 32px; border-radius: 40px; font-size: 16px; font-weight: 800;
+  cursor: pointer; font-family: inherit; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
+  position: sticky; bottom: 24px; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
 }
-.btn-submit-exam:hover { background: #4F46E5; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,102,241,.35); }
+.btn-submit-exam:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.6); }
 
 /* ══════════════════════════════════
-   SUBMITTED SCREEN
+   SUBMITTED SCREEN - Enhanced
 ══════════════════════════════════ */
 #s-submitted {
   flex-direction: column; align-items: center; justify-content: center;
-  background: linear-gradient(160deg, #EEF2FF 0%, #FFFFFF 60%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 24px;
 }
 .submitted-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 20px; width: 100%; max-width: 440px;
-  text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.1);
-  overflow: hidden; animation: slideUp .5s cubic-bezier(.34,1.56,.64,1) both;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px; width: 100%; max-width: 500px;
+  text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  overflow: hidden; animation: slideUp 0.6s cubic-bezier(.34,1.56,.64,1) both;
 }
-@keyframes slideUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
 .submitted-header {
-  background: linear-gradient(135deg, var(--accent), #818CF8);
-  padding: 40px 32px 32px; color: white;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  padding: 48px 40px 40px; color: white;
 }
 .check-circle {
-  width: 72px; height: 72px; border-radius: 50%;
+  width: 80px; height: 80px; border-radius: 50%;
   background: rgba(255,255,255,.25); border: 3px solid rgba(255,255,255,.5);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
-  animation: popIn .6s .3s cubic-bezier(.34,1.56,.64,1) both;
+  margin: 0 auto 20px;
+  animation: popIn 0.6s .3s cubic-bezier(.34,1.56,.64,1) both;
 }
 @keyframes popIn { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
-.check-circle svg { width: 36px; height: 36px; }
+.check-circle svg { width: 40px; height: 40px; }
 .check-circle svg path { animation: drawCheck .4s .7s ease both; stroke-dasharray: 50; stroke-dashoffset: 50; }
 @keyframes drawCheck { to { stroke-dashoffset: 0; } }
-.submitted-header h2 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
-.submitted-header p { font-size: 14px; opacity: .85; }
-.submitted-body { padding: 32px; }
-.sub-info { font-size: 15px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
-.sub-name { font-weight: 700; color: var(--text); font-size: 18px; margin-bottom: 4px; }
-.sub-exam { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+.submitted-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+.submitted-header p { font-size: 16px; opacity: .9; }
+.submitted-body { padding: 40px; }
+.sub-info { font-size: 16px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+.sub-name { font-weight: 800; color: var(--text); font-size: 20px; margin-bottom: 6px; }
+.sub-exam { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
 .sub-note {
-  background: var(--surface); border-radius: 8px; padding: 14px 18px;
-  font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+  background: var(--surface); border-radius: 16px; padding: 20px 24px;
+  font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px;
 }
 .btn-back-home {
-  width: 100%; padding: 13px; border: none; border-radius: 8px;
-  background: var(--accent); color: white; font-size: 14px; font-weight: 700;
-  cursor: pointer; font-family: inherit; transition: all .2s;
+  width: 100%; padding: 16px; border: none; border-radius: 40px;
+  background: linear-gradient(135deg, var(--primary), #818CF8);
+  color: white; font-size: 16px; font-weight: 800;
+  cursor: pointer; font-family: inherit; transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
 }
-.btn-back-home:hover { background: #4F46E5; }
+.btn-back-home:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.6); }
 .submitted-footer {
-  padding: 0 32px 24px; font-size: 11px; color: var(--muted);
+  padding: 0 40px 32px; font-size: 12px; color: var(--muted);
+}
+.submitted-footer .dev-tag {
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 8px;
 }
 
 /* ══════════════════════════════════
-   MODALS
+   MODALS - Enhanced
 ══════════════════════════════════ */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(15,23,42,.5); backdrop-filter: blur(3px);
-  z-index: 999; align-items: center; justify-content: center; padding: 20px;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  z-index: 9999; align-items: center; justify-content: center; padding: 20px;
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 14px; width: 100%; max-width: 400px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.15); overflow: hidden;
-  animation: modalIn .25s cubic-bezier(.34,1.56,.64,1) both;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px; width: 100%; max-width: 450px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.3); overflow: hidden;
+  animation: modalIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
 }
-@keyframes modalIn { from { opacity:0; transform:scale(.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
-.modal-header { padding: 24px 24px 0; }
-.modal-icon { font-size: 32px; margin-bottom: 10px; }
-.modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.modal p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-.modal-body { padding: 20px 24px 24px; }
-.modal-actions { display: flex; gap: 10px; }
-.modal-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); transition: all .15s; }
-.modal-actions button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+@keyframes modalIn { from { opacity:0; transform:scale(.9) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal-header { padding: 28px 28px 0; }
+.modal-icon { font-size: 40px; margin-bottom: 12px; }
+.modal h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.modal p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+.modal-body { padding: 24px 28px 28px; }
+.modal-actions { display: flex; gap: 12px; }
+.modal-actions button { 
+  flex: 1; padding: 14px; border-radius: 40px; font-size: 15px; font-weight: 700; 
+  font-family: inherit; cursor: pointer; border: 2px solid var(--border); 
+  background: white; color: var(--text); transition: all 0.2s ease;
+}
+.modal-actions button.primary { background: var(--primary); border-color: var(--primary); color: white; }
 .modal-actions button.warn { background: var(--warn); border-color: var(--warn); color: white; }
 .modal-actions button.danger { background: var(--wrong); border-color: var(--wrong); color: white; }
-.modal-actions button:hover { opacity: .85; }
+.modal-actions button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-/* Warning modal */
-.warning-modal .modal-header { background: #FFFBEB; border-bottom: 1px solid #FDE68A; padding: 20px 24px; }
+.warning-modal .modal-header { background: #FFFBEB; border-bottom: 1px solid #FDE68A; padding: 24px 28px; }
 .warning-modal .modal-header h3 { color: #92400E; }
 .warning-modal .modal-header p { color: #B45309; }
-.danger-modal .modal-header { background: #FFF5F5; border-bottom: 1px solid #FECACA; padding: 20px 24px; }
+.danger-modal .modal-header { background: #FFF5F5; border-bottom: 1px solid #FECACA; padding: 24px 28px; }
 .danger-modal .modal-header h3 { color: var(--wrong); }
 
 /* ══════════════════════════════════
-   NETWORK INDICATOR
+   NETWORK INDICATOR - With icons
 ══════════════════════════════════ */
 .net-indicator {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--muted); font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted); font-weight: 600;
+  background: white;
+  padding: 6px 16px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
 }
-.net-dot { width: 8px; height: 8px; border-radius: 50%; }
+.net-dot { width: 10px; height: 10px; border-radius: 50%; }
 .net-dot.ethernet { background: var(--correct); }
 .net-dot.wifi { background: #3B82F6; }
 .net-dot.offline { background: #94A3B8; }
 
 /* ══════════════════════════════════
-   TAB EXIT WARNING BAR
+   TAB EXIT WARNING BAR - Enhanced
 ══════════════════════════════════ */
 .tab-warning-bar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: #F59E0B;
+  background: linear-gradient(135deg, #EF4444, #DC2626);
   color: white;
   text-align: center;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  z-index: 1000;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  z-index: 10000;
   transform: translateY(-100%);
   transition: transform 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+  letter-spacing: 0.5px;
 }
 .tab-warning-bar.show { transform: translateY(0); }
-.tab-warning-bar.danger { background: var(--wrong); animation: pulse-warning 1s infinite; }
+.tab-warning-bar.danger { animation: pulse-warning 0.8s infinite; }
 @keyframes pulse-warning { 0%,100%{opacity:1} 50%{opacity:.8} }
 
 /* ══════════════════════════════════
-   MISC
+   LOADER - Enhanced
 ══════════════════════════════════ */
-.loading-state { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
-.dev-tag { font-size: 10px; color: var(--muted); text-align: center; margin-top: 16px; }
+.loader-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+  z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+}
+.loader-spinner {
+  width: 60px; height: 60px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loader-text { font-size: 16px; color: white; font-weight: 600; letter-spacing: 0.5px; }
 
-/* ── RESPONSIVE ── */
+/* ══════════════════════════════════
+   COMPLETION SCREEN
+══════════════════════════════════ */
+#s-completed {
+  flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24px;
+}
+.completed-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px; width: 100%; max-width: 500px;
+  text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  overflow: hidden; animation: slideUp 0.6s cubic-bezier(.34,1.56,.64,1) both;
+}
+.completed-header {
+  background: linear-gradient(135deg, #F59E0B, #FBBF24);
+  padding: 48px 40px 40px; color: white;
+}
+.completed-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+.completed-header p { font-size: 16px; opacity: .9; }
+.completed-body { padding: 40px; }
+.completed-stats {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.completed-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.completed-stat-item:last-child { border-bottom: none; }
+.completed-stat-label { font-size: 14px; color: var(--muted); font-weight: 600; }
+.completed-stat-value { font-size: 16px; color: var(--text); font-weight: 800; }
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
 @media (max-width: 768px) {
-  .login-card { padding: 32px 20px; }
-  .school-logo, .school-logo-fallback { width: 56px; height: 56px; }
-  .q-sidebar { width: 180px; min-width: 160px; }
-  .select-body { padding: 20px 14px; }
-  .exam-main { padding: 16px; }
-  .question-card { padding: 20px; }
-  .q-text { font-size: 15px; }
+  .login-card { padding: 32px 24px; }
+  .school-logo, .school-logo-fallback { width: 64px; height: 64px; }
+  .q-sidebar { width: 200px; min-width: 160px; }
+  .select-body { padding: 24px 16px; }
+  .exam-main { padding: 20px; }
+  .question-card { padding: 24px; }
+  .q-text { font-size: 16px; }
   .rules-card { margin: 0 12px; }
-  .rules-body { padding: 20px; }
-  .rules-footer { padding: 0 20px 20px; }
+  .rules-body { padding: 24px; }
+  .rules-footer { padding: 0 24px 24px; }
+  .timer { font-size: 22px; padding: 8px 16px; }
 }
 @media (max-width: 560px) {
   .q-sidebar { display: none; }
   .topbar-logo, .topbar-logo-fb { display: none !important; }
-  .exam-topbar { flex-wrap: wrap; height: auto; padding: 10px 14px; gap: 8px; }
-  .stat-row { grid-template-columns: 1fr 1fr; }
+  .exam-topbar { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+  .student-chip { max-width: 150px; }
 }
 
-/* ── LOADER ── */
-.loader-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.85); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
-.loader-spinner { width: 44px; height: 44px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-.loader-text { font-size: 14px; color: var(--muted); font-weight: 500; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* ── SUBMIT LOCK INFO ── */
-.submit-lock-info { font-size: 11px; color: var(--muted); text-align: center; margin-top: 6px; }
+.submit-lock-info { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--text); color: white;
+  padding: 14px 24px; border-radius: 40px;
+  font-size: 14px; font-weight: 600;
+  transform: translateY(80px); transition: transform 0.3s ease;
+  z-index: 10001; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+#toast.show { transform: translateY(0); }
+#toast.ok { background: var(--correct); }
+#toast.err { background: var(--wrong); }
+
+/* ── DEVELOPER TAG ── */
+.dev-tag {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.dev-tag span {
+  color: var(--primary);
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -528,35 +726,37 @@ body {
 
 <!-- ═══ TAB WARNING BAR ═══ -->
 <div class="tab-warning-bar" id="tabWarningBar">
-  ⚠️ WARNING: Do not leave this tab! If you switch tabs again, your exam will be submitted automatically!
+  ⚠️ WARNING: You left the exam tab! Your exam will be submitted immediately!
 </div>
 
 <!-- ═══ LOGIN ═══ -->
 <div class="screen active" id="s-login">
   <div class="login-card">
     <div class="school-header">
-      <img src="logo.png" class="school-logo" id="schoolLogoLogin" alt="School Logo" onerror="this.style.display='none';document.getElementById('schoolLogoFbLogin').style.display='flex'">
-      <div class="school-logo-fallback" id="schoolLogoFbLogin" style="display:none">P</div>
+      <img src="Badgejet.jpg" class="school-logo" id="schoolLogoLogin" alt="School Logo" onerror="this.style.display='none';document.getElementById('schoolLogoFbLogin').style.display='flex'">
+      <div class="school-logo-fallback" id="schoolLogoFbLogin" style="display:none">PH</div>
       <div class="school-info">
         <div class="school-name">Peter Harvard International Schools</div>
-        <div class="school-sub">Computer-Based Testing Portal</div>
+        <div class="school-sub">Computer-Based Testing Portal v2.0</div>
       </div>
     </div>
-    <div class="login-title">Student Sign In</div>
-    <div class="login-sub">Enter your credentials to access your exam</div>
-    <div class="login-error" id="loginErr">Invalid ID or password. Please try again.</div>
+    <div class="login-title">Welcome Back!</div>
+    <div class="login-sub">Enter your Student ID to continue</div>
+    <div class="login-error" id="loginErr">Invalid Student ID. Please try again.</div>
     <div class="field">
-      <label>Student ID</label>
+      <label>📋 Student ID</label>
       <input type="text" id="inId" placeholder="e.g. PHIS/PP/1213" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
-    <div class="field">
-      <label>Password <span style="font-weight:400;color:var(--muted)">(leave blank if none)</span></label>
-      <input type="password" id="inPass" placeholder="••••••••">
+    <div class="example-id">
+      <span>🔍 Example: PHIS/PP/1213, PHIS/PP/966, student1</span>
     </div>
-    <button class="btn-primary" onclick="doLogin()">Sign In to Exam Portal</button>
+    <button class="btn-primary" onclick="doLogin()">
+      <span>Sign In to Dashboard</span>
+    </button>
     <div class="login-footer">
-      Peter Harvard International Schools · Exam System v1.0<br>
-      <span style="color:#94A3B8">Developed by anointedthedeveloper</span>
+      <div>Peter Harvard International Schools · Exam System v2.0</div>
+      <div class="dev-tag">👨‍💻 Developed by <span>anointedthedeveloper</span></div>
+      <div style="margin-top: 8px;">🏫 2026 - All Rights Reserved</div>
     </div>
   </div>
 </div>
@@ -565,19 +765,24 @@ body {
 <div class="screen" id="s-select" style="flex-direction:column">
   <div class="topbar">
     <div class="topbar-left">
-      <img src="logo.png" class="topbar-logo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbFb').style.display='flex'">
-      <div class="topbar-logo-fb" id="tbFb" style="display:none">P</div>
+      <img src="Badgejet.jpg" class="topbar-logo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbFb').style.display='flex'">
+      <div class="topbar-logo-fb" id="tbFb" style="display:none">PH</div>
       <div class="topbar-name">Peter Harvard Int'l Schools</div>
     </div>
     <div class="topbar-right">
-      <div class="net-indicator" id="netIndicator"><div class="net-dot offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
+      <div class="net-indicator" id="netIndicator">
+        <div class="net-dot offline" id="netDot"></div>
+        <span id="netLabel">Checking…</span>
+      </div>
       <div class="student-chip" id="studentChip">Student</div>
       <span class="class-badge" id="studentClassBadge">SS 1</span>
-      <button class="btn-ghost" onclick="doLogout()">Sign Out</button>
+      <button class="btn-ghost" onclick="doLogout()">
+        <span>🚪 Sign Out</span>
+      </button>
     </div>
   </div>
   <div class="select-body">
-    <div class="select-heading">Available Exams</div>
+    <div class="select-heading">📝 Available Exams</div>
     <div class="select-sub" id="selectSub">Select an exam to begin</div>
     <div id="examList"><div class="loading-state">Loading exams…</div></div>
   </div>
@@ -598,15 +803,14 @@ body {
         <div class="rei"><div class="val" id="rulesType">MCQ</div><div class="lbl">Type</div></div>
       </div>
       <ul class="rules-list">
-        <li><div class="rule-num">1</div><div>Ensure you are connected to the school network before starting. Do not disconnect during the exam.</div></li>
-        <li><div class="rule-num">2</div><div>Read each question carefully before selecting your answer. You can navigate freely between questions.</div></li>
-        <li><div class="rule-num">3</div><div>Use the <strong>Mark for Review</strong> button to flag questions you want to revisit.</div></li>
-        <li><div class="rule-num warn">4</div><div>Do <strong>NOT</strong> switch to another tab or window during the exam. Each switch is recorded as a violation.</div></li>
-        <li><div class="rule-num warn">5</div><div>After <strong>3 tab violations</strong>, you will receive a final warning. A 4th violation will <strong>auto-submit</strong> your exam immediately.</div></li>
-        <li><div class="rule-num danger">6</div><div>If you attempt to leave this tab, a warning bar will appear. Return immediately to avoid auto-submission.</div></li>
-        <li><div class="rule-num danger">7</div><div>Copying, right-clicking, and keyboard shortcuts are disabled during the exam. Any attempt is logged.</div></li>
-        <li><div class="rule-num">8</div><div>Your answers are saved automatically. If the browser closes, your progress is preserved locally.</div></li>
-        <li><div class="rule-num">9</div><div>When the timer reaches zero, your exam will be submitted automatically with your current answers.</div></li>
+        <li><div class="rule-num">1</div><div>Ensure you are connected to the school network before starting.</div></li>
+        <li><div class="rule-num">2</div><div>Read each question carefully before selecting your answer.</div></li>
+        <li><div class="rule-num">3</div><div>Use the <strong>Mark for Review</strong> button to flag questions.</div></li>
+        <li><div class="rule-num warn">4</div><div>⚠️ <strong>IMPORTANT:</strong> Do NOT switch tabs or leave this window!</div></li>
+        <li><div class="rule-num danger">5</div><div>🚨 If you leave this tab, your exam will be <strong>SUBMITTED IMMEDIATELY</strong>.</div></li>
+        <li><div class="rule-num danger">6</div><div>No second chances - stay focused on this tab only.</div></li>
+        <li><div class="rule-num">7</div><div>Copying, right-clicking, and keyboard shortcuts are disabled.</div></li>
+        <li><div class="rule-num">8</div><div>When the timer reaches zero, your exam will be auto-submitted.</div></li>
       </ul>
     </div>
     <div class="rules-footer">
@@ -627,7 +831,10 @@ body {
     <div class="timer" id="timer">00:00</div>
     <div class="et-right">
       <div class="violation-badge" id="violBadge">⚠️ Violations: 0</div>
-      <div class="net-indicator" id="netIndicator2"><div class="net-dot offline" id="netDot2"></div><span id="netLabel2">—</span></div>
+      <div class="net-indicator" id="netIndicator2">
+        <div class="net-dot offline" id="netDot2"></div>
+        <span id="netLabel2">—</span>
+      </div>
     </div>
   </div>
 
@@ -641,14 +848,16 @@ body {
       <div class="qs-label">Questions</div>
       <div class="q-grid" id="qGrid"></div>
       <div class="sidebar-legend">
-        <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div> Current</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#EEF2FF;border:1.5px solid #C7D2FE"></div> Answered</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#FFFBEB;border:1.5px solid #FDE68A"></div> Marked</div>
-        <div class="leg-item"><div class="leg-dot" style="background:var(--bg);border:1.5px solid var(--border)"></div> Unanswered</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--primary)"></div> Current</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#EEF2FF;border:2px solid var(--primary)"></div> Answered</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#FFFBEB;border:2px solid var(--warn)"></div> Marked</div>
+        <div class="leg-item"><div class="leg-dot" style="background:white;border:2px solid var(--border)"></div> Unanswered</div>
       </div>
-      <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);">
-        <button class="btn-submit-exam" id="btnSubmitSidebar" onclick="confirmSubmit()" style="width:100%;opacity:0.4;pointer-events:none;">Submit Exam</button>
-        <div class="submit-lock-info" id="submitLockInfo" style="color:#94A3B8;margin-top:6px;">Answer 60% to unlock</div>
+      <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);">
+        <button class="btn-submit-exam" id="btnSubmitSidebar" onclick="confirmSubmit()" style="width:100%;opacity:0.4;pointer-events:none;">
+          <span>📤</span> Submit Exam
+        </button>
+        <div class="submit-lock-info" id="submitLockInfo">Answer 60% to unlock</div>
       </div>
     </div>
 
@@ -657,15 +866,23 @@ body {
       <div class="question-card">
         <div class="q-header">
           <div class="q-num" id="qNum">QUESTION 1 OF 1</div>
-          <button class="q-mark-btn" id="markBtn" onclick="toggleMark()">⚑ Mark for Review</button>
+          <button class="q-mark-btn" id="markBtn" onclick="toggleMark()">
+            <span>⚑</span> Mark for Review
+          </button>
         </div>
         <div class="q-text" id="qText"></div>
         <div class="options-list" id="optsList"></div>
       </div>
       <div class="exam-controls">
-        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)"><span style="font-size:16px">←</span> Previous <span style="font-size:10px;color:var(--muted);margin-left:4px">[P]</span></button>
-        <div style="font-size:11px;color:var(--muted);text-align:center;line-height:1.5">Keys: P prev · N next<br>A B C D select option</div>
-        <button class="btn-nav" id="btnNext" onclick="navigate(1)">Next <span style="font-size:16px">→</span> <span style="font-size:10px;color:var(--muted);margin-left:4px">[N]</span></button>
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">
+          <span>←</span> Previous <span style="font-size:11px;color:var(--muted);margin-left:6px">[P]</span>
+        </button>
+        <div style="font-size:12px;color:var(--muted);text-align:center;line-height:1.6">
+          <span>⌨️ Keys: P prev · N next · A B C D select</span>
+        </div>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">
+          Next <span>→</span> <span style="font-size:11px;color:var(--muted);margin-left:6px">[N]</span>
+        </button>
       </div>
     </div>
   </div>
@@ -687,12 +904,47 @@ body {
       <div class="sub-name" id="subStudentName">Student</div>
       <div class="sub-exam" id="subExamName">Exam</div>
       <div class="sub-note">
-        Your exam has been submitted to your teacher. Results will be shared by your teacher at an appropriate time. Thank you for participating.
+        Your exam has been submitted. Results will be available in your dashboard.
       </div>
-      <button class="btn-back-home" onclick="doLogout()">Return to Portal</button>
+      <button class="btn-back-home" id="submittedContinueBtn" onclick="continueAfterSubmit()">
+        <span>📋</span> Continue to Dashboard
+      </button>
     </div>
     <div class="submitted-footer">
-      Peter Harvard International Schools · v1.0 · Developed by anointedthedeveloper
+      <div>Peter Harvard International Schools · v2.0</div>
+      <div class="dev-tag">👨‍💻 Developed by anointedthedeveloper</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ALL EXAMS COMPLETED ═══ -->
+<div class="screen" id="s-completed" style="display:none;flex-direction:column;align-items:center;justify-content:center">
+  <div class="completed-card">
+    <div class="completed-header">
+      <div class="check-circle" style="background: rgba(255,255,255,0.3);">
+        <span style="font-size: 40px;">🎉</span>
+      </div>
+      <h2>All Exams Completed!</h2>
+      <p>You've finished all available exams</p>
+    </div>
+    <div class="completed-body">
+      <div class="completed-stats">
+        <div class="completed-stat-item">
+          <span class="completed-stat-label">Total Exams Taken</span>
+          <span class="completed-stat-value" id="completedTotal">0</span>
+        </div>
+        <div class="completed-stat-item">
+          <span class="completed-stat-label">Average Score</span>
+          <span class="completed-stat-value" id="completedAvg">0%</span>
+        </div>
+      </div>
+      <button class="btn-back-home" onclick="doLogout()">
+        <span>👋</span> Sign Out
+      </button>
+    </div>
+    <div class="submitted-footer">
+      <div>Thank you for participating!</div>
+      <div class="dev-tag">👨‍💻 Developed by anointedthedeveloper</div>
     </div>
   </div>
 </div>
@@ -700,7 +952,7 @@ body {
 <!-- ═══ MODAL: Submit Confirm ═══ -->
 <div class="modal-overlay" id="modalSubmit">
   <div class="modal">
-    <div class="modal-header" style="padding:24px 24px 0">
+    <div class="modal-header" style="padding:28px 28px 0">
       <div class="modal-icon">📤</div>
       <h3>Submit Exam?</h3>
       <p id="modalSubmitMsg">You are about to submit your exam. This action cannot be undone.</p>
@@ -714,55 +966,25 @@ body {
   </div>
 </div>
 
-<!-- ═══ MODAL: Tab Warning ═══ -->
+<!-- ═══ MODAL: Tab Warning (Now immediate submit) ═══ -->
 <div class="modal-overlay" id="modalTabWarn">
-  <div class="modal warning-modal">
-    <div class="modal-header">
-      <div class="modal-icon">⚠️</div>
-      <h3 id="tabWarnTitle">Tab Switch Detected</h3>
-      <p id="tabWarnMsg">Please stay in this tab during your exam.</p>
-    </div>
-    <div class="modal-body">
-      <div class="modal-actions">
-        <button class="warn" style="background:#F59E0B;border-color:#F59E0B" onclick="closeModal('modalTabWarn')">I Understand — Return to Exam</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL: Tab Final Warning ═══ -->
-<div class="modal-overlay" id="modalTabFinal">
-  <div class="modal danger-modal">
-    <div class="modal-header">
-      <div class="modal-icon">🚨</div>
-      <h3>FINAL WARNING!</h3>
-      <p>This is your <strong>LAST WARNING</strong>. If you switch tabs one more time, your exam will be <strong>AUTOMATICALLY SUBMITTED IMMEDIATELY</strong>.</p>
-      <p style="margin-top:10px;font-weight:700;color:var(--wrong)">Do NOT leave this tab!</p>
-    </div>
-    <div class="modal-body">
-      <div class="modal-actions">
-        <button class="danger" onclick="closeModal('modalTabFinal')">I Understand — I WILL STAY HERE</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL: Tab Exit Attempt ═══ -->
-<div class="modal-overlay" id="modalTabExit">
   <div class="modal danger-modal">
     <div class="modal-header">
       <div class="modal-icon">🚨🚨🚨</div>
-      <h3>⚠️ WARNING ⚠️</h3>
-      <p>You are trying to leave the exam tab!</p>
+      <h3>🚨 EMERGENCY WARNING! 🚨</h3>
+      <p><strong>You have left the exam tab!</strong></p>
+      <p style="margin-top:15px;font-size:16px;color:var(--wrong);font-weight:800">YOUR EXAM WILL BE SUBMITTED IMMEDIATELY!</p>
     </div>
     <div class="modal-body">
-      <p style="font-size:16px;margin-bottom:20px;text-align:center;font-weight:700;color:var(--wrong)">If you leave, your exam will be submitted immediately!</p>
       <div class="modal-actions">
-        <button class="primary" onclick="returnToExam()">RETURN TO EXAM NOW</button>
+        <button class="danger" onclick="window.location.reload()">⚠️ UNDERSTOOD ⚠️</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ═══ TOAST ═══ -->
+<div id="toast"></div>
 
 <script>
 // ══════════════════════════════════
@@ -783,8 +1005,8 @@ document.addEventListener('keydown', e => {
   if (blocked.some(Boolean)) { 
     e.preventDefault(); 
     if (document.getElementById('s-exam').style.display !== 'none') {
-      // Simulate tab violation for Alt+Tab attempt
-      simulateTabViolation();
+      // Immediate submit on any cheat attempt during exam
+      handleTabViolation(true); // true = immediate submit
     }
   }
 });
@@ -811,6 +1033,8 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   const el = document.getElementById(id);
   el.style.display = 'flex';
+  // Add animation class
+  el.classList.add('active');
 }
 
 // ══════════════════════════════════
@@ -848,7 +1072,6 @@ async function checkSession() {
     console.log('Session check failed');
   }
   
-  // Clear invalid token
   localStorage.removeItem('examSessionToken');
   S.sessionToken = null;
   return false;
@@ -869,11 +1092,11 @@ async function updateNetIndicator() {
       if (!el) return;
       el.className = 'net-dot ' + (connected ? (eth ? 'ethernet' : 'wifi') : 'offline');
     });
-    const label = connected ? (eth ? '🔌 Ethernet' : '📶 Wi-Fi') : 'No Network';
+    const label = connected ? (eth ? '🔌 Ethernet' : '📶 Wi-Fi') : '📵 Offline';
     ['netLabel','netLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = label; });
   } catch {
     ['netDot','netDot2'].forEach(id => { const el = document.getElementById(id); if (el) el.className = 'net-dot offline'; });
-    ['netLabel','netLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 'Offline'; });
+    ['netLabel','netLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '📵 Offline'; });
   }
 }
 
@@ -882,8 +1105,10 @@ async function updateNetIndicator() {
 // ══════════════════════════════════
 async function doLogin() {
   const id = document.getElementById('inId').value.trim();
-  const pass = document.getElementById('inPass').value;
-  if (!id) return;
+  if (!id) {
+    toast('Please enter your Student ID', 'err');
+    return;
+  }
   
   showLoader('Signing in…');
   
@@ -891,7 +1116,7 @@ async function doLogin() {
     const res = await fetch('/api/login', { 
       method:'POST', 
       headers:{'Content-Type':'application/json'}, 
-      body: JSON.stringify({ id, password: pass, role: 'student' }) 
+      body: JSON.stringify({ id, password: '', role: 'student' }) 
     }).then(r => r.json());
     
     hideLoader();
@@ -912,7 +1137,11 @@ async function doLogin() {
       updateNetIndicator();
       S.netInterval = setInterval(updateNetIndicator, 15000);
       loadExams();
+    } else if (res.error === 'User already logged in on another device') {
+      document.getElementById('loginErr').textContent = '⚠️ This account is already logged in on another device.';
+      document.getElementById('loginErr').style.display = 'block';
     } else {
+      document.getElementById('loginErr').textContent = 'Invalid Student ID. Please try again.';
       document.getElementById('loginErr').style.display = 'block';
     }
   } catch { 
@@ -951,12 +1180,10 @@ async function doLogout() {
     isLeaving: false
   });
   
-  // Hide warning bar
   document.getElementById('tabWarningBar').classList.remove('show', 'danger');
   
   showScreen('s-login');
   document.getElementById('inId').value = '';
-  document.getElementById('inPass').value = '';
 }
 
 // ══════════════════════════════════
@@ -975,25 +1202,78 @@ async function checkTakenExams() {
   try {
     const res = await fetch(`/api/student-taken-exams/${encodeURIComponent(S.studentId)}`);
     const data = await res.json();
-    return data.takenExams || [];
+    return { takenExams: data.takenExams || [], count: data.count || 0 };
   } catch {
-    return [];
+    return { takenExams: [], count: 0 };
   }
 }
 
 // ══════════════════════════════════
-// EXAM SELECT - Filtered by class and taken status
+// GET AVAILABLE EXAMS COUNT
+// ══════════════════════════════════
+async function getAvailableExamsCount() {
+  try {
+    const res = await fetch(`/api/available-exams-count/${encodeURIComponent(S.studentId)}?class=${encodeURIComponent(S.studentClass || '')}`);
+    const data = await res.json();
+    return data.available || 0;
+  } catch {
+    return 0;
+  }
+}
+
+// ══════════════════════════════════
+// CONTINUE AFTER SUBMIT
+// ══════════════════════════════════
+async function continueAfterSubmit() {
+  showLoader('Checking available exams…');
+  const availableCount = await getAvailableExamsCount();
+  hideLoader();
+  
+  if (availableCount > 0) {
+    // More exams available - go to dashboard
+    showScreen('s-select');
+    loadExams();
+  } else {
+    // No more exams - show completion screen
+    await showCompletionScreen();
+  }
+}
+
+// ══════════════════════════════════
+// SHOW COMPLETION SCREEN
+// ══════════════════════════════════
+async function showCompletionScreen() {
+  const results = await fetch('/api/results').then(r => r.json());
+  const studentResults = Array.isArray(results) ? results.filter(r => r.studentId === S.studentId) : [];
+  const totalExams = studentResults.length;
+  const avgScore = totalExams > 0 
+    ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / totalExams)
+    : 0;
+  
+  document.getElementById('completedTotal').textContent = totalExams;
+  document.getElementById('completedAvg').textContent = avgScore + '%';
+  
+  showScreen('s-completed');
+  
+  // Auto logout after 10 seconds on completion screen
+  setTimeout(() => {
+    if (document.getElementById('s-completed').style.display === 'flex') {
+      doLogout();
+    }
+  }, 10000);
+}
+
+// ══════════════════════════════════
+// EXAM SELECT
 // ══════════════════════════════════
 async function loadExams() {
-  document.getElementById('examList').innerHTML = '<div class="loading-state">Loading…</div>';
+  document.getElementById('examList').innerHTML = '<div class="loading-state">Loading exams…</div>';
   try {
     const url = S.studentClass ? `/api/exams?class=${encodeURIComponent(S.studentClass)}` : '/api/exams';
     const exams = await fetch(url).then(r => r.json());
     
-    // Get exams the student has already taken
-    const takenExams = await checkTakenExams();
+    const { takenExams } = await checkTakenExams();
     
-    // Only show active exams
     const activeExams = exams.filter(e => e.active !== false);
     
     if (!activeExams.length) {
@@ -1004,10 +1284,10 @@ async function loadExams() {
     document.getElementById('examList').innerHTML = activeExams.map(e => {
       const hasTaken = takenExams.includes(e.filename);
       return `
-      <div class="exam-card ${hasTaken ? 'taken' : ''}">
+      <div class="exam-card ${hasTaken ? 'taken' : ''}" style="animation-delay: ${Math.random() * 0.3}s">
         <div class="exam-icon">${hasTaken ? '✅' : '📝'}</div>
         <div class="exam-info">
-          <div class="exam-name">${e.name} ${hasTaken ? '<span style="color:var(--muted);font-size:11px;margin-left:8px;">(Completed)</span>' : ''}</div>
+          <div class="exam-name">${e.name} ${hasTaken ? '<span style="color:var(--muted);font-size:12px;margin-left:8px;">(Completed)</span>' : ''}</div>
           <div class="exam-meta">
             <span>⏱️ ${e.duration} minutes</span>
             <span>❓ ${e.questionCount} questions</span>
@@ -1032,13 +1312,12 @@ async function loadExams() {
 // RULES / WAITING ROOM
 // ══════════════════════════════════
 function openRules(filename, name, qcount, duration) {
-  // Double-check if exam has been taken (in case the list was stale)
   fetch(`/api/has-taken-exam/${encodeURIComponent(S.studentId)}/${encodeURIComponent(filename)}`)
     .then(r => r.json())
     .then(data => {
       if (data.hasTaken) {
         toast('You have already taken this exam', 'err');
-        loadExams(); // Refresh the list
+        loadExams();
         return;
       }
       
@@ -1050,7 +1329,6 @@ function openRules(filename, name, qcount, duration) {
       showScreen('s-rules');
     })
     .catch(() => {
-      // If check fails, still allow (server might be down)
       S.examFile = filename;
       S.examName = name;
       document.getElementById('rulesExamName').textContent = name;
@@ -1075,14 +1353,12 @@ async function beginExam() {
     if (data.error) { alert(data.error || 'Exam unavailable.'); return; }
     if (!data || !data.questions || !data.questions.length) { alert('Could not load exam questions. Try again.'); return; }
 
-    // Verify class access again
     if (data.class && S.studentClass && data.class.toLowerCase() !== S.studentClass.toLowerCase()) {
       alert('This exam is not available for your class.');
       backToSelect();
       return;
     }
 
-    // Shuffle questions and options
     S.questions = shuffle(data.questions).map((q, i) => ({ ...q, _idx: i, _options: shuffleOpts(q) }));
     S.answers = {};
     S.marked = new Set();
@@ -1092,10 +1368,8 @@ async function beginExam() {
     S.timeLeft = (data.duration || 30) * 60;
     S.examName = data.exam;
 
-    // Load draft if exists
     loadDraft();
 
-    // Setup UI
     document.getElementById('etExamName').textContent = data.exam;
     document.getElementById('etStudent').textContent = S.studentName;
     document.getElementById('subStudentName').textContent = S.studentName;
@@ -1118,43 +1392,13 @@ async function beginExam() {
 }
 
 // ══════════════════════════════════
-// TAB TRACKING - Enhanced with warning bar
+// TAB TRACKING - Immediate submit on tab leave
 // ══════════════════════════════════
-function simulateTabViolation() {
+function handleTabViolation(immediate = true) {
   if (S.submitted) return;
+  
   S.tabViolations++;
-  handleTabViolation();
-}
-
-function onVisibilityChange() {
-  if (S.submitted) return;
   
-  if (document.visibilityState === 'hidden') {
-    // User left the tab
-    S.tabViolations++;
-    handleTabViolation();
-  } else {
-    // User returned to tab - hide warning bar
-    hideTabWarningBar();
-  }
-}
-
-function onBeforeUnload(e) {
-  if (S.submitted) return;
-  
-  // Show exit warning modal
-  if (!S.isLeaving) {
-    S.isLeaving = true;
-    openModal('modalTabExit');
-    
-    // Cancel the unload
-    e.preventDefault();
-    e.returnValue = '';
-    return '';
-  }
-}
-
-function handleTabViolation() {
   // Report to server
   fetch('/api/tabviolation', { method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ studentId: S.studentId, student: S.studentName, exam: S.examName, count: S.tabViolations }) }).catch(() => {});
@@ -1164,67 +1408,60 @@ function handleTabViolation() {
   badge.style.display = 'flex';
   badge.textContent = `⚠️ Violations: ${S.tabViolations}`;
   
-  // Update badge color based on violation count
   badge.className = 'violation-badge';
-  if (S.tabViolations === 3) {
+  if (S.tabViolations === 1) {
     badge.classList.add('warn-3');
-  } else if (S.tabViolations >= 4) {
+  } else if (S.tabViolations >= 2) {
     badge.classList.add('danger');
   }
 
   // Show warning bar
   const warningBar = document.getElementById('tabWarningBar');
-  warningBar.classList.add('show');
-  if (S.tabViolations === 3) {
-    warningBar.classList.add('danger');
-    warningBar.textContent = '🚨🚨🚨 FINAL WARNING! DO NOT LEAVE THIS TAB! NEXT VIOLATION WILL AUTO-SUBMIT! 🚨🚨🚨';
-  } else {
-    warningBar.textContent = `⚠️ WARNING: Tab switch detected (${S.tabViolations}/3). If you leave again, your exam will be submitted!`;
-  }
+  warningBar.classList.add('show', 'danger');
+  warningBar.textContent = '🚨🚨🚨 YOU LEFT THE EXAM TAB! YOUR EXAM IS BEING SUBMITTED! 🚨🚨🚨';
   
-  // Auto-hide warning bar after 5 seconds
-  if (S.tabWarningBarTimeout) clearTimeout(S.tabWarningBarTimeout);
-  S.tabWarningBarTimeout = setTimeout(() => {
+  // IMMEDIATE SUBMIT ON ANY TAB VIOLATION
+  if (immediate) {
+    // Small delay to show the warning
+    setTimeout(() => {
+      if (!S.submitted) {
+        doSubmit();
+      }
+    }, 500);
+  }
+}
+
+function onVisibilityChange() {
+  if (S.submitted) return;
+  
+  if (document.visibilityState === 'hidden') {
+    // User left the tab - IMMEDIATE SUBMIT
+    handleTabViolation(true);
+  }
+}
+
+function onBeforeUnload(e) {
+  if (S.submitted) return;
+  
+  // Show exit warning and submit
+  openModal('modalTabWarn');
+  
+  // Submit immediately
+  setTimeout(() => {
     if (!S.submitted) {
-      document.getElementById('tabWarningBar').classList.remove('show', 'danger');
+      doSubmit();
     }
-  }, 5000);
-
-  if (S.tabViolations >= 4) {
-    // Auto-submit
-    doSubmit();
-    return;
-  }
-
-  if (S.tabViolations === 3) {
-    openModal('modalTabFinal');
-  } else {
-    openModal('modalTabWarn');
-    document.getElementById('tabWarnTitle').textContent = `Tab Switch Detected (${S.tabViolations}/3)`;
-    document.getElementById('tabWarnMsg').textContent = `You have switched tabs ${S.tabViolations} time${S.tabViolations>1?'s':''}. You get ${3 - S.tabViolations} more warning${3-S.tabViolations===1?'':'s'} before your exam is auto-submitted.`;
-  }
-}
-
-function hideTabWarningBar() {
-  document.getElementById('tabWarningBar').classList.remove('show', 'danger');
-  if (S.tabWarningBarTimeout) {
-    clearTimeout(S.tabWarningBarTimeout);
-    S.tabWarningBarTimeout = null;
-  }
-}
-
-function returnToExam() {
-  S.isLeaving = false;
-  closeModal('modalTabExit');
-  // Focus back on exam
-  document.getElementById('s-exam').focus();
+  }, 100);
+  
+  e.preventDefault();
+  e.returnValue = '';
+  return '';
 }
 
 function setupTabTracking() {
   document.removeEventListener('visibilitychange', onVisibilityChange);
   document.addEventListener('visibilitychange', onVisibilityChange);
   
-  // Add beforeunload event to catch tab closing attempts
   window.removeEventListener('beforeunload', onBeforeUnload);
   window.addEventListener('beforeunload', onBeforeUnload);
 }
@@ -1390,8 +1627,8 @@ async function doSubmit() {
   
   clearInterval(S.timer);
   clearInterval(S.sessionInterval);
-  hideTabWarningBar();
-  closeModal('modalSubmit'); closeModal('modalTabWarn'); closeModal('modalTabFinal'); closeModal('modalTabExit');
+  document.getElementById('tabWarningBar').classList.remove('show', 'danger');
+  closeModal('modalSubmit'); closeModal('modalTabWarn');
   document.removeEventListener('visibilitychange', onVisibilityChange);
   window.removeEventListener('beforeunload', onBeforeUnload);
   
@@ -1421,7 +1658,14 @@ async function doSubmit() {
   hideLoader();
   clearDraft();
   document.exitFullscreen?.().catch(() => {});
-  showScreen('s-submitted');
+  
+  // Check for more exams
+  const availableCount = await getAvailableExamsCount();
+  if (availableCount > 0) {
+    showScreen('s-submitted');
+  } else {
+    await showCompletionScreen();
+  }
 }
 
 // ══════════════════════════════════
@@ -1448,7 +1692,6 @@ document.addEventListener('keydown', e => {
   const inExam = document.getElementById('s-exam').style.display !== 'none';
   if (!inExam) return;
   
-  // Block standard cheat keys but allow exam navigation
   const blocked = [
     e.ctrlKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
     e.metaKey && ['c','v','x','a','p','s','u'].includes(e.key.toLowerCase()),
@@ -1458,15 +1701,13 @@ document.addEventListener('keydown', e => {
   ];
   if (blocked.some(Boolean)) { 
     e.preventDefault(); 
-    simulateTabViolation();
+    handleTabViolation(true);
     return;
   }
 
-  // Navigation - N/P keys and arrows
   if (e.key === 'n' || e.key === 'N' || e.key === 'ArrowRight') { navigate(1); e.preventDefault(); return; }
   if (e.key === 'p' || e.key === 'P' || e.key === 'ArrowLeft') { navigate(-1); e.preventDefault(); return; }
 
-  // Option selection by letter key A B C D
   if (['a','b','c','d'].includes(e.key.toLowerCase())) {
     e.preventDefault();
     const key = e.key.toUpperCase();
@@ -1474,7 +1715,6 @@ document.addEventListener('keydown', e => {
     if (q && q._options.find(o => o.key === key)) { selectAns(key); return; }
   }
 
-  // Option selection by number 1 2 3 4
   if (['1','2','3','4'].includes(e.key)) {
     e.preventDefault();
     const q = S.questions[S.current];
@@ -1483,19 +1723,16 @@ document.addEventListener('keydown', e => {
 });
 
 // ══════════════════════════════════
-// BOOT - Check for existing session
+// BOOT
 // ══════════════════════════════════
-document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
-document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// Create toast element if not exists
 if (!document.getElementById('toast')) {
   const toastEl = document.createElement('div');
   toastEl.id = 'toast';
   document.body.appendChild(toastEl);
 }
 
-// On page load, check if we have a saved session
 window.addEventListener('load', async () => {
   showLoader('Checking session…');
   const hasSession = await checkSession();
