@@ -2,322 +2,1383 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Teacher Dashboard – Peter Harvard International Schools</title>
 <link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Teacher">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#F1F5F9;color:#0F172A;min-height:100vh;}
-:root{
-  --primary:#334155;--accent:#6366F1;--bg:#FFFFFF;--surface:#F1F5F9;
-  --text:#0F172A;--muted:#64748B;--border:#E2E8F0;
-  --correct:#22C55E;--wrong:#EF4444;--warn:#F59E0B;
-  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  background: #f8f8f8;
+  color: #1e1e1e;
+  min-height: 100vh;
 }
 
-/* ── LOGIN ── */
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#EEF2FF 0%,#FFFFFF 60%);padding:24px;}
-.login-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:420px;box-shadow:var(--shadow);}
-.school-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
-.sch-logo{width:72px;height:72px;border-radius:12px;object-fit:contain;background:var(--surface);padding:6px;flex-shrink:0;}
-.sch-logo-fb{width:72px;height:72px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:26px;flex-shrink:0;display:none;}
-.sch-info{flex:1;min-width:0;}
-.sch-name{font-size:15px;font-weight:800;color:var(--primary);line-height:1.3;}
-.sch-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;}
-.login-title{font-size:22px;font-weight:700;margin-bottom:6px;}
-.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
-.field{margin-bottom:18px;}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;}
-.field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit;}
-.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.12);}
-.btn-primary{width:100%;padding:13px;border:none;border-radius:8px;background:var(--accent);color:white;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
-.btn-primary:hover{background:#4F46E5;transform:translateY(-1px);}
-.login-error{background:#FEF2F2;border:1px solid #FECACA;border-radius:7px;padding:10px 14px;color:var(--wrong);font-size:13px;margin-bottom:16px;display:none;}
-.login-footer{text-align:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── APP SHELL ── */
-#app{display:none;min-height:100vh;flex-direction:column;}
-.topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-shrink:0;}
-.tb-brand{display:flex;align-items:center;gap:10px;}
-.tb-logo{width:40px;height:40px;border-radius:8px;object-fit:contain;background:var(--surface);padding:3px;}
-.tb-logo-fb{width:40px;height:40px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;}
-.tb-name{font-size:14px;font-weight:700;color:var(--primary);}
-.tb-name small{display:block;font-size:10px;font-weight:400;color:var(--muted);}
-.tb-right{display:flex;align-items:center;gap:12px;}
-.net-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;color:var(--muted);}
-.net-dot{width:7px;height:7px;border-radius:50%;}
-.nd-ethernet{background:var(--correct);}
-.nd-wifi{background:#3B82F6;}
-.nd-offline{background:#94A3B8;}
-.teacher-name{font-size:13px;font-weight:600;color:var(--text);}
-.btn-out{background:none;border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s;}
-.btn-out:hover{border-color:var(--primary);color:var(--primary);}
+/* ══════════════════════════════════
+   LOGIN SCREEN - Split Layout
+══════════════════════════════════ */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.login-left {
+  flex: 1;
+  background: #dc2626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+}
+.login-left-content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  text-align: center;
+}
+.login-left h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.login-left h1 span {
+  display: block;
+  font-weight: 300;
+  font-size: 24px;
+  opacity: 0.9;
+  margin-top: 8px;
+}
+.login-left p {
+  font-size: 18px;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+.login-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.login-feature {
+  text-align: center;
+}
+.login-feature i {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: white;
+}
+.login-feature span {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.login-right {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+.login-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+}
+.login-card .subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.field {
+  margin-bottom: 24px;
+}
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field label i {
+  color: #dc2626;
+  margin-right: 6px;
+  font-size: 12px;
+}
+.field input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1e1e1e;
+  background: white;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.field input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.field input:hover {
+  border-color: #999;
+}
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary i {
+  font-size: 14px;
+}
+.btn-primary:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.login-error i {
+  font-size: 16px;
+}
+.login-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f0f0f0;
+  font-size: 13px;
+  color: #666;
+}
 
-.app-layout{display:flex;flex:1;min-height:0;}
-.sidebar{width:220px;background:var(--bg);border-right:1px solid var(--border);padding:16px 10px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
-.nav-section-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:12px 12px 6px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;color:var(--muted);border:none;background:none;width:100%;text-align:left;font-family:inherit;}
-.nav-item:hover{background:var(--surface);color:var(--text);}
-.nav-item.active{background:#EEF2FF;color:var(--accent);font-weight:600;}
-.nav-icon{font-size:15px;width:18px;text-align:center;}
-.nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;}
+/* ══════════════════════════════════
+   APP SHELL
+══════════════════════════════════ */
+#app {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.topbar {
+  background: white;
+  border-bottom: 2px solid #f0f0f0;
+  padding: 0 32px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tb-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: white;
+  padding: 4px;
+  border: 2px solid #f0f0f0;
+}
+.tb-logo-fb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+}
+.tb-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+.tb-name small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+}
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.net-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  padding: 6px 20px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+.net-pill i {
+  color: #dc2626;
+  font-size: 12px;
+}
+.teacher-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e1e1e;
+  background: #f8f8f8;
+  padding: 6px 20px;
+  border-radius: 40px;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.teacher-name i {
+  color: #dc2626;
+}
+.btn-out {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  padding: 8px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-out i {
+  font-size: 12px;
+}
+.btn-out:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.1);
+}
 
-.main-content{flex:1;overflow-y:auto;padding:28px;}
-.page{display:none;}
-.page.active{display:block;}
-.page-header{margin-bottom:24px;}
-.page-header h2{font-size:22px;font-weight:700;}
-.page-header p{font-size:13px;color:var(--muted);margin-top:4px;}
+.app-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.sidebar {
+  width: 260px;
+  background: white;
+  border-right: 2px solid #f0f0f0;
+  padding: 20px 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+.nav-section-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 16px 16px 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: #666;
+  border: 2px solid transparent;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  margin-bottom: 4px;
+}
+.nav-item i {
+  width: 20px;
+  color: #dc2626;
+  font-size: 14px;
+}
+.nav-item:hover {
+  background: #f8f8f8;
+  border-color: #e0e0e0;
+  color: #1e1e1e;
+}
+.nav-item.active {
+  background: #1e1e1e;
+  color: white;
+  border-color: #1e1e1e;
+}
+.nav-item.active i {
+  color: white;
+}
+.nav-badge {
+  margin-left: auto;
+  background: #dc2626;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+.page-header {
+  margin-bottom: 24px;
+}
+.page-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-header h2 i {
+  color: #dc2626;
+}
+.page-header p {
+  font-size: 16px;
+  color: #666;
+  margin-top: 4px;
+  border-left: 4px solid #dc2626;
+  padding-left: 16px;
+}
 
 /* ── STAT CARDS ── */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;border-left:4px solid var(--border);box-shadow:var(--shadow);}
-.stat-card.blue{border-left-color:var(--accent);}
-.stat-card.green{border-left-color:var(--correct);}
-.stat-card.red{border-left-color:var(--wrong);}
-.stat-card.yellow{border-left-color:var(--warn);}
-.sc-val{font-size:28px;font-weight:800;color:var(--text);}
-.sc-lbl{font-size:11px;color:var(--muted);font-weight:500;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;}
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  border-left: 6px solid #dc2626;
+}
+.stat-card .sc-val {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+.stat-card .sc-lbl {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-card .sc-lbl i {
+  color: #dc2626;
+  font-size: 12px;
+}
 
 /* ── CARDS ── */
-.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
-.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.card-header h3{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;}
-.card-body{padding:20px;}
+.card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  margin-bottom: 24px;
+}
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-header h3 i {
+  color: #dc2626;
+}
+.card-body {
+  padding: 24px;
+}
 
 /* ── BUTTONS ── */
-.btn{padding:9px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:all .15s;}
-.btn.accent{background:var(--accent);color:white;}
-.btn.accent:hover{background:#4F46E5;}
-.btn.outline{background:none;border:1.5px solid var(--border);color:var(--text);}
-.btn.outline:hover{border-color:var(--primary);color:var(--primary);}
-.btn.danger{background:var(--wrong);color:white;}
-.btn.danger:hover{background:#DC2626;}
-.btn.success{background:var(--correct);color:white;}
-.btn.warn{background:var(--warn);color:white;}
-.btn.sm{padding:6px 12px;font-size:11px;}
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn i {
+  font-size: 12px;
+}
+.btn.accent {
+  background: #1e1e1e;
+  color: white;
+}
+.btn.accent:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+}
+.btn.outline {
+  background: white;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+.btn.outline:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  transform: translateY(-1px);
+}
+.btn.danger {
+  background: #dc2626;
+  color: white;
+}
+.btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+}
+.btn.success {
+  background: #1e1e1e;
+  color: white;
+}
+.btn.warn {
+  background: #dc2626;
+  color: white;
+}
+.btn.sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
 
 /* ── TABLE ── */
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:var(--surface);}
-td{padding:12px 14px;border-bottom:1px solid var(--surface);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:#F8FAFC;}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
-.pill.green{background:#DCFCE7;color:#166534;}
-.pill.red{background:#FEE2E2;color:#991B1B;}
-.pill.blue{background:#DBEAFE;color:#1E40AF;}
-.pill.yellow{background:#FEF3C7;color:#92400E;}
-.pill.purple{background:#EDE9FE;color:#5B21B6;}
-.pill.gray{background:var(--surface);color:var(--muted);}
+.table-container {
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 800px;
+}
+th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #f0f0f0;
+  background: #f8f8f8;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+tr:hover td {
+  background: #f8f8f8;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+.pill i {
+  color: #dc2626;
+  font-size: 10px;
+}
+.pill.green { background: #f0fdf4; border-color: #86efac; color: #166534; }
+.pill.red { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+.pill.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+.pill.yellow { background: #fefce8; border-color: #fef08a; color: #854d0e; }
 
 /* ── UPLOAD ZONE ── */
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:48px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-top:16px;}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:#F5F3FF;}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.uz-icon{font-size:40px;margin-bottom:12px;}
-.uz-title{font-size:15px;font-weight:600;margin-bottom:6px;}
-.uz-sub{font-size:13px;color:var(--muted);}
-.json-preview{background:#1E293B;color:#A5F3FC;font-family:'Courier New',monospace;font-size:12px;border-radius:8px;padding:16px;overflow:auto;max-height:260px;white-space:pre;line-height:1.6;}
+.upload-zone {
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-top: 16px;
+  background: #f8f8f8;
+}
+.upload-zone:hover,
+.upload-zone.drag {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+.upload-zone input[type=file] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.uz-icon i {
+  font-size: 48px;
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+.uz-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1e1e1e;
+}
+.uz-sub {
+  font-size: 14px;
+  color: #666;
+}
+.json-preview {
+  background: #1e1e1e;
+  color: #f8f8f8;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  border-radius: 8px;
+  padding: 20px;
+  overflow: auto;
+  max-height: 300px;
+  white-space: pre;
+  border: 2px solid #e0e0e0;
+}
 
 /* ── UPLOAD TABS ── */
-.upload-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;}
-.upload-tab{background:none;border:none;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:6px;font-family:inherit;}
-.upload-tab.active{background:var(--accent);color:white;}
-.upload-tab:hover:not(.active){background:var(--surface);color:var(--text);}
+.upload-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+.upload-tab {
+  background: none;
+  border: 2px solid transparent;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  cursor: pointer;
+  border-radius: 40px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.upload-tab i {
+  margin-right: 6px;
+  color: #dc2626;
+}
+.upload-tab.active {
+  background: #1e1e1e;
+  color: white;
+  border-color: #1e1e1e;
+}
+.upload-tab.active i {
+  color: white;
+}
+.upload-tab:hover:not(.active) {
+  border-color: #e0e0e0;
+  color: #1e1e1e;
+}
 
 /* ── UPLOAD FIELDS ── */
-.upload-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-.upload-fields input,.upload-fields select{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);width:100%;}
-.upload-fields input:focus,.upload-fields select:focus{border-color:var(--accent);}
-.upload-fields label{font-size:11px;font-weight:600;color:var(--primary);display:block;margin-bottom:4px;}
+.upload-fields {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.upload-fields input,
+.upload-fields select {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  color: #1e1e1e;
+  background: white;
+  width: 100%;
+}
+.upload-fields input:focus,
+.upload-fields select:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.upload-fields label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e1e1e;
+  display: block;
+  margin-bottom: 6px;
+}
+.upload-fields label i {
+  color: #dc2626;
+  margin-right: 4px;
+}
 
 /* ── MONITOR CARDS ── */
-.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
-.student-mon-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
-.student-mon-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.student-mon-card.active::before{background:var(--correct);}
-.student-mon-card.submitted::before{background:var(--accent);}
-.student-mon-card.violated::before{background:var(--warn);}
-.student-mon-card.retake-allowed::before{background:var(--warn);}
-.smc-name{font-size:14px;font-weight:700;margin-bottom:4px;}
-.smc-exam{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.smc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.smc-key{font-size:11px;color:var(--muted);font-weight:500;}
-.smc-val{font-size:12px;font-weight:600;}
-.smc-progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px;}
-.smc-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
-.smc-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--surface);}
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.student-mon-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.student-mon-card:hover {
+  transform: translateY(-2px);
+  border-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+}
+.student-mon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+.student-mon-card.active::before { background: #22c55e; }
+.student-mon-card.submitted::before { background: #1e1e1e; }
+.student-mon-card.violated::before { background: #dc2626; }
+.student-mon-card.retake-allowed::before { background: #dc2626; }
+.smc-name {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.smc-name i {
+  color: #dc2626;
+}
+.smc-exam {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+  padding-left: 24px;
+}
+.smc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.smc-key {
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+}
+.smc-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+.smc-progress {
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.smc-progress-fill {
+  height: 100%;
+  background: #dc2626;
+  border-radius: 3px;
+  transition: width .3s ease;
+}
+.smc-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #f0f0f0;
+}
+.smc-actions button {
+  flex: 1;
+}
 
 /* ── ACTIVITY ── */
-.activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--surface);}
-.activity-item:last-child{border-bottom:none;}
-.act-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--surface);}
-.act-info{flex:1;}
-.act-name{font-size:13px;font-weight:600;}
-.act-detail{font-size:12px;color:var(--muted);}
-.act-time{font-size:11px;color:var(--muted);}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;transform:translateY(80px);transition:transform .3s;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.15);}
-#toast.show{transform:translateY(0);}
-#toast.ok{background:var(--correct);}
-#toast.err{background:var(--wrong);}
-
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);z-index:999;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.show{display:flex;}
-.modal{background:var(--bg);border:1px solid var(--border);border-radius:14px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;}
-.modal-h{padding:24px;border-bottom:1px solid var(--border);}
-.modal-h h3{font-size:17px;font-weight:700;margin-bottom:4px;}
-.modal-h p{font-size:13px;color:var(--muted);}
-.modal-b{padding:20px 24px 24px;}
-.modal-actions{display:flex;gap:10px;margin-top:16px;}
-.modal-actions button{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text);transition:all .15s;}
-.modal-actions button.primary{background:var(--accent);border-color:var(--accent);color:white;}
-.modal-actions button.warn{background:var(--warn);border-color:var(--warn);color:white;}
-
-.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
-.refresh-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
-.divider{height:1px;background:var(--border);margin:20px 0;}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) { .stat-row { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 680px) { .sidebar { display: none; } .main-content { padding: 16px; } }
-@media (max-width: 480px) { .stat-row { grid-template-columns: 1fr; } .card-header { flex-wrap: wrap; gap: 8px; } }
-
-/* ── LOADER ── */
-.loader-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
-.loader-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
-.loader-text{font-size:14px;color:var(--muted);font-weight:500;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* ── CHART ── */
-.chart-wrap{position:relative;height:220px;padding:8px 0;}
+.activity-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 2px solid #f0f0f0;
+  align-items: center;
+}
+.activity-item:last-child {
+  border-bottom: none;
+}
+.act-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  color: #dc2626;
+}
+.act-info {
+  flex: 1;
+}
+.act-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+.act-detail {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+.act-time {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
 
 /* ── TOGGLE SWITCH ── */
-.toggle-switch{position:relative;display:inline-block;width:42px;height:22px;flex-shrink:0;}
-.toggle-switch input{opacity:0;width:0;height:0;}
-.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#CBD5E1;border-radius:22px;transition:.3s;}
-.toggle-slider:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
-.toggle-switch input:checked + .toggle-slider{background:var(--correct);}
-.toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #e0e0e0;
+  border-radius: 30px;
+  transition: .2s;
+}
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+.toggle-switch input:checked + .toggle-slider {
+  background: #dc2626;
+}
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
 
-/* ── CSV FORMAT INFO ── */
-.csv-info{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:20px;}
-.csv-info pre{background:#1E293B;color:#A5F3FC;padding:12px;border-radius:6px;font-size:11px;overflow-x:auto;margin-top:8px;}
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e1e1e;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(80px);
+  transition: transform 0.3s ease;
+  z-index: 10001;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#toast i {
+  color: #dc2626;
+}
+#toast.show { transform: translateY(0); }
+#toast.ok { background: #1e1e1e; }
+#toast.err { background: #dc2626; }
+#toast.err i { color: white; }
 
-/* ── EXPORT BUTTONS ── */
-.export-dropdown{position:relative;display:inline-block;}
-.export-dropdown-content{display:none;position:absolute;right:0;background:var(--bg);min-width:180px;box-shadow:var(--shadow);border:1px solid var(--border);border-radius:6px;z-index:1;}
-.export-dropdown-content a{color:var(--text);padding:8px 12px;text-decoration:none;display:block;font-size:12px;}
-.export-dropdown-content a:hover{background:var(--surface);}
-.export-dropdown:hover .export-dropdown-content{display:block;}
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.modal-h {
+  padding: 28px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.modal-h h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-h h3 i {
+  color: #dc2626;
+}
+.modal-h p {
+  font-size: 15px;
+  color: #666;
+}
+.modal-b {
+  padding: 20px 28px 28px;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.modal-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+.modal-actions button.primary {
+  background: #1e1e1e;
+  border-color: #1e1e1e;
+  color: white;
+}
+.modal-actions button.primary:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+.modal-actions button.warn {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+.modal-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 14px;
+}
+.empty i {
+  font-size: 40px;
+  color: #dc2626;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* ── LOADER ── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f0f0f0;
+  border-top-color: #dc2626;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loader-text {
+  font-size: 16px;
+  color: #1e1e1e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.loader-text i {
+  color: #dc2626;
+}
+
+/* ── EXPORT DROPDOWN ── */
+.export-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.export-dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  z-index: 100;
+}
+.export-dropdown-content a {
+  color: #1e1e1e;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+.export-dropdown-content a i {
+  color: #dc2626;
+  width: 20px;
+  margin-right: 8px;
+}
+.export-dropdown-content a:last-child {
+  border-bottom: none;
+}
+.export-dropdown-content a:hover {
+  background: #f8f8f8;
+}
+.export-dropdown:hover .export-dropdown-content {
+  display: block;
+}
+
+/* ── FILTER ROW ── */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-select {
+  padding: 8px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e1e1e;
+  background: white;
+  outline: none;
+  min-width: 150px;
+}
+.filter-select:focus {
+  border-color: #dc2626;
+}
+
+/* ── RESULTS STATS ── */
+.results-stats {
+  display: flex;
+  gap: 16px;
+  padding: 12px 20px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stat-item i {
+  color: #dc2626;
+}
+.stat-item span {
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .stat-row { grid-template-columns: repeat(2,1fr); }
+  .upload-fields { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 680px) {
+  .sidebar { display: none; }
+  .main-content { padding: 20px; }
+}
+@media (max-width: 480px) {
+  .stat-row { grid-template-columns: 1fr; }
+  .upload-fields { grid-template-columns: 1fr; }
+  .filter-row { flex-direction: column; align-items: stretch; }
+}
+
+.dev-tag {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-top: 16px;
+  font-weight: 600;
+}
+.dev-tag i {
+  color: #dc2626;
+  margin: 0 4px;
+}
+.dev-tag span {
+  color: #dc2626;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN SCREEN - SPLIT LAYOUT -->
 <div id="loginScreen">
-  <div class="login-card">
-    <div class="school-header">
-      <img src="logo.png" class="sch-logo" id="loginLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('loginLogoFb').style.display='flex'">
-      <div class="sch-logo-fb" id="loginLogoFb">P</div>
-      <div class="sch-info">
-        <div class="sch-name">Peter Harvard International Schools</div>
-        <div class="sch-sub">Teacher Dashboard</div>
+  <div class="login-left">
+    <div class="login-left-content">
+      <h1>Peter Harvard<br><span>International Schools</span></h1>
+      <p>Teacher Dashboard</p>
+      <div class="login-features">
+        <div class="login-feature">
+          <i class="fa fa-upload"></i>
+          <span>Upload Exams</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-eye"></i>
+          <span>Monitor Students</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-bar-chart"></i>
+          <span>View Results</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-repeat"></i>
+          <span>Allow Retakes</span>
+        </div>
       </div>
     </div>
-    <div class="login-title">Teacher Sign In</div>
-    <div class="login-sub">Access your exam management dashboard</div>
-    <div class="login-error" id="loginErr">Invalid credentials. Please try again.</div>
-    <div class="field"><label>Teacher ID</label><input type="text" id="inId" placeholder="teacher1" autocomplete="off"></div>
-    <div class="field"><label>Password</label><input type="password" id="inPass" placeholder="••••••••"></div>
-    <button class="btn-primary" onclick="doLogin()">Sign In to Dashboard</button>
-    <div class="login-footer">Peter Harvard International Schools · Exam System v1.0<br><span style="color:#94A3B8">Developed by anointedthedeveloper</span></div>
+  </div>
+  <div class="login-right">
+    <div class="login-card">
+      <h2>Teacher Sign In</h2>
+      <div class="subtitle">Access your exam management dashboard</div>
+      <div class="login-error" id="loginErr">
+        <i class="fa fa-exclamation-circle"></i> Invalid credentials. Please try again.
+      </div>
+      <div class="field">
+        <label><i class="fa fa-id-card"></i> TEACHER ID</label>
+        <input type="text" id="inId" placeholder="teacher1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label><i class="fa fa-lock"></i> PASSWORD</label>
+        <input type="password" id="inPass" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">
+        <span>Sign In to Dashboard</span>
+        <i class="fa fa-arrow-right"></i>
+      </button>
+      <div class="login-footer">
+        <div><i class="fa fa-copyright"></i> 2026 Peter Harvard International Schools</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- APP -->
 <div id="app">
   <div class="loader-overlay" id="loaderOverlay" style="display:none">
     <div class="loader-spinner"></div>
-    <div class="loader-text" id="loaderText">Loading…</div>
+    <div class="loader-text"><i class="fa fa-spinner fa-spin"></i> <span id="loaderText">Loading…</span></div>
   </div>
+  
   <div class="topbar">
     <div class="tb-brand">
-      <img src="logo.png" class="tb-logo" id="tbLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbLogoFb').style.display='flex'">
-      <div class="tb-logo-fb" id="tbLogoFb" style="display:none">P</div>
+      <img src="Badgejet.jpg" class="tb-logo" id="tbLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbLogoFb').style.display='flex'">
+      <div class="tb-logo-fb" id="tbLogoFb" style="display:none">PH</div>
       <div class="tb-name">Teacher Dashboard <small>Peter Harvard International Schools</small></div>
     </div>
     <div class="tb-right">
-      <div class="net-pill" id="netPill"><div class="net-dot nd-offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
-      <div class="teacher-name" id="teacherName">—</div>
-      <button class="btn-out" onclick="doLogout()">Sign Out</button>
+      <div class="net-pill" id="netPill">
+        <i class="fa fa-wifi" id="netIcon"></i>
+        <span id="netLabel">Checking…</span>
+      </div>
+      <div class="teacher-name" id="teacherName">
+        <i class="fa fa-user"></i> <span>—</span>
+      </div>
+      <button class="btn-out" onclick="doLogout()">
+        <i class="fa fa-sign-out"></i> Sign Out
+      </button>
     </div>
   </div>
 
   <div class="app-layout">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="nav-section-lbl">Overview</div>
-      <button class="nav-item active" data-page="overview" onclick="goPage('overview',this)"><span class="nav-icon">◈</span>Overview</button>
-      <button class="nav-item" data-page="upload" onclick="goPage('upload',this)"><span class="nav-icon">↑</span>Upload Exam</button>
-      <button class="nav-item" data-page="exams" onclick="goPage('exams',this)"><span class="nav-icon">▦</span>Manage Exams</button>
-      <div class="nav-section-lbl">Live</div>
-      <button class="nav-item" data-page="monitor" onclick="goPage('monitor',this)"><span class="nav-icon">◎</span>Monitor Students <span class="nav-badge" id="activeBadge">0</span></button>
-      <button class="nav-item" data-page="activity" onclick="goPage('activity',this)"><span class="nav-icon">⏱</span>Activity Log</button>
-      <div class="nav-section-lbl">Results</div>
-      <button class="nav-item" data-page="results" onclick="goPage('results',this)"><span class="nav-icon">&#8801;</span>Results</button>
-      <button class="nav-item" data-page="students" onclick="goPage('students',this)"><span class="nav-icon">&#9782;</span>Student List</button>
-      <button class="nav-item" data-page="charts" onclick="goPage('charts',this)"><span class="nav-icon">&#9641;</span>Charts</button>
+      <div class="nav-section-lbl"><i class="fa fa-dashboard"></i> Overview</div>
+      <button class="nav-item active" data-page="overview" onclick="goPage('overview',this)">
+        <i class="fa fa-dashboard"></i>Overview
+      </button>
+      <button class="nav-item" data-page="upload" onclick="goPage('upload',this)">
+        <i class="fa fa-upload"></i>Upload Exam
+      </button>
+      <button class="nav-item" data-page="exams" onclick="goPage('exams',this)">
+        <i class="fa fa-list"></i>Manage Exams
+      </button>
+      
+      <div class="nav-section-lbl"><i class="fa fa-eye"></i> Live</div>
+      <button class="nav-item" data-page="monitor" onclick="goPage('monitor',this)">
+        <i class="fa fa-users"></i>Monitor Students 
+        <span class="nav-badge" id="activeBadge">0</span>
+      </button>
+      <button class="nav-item" data-page="activity" onclick="goPage('activity',this)">
+        <i class="fa fa-clock-o"></i>Activity Log
+      </button>
+      
+      <div class="nav-section-lbl"><i class="fa fa-bar-chart"></i> Results</div>
+      <button class="nav-item" data-page="results" onclick="goPage('results',this)">
+        <i class="fa fa-table"></i>Results
+      </button>
+      <button class="nav-item" data-page="submitted" onclick="goPage('submitted',this)">
+        <i class="fa fa-check-circle"></i>Submitted Exams
+      </button>
+      <button class="nav-item" data-page="students" onclick="goPage('students',this)">
+        <i class="fa fa-graduation-cap"></i>Student List
+      </button>
+      <button class="nav-item" data-page="charts" onclick="goPage('charts',this)">
+        <i class="fa fa-line-chart"></i>Charts
+      </button>
     </div>
 
-    <!-- Main -->
+    <!-- Main Content -->
     <div class="main-content">
-
-      <!-- OVERVIEW -->
+      <!-- OVERVIEW PAGE -->
       <div class="page active" id="page-overview">
-        <div class="page-header"><h2>Overview</h2><p>Your exam system at a glance</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-dashboard"></i> Overview</h2>
+          <p>Your exam system at a glance</p>
+        </div>
         <div class="stat-row">
-          <div class="stat-card blue"><div class="sc-val" id="ovExams">0</div><div class="sc-lbl">Exams Uploaded</div></div>
-          <div class="stat-card green"><div class="sc-val" id="ovActive">0</div><div class="sc-lbl">Active Students</div></div>
-          <div class="stat-card accent"><div class="sc-val" id="ovResults">0</div><div class="sc-lbl">Submissions</div></div>
-          <div class="stat-card yellow"><div class="sc-val" id="ovAvg">—</div><div class="sc-lbl">Avg. Score</div></div>
+          <div class="stat-card">
+            <div class="sc-val" id="ovExams">0</div>
+            <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams Uploaded</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="ovActive">0</div>
+            <div class="sc-lbl"><i class="fa fa-user-clock"></i> Active Students</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="ovResults">0</div>
+            <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="ovAvg">—</div>
+            <div class="sc-lbl"><i class="fa fa-percent"></i> Avg. Score</div>
+          </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>Recent Submissions</h3><button class="btn outline sm" onclick="goPage('results',document.querySelector('[data-page=results]'))">View All →</button></div>
-          <div id="recentSubs"><div class="empty">No results yet</div></div>
+          <div class="card-header">
+            <h3><i class="fa fa-clock-o"></i> Recent Submissions</h3>
+            <button class="btn outline sm" onclick="goPage('results',document.querySelector('[data-page=results]'))">
+              View All <i class="fa fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="table-container">
+            <div id="recentSubs"><div class="empty"><i class="fa fa-inbox"></i>No results yet</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- UPLOAD -->
+      <!-- UPLOAD PAGE -->
       <div class="page" id="page-upload">
-        <div class="page-header"><h2>Upload Exam</h2><p>Upload a JSON or CSV file to publish an exam for students</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-upload"></i> Upload Exam</h2>
+          <p>Upload a JSON or CSV file to publish an exam</p>
+        </div>
         
         <div class="upload-tabs">
-          <button class="upload-tab active" onclick="switchUploadTab('json')">📄 JSON Upload</button>
-          <button class="upload-tab" onclick="switchUploadTab('csv')">📊 CSV Upload</button>
+          <button class="upload-tab active" onclick="switchUploadTab('json')">
+            <i class="fa fa-file-code-o"></i> JSON Upload
+          </button>
+          <button class="upload-tab" onclick="switchUploadTab('csv')">
+            <i class="fa fa-file-excel-o"></i> CSV Upload
+          </button>
         </div>
         
         <!-- JSON Upload -->
         <div id="jsonUploadSection">
-          <div class="card" style="margin-bottom:20px;">
-            <div class="card-header"><h3>Upload JSON File</h3></div>
+          <div class="card">
+            <div class="card-header"><h3><i class="fa fa-cog"></i> JSON Upload Settings</h3></div>
             <div class="card-body">
-              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Set exam details below. These will override values in the JSON file.</p>
               <div class="upload-fields">
                 <div>
-                  <label>Exam Name</label>
+                  <label><i class="fa fa-tag"></i> Exam Name</label>
                   <input type="text" id="jsonExamName" placeholder="e.g. Mathematics Exam">
                 </div>
                 <div>
-                  <label>Subject</label>
+                  <label><i class="fa fa-book"></i> Subject</label>
                   <input type="text" id="jsonSubject" placeholder="e.g. Mathematics" list="subjectList">
                 </div>
                 <div>
-                  <label>Target Class</label>
+                  <label><i class="fa fa-users"></i> Target Class</label>
                   <select id="jsonClass">
                     <option value="">All Classes</option>
                     <option value="SS 1">SS 1</option>
@@ -326,30 +1387,36 @@ tr:hover td{background:#F8FAFC;}
                   </select>
                 </div>
                 <div>
-                  <label>Duration (minutes)</label>
+                  <label><i class="fa fa-clock-o"></i> Duration (min)</label>
                   <input type="number" id="jsonDuration" value="30" min="1" max="180">
                 </div>
               </div>
               <datalist id="subjectList">
-                <option value="Mathematics"><option value="English Language"><option value="Physics"><option value="Chemistry">
-                <option value="Biology"><option value="Economics"><option value="Government"><option value="Literature">
-                <option value="Further Mathematics"><option value="Geography"><option value="History"><option value="Computer Science">
+                <option value="Mathematics"><option value="English Language"><option value="Physics">
+                <option value="Chemistry"><option value="Biology"><option value="Economics">
+                <option value="Computer Science"><option value="Digital Technology">
               </datalist>
+              
               <div class="upload-zone" id="jsonUploadZone">
                 <input type="file" accept=".json" id="jsonFileInput" onchange="handleJsonFile(this.files[0])">
-                <div class="uz-icon">📄</div>
+                <div class="uz-icon"><i class="fa fa-cloud-upload"></i></div>
                 <div class="uz-title">Drop JSON file here or click to browse</div>
                 <div class="uz-sub">Only .json files accepted</div>
               </div>
+              
               <div id="jsonPreview" style="display:none;margin-top:20px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                   <div>
                     <strong id="jsonPrevName">—</strong>
-                    <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="jsonPrevMeta"></span>
+                    <span style="font-size:13px;color:#666;margin-left:10px;" id="jsonPrevMeta"></span>
                   </div>
                   <div style="display:flex;gap:8px;">
-                    <button class="btn outline sm" onclick="clearJsonUpload()">Clear</button>
-                    <button class="btn accent sm" onclick="doJsonUpload()">Upload &rarr;</button>
+                    <button class="btn outline sm" onclick="clearJsonUpload()">
+                      <i class="fa fa-times"></i> Clear
+                    </button>
+                    <button class="btn accent sm" onclick="doJsonUpload()">
+                      <i class="fa fa-upload"></i> Upload
+                    </button>
                   </div>
                 </div>
                 <div class="json-preview" id="jsonPrevContent"></div>
@@ -360,48 +1427,53 @@ tr:hover td{background:#F8FAFC;}
         
         <!-- CSV Upload -->
         <div id="csvUploadSection" style="display:none;">
-          <div class="card" style="margin-bottom:20px;">
-            <div class="card-header"><h3>Upload CSV File</h3></div>
+          <div class="card">
+            <div class="card-header"><h3><i class="fa fa-cog"></i> CSV Upload Settings</h3></div>
             <div class="card-body">
-              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">CSV must follow the format below.</p>
               <div class="upload-fields">
                 <div>
-                  <label>Exam Name</label>
-                  <input type="text" id="csvExamName" placeholder="e.g. Networking Exam" value="Networking Systems II">
+                  <label><i class="fa fa-tag"></i> Exam Name</label>
+                  <input type="text" id="csvExamName" placeholder="e.g. Networking Exam">
                 </div>
                 <div>
-                  <label>Subject</label>
-                  <input type="text" id="csvSubject" placeholder="e.g. Computer Science" value="Computer Science">
+                  <label><i class="fa fa-book"></i> Subject</label>
+                  <input type="text" id="csvSubject" placeholder="e.g. Computer Science">
                 </div>
                 <div>
-                  <label>Target Class</label>
+                  <label><i class="fa fa-users"></i> Target Class</label>
                   <select id="csvClass">
                     <option value="">All Classes</option>
                     <option value="SS 1">SS 1</option>
-                    <option value="SS 2" selected>SS 2</option>
+                    <option value="SS 2">SS 2</option>
                     <option value="SS 3">SS 3</option>
                   </select>
                 </div>
                 <div>
-                  <label>Duration (minutes)</label>
+                  <label><i class="fa fa-clock-o"></i> Duration (min)</label>
                   <input type="number" id="csvDuration" value="30" min="1" max="180">
                 </div>
               </div>
+              
               <div class="upload-zone" id="csvUploadZone">
                 <input type="file" accept=".csv" id="csvFileInput" onchange="handleCsvFile(this.files[0])">
-                <div class="uz-icon">📊</div>
+                <div class="uz-icon"><i class="fa fa-cloud-upload"></i></div>
                 <div class="uz-title">Drop CSV file here or click to browse</div>
                 <div class="uz-sub">Only .csv files accepted</div>
               </div>
+              
               <div id="csvPreview" style="display:none;margin-top:20px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                   <div>
                     <strong id="csvPrevName">—</strong>
-                    <span style="font-size:12px;color:var(--muted);margin-left:10px;" id="csvPrevMeta"></span>
+                    <span style="font-size:13px;color:#666;margin-left:10px;" id="csvPrevMeta"></span>
                   </div>
                   <div style="display:flex;gap:8px;">
-                    <button class="btn outline sm" onclick="clearCsvUpload()">Clear</button>
-                    <button class="btn accent sm" onclick="doCsvUpload()">Upload &rarr;</button>
+                    <button class="btn outline sm" onclick="clearCsvUpload()">
+                      <i class="fa fa-times"></i> Clear
+                    </button>
+                    <button class="btn accent sm" onclick="doCsvUpload()">
+                      <i class="fa fa-upload"></i> Upload
+                    </button>
                   </div>
                 </div>
                 <div class="json-preview" id="csvPrevContent"></div>
@@ -410,152 +1482,237 @@ tr:hover td{background:#F8FAFC;}
           </div>
           
           <div class="card">
-            <div class="card-header"><h3>CSV Format Template</h3></div>
+            <div class="card-header"><h3><i class="fa fa-info-circle"></i> CSV Format Accepted</h3></div>
             <div class="card-body">
-              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Your CSV file must have these columns. The answer column should be "option_1", "option_2", "option_3", or "option_4".</p>
-              <div class="csv-info">
-                <pre>question_type,question_group,question_level,question,mark,option_1,option_2,option_3,option_4,answer
-single_choice,medium,SS3,"A networking system is best described as",1,"a) a single standalone computer","b) interconnected devices sharing data and resources","c) a software application","d) an operating system",option_2
-single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic computer use","b) advanced concepts and applications of networks","c) typing skills","d) hardware repairs",option_2</pre>
-              </div>
+              <p style="font-size:14px;color:#666;margin-bottom:16px;">Your CSV file can use these column names:</p>
+              <div class="json-preview">question, option_1/option1/opt1/A, option_2/option2/opt2/B, 
+option_3/option3/opt3/C, option_4/option4/opt4/D, answer
+
+Example:
+question,option_1,option_2,option_3,option_4,answer
+"What is 2+2?","3","4","5","6",option_2</div>
             </div>
           </div>
         </div>
-        
+      </div>
+
+      <!-- EXAMS PAGE -->
+      <div class="page" id="page-exams">
+        <div class="page-header">
+          <h2><i class="fa fa-list"></i> Manage Exams</h2>
+          <p>View, enable/disable, and delete uploaded exam files</p>
+        </div>
         <div class="card">
-          <div class="card-header"><h3>JSON Template</h3></div>
-          <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">For JSON uploads, use this format:</p>
-            <div class="json-preview">{
-  "exam": "Networking Systems II",
-  "subject": "Computer Science",
-  "class": "SS 2",
-  "duration": 30,
-  "questions": [
-    {
-      "question": "A networking system is best described as",
-      "A": "a) a single standalone computer",
-      "B": "b) interconnected devices sharing data and resources",
-      "C": "c) a software application",
-      "D": "d) an operating system",
-      "answer": "B"
-    }
-  ]
-}</div>
+          <div class="card-header">
+            <h3><i class="fa fa-file-text"></i> Exam Library</h3>
+            <button class="btn outline sm" onclick="loadExams()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="table-container">
+            <div id="examTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
           </div>
         </div>
       </div>
 
-      <!-- MANAGE EXAMS -->
-      <div class="page" id="page-exams">
-        <div class="page-header"><h2>Manage Exams</h2><p>View, enable/disable, and delete uploaded exam files</p></div>
-        <div class="card">
-          <div class="card-header"><h3>Exam Library</h3><button class="btn outline sm" onclick="loadExams()">&#8635; Refresh</button></div>
-          <div id="examTableWrap"><div class="empty">Loading…</div></div>
-        </div>
-      </div>
-
-      <!-- MONITOR -->
+      <!-- MONITOR PAGE -->
       <div class="page" id="page-monitor">
-        <div class="page-header"><h2>Monitor Students</h2><p>Live session view — updates every 15 seconds</p></div>
-        <div class="refresh-hint" id="monLastRefresh">Last updated: —</div>
+        <div class="page-header">
+          <h2><i class="fa fa-users"></i> Monitor Students</h2>
+          <p>Live session view — updates every 15 seconds</p>
+        </div>
+        <div style="font-size:13px;color:#666;margin-bottom:16px;">
+          <i class="fa fa-clock-o"></i> Last updated: <span id="monLastRefresh">—</span>
+        </div>
         <div id="monitorArea">
           <div id="monActiveSection">
-            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;">● Active Now</div>
-            <div class="monitor-grid" id="monGrid"><div class="empty">No active students</div></div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#1e1e1e;">
+              <i class="fa fa-circle" style="color:#22c55e;"></i> Active Now
+            </div>
+            <div class="monitor-grid" id="monGrid"><div class="empty"><i class="fa fa-users"></i>No active students</div></div>
           </div>
-          <div class="divider"></div>
+          <div style="height:2px;background:#f0f0f0;margin:24px 0;"></div>
           <div>
-            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;">✓ Submitted</div>
-            <div class="monitor-grid" id="submGrid"><div class="empty">No submissions yet</div></div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#1e1e1e;">
+              <i class="fa fa-check-circle" style="color:#1e1e1e;"></i> Submitted
+            </div>
+            <div class="monitor-grid" id="submGrid"><div class="empty"><i class="fa fa-inbox"></i>No submissions yet</div></div>
           </div>
         </div>
       </div>
 
-      <!-- ACTIVITY -->
+      <!-- ACTIVITY PAGE -->
       <div class="page" id="page-activity">
-        <div class="page-header"><h2>Activity Log</h2><p>Student actions and events in real time</p></div>
-        <div class="card">
-          <div class="card-header"><h3>All Activity</h3><button class="btn outline sm" onclick="loadActivity()">↻ Refresh</button></div>
-          <div class="card-body" style="padding:0 20px;">
-            <div id="activityList" style="max-height:540px;overflow-y:auto;"><div class="empty">Loading…</div></div>
-          </div>
+        <div class="page-header">
+          <h2><i class="fa fa-clock-o"></i> Activity Log</h2>
+          <p>Student actions and events in real time</p>
         </div>
-      </div>
-
-      <!-- RESULTS -->
-      <div class="page" id="page-results">
-        <div class="page-header"><h2>Results</h2><p>All student exam submissions</p></div>
         <div class="card">
           <div class="card-header">
-            <h3>Submissions</h3>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-              <button class="btn outline sm" onclick="loadResults()">&#8635; Refresh</button>
+            <h3><i class="fa fa-list-alt"></i> All Activity</h3>
+            <button class="btn outline sm" onclick="loadActivity()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="card-body" style="padding:0 20px;">
+            <div id="activityList" style="max-height:600px;overflow-y:auto;"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS PAGE -->
+      <div class="page" id="page-results">
+        <div class="page-header">
+          <h2><i class="fa fa-table"></i> Results</h2>
+          <p>All student exam submissions</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa fa-check-square"></i> Submissions</h3>
+            <div class="filter-row">
+              <select class="filter-select" id="filterClass" onchange="filterResults()">
+                <option value="">All Classes</option>
+                <option value="SS 1">SS 1</option>
+                <option value="SS 2">SS 2</option>
+                <option value="SS 3">SS 3</option>
+              </select>
+              
+              <select class="filter-select" id="filterSubject" onchange="filterResults()">
+                <option value="">All Subjects</option>
+              </select>
+              
+              <select class="filter-select" id="filterExam" onchange="filterResults()">
+                <option value="">All Exams</option>
+              </select>
+              
+              <button class="btn outline sm" onclick="loadResults()">
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              
               <div class="export-dropdown">
-                <button class="btn accent sm">📥 Export ▼</button>
+                <button class="btn accent sm">
+                  <i class="fa fa-download"></i> Export ▼
+                </button>
                 <div class="export-dropdown-content">
-                  <a href="/api/results/csv" onclick="event.preventDefault(); downloadResultsCSV()">📊 Export All as CSV</a>
-                  <a href="#" onclick="event.preventDefault(); downloadResultsFilteredCSV()">📊 Export Filtered as CSV</a>
-                  <a href="/api/results/json" onclick="event.preventDefault(); downloadResultsJSON()">📄 Export All as JSON</a>
-                  <a href="#" onclick="event.preventDefault(); downloadResultsFilteredJSON()">📄 Export Filtered as JSON</a>
-                  <a href="/api/student-list/csv" onclick="event.preventDefault(); downloadStudentList()">👥 Student List CSV</a>
+                  <a onclick="downloadResultsCSV()">
+                    <i class="fa fa-file-code-o"></i> All as CSV
+                  </a>
+                  <a onclick="downloadResultsExcel()">
+                    <i class="fa fa-file-excel-o"></i> All as Excel
+                  </a>
+                  <a onclick="downloadResultsFilteredCSV()">
+                    <i class="fa fa-filter"></i> Filtered as CSV
+                  </a>
+                  <a onclick="downloadResultsByClass()">
+                    <i class="fa fa-users"></i> By Class
+                  </a>
+                  <a onclick="downloadResultsBySubject()">
+                    <i class="fa fa-book"></i> By Subject
+                  </a>
                 </div>
               </div>
-              <button class="btn outline sm" onclick="downloadAllResults()">📋 Summary Report</button>
-              <button class="btn danger sm" onclick="clearAllResults()">🗑️ Clear All</button>
+              
+              <button class="btn danger sm" onclick="clearAllResults()">
+                <i class="fa fa-trash"></i> Clear All
+              </button>
             </div>
           </div>
-          <div id="resultsTableWrap"><div class="empty">Loading…</div></div>
+          
+          <div id="resultsStats" class="results-stats"></div>
+          
+          <div class="table-container">
+            <div id="resultsTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- STUDENT LIST -->
-      <div class="page" id="page-students">
-        <div class="page-header"><h2>Student List</h2><p>All registered students with their class and ID</p></div>
+      <!-- SUBMITTED EXAMS PAGE -->
+      <div class="page" id="page-submitted">
+        <div class="page-header">
+          <h2><i class="fa fa-check-circle"></i> Submitted Exams</h2>
+          <p>View all submitted exams grouped by class and subject</p>
+        </div>
         <div class="card">
           <div class="card-header">
-            <h3>Registered Students</h3>
-            <div style="display:flex;gap:8px;">
-              <button class="btn outline sm" onclick="loadStudentList()">&#8635; Refresh</button>
-              <button class="btn accent sm" onclick="window.location='/api/student-list/csv'">&#8595; CSV</button>
-              <button class="btn outline sm" onclick="window.location='/api/student-list/json'">&#8595; JSON</button>
-            </div>
+            <h3><i class="fa fa-users"></i> By Class</h3>
+            <button class="btn outline sm" onclick="loadSubmittedExams()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
           </div>
-          <div id="studentListWrap"><div class="empty">Loading…</div></div>
+          <div class="table-container">
+            <div id="submittedByClass"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa fa-book"></i> By Subject</h3>
+          </div>
+          <div class="table-container">
+            <div id="submittedBySubject"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- CHARTS -->
+      <!-- STUDENT LIST PAGE -->
+      <div class="page" id="page-students">
+        <div class="page-header">
+          <h2><i class="fa fa-graduation-cap"></i> Student List</h2>
+          <p>All registered students</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa fa-users"></i> Registered Students</h3>
+            <div style="display:flex;gap:8px;">
+              <button class="btn outline sm" onclick="loadStudentList()">
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              <button class="btn accent sm" onclick="window.location='/api/student-list/csv'">
+                <i class="fa fa-download"></i> CSV
+              </button>
+            </div>
+          </div>
+          <div class="table-container">
+            <div id="studentListWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS PAGE -->
       <div class="page" id="page-charts">
-        <div class="page-header"><h2>Charts &amp; Analytics</h2><p>Visual overview of exam performance</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-line-chart"></i> Charts & Analytics</h2>
+          <p>Visual overview of exam performance</p>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" id="chartsGrid">
           <div class="card">
-            <div class="card-header"><h3>Score Distribution</h3></div>
+            <div class="card-header"><h3><i class="fa fa-pie-chart"></i> Score Distribution</h3></div>
             <div class="card-body"><div class="chart-wrap"><canvas id="scoreDistChart"></canvas></div></div>
           </div>
           <div class="card">
-            <div class="card-header"><h3>Average by Exam</h3></div>
+            <div class="card-header"><h3><i class="fa fa-bar-chart"></i> Average by Exam</h3></div>
             <div class="card-body"><div class="chart-wrap"><canvas id="examAvgChart"></canvas></div></div>
           </div>
           <div class="card">
-            <div class="card-header"><h3>Submissions Over Time</h3></div>
+            <div class="card-header"><h3><i class="fa fa-line-chart"></i> Submissions Over Time</h3></div>
             <div class="card-body"><div class="chart-wrap"><canvas id="timelineChart"></canvas></div></div>
           </div>
           <div class="card">
-            <div class="card-header"><h3>Tab Violations</h3></div>
+            <div class="card-header"><h3><i class="fa fa-exclamation-triangle"></i> Tab Violations</h3></div>
             <div class="card-body"><div class="chart-wrap"><canvas id="violationsChart"></canvas></div></div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL: Confirm ═══ -->
+<!-- MODAL: Confirm -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal">
-    <div class="modal-h"><h3 id="confirmTitle">Confirm</h3><p id="confirmMsg">—</p></div>
+    <div class="modal-h">
+      <h3><i class="fa fa-question-circle"></i> <span id="confirmTitle">Confirm</span></h3>
+      <p id="confirmMsg">—</p>
+    </div>
     <div class="modal-b">
       <div class="modal-actions">
         <button onclick="closeModal()">Cancel</button>
@@ -565,24 +1722,48 @@ single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic c
   </div>
 </div>
 
-<!-- ═══ MODAL: Student Activity ═══ -->
+<!-- MODAL: Student Activity -->
 <div class="modal-overlay" id="actModal">
-  <div class="modal" style="max-width:500px;">
-    <div class="modal-h"><h3 id="actModalTitle">Student Activity</h3><p id="actModalSub">—</p></div>
-    <div class="modal-b" style="max-height:400px;overflow-y:auto;padding-top:12px;" id="actModalBody"></div>
-    <div style="padding:0 24px 20px;"><button class="btn outline" style="width:100%" onclick="document.getElementById('actModal').classList.remove('show')">Close</button></div>
+  <div class="modal" style="max-width:550px;">
+    <div class="modal-h">
+      <h3><i class="fa fa-history"></i> <span id="actModalTitle">Student Activity</span></h3>
+      <p id="actModalSub">—</p>
+    </div>
+    <div class="modal-b" style="max-height:450px;overflow-y:auto;padding-top:12px;" id="actModalBody"></div>
+    <div style="padding:0 24px 20px;">
+      <button class="btn outline" style="width:100%" onclick="document.getElementById('actModal').classList.remove('show')">
+        Close
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- ═══ MODAL: Retake Confirmation ═══ -->
+<!-- MODAL: End Exam -->
+<div class="modal-overlay" id="endExamModal">
+  <div class="modal">
+    <div class="modal-h">
+      <h3><i class="fa fa-stop-circle"></i> End Exam</h3>
+      <p id="endExamMsg">End this student's exam session?</p>
+    </div>
+    <div class="modal-b">
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">The student will be logged out immediately and their exam will be considered incomplete.</p>
+      <div class="modal-actions">
+        <button onclick="closeEndExamModal()">Cancel</button>
+        <button class="warn" id="confirmEndExamBtn">End Exam Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Retake -->
 <div class="modal-overlay" id="retakeModal">
   <div class="modal">
     <div class="modal-h">
-      <h3>Allow Retake</h3>
+      <h3><i class="fa fa-repeat"></i> Allow Retake</h3>
       <p id="retakeMsg">Allow student to retake this exam?</p>
     </div>
     <div class="modal-b">
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">The student will be able to start the exam again from the beginning. Their previous result will be preserved.</p>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">The student will be able to start the exam again from the beginning.</p>
       <div class="modal-actions">
         <button onclick="closeRetakeModal()">Cancel</button>
         <button class="warn" id="confirmRetakeBtn">Allow Retake</button>
@@ -591,19 +1772,36 @@ single_choice,medium,SS3,"Networking Systems II focuses mainly on",1,"a) basic c
   </div>
 </div>
 
+<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ── STATE ────────────────────────────────────────────────────────────────────
+// PWA Registration
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(reg => console.log("Service Worker registered:", reg))
+      .catch(err => console.log("Service Worker registration failed:", err));
+  });
+}
+
+// STATE
 let teacherName = '';
+let teacherId = '';
 let pendingJsonFile = null;
 let pendingCsvFile = null;
 let monitorTimer = null;
 let sessionToken = localStorage.getItem('teacherSessionToken') || null;
 let uploadTab = 'json';
-let currentResults = []; // Store current results for filtering
+let allResults = [];
+let filteredResults = [];
+let allSubjects = [];
+let allExams = [];
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
+// Store current page for reload
+let currentPage = localStorage.getItem('teacherCurrentPage') || 'overview';
+
+// HELPERS
 async function api(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (sessionToken) {
@@ -612,21 +1810,37 @@ async function api(path, opts = {}) {
   const r = await fetch(path, { headers, ...opts });
   return r.json().catch(() => ({}));
 }
+
 function toast(msg, type = '') {
   const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'show ' + type;
+  el.innerHTML = `<i class="fa fa-${type === 'err' ? 'exclamation-circle' : 'check-circle'}"></i> ${msg}`;
+  el.className = 'show ' + type;
   setTimeout(() => el.className = '', 3000);
 }
+
 function openModal(title, msg, okLabel, okFn, okClass = 'primary') {
-  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmTitle').innerHTML = `<i class="fa fa-question-circle"></i> ${title}`;
   document.getElementById('confirmMsg').textContent = msg;
   const btn = document.getElementById('confirmOkBtn');
-  btn.textContent = okLabel;
+  btn.innerHTML = okLabel;
   btn.className = okClass;
   btn.onclick = () => { closeModal(); okFn(); };
   document.getElementById('confirmModal').classList.add('show');
 }
+
 function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
+
+function openEndExamModal(studentId, studentName) {
+  document.getElementById('endExamMsg').textContent = `End exam for ${studentName}?`;
+  document.getElementById('confirmEndExamBtn').onclick = () => {
+    closeEndExamModal();
+    endExam(studentId);
+  };
+  document.getElementById('endExamModal').classList.add('show');
+}
+
+function closeEndExamModal() { document.getElementById('endExamModal').classList.remove('show'); }
+
 function openRetakeModal(studentId, studentName, exam, examFilename) {
   document.getElementById('retakeMsg').textContent = `Allow ${studentName} to retake "${exam}"?`;
   document.getElementById('confirmRetakeBtn').onclick = () => {
@@ -635,11 +1849,13 @@ function openRetakeModal(studentId, studentName, exam, examFilename) {
   };
   document.getElementById('retakeModal').classList.add('show');
 }
+
 function closeRetakeModal() { document.getElementById('retakeModal').classList.remove('show'); }
+
 function fmtTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleTimeString(); }
 function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
 
-// ── SESSION CHECK ────────────────────────────────────────────────────────────
+// SESSION CHECK - No flash of login
 async function checkSession() {
   if (!sessionToken) return false;
   
@@ -651,12 +1867,17 @@ async function checkSession() {
     
     if (res.ok) {
       teacherName = res.name || res.id;
-      document.getElementById('teacherName').textContent = teacherName;
+      teacherId = res.id;
+      document.getElementById('teacherName').innerHTML = `<i class="fa fa-user"></i> <span>${teacherName}</span>`;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
       updateNet();
       setInterval(updateNet, 15000);
-      loadOverview();
+      
+      // Restore last page
+      const savedPage = localStorage.getItem('teacherCurrentPage') || 'overview';
+      goPage(savedPage, document.querySelector(`[data-page="${savedPage}"]`));
+      
       startMonitorRefresh();
       return true;
     }
@@ -667,25 +1888,36 @@ async function checkSession() {
   return false;
 }
 
-// ── AUTH ─────────────────────────────────────────────────────────────────────
+// AUTH
 async function doLogin() {
   const id = document.getElementById('inId').value.trim();
   const pass = document.getElementById('inPass').value;
   if (!id) return;
   
-  const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ id, password: pass, role: 'teacher' }) });
+  showLoader('Signing in…');
+  
+  const res = await api('/api/login', { 
+    method: 'POST', 
+    body: JSON.stringify({ id, password: pass, role: 'teacher' }) 
+  });
+  
+  hideLoader();
+  
   if (res.ok) {
     sessionToken = res.token;
     localStorage.setItem('teacherSessionToken', res.token);
     teacherName = res.name || id;
-    document.getElementById('teacherName').textContent = teacherName;
+    teacherId = res.id;
+    document.getElementById('teacherName').innerHTML = `<i class="fa fa-user"></i> <span>${teacherName}</span>`;
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     updateNet();
     setInterval(updateNet, 15000);
-    loadOverview();
+    goPage('overview', document.querySelector('[data-page="overview"]'));
     startMonitorRefresh();
-  } else { document.getElementById('loginErr').style.display = 'block'; }
+  } else { 
+    document.getElementById('loginErr').style.display = 'flex'; 
+  }
 }
 
 async function doLogout() {
@@ -693,6 +1925,7 @@ async function doLogout() {
     await api('/api/logout', { method: 'POST', body: JSON.stringify({ token: sessionToken }) });
   }
   localStorage.removeItem('teacherSessionToken');
+  localStorage.removeItem('teacherCurrentPage');
   sessionToken = null;
   clearInterval(monitorTimer);
   document.getElementById('app').style.display = 'none';
@@ -701,21 +1934,29 @@ async function doLogout() {
   document.getElementById('inPass').value = '';
 }
 
-// ── NETWORK ──────────────────────────────────────────────────────────────────
+// NETWORK
 async function updateNet() {
   try {
     const info = await api('/api/info');
     const nets = info.networks || [];
-    const eth = nets.find(n => n.type === 'ethernet');
-    const wifi = nets.find(n => n.type === 'wifi');
-    const connected = eth || wifi;
-    const dot = document.getElementById('netDot');
-    dot.className = 'net-dot ' + (eth ? 'nd-ethernet' : wifi ? 'nd-wifi' : 'nd-offline');
-    document.getElementById('netLabel').textContent = eth ? '🔌 Ethernet' : wifi ? '📶 Wi-Fi' : 'No Network';
-  } catch {}
+    const connected = nets.length > 0;
+    
+    document.getElementById('netIcon').className = connected ? 'fa fa-wifi' : 'fa fa-exclamation-triangle';
+    document.getElementById('netLabel').textContent = connected ? 'Connected' : 'Offline';
+  } catch {
+    document.getElementById('netIcon').className = 'fa fa-exclamation-triangle';
+    document.getElementById('netLabel').textContent = 'Offline';
+  }
 }
 
-// ── UPLOAD TAB SWITCHING ─────────────────────────────────────────────────────
+// LOADER
+function showLoader(text) {
+  document.getElementById('loaderText').innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${text || 'Loading…'}`;
+  document.getElementById('loaderOverlay').style.display = 'flex';
+}
+function hideLoader() { document.getElementById('loaderOverlay').style.display = 'none'; }
+
+// UPLOAD TAB SWITCHING
 function switchUploadTab(tab) {
   uploadTab = tab;
   document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
@@ -724,7 +1965,7 @@ function switchUploadTab(tab) {
   document.getElementById('csvUploadSection').style.display = tab === 'csv' ? 'block' : 'none';
 }
 
-// ── JSON UPLOAD ───────────────────────────────────────────────────────────────
+// JSON UPLOAD
 function handleJsonFile(file) {
   if (!file) return;
   const reader = new FileReader();
@@ -737,7 +1978,6 @@ function handleJsonFile(file) {
       document.getElementById('jsonPrevContent').textContent = JSON.stringify(data, null, 2).slice(0, 900) + (JSON.stringify(data, null, 2).length > 900 ? '...' : '');
       document.getElementById('jsonPreview').style.display = 'block';
       
-      // Pre-fill form with data from JSON
       if (data.exam) document.getElementById('jsonExamName').value = data.exam;
       if (data.subject) document.getElementById('jsonSubject').value = data.subject;
       if (data.class) document.getElementById('jsonClass').value = data.class;
@@ -746,15 +1986,16 @@ function handleJsonFile(file) {
   };
   reader.readAsText(file);
 }
+
 function clearJsonUpload() {
   pendingJsonFile = null;
   document.getElementById('jsonPreview').style.display = 'none';
   document.getElementById('jsonFileInput').value = '';
 }
+
 async function doJsonUpload() {
   if (!pendingJsonFile) return;
   
-  // Get form values (override JSON)
   const examName = document.getElementById('jsonExamName').value.trim();
   const subject = document.getElementById('jsonSubject').value.trim();
   const examClass = document.getElementById('jsonClass').value;
@@ -765,20 +2006,18 @@ async function doJsonUpload() {
   if (subject) uploadData.subject = subject;
   if (examClass) uploadData.class = examClass;
   uploadData.duration = duration;
-  uploadData.teacherId = teacherName;
+  uploadData.teacherId = teacherId;
   
-  // Create a new file blob with updated JSON
   const updatedBlob = new Blob([JSON.stringify(uploadData, null, 2)], { type: 'application/json' });
   const updatedFile = new File([updatedBlob], pendingJsonFile.file.name, { type: 'application/json' });
   const form = new FormData();
   form.append('exam', updatedFile);
   
-  document.getElementById('loaderOverlay').style.display = 'flex';
-  document.getElementById('loaderText').textContent = 'Uploading exam…';
+  showLoader('Uploading exam…');
   
   const res = await fetch('/api/upload', { method: 'POST', body: form }).then(r => r.json());
   
-  document.getElementById('loaderOverlay').style.display = 'none';
+  hideLoader();
   if (res.ok) { 
     toast('Exam uploaded!', 'ok'); 
     clearJsonUpload(); 
@@ -786,7 +2025,7 @@ async function doJsonUpload() {
   } else toast('Upload failed: ' + (res.error || ''), 'err');
 }
 
-// ── CSV UPLOAD ───────────────────────────────────────────────────────────────
+// CSV UPLOAD
 function handleCsvFile(file) {
   if (!file) return;
   const reader = new FileReader();
@@ -794,13 +2033,12 @@ function handleCsvFile(file) {
     try {
       const content = e.target.result;
       const lines = content.split('\n').filter(l => l.trim());
-      const questionCount = lines.length - 1; // Subtract header
+      const questionCount = lines.length - 1;
       
       pendingCsvFile = { file, content };
       document.getElementById('csvPrevName').textContent = file.name;
       document.getElementById('csvPrevMeta').textContent = `${questionCount} questions`;
       
-      // Show preview of first few lines
       const previewLines = lines.slice(0, 5).join('\n');
       document.getElementById('csvPrevContent').textContent = previewLines + (lines.length > 5 ? '\n...' : '');
       document.getElementById('csvPreview').style.display = 'block';
@@ -808,32 +2046,30 @@ function handleCsvFile(file) {
   };
   reader.readAsText(file);
 }
+
 function clearCsvUpload() {
   pendingCsvFile = null;
   document.getElementById('csvPreview').style.display = 'none';
   document.getElementById('csvFileInput').value = '';
 }
+
 async function doCsvUpload() {
   if (!pendingCsvFile) return;
   
-  // Get form values
-  const examName = document.getElementById('csvExamName').value.trim();
-  const subject = document.getElementById('csvSubject').value.trim();
+  const examName = document.getElementById('csvExamName').value.trim() || 'CSV Exam';
+  const subject = document.getElementById('csvSubject').value.trim() || 'General';
   const examClass = document.getElementById('csvClass').value;
   const duration = parseInt(document.getElementById('csvDuration').value) || 30;
-  
-  if (!examName) { toast('Please enter an exam name', 'err'); return; }
   
   const form = new FormData();
   form.append('exam', pendingCsvFile.file);
   
-  document.getElementById('loaderOverlay').style.display = 'flex';
-  document.getElementById('loaderText').textContent = 'Processing CSV and uploading…';
+  showLoader('Processing CSV…');
   
   const url = `/api/upload-csv?name=${encodeURIComponent(examName)}&subject=${encodeURIComponent(subject)}&class=${encodeURIComponent(examClass)}&duration=${duration}`;
   const res = await fetch(url, { method: 'POST', body: form }).then(r => r.json());
   
-  document.getElementById('loaderOverlay').style.display = 'none';
+  hideLoader();
   if (res.ok) { 
     toast(`Exam uploaded with ${res.questions} questions!`, 'ok'); 
     clearCsvUpload(); 
@@ -841,119 +2077,135 @@ async function doCsvUpload() {
   } else toast('Upload failed: ' + (res.error || ''), 'err');
 }
 
-// ── DROPZONE SETUP ───────────────────────────────────────────────────────────
+// DROPZONE
 const jsonZone = document.getElementById('jsonUploadZone');
-jsonZone.addEventListener('dragover', e => { e.preventDefault(); jsonZone.classList.add('drag'); });
-jsonZone.addEventListener('dragleave', () => jsonZone.classList.remove('drag'));
-jsonZone.addEventListener('drop', e => { e.preventDefault(); jsonZone.classList.remove('drag'); handleJsonFile(e.dataTransfer.files[0]); });
+if (jsonZone) {
+  jsonZone.addEventListener('dragover', e => { e.preventDefault(); jsonZone.classList.add('drag'); });
+  jsonZone.addEventListener('dragleave', () => jsonZone.classList.remove('drag'));
+  jsonZone.addEventListener('drop', e => { e.preventDefault(); jsonZone.classList.remove('drag'); handleJsonFile(e.dataTransfer.files[0]); });
+}
 
 const csvZone = document.getElementById('csvUploadZone');
-csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag'); });
-csvZone.addEventListener('dragleave', () => csvZone.classList.remove('drag'));
-csvZone.addEventListener('drop', e => { e.preventDefault(); csvZone.classList.remove('drag'); handleCsvFile(e.dataTransfer.files[0]); });
+if (csvZone) {
+  csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag'); });
+  csvZone.addEventListener('dragleave', () => csvZone.classList.remove('drag'));
+  csvZone.addEventListener('drop', e => { e.preventDefault(); csvZone.classList.remove('drag'); handleCsvFile(e.dataTransfer.files[0]); });
+}
 
-// ── NAV ───────────────────────────────────────────────────────────────────────
+// NAVIGATION - Save current page
 function goPage(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (name === 'overview') loadOverview();
-  if (name === 'exams') loadExams();
-  if (name === 'monitor') loadMonitor();
-  if (name === 'results') loadResults();
-  if (name === 'activity') loadActivity();
-  if (name === 'students') loadStudentList();
-  if (name === 'charts') loadCharts();
+  
+  // Save current page for reload
+  localStorage.setItem('teacherCurrentPage', name);
+  currentPage = name;
+  
+  const loaders = {
+    overview: loadOverview,
+    exams: loadExams,
+    monitor: loadMonitor,
+    results: loadResults,
+    submitted: loadSubmittedExams,
+    activity: loadActivity,
+    students: loadStudentList,
+    charts: loadCharts
+  };
+  loaders[name]?.();
 }
 
-// ── OVERVIEW ─────────────────────────────────────────────────────────────────
+// OVERVIEW
 async function loadOverview() {
-  const [exams, results, sessions] = await Promise.all([api('/api/exams'), api('/api/results'), api('/api/sessions')]);
+  const [exams, results, sessions] = await Promise.all([
+    api('/api/exams'), 
+    api('/api/results'), 
+    api('/api/sessions')
+  ]);
+  
   document.getElementById('ovExams').textContent = Array.isArray(exams) ? exams.length : 0;
   const rArr = Array.isArray(results) ? results : [];
   const sArr = Array.isArray(sessions) ? sessions : [];
   document.getElementById('ovActive').textContent = sArr.length;
   document.getElementById('activeBadge').textContent = sArr.length;
   document.getElementById('ovResults').textContent = rArr.length;
+  
   if (rArr.length) {
     const avg = Math.round(rArr.reduce((s, r) => s + (r.percentage || 0), 0) / rArr.length);
     document.getElementById('ovAvg').textContent = avg + '%';
   }
+  
   const recent = rArr.slice(-6).reverse();
   document.getElementById('recentSubs').innerHTML = recent.length ? `
-    <table><thead><tr><th>Student</th><th>Exam</th><th>Score</th><th>%</th><th>Tab Violations</th><th>Time</th><th>Retake</th></tr></thead>
-    <tbody>${recent.map(r => `<tr>
-      <td><strong>${r.student}</strong></td>
-      <td>${r.exam}</td>
-      <td>${r.score}/${r.total}</td>
-      <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
-      <td><span class="pill ${(r.tabViolations||0) > 0 ? 'yellow' : 'gray'}">${r.tabViolations || 0}</span></td>
-      <td style="color:var(--muted);font-size:12px;">${fmtTime(r.submittedAt)}</td>
-      <td><button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')">↺ Retake</button></td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No results yet</div>';
+    <table>
+      <thead><tr><th>Student</th><th>Exam</th><th>Subject</th><th>Class</th><th>Score</th><th>%</th><th>Actions</th></tr></thead>
+      <tbody>${recent.map(r => `<tr>
+        <td><strong>${r.student}</strong></td>
+        <td>${r.exam}</td>
+        <td>${r.subject || '—'}</td>
+        <td><span class="pill">${r.studentClass || '—'}</span></td>
+        <td>${r.score}/${r.total}</td>
+        <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
+        <td><button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')"><i class="fa fa-repeat"></i></button></td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="empty"><i class="fa fa-inbox"></i>No results yet</div>';
 }
 
-// ── EXAMS ─────────────────────────────────────────────────────────────────────
+// EXAMS
 async function loadExams() {
   const exams = await api('/api/exams');
   const results = await api('/api/results');
   const rArr = Array.isArray(results) ? results : [];
   
-  // Count submissions per exam
   const examCounts = {};
-  rArr.forEach(r => {
-    const filename = r.examFilename;
-    if (filename) {
-      examCounts[filename] = (examCounts[filename] || 0) + 1;
-    }
-  });
+  rArr.forEach(r => { if (r.examFilename) examCounts[r.examFilename] = (examCounts[r.examFilename] || 0) + 1; });
   
   document.getElementById('examTableWrap').innerHTML = Array.isArray(exams) && exams.length ? `
-    <table><thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Duration</th><th>Taken</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>${exams.map(e => {
-      const takenCount = examCounts[e.filename] || 0;
-      return `<tr>
-      <td><strong>${e.name}</strong></td>
-      <td>${e.subject || '<span style="color:var(--muted)">—</span>'}</td>
-      <td><span class="pill ${e.class ? 'blue' : 'gray'}">${e.class || 'All Classes'}</span></td>
-      <td>${e.questionCount}</td>
-      <td>${e.duration} min</td>
-      <td><span class="pill ${takenCount > 0 ? 'green' : 'gray'}">${takenCount} student${takenCount !== 1 ? 's' : ''}</span></td>
-      <td>
-        <label class="toggle-switch" title="${e.active ? 'Click to disable' : 'Click to enable'}">
-          <input type="checkbox" ${e.active ? 'checked' : ''} onchange="toggleExamStatus('${e.filename}', this.checked)">
-          <span class="toggle-slider"></span>
-        </label>
-        <span style="font-size:11px;color:var(--muted);margin-left:6px;">${e.active ? 'Active' : 'Inactive'}</span>
-      </td>
-      <td><button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')">&#128465; Delete</button></td>
-    </tr>`}).join('')}</tbody></table>` : '<div class="empty">No exams uploaded yet</div>';
-}
-async function toggleExamStatus(filename, active) {
-  const res = await fetch('/api/exam-status/' + encodeURIComponent(filename), {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ active, teacherId: teacherName })
-  }).then(r => r.json());
-  if (res.ok) toast(active ? 'Exam activated' : 'Exam deactivated', 'ok');
-  else { toast('Failed to update status', 'err'); loadExams(); }
-}
-function deleteExam(filename, name) {
-  openModal('Delete Exam', `Delete "${name}"? Students will no longer see it.`, 'Delete', async () => {
-    await fetch('/api/exam/' + encodeURIComponent(filename), { method: 'DELETE' });
-    toast('Exam deleted'); loadExams();
-  }, 'primary danger');
+    <table>
+      <thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Taken</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${exams.map(e => {
+        const takenCount = examCounts[e.filename] || 0;
+        return `<tr>
+          <td><strong>${e.name}</strong></td>
+          <td>${e.subject || '—'}</td>
+          <td><span class="pill">${e.class || 'All Classes'}</span></td>
+          <td>${e.questionCount}</td>
+          <td><span class="pill ${takenCount > 0 ? 'green' : ''}">${takenCount}</span></td>
+          <td>
+            <label class="toggle-switch">
+              <input type="checkbox" ${e.active ? 'checked' : ''} onchange="toggleExamStatus('${e.filename}', this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </td>
+          <td><button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')"><i class="fa fa-trash"></i></button></td>
+        </tr>`}).join('')}
+    </tbody></table>` : '<div class="empty"><i class="fa fa-folder-open"></i>No exams uploaded yet</div>';
 }
 
-// ── MONITOR ───────────────────────────────────────────────────────────────────
+async function toggleExamStatus(filename, active) {
+  await fetch('/api/exam-status/' + encodeURIComponent(filename), {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ active, teacherId: teacherId })
+  });
+  toast(active ? 'Exam activated' : 'Exam deactivated', 'ok');
+}
+
+function deleteExam(filename, name) {
+  openModal('Delete Exam', `Delete "${name}"?`, 'Delete', async () => {
+    await fetch('/api/exam/' + encodeURIComponent(filename), { method: 'DELETE' });
+    toast('Exam deleted'); loadExams();
+  }, 'danger');
+}
+
+// MONITOR
 async function loadMonitor() {
   const [sessions, results] = await Promise.all([api('/api/sessions'), api('/api/results')]);
-  document.getElementById('monLastRefresh').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+  document.getElementById('monLastRefresh').textContent = new Date().toLocaleTimeString();
 
   const sArr = Array.isArray(sessions) ? sessions : [];
   const rArr = Array.isArray(results) ? results : [];
 
-  // Active grid
   const monGrid = document.getElementById('monGrid');
   if (sArr.length) {
     monGrid.innerHTML = sArr.map(s => {
@@ -963,42 +2215,37 @@ async function loadMonitor() {
       const violations = s.tabViolations || 0;
       const cardClass = violations >= 3 ? 'violated' : 'active';
       return `<div class="student-mon-card ${cardClass}">
-        <div class="smc-name">${s.student}</div>
+        <div class="smc-name"><i class="fa fa-user"></i> ${s.student}</div>
         <div class="smc-exam">${s.exam}</div>
-        <div class="smc-row"><span class="smc-key">Answered</span><span class="smc-val">${s.answered || 0}/${s.total || '?'}</span></div>
+        <div class="smc-row"><span class="smc-key">Progress</span><span class="smc-val">${s.answered || 0}/${s.total || '?'}</span></div>
         <div class="smc-progress"><div class="smc-progress-fill" style="width:${pct}%"></div></div>
         <div class="smc-row"><span class="smc-key">Time Left</span><span class="smc-val">${String(mLeft).padStart(2,'0')}:${String(sLeft).padStart(2,'0')}</span></div>
-        <div class="smc-row"><span class="smc-key">Tab Violations</span><span class="smc-val"><span class="pill ${violations > 0 ? 'yellow' : 'gray'}">${violations}</span></span></div>
+        <div class="smc-row"><span class="smc-key">Violations</span><span class="smc-val"><span class="pill ${violations > 0 ? 'yellow' : ''}">${violations}</span></span></div>
         <div class="smc-actions">
-          <button class="btn warn sm" style="flex:1" onclick="openRetakeModal('${s.studentId || s.student}','${s.student}','${s.exam}','${s.examFile}')">↺ Allow Retake</button>
-          <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${s.studentId || s.student}','${s.student}')">Activity</button>
+          <button class="btn warn sm" onclick="openRetakeModal('${s.studentId || s.student}','${s.student}','${s.exam}','${s.examFile}')" title="Allow Retake"><i class="fa fa-repeat"></i></button>
+          <button class="btn outline sm" onclick="viewStudentActivity('${s.studentId || s.student}','${s.student}')" title="View Activity"><i class="fa fa-history"></i></button>
+          <button class="btn danger sm" onclick="openEndExamModal('${s.studentId || s.student}','${s.student}')" title="End Exam"><i class="fa fa-stop"></i></button>
         </div>
       </div>`;
     }).join('');
   } else {
-    monGrid.innerHTML = '<div class="empty">No active students right now</div>';
+    monGrid.innerHTML = '<div class="empty"><i class="fa fa-users"></i>No active students</div>';
   }
 
-  // Submitted grid
-  const submGrid = document.getElementById('submGrid');
   const recent = rArr.slice(-12).reverse();
-  if (recent.length) {
-    submGrid.innerHTML = recent.map(r => `
-      <div class="student-mon-card submitted">
-        <div class="smc-name">${r.student}</div>
-        <div class="smc-exam">${r.exam}</div>
-        <div class="smc-row"><span class="smc-key">Score</span><span class="smc-val">${r.score}/${r.total} (${r.percentage}%)</span></div>
-        <div class="smc-row"><span class="smc-key">Violations</span><span class="smc-val"><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></span></div>
-        <div class="smc-row"><span class="smc-key">Submitted</span><span class="smc-val" style="font-size:11px">${fmtTime(r.submittedAt)}</span></div>
-        <div class="smc-actions">
-          <button class="btn warn sm" style="flex:1" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')">↺ Allow Retake</button>
-          <button class="btn outline sm" style="flex:1" onclick="viewStudentActivity('${r.studentId||r.student}','${r.student}')">Activity</button>
-        </div>
-      </div>`).join('');
-  } else {
-    submGrid.innerHTML = '<div class="empty">No submissions yet</div>';
-  }
-
+  document.getElementById('submGrid').innerHTML = recent.length ? recent.map(r => `
+    <div class="student-mon-card submitted">
+      <div class="smc-name"><i class="fa fa-user"></i> ${r.student}</div>
+      <div class="smc-exam">${r.exam}</div>
+      <div class="smc-row"><span class="smc-key">Score</span><span class="smc-val">${r.score}/${r.total} (${r.percentage}%)</span></div>
+      <div class="smc-row"><span class="smc-key">Subject</span><span class="smc-val">${r.subject || '—'}</span></div>
+      <div class="smc-row"><span class="smc-key">Submitted</span><span class="smc-val">${fmtTime(r.submittedAt)}</span></div>
+      <div class="smc-actions">
+        <button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')" title="Allow Retake"><i class="fa fa-repeat"></i></button>
+        <button class="btn outline sm" onclick="viewStudentActivity('${r.studentId||r.student}','${r.student}')" title="View Activity"><i class="fa fa-history"></i></button>
+      </div>
+    </div>`).join('') : '<div class="empty"><i class="fa fa-inbox"></i>No submissions yet</div>';
+  
   document.getElementById('activeBadge').textContent = sArr.length;
 }
 
@@ -1006,112 +2253,205 @@ function startMonitorRefresh() {
   clearInterval(monitorTimer);
   monitorTimer = setInterval(() => {
     if (document.getElementById('page-monitor').classList.contains('active')) loadMonitor();
-    api('/api/sessions').then(s => { document.getElementById('activeBadge').textContent = Array.isArray(s) ? s.length : 0; });
+    api('/api/sessions').then(s => { 
+      document.getElementById('activeBadge').textContent = Array.isArray(s) ? s.length : 0; 
+    });
   }, 15000);
 }
 
 async function resetStudent(studentId, studentName, exam, examFilename) {
-  openModal('Reset Student Exam', `Reset ${studentName}'s exam "${exam}"? They will be able to retake it from the beginning.`, 'Reset Now', async () => {
-    const res = await api('/api/reset-student', { method: 'POST', body: JSON.stringify({ studentId, exam: examFilename || exam }) });
-    if (res.ok) { 
-      toast(`${studentName} can now retake ${exam}`, 'ok'); 
-      loadMonitor();
-      loadResults();
-    }
-    else toast('Reset failed', 'err');
+  const res = await api('/api/reset-student', { 
+    method: 'POST', 
+    body: JSON.stringify({ studentId, exam: examFilename || exam, teacherId: teacherId }) 
   });
+  if (res.ok) { 
+    toast(`${studentName} can now retake ${exam}`, 'ok'); 
+    loadMonitor();
+    loadResults();
+  } else { toast('Reset failed', 'err'); }
 }
 
-// ── ACTIVITY ─────────────────────────────────────────────────────────────────
+async function endExam(studentId) {
+  const res = await api('/api/end-exam', { 
+    method: 'POST', 
+    body: JSON.stringify({ studentId, teacherId: teacherId }) 
+  });
+  if (res.ok) {
+    toast('Student exam ended', 'ok');
+    loadMonitor();
+  } else { toast('Failed to end exam', 'err'); }
+}
+
+// ACTIVITY
 async function loadActivity() {
   const acts = await api('/api/activity');
   const aArr = Array.isArray(acts) ? acts.slice(0, 80) : [];
-  const actMap = { LOGIN: '🔑', SUBMIT: '✅', TAB_VIOLATION: '⚠️', RESET: '↺', START_EXAM: '📝' };
   document.getElementById('activityList').innerHTML = aArr.length ? aArr.map(a => `
     <div class="activity-item">
-      <div class="act-icon">${actMap[a.action] || '◈'}</div>
+      <div class="act-icon"><i class="fa ${a.action === 'LOGIN' ? 'fa-sign-in' : a.action === 'SUBMIT' ? 'fa-check' : a.action === 'TAB_VIOLATION' ? 'fa-exclamation-triangle' : 'fa-repeat'}"></i></div>
       <div class="act-info">
         <div class="act-name">${a.studentName || a.studentId}</div>
         <div class="act-detail">${a.detail || a.action}</div>
       </div>
       <div class="act-time">${fmtDateTime(a.time)}</div>
-    </div>`).join('') : '<div class="empty">No activity yet</div>';
+    </div>`).join('') : '<div class="empty"><i class="fa fa-history"></i>No activity yet</div>';
 }
 
 async function viewStudentActivity(studentId, studentName) {
-  document.getElementById('actModalTitle').textContent = studentName + ' — Activity';
-  document.getElementById('actModalSub').textContent = 'Full event history for this student';
-  document.getElementById('actModalBody').innerHTML = '<div class="empty">Loading…</div>';
+  document.getElementById('actModalTitle').innerHTML = `<i class="fa fa-history"></i> ${studentName}`;
+  document.getElementById('actModalSub').textContent = 'Full event history';
+  document.getElementById('actModalBody').innerHTML = '<div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div>';
   document.getElementById('actModal').classList.add('show');
+  
   const acts = await api('/api/activity/' + encodeURIComponent(studentId));
   const aArr = Array.isArray(acts) ? acts : [];
-  const actMap = { LOGIN: '🔑', SUBMIT: '✅', TAB_VIOLATION: '⚠️', RESET: '↺' };
   document.getElementById('actModalBody').innerHTML = aArr.length ? aArr.map(a => `
     <div class="activity-item">
-      <div class="act-icon">${actMap[a.action] || '◈'}</div>
+      <div class="act-icon"><i class="fa ${a.action === 'LOGIN' ? 'fa-sign-in' : a.action === 'SUBMIT' ? 'fa-check' : a.action === 'TAB_VIOLATION' ? 'fa-exclamation-triangle' : 'fa-repeat'}"></i></div>
       <div class="act-info">
         <div class="act-detail">${a.detail || a.action}</div>
       </div>
       <div class="act-time">${fmtDateTime(a.time)}</div>
-    </div>`).join('') : '<div class="empty">No activity recorded for this student</div>';
+    </div>`).join('') : '<div class="empty"><i class="fa fa-history"></i>No activity</div>';
 }
 
-// ── RESULTS ───────────────────────────────────────────────────────────────────
+// RESULTS - Enhanced with filters
 async function loadResults() {
+  showLoader('Loading results…');
+  
   const results = await api('/api/results');
-  currentResults = Array.isArray(results) ? results : [];
-  renderResultsTable(currentResults);
+  allResults = Array.isArray(results) ? results : [];
+  
+  // Get unique subjects and exams for filters
+  allSubjects = [...new Set(allResults.map(r => r.subject).filter(Boolean))].sort();
+  allExams = [...new Set(allResults.map(r => r.exam).filter(Boolean))].sort();
+  
+  // Populate filter dropdowns
+  const subjectSelect = document.getElementById('filterSubject');
+  subjectSelect.innerHTML = '<option value="">All Subjects</option>' + 
+    allSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
+  
+  const examSelect = document.getElementById('filterExam');
+  examSelect.innerHTML = '<option value="">All Exams</option>' + 
+    allExams.map(e => `<option value="${e}">${e}</option>`).join('');
+  
+  // Restore filter values from localStorage
+  const savedClass = localStorage.getItem('resultsFilterClass') || '';
+  const savedSubject = localStorage.getItem('resultsFilterSubject') || '';
+  const savedExam = localStorage.getItem('resultsFilterExam') || '';
+  
+  document.getElementById('filterClass').value = savedClass;
+  document.getElementById('filterSubject').value = savedSubject;
+  document.getElementById('filterExam').value = savedExam;
+  
+  filterResults();
+  hideLoader();
+}
+
+function filterResults() {
+  const classFilter = document.getElementById('filterClass').value;
+  const subjectFilter = document.getElementById('filterSubject').value;
+  const examFilter = document.getElementById('filterExam').value;
+  
+  // Save filters
+  localStorage.setItem('resultsFilterClass', classFilter);
+  localStorage.setItem('resultsFilterSubject', subjectFilter);
+  localStorage.setItem('resultsFilterExam', examFilter);
+  
+  filteredResults = allResults.filter(r => {
+    if (classFilter && r.studentClass !== classFilter) return false;
+    if (subjectFilter && r.subject !== subjectFilter) return false;
+    if (examFilter && r.exam !== examFilter) return false;
+    return true;
+  });
+  
+  // Show stats
+  const totalScore = filteredResults.reduce((sum, r) => sum + (r.score || 0), 0);
+  const totalPossible = filteredResults.reduce((sum, r) => sum + (r.total || 0), 0);
+  const avgPercentage = filteredResults.length ? 
+    Math.round(filteredResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / filteredResults.length) : 0;
+  
+  document.getElementById('resultsStats').innerHTML = `
+    <div class="stat-item"><i class="fa fa-file-text"></i> <span>${filteredResults.length}</span> results</div>
+    <div class="stat-item"><i class="fa fa-percent"></i> <span>${avgPercentage}%</span> average</div>
+    <div class="stat-item"><i class="fa fa-check"></i> <span>${totalScore}/${totalPossible}</span> total</div>
+  `;
+  
+  renderResultsTable(filteredResults);
 }
 
 function renderResultsTable(results) {
-  const rArr = results;
-  document.getElementById('resultsTableWrap').innerHTML = rArr.length ? `
-    <table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Subject</th><th>Score</th><th>%</th><th>Violations</th><th>Submitted</th><th>Actions</th></tr></thead>
-    <tbody>${rArr.map(r => `<tr>
-      <td><strong>${r.student}</strong></td>
-      <td style="font-size:11px;color:var(--muted)">${r.studentId||'—'}</td>
-      <td><span class="pill gray">${r.studentClass||'—'}</span></td>
-      <td>${r.exam}</td>
-      <td style="font-size:12px;color:var(--muted)">${r.subject||'—'}</td>
-      <td>${r.score}/${r.total}</td>
-      <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
-      <td><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></td>
-      <td style="font-size:11px;color:var(--muted)">${fmtDateTime(r.submittedAt)}</td>
-      <td style="white-space:nowrap">
-        <button class="btn outline sm" title="Download this result" onclick="downloadSingleResultCSV(${r.id})" style="margin-right:3px">&#8595;</button>
-        <button class="btn warn sm" title="Allow retake" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')" style="margin-right:3px">↺</button>
-        <button class="btn danger sm" onclick="deleteResult(${r.id})">&#10005;</button>
-      </td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No submissions yet</div>';
+  document.getElementById('resultsTableWrap').innerHTML = results.length ? `
+    <table>
+      <thead><tr>
+        <th>Student</th>
+        <th>ID</th>
+        <th>Class</th>
+        <th>Exam</th>
+        <th>Subject</th>
+        <th>Score</th>
+        <th>%</th>
+        <th>Violations</th>
+        <th>Submitted</th>
+        <th>Actions</th>
+      </tr></thead>
+      <tbody>${results.map(r => `<tr>
+        <td><strong>${r.student}</strong></td>
+        <td><code>${r.studentId || '—'}</code></td>
+        <td><span class="pill">${r.studentClass || '—'}</span></td>
+        <td>${r.exam}</td>
+        <td>${r.subject || '—'}</td>
+        <td>${r.score}/${r.total}</td>
+        <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
+        <td><span class="pill ${(r.tabViolations||0) > 0 ? 'yellow' : ''}">${r.tabViolations || 0}</span></td>
+        <td>${fmtTime(r.submittedAt)}</td>
+        <td style="white-space:nowrap">
+          <button class="btn outline sm" onclick="downloadSingleResultCSV(${r.id})" title="Download"><i class="fa fa-download"></i></button>
+          <button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')" title="Allow retake"><i class="fa fa-repeat"></i></button>
+          <button class="btn danger sm" onclick="deleteResult(${r.id})" title="Delete"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="empty"><i class="fa fa-inbox"></i>No submissions match your filters</div>';
 }
 
 async function deleteResult(id) {
-  await fetch('/api/result/' + id, { method: 'DELETE' });
-  toast('Result deleted'); loadResults();
+  if (confirm('Delete this result?')) {
+    await fetch('/api/result/' + id, { method: 'DELETE' });
+    toast('Result deleted'); loadResults();
+  }
 }
 
 function clearAllResults() {
-  openModal('Clear All Results', 'This will delete ALL student results permanently. This cannot be undone.', 'Clear All', async () => {
+  openModal('Clear All Results', 'This will delete ALL student results permanently.', 'Clear All', async () => {
     await fetch('/api/results', { method: 'DELETE' });
     toast('All results cleared'); loadResults();
-  });
+  }, 'danger');
 }
 
-// ── ENHANCED EXPORT FUNCTIONS ────────────────────────────────────────────────
-function downloadResultsCSV() {
-  window.location = '/api/results/csv';
+// EXPORT FUNCTIONS
+function downloadResultsCSV() { window.location = '/api/results/csv'; }
+function downloadResultsExcel() { window.location = '/api/results/excel'; }
+
+function downloadResultsByClass() { 
+  const classFilter = document.getElementById('filterClass').value;
+  if (!classFilter) { toast('Please select a class first', 'err'); return; }
+  window.location = `/api/results/by-class?class=${encodeURIComponent(classFilter)}`;
 }
+
+function downloadResultsBySubject() { 
+  const subjectFilter = document.getElementById('filterSubject').value;
+  if (!subjectFilter) { toast('Please select a subject first', 'err'); return; }
+  window.location = `/api/results/by-subject?subject=${encodeURIComponent(subjectFilter)}`;
+}
+
+function downloadSingleResultCSV(id) { window.location = '/api/results/csv/' + id; }
 
 function downloadResultsFilteredCSV() {
-  if (!currentResults.length) {
-    toast('No results to export', 'err');
-    return;
-  }
+  if (!filteredResults.length) { toast('No results to export', 'err'); return; }
   
-  // Create CSV from current results (which may be filtered by search)
   const rows = [
-    'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
-    ...currentResults.map(r => [
+    'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Time Taken (s),Submitted At',
+    ...filteredResults.map(r => [
       `"${(r.student || '').replace(/"/g, '""')}"`,
       `"${r.studentId || ''}"`,
       `"${r.studentClass || ''}"`,
@@ -1120,7 +2460,7 @@ function downloadResultsFilteredCSV() {
       `"${r.examClass || ''}"`,
       r.score,
       r.total || '',
-      r.percentage != null ? r.percentage + '%' : '',
+      r.percentage,
       r.tabViolations || 0,
       r.timeTaken || '',
       `"${r.submittedAt || ''}"`
@@ -1136,172 +2476,163 @@ function downloadResultsFilteredCSV() {
   URL.revokeObjectURL(url);
 }
 
-function downloadResultsJSON() {
-  window.location = '/api/results/json';
-}
-
-function downloadResultsFilteredJSON() {
-  if (!currentResults.length) {
-    toast('No results to export', 'err');
-    return;
+// SUBMITTED EXAMS
+async function loadSubmittedExams() {
+  const grouped = await api('/api/submitted-exams/grouped');
+  
+  let byClassHTML = '';
+  if (grouped.byClass) {
+    for (const [className, exams] of Object.entries(grouped.byClass)) {
+      byClassHTML += `
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:16px;font-weight:700;margin:20px 0 10px;"><i class="fa fa-users" style="color:#dc2626;"></i> ${className}</h4>
+          <table>
+            <thead><tr><th>Student</th><th>ID</th><th>Exam</th><th>Score</th><th>%</th><th>Violations</th><th>Time</th></tr></thead>
+            <tbody>${exams.slice(0, 10).map(r => `<tr>
+              <td>${r.student}</td>
+              <td><code>${r.studentId || '—'}</code></td>
+              <td>${r.exam}</td>
+              <td>${r.score}/${r.total}</td>
+              <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
+              <td><span class="pill ${(r.tabViolations||0)>0?'yellow':''}">${r.tabViolations||0}</span></td>
+              <td>${fmtTime(r.submittedAt)}</td>
+            </tr>`).join('')}
+            ${exams.length > 10 ? `<tr><td colspan="7" style="text-align:center;color:#666;">... and ${exams.length - 10} more</td></tr>` : ''}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
   }
+  document.getElementById('submittedByClass').innerHTML = byClassHTML || '<div class="empty"><i class="fa fa-inbox"></i>No submitted exams</div>';
   
-  const blob = new Blob([JSON.stringify(currentResults, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `filtered_results_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-function downloadStudentList() {
-  window.location = '/api/student-list/csv';
-}
-
-function downloadAllResults() {
-  if (!currentResults.length) {
-    toast('No results to export', 'err');
-    return;
+  let bySubjectHTML = '';
+  if (grouped.bySubject) {
+    for (const [subject, exams] of Object.entries(grouped.bySubject)) {
+      bySubjectHTML += `
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:16px;font-weight:700;margin:20px 0 10px;"><i class="fa fa-book" style="color:#dc2626;"></i> ${subject}</h4>
+          <table>
+            <thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Score</th><th>%</th></tr></thead>
+            <tbody>${exams.slice(0, 10).map(r => `<tr>
+              <td>${r.student}</td>
+              <td><code>${r.studentId || '—'}</code></td>
+              <td><span class="pill">${r.studentClass||'—'}</span></td>
+              <td>${r.exam}</td>
+              <td>${r.score}/${r.total}</td>
+              <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
+            </tr>`).join('')}
+            ${exams.length > 10 ? `<tr><td colspan="6" style="text-align:center;color:#666;">... and ${exams.length - 10} more</td></tr>` : ''}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
   }
-  
-  // Create summary report
-  const exams = [...new Set(currentResults.map(r => r.exam))];
-  const totalStudents = [...new Set(currentResults.map(r => r.studentId))].length;
-  const avgScore = Math.round(currentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / currentResults.length);
-  
-  let summary = `PETER HARVARD INTERNATIONAL SCHOOLS - RESULTS SUMMARY\n`;
-  summary += `Generated: ${new Date().toLocaleString()}\n`;
-  summary += `Total Submissions: ${currentResults.length}\n`;
-  summary += `Unique Students: ${totalStudents}\n`;
-  summary += `Exams: ${exams.join(', ')}\n`;
-  summary += `Average Score: ${avgScore}%\n`;
-  summary += `\n--- DETAILED BREAKDOWN ---\n\n`;
-  
-  exams.forEach(exam => {
-    const examResults = currentResults.filter(r => r.exam === exam);
-    const examAvg = Math.round(examResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / examResults.length);
-    summary += `\n${exam} (${examResults.length} submissions, Avg: ${examAvg}%)\n`;
-    examResults.forEach(r => {
-      summary += `  ${r.student} (${r.studentId}): ${r.score}/${r.total} (${r.percentage}%) - Violations: ${r.tabViolations || 0}\n`;
-    });
-  });
-  
-  const blob = new Blob([summary], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `summary_report_${new Date().toISOString().slice(0,10)}.txt`;
-  a.click();
-  URL.revokeObjectURL(url);
+  document.getElementById('submittedBySubject').innerHTML = bySubjectHTML || '<div class="empty"><i class="fa fa-inbox"></i>No submitted exams</div>';
 }
 
-function downloadSingleResultCSV(id) {
-  window.location = '/api/results/csv/' + id;
-}
-
-// ── STUDENT LIST ─────────────────────────────────────────────────────────────
+// STUDENT LIST
 async function loadStudentList() {
   const students = await api('/api/student-list');
   const sArr = Array.isArray(students) ? students : [];
   document.getElementById('studentListWrap').innerHTML = sArr.length ? `
-    <table><thead><tr><th>Student ID</th><th>Student Name</th><th>Class</th><th>Password</th></tr></thead>
-    <tbody>${sArr.map(s => `<tr>
-      <td style="font-family:monospace;font-size:12px"><strong>${s.studentId}</strong></td>
-      <td>${s.studentName}</td>
-      <td><span class="pill ${s.class ? 'blue' : 'gray'}">${s.class||'—'}</span></td>
-      <td><span class="pill ${s.passwordSet?'blue':'gray'}">${s.passwordSet?'Set':'None'}</span></td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No students found</div>';
+    <table>
+      <thead><tr><th>Student ID</th><th>Student Name</th><th>Class</th><th>Password</th></tr></thead>
+      <tbody>${sArr.map(s => `<tr>
+        <td><code>${s.studentId}</code></td>
+        <td><strong>${s.studentName}</strong></td>
+        <td><span class="pill">${s.class||'—'}</span></td>
+        <td><span class="pill ${s.passwordSet?'green':''}">${s.passwordSet?'Set':'None'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="empty"><i class="fa fa-users"></i>No students found</div>';
 }
 
-// ── CHARTS (inline canvas, no CDN) ───────────────────────────────────────────
+// CHARTS
 let chartInstances = {};
 async function loadCharts() {
+  // Only load Chart.js if needed
+  if (typeof Chart === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = () => renderCharts();
+    document.head.appendChild(script);
+  } else {
+    renderCharts();
+  }
+}
+
+async function renderCharts() {
   const results = await api('/api/results');
   const rArr = Array.isArray(results) ? results : [];
   if (!rArr.length) {
-    document.getElementById('chartsGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">No results data yet to chart.</div>';
+    document.getElementById('chartsGrid').innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa fa-bar-chart"></i>No results data yet</div>';
     return;
   }
+  
+  // Destroy existing charts
   Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch {} });
-  chartInstances = {};
-  setTimeout(() => {
-    const buckets = [0,0,0,0];
-    rArr.forEach(r => { const p = r.percentage||0; if(p<50)buckets[0]++; else if(p<70)buckets[1]++; else if(p<90)buckets[2]++; else buckets[3]++; });
-    drawChart('scoreDistChart',{labels:['0-49%','50-69%','70-89%','90-100%'],data:buckets,colors:['#EF4444','#F59E0B','#6366F1','#22C55E'],title:'Score Distribution'});
-    const examMap={};
-    rArr.forEach(r=>{ if(!examMap[r.exam])examMap[r.exam]=[]; examMap[r.exam].push(r.percentage||0); });
-    const eL=Object.keys(examMap),eD=eL.map(e=>Math.round(examMap[e].reduce((a,b)=>a+b,0)/examMap[e].length));
-    drawChart('examAvgChart',{labels:eL,data:eD,colors:eL.map(()=>'#6366F1'),title:'Average % by Exam'});
-    const days={};
-    for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days[d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})]=0;}
-    rArr.forEach(r=>{if(!r.submittedAt)return;const k=new Date(r.submittedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});if(days[k]!==undefined)days[k]++;});
-    drawChart('timelineChart',{labels:Object.keys(days),data:Object.values(days),colors:['#6366F1'],title:'Submissions (7 days)',type:'line'});
-    const vB={'0':0,'1':0,'2':0,'3+':0};
-    rArr.forEach(r=>{const v=r.tabViolations||0;if(v===0)vB['0']++;else if(v===1)vB['1']++;else if(v===2)vB['2']++;else vB['3+']++;});
-    drawChart('violationsChart',{labels:['0 violations','1','2','3+'],data:Object.values(vB),colors:['#22C55E','#F59E0B','#EF4444','#7C3AED'],title:'Tab Violations'});
-  }, 100);
+  
+  // Score Distribution
+  const buckets = [0,0,0,0];
+  rArr.forEach(r => { const p = r.percentage||0; if(p<50)buckets[0]++; else if(p<70)buckets[1]++; else if(p<90)buckets[2]++; else buckets[3]++; });
+  
+  chartInstances.scoreDist = new Chart(document.getElementById('scoreDistChart'), {
+    type: 'bar',
+    data: {
+      labels: ['0-49%', '50-69%', '70-89%', '90-100%'],
+      datasets: [{
+        label: 'Students',
+        data: buckets,
+        backgroundColor: '#dc2626',
+        borderRadius: 4
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+  
+  // Average by Exam
+  const examMap = {};
+  rArr.forEach(r => { if(!examMap[r.exam]) examMap[r.exam] = []; examMap[r.exam].push(r.percentage||0); });
+  const examLabels = Object.keys(examMap).slice(0, 8);
+  const examData = examLabels.map(e => Math.round(examMap[e].reduce((a,b)=>a+b,0)/examMap[e].length));
+  
+  chartInstances.examAvg = new Chart(document.getElementById('examAvgChart'), {
+    type: 'bar',
+    data: {
+      labels: examLabels,
+      datasets: [{
+        label: 'Average %',
+        data: examData,
+        backgroundColor: '#dc2626',
+        borderRadius: 4
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
 }
 
-function drawChart(canvasId, { labels, data, colors, title, type='bar' }) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  const W = canvas.parentElement.offsetWidth || 300;
-  const H = 200;
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext('2d');
-  const pad = { top:28, right:16, bottom:46, left:36 };
-  const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
-  const max = Math.max(...data, 1);
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#334155'; ctx.font='bold 11px system-ui'; ctx.textAlign='center';
-  ctx.fillText(title, W/2, 16);
-  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1;
-  for(let i=0;i<=4;i++){
-    const y=pad.top+cH-(i/4)*cH;
-    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
-    ctx.fillStyle='#94A3B8'; ctx.textAlign='right'; ctx.font='9px system-ui';
-    ctx.fillText(Math.round((i/4)*max),pad.left-3,y+3);
-  }
-  const bW=cW/labels.length;
-  if(type==='bar'){
-    labels.forEach((lbl,i)=>{
-      const bH=(data[i]/max)*cH, x=pad.left+i*bW+bW*0.12, y=pad.top+cH-bH;
-      ctx.fillStyle=Array.isArray(colors)?colors[i%colors.length]:colors;
-      ctx.beginPath();
-      if(ctx.roundRect)ctx.roundRect(x,y,bW*0.76,bH,3); else ctx.rect(x,y,bW*0.76,bH);
-      ctx.fill();
-      ctx.fillStyle='#64748B'; ctx.textAlign='center'; ctx.font='9px system-ui';
-      const s=lbl.length>7?lbl.slice(0,6)+'…':lbl;
-      ctx.fillText(s,pad.left+i*bW+bW/2,pad.top+cH+13);
-      ctx.fillStyle='#0F172A'; ctx.font='bold 10px system-ui';
-      if(data[i]>0)ctx.fillText(data[i],pad.left+i*bW+bW/2,y-4);
-    });
-  } else {
-    ctx.beginPath(); ctx.strokeStyle=colors[0]||'#6366F1'; ctx.lineWidth=2;
-    labels.forEach((_,i)=>{ const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
-    ctx.stroke();
-    labels.forEach((lbl,i)=>{
-      const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH;
-      ctx.fillStyle=colors[0]||'#6366F1'; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle='#64748B'; ctx.textAlign='center'; ctx.font='9px system-ui';
-      ctx.fillText(lbl,x,pad.top+cH+13);
-    });
-  }
-}
-
-// ── BOOT ─────────────────────────────────────────────────────────────────────
+// BOOT
 document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
 document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// Check for existing session on load
+// Prevent flash of login page
+document.getElementById('app').style.display = 'none';
+document.getElementById('loginScreen').style.display = 'none';
+
 window.addEventListener('load', async () => {
-  document.getElementById('loaderOverlay').style.display = 'flex';
+  showLoader('Checking session…');
   const hasSession = await checkSession();
-  document.getElementById('loaderOverlay').style.display = 'none';
+  hideLoader();
+  
   if (!hasSession) {
     document.getElementById('loginScreen').style.display = 'flex';
   }
+});
+
+// Handle page reload - stay on same page
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('teacherCurrentPage', currentPage);
 });
 </script>
 </body>

@@ -682,5 +682,209 @@
     "action": "LOGIN",
     "detail": "student: student1 (Student One)",
     "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:50:25.666Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T15:51:53.165Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:52:24.036Z",
+    "action": "TAB_VIOLATION",
+    "detail": "Student One - #1 in Digital Technology",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:52:24.941Z",
+    "action": "SUBMIT",
+    "detail": "Student: Student One | Exam: Digital Technology | Score: 0/50 (0%) | Class: ",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:52:42.332Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:52:49.442Z",
+    "action": "TAB_VIOLATION",
+    "detail": "Student One - #1 in Digital Technology",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:53:10.789Z",
+    "action": "TAB_VIOLATION",
+    "detail": "Student One - #1 in Digital Technology",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:53:11.958Z",
+    "action": "SUBMIT",
+    "detail": "Student: Student One | Exam: Digital Technology | Score: 0/10 (0%) | Class: ",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:53:19.253Z",
+    "action": "RESET_STUDENT",
+    "detail": "Reset student1 for exam: undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-03-13T15:54:30.425Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T15:55:27.721Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T16:01:03.080Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:02:44.688Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T16:02:58.653Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T16:03:22.087Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:19:31.883Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:20:55.780Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:25:01.304Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:25:07.073Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T16:25:24.744Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/966 (DAVID DARREN)",
+    "actor": "PHIS/PP/966"
+  },
+  {
+    "time": "2026-03-13T16:27:54.403Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/1063 (UGWU RITA CHINAZA)",
+    "actor": "PHIS/PP/1063"
+  },
+  {
+    "time": "2026-03-13T16:28:18.382Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/1006 (SULEIMON BOLUWATIFE MISTURA)",
+    "actor": "PHIS/PP/1006"
+  },
+  {
+    "time": "2026-03-13T16:30:28.835Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T16:42:50.468Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T16:45:29.251Z",
+    "action": "UPLOAD",
+    "detail": "Exam: results.json | Subject: 1 | Class: SS 3",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T16:49:46.912Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T17:44:33.603Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T17:45:08.437Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T17:45:22.686Z",
+    "action": "CLEAR_RESULTS",
+    "detail": "All 47 results cleared",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T17:52:20.466Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: Digital_Tech_CBT_Questions_SS1.json | Questions: 50 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-03-13T17:52:31.821Z",
+    "action": "DELETE_EXAM",
+    "detail": "Digital_Tech_CBT_Questions_SS1.json",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T17:52:34.080Z",
+    "action": "DELETE_EXAM",
+    "detail": "Digitaltechss2.json",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T17:52:36.157Z",
+    "action": "DELETE_EXAM",
+    "detail": "DigitalTech.json",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T17:52:38.557Z",
+    "action": "DELETE_EXAM",
+    "detail": "DigitalTechss1.json",
+    "actor": "system"
   }
 ]

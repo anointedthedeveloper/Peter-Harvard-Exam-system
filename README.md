@@ -1,9 +1,7 @@
 # Peter Harvard International Schools — Exam System v1.0
 
 ## Setup
-1. Install Node.js (v14+)
-2. Run: node server.js
-3. Add logo.png to the public/ folder
+Double Click start.bat
 
 ## Access
 - Student:  http://<LAN-IP>:3000/student.html

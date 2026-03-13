@@ -1,5 +1,408 @@
 [
   {
+    "id": 1773424358562.6208,
+    "time": "2026-03-13T17:52:38.562Z",
+    "action": "EXAM_DELETE",
+    "actor": "teacher",
+    "detail": "Deleted exam: Digital Technology",
+    "metadata": {
+      "filename": "DigitalTechss1.json"
+    }
+  },
+  {
+    "id": 1773424356164.4207,
+    "time": "2026-03-13T17:52:36.164Z",
+    "action": "EXAM_DELETE",
+    "actor": "teacher",
+    "detail": "Deleted exam: Networking Systems II",
+    "metadata": {
+      "filename": "DigitalTech.json"
+    }
+  },
+  {
+    "id": 1773424354085.5176,
+    "time": "2026-03-13T17:52:34.085Z",
+    "action": "EXAM_DELETE",
+    "actor": "teacher",
+    "detail": "Deleted exam: Digital Technology",
+    "metadata": {
+      "filename": "Digitaltechss2.json"
+    }
+  },
+  {
+    "id": 1773424351826.894,
+    "time": "2026-03-13T17:52:31.826Z",
+    "action": "EXAM_DELETE",
+    "actor": "teacher",
+    "detail": "Deleted exam: CSV Exam",
+    "metadata": {
+      "filename": "Digital_Tech_CBT_Questions_SS1.json"
+    }
+  },
+  {
+    "id": 1773424340473.77,
+    "time": "2026-03-13T17:52:20.473Z",
+    "action": "EXAM_UPLOAD_CSV",
+    "actor": "teacher",
+    "detail": "Uploaded CSV exam: CSV Exam",
+    "metadata": {
+      "filename": "Digital_Tech_CBT_Questions_SS1.json",
+      "questions": 50,
+      "subject": "General",
+      "class": "",
+      "duration": 30
+    }
+  },
+  {
+    "id": 1773423922690.6047,
+    "time": "2026-03-13T17:45:22.690Z",
+    "action": "RESULTS_CLEAR_ALL",
+    "actor": "admin",
+    "detail": "Cleared all 47 results",
+    "metadata": {
+      "count": 47
+    }
+  },
+  {
+    "id": 1773423908440.353,
+    "time": "2026-03-13T17:45:08.440Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.3"
+    }
+  },
+  {
+    "id": 1773423873607.2043,
+    "time": "2026-03-13T17:44:33.607Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773420586914.2617,
+    "time": "2026-03-13T16:49:46.914Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773420329255.3276,
+    "time": "2026-03-13T16:45:29.255Z",
+    "action": "EXAM_UPLOAD",
+    "actor": "teacher",
+    "detail": "Uploaded exam: jack",
+    "metadata": {
+      "filename": "results.json",
+      "subject": "1",
+      "class": "SS 3"
+    }
+  },
+  {
+    "id": 1773420170471.0034,
+    "time": "2026-03-13T16:42:50.471Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419428839.4617,
+    "time": "2026-03-13T16:30:28.839Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419298385.71,
+    "time": "2026-03-13T16:28:18.385Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/1006",
+    "detail": "student \"SULEIMON BOLUWATIFE MISTURA\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419274406.4036,
+    "time": "2026-03-13T16:27:54.406Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/1063",
+    "detail": "student \"UGWU RITA CHINAZA\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419124747.0051,
+    "time": "2026-03-13T16:25:24.747Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/966",
+    "detail": "student \"DAVID DARREN\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419115625.7917,
+    "time": "2026-03-13T16:25:15.625Z",
+    "action": "LOGIN_FAIL",
+    "actor": "student966",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419107075.1304,
+    "time": "2026-03-13T16:25:07.075Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773419101306.1436,
+    "time": "2026-03-13T16:25:01.306Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773418855785.7393,
+    "time": "2026-03-13T16:20:55.785Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773418771887.8882,
+    "time": "2026-03-13T16:19:31.887Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417802154.528,
+    "time": "2026-03-13T16:03:22.154Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417778666.9822,
+    "time": "2026-03-13T16:02:58.666Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417764697.0154,
+    "time": "2026-03-13T16:02:44.697Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417663138.2068,
+    "time": "2026-03-13T16:01:03.138Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417327754.8728,
+    "time": "2026-03-13T15:55:27.754Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417276651.402,
+    "time": "2026-03-13T15:54:36.651Z",
+    "action": "LOGIN_FAIL",
+    "actor": "studentone",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417270454.3147,
+    "time": "2026-03-13T15:54:30.454Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417199261.122,
+    "time": "2026-03-13T15:53:19.261Z",
+    "action": "STUDENT_RESET",
+    "actor": "teacher",
+    "detail": "Reset exam for student: student1 (exam: undefined)",
+    "metadata": {
+      "studentId": "student1",
+      "exam": "undefined"
+    }
+  },
+  {
+    "id": 1773417191975.4573,
+    "time": "2026-03-13T15:53:11.975Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "student1",
+    "detail": "Submitted \"Digital Technology\" — Score: 0/10 (0%)",
+    "metadata": {
+      "exam": "Digital Technology",
+      "score": 0,
+      "total": 10,
+      "percentage": 0,
+      "tabViolations": 1,
+      "studentClass": ""
+    }
+  },
+  {
+    "id": 1773417190795.1838,
+    "time": "2026-03-13T15:53:10.795Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Digital Technology\"",
+    "metadata": {
+      "exam": "Digital Technology",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773417169463.852,
+    "time": "2026-03-13T15:52:49.463Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Digital Technology\"",
+    "metadata": {
+      "exam": "Digital Technology",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773417162380.8816,
+    "time": "2026-03-13T15:52:42.380Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417144944.6672,
+    "time": "2026-03-13T15:52:24.944Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "student1",
+    "detail": "Submitted \"Digital Technology\" — Score: 0/50 (0%)",
+    "metadata": {
+      "exam": "Digital Technology",
+      "score": 0,
+      "total": 50,
+      "percentage": 0,
+      "tabViolations": 1,
+      "studentClass": ""
+    }
+  },
+  {
+    "id": 1773417144043.9622,
+    "time": "2026-03-13T15:52:24.043Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Digital Technology\"",
+    "metadata": {
+      "exam": "Digital Technology",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773417113199.287,
+    "time": "2026-03-13T15:51:53.200Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773417025689.9128,
+    "time": "2026-03-13T15:50:25.689Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1773416171876.6936,
     "time": "2026-03-13T15:36:11.876Z",
     "action": "LOGIN",

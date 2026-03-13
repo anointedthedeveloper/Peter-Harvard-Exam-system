@@ -1,0 +1,51 @@
+{
+  "name": "Peter Harvard International Schools - Exam System",
+  "short_name": "PHIS Exam",
+  "description": "Computer-Based Testing Portal for Peter Harvard International Schools",
+  "start_url": "/student.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#dc2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Badgejet.ico",
+      "sizes": "32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "exam", "testing"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Student Portal",
+      "short_name": "Student",
+      "description": "Take exams as a student",
+      "url": "/student.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Teacher Dashboard",
+      "short_name": "Teacher",
+      "description": "Manage exams and view results",
+      "url": "/teacher.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Admin Console",
+      "short_name": "Admin",
+      "description": "System administration",
+      "url": "/admin.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}

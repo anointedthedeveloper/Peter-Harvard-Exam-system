@@ -2,602 +2,1811 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Admin Console – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Admin">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#F1F5F9;color:#0F172A;min-height:100vh;}
-:root{
-  --primary:#334155;--accent:#6366F1;--bg:#FFFFFF;--surface:#F1F5F9;
-  --text:#0F172A;--muted:#64748B;--border:#E2E8F0;
-  --correct:#22C55E;--wrong:#EF4444;--warn:#F59E0B;
-  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  background: #f8f8f8;
+  color: #1e1e1e;
+  min-height: 100vh;
 }
 
-/* ── LOGIN ── */
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#EEF2FF 0%,#FFFFFF 60%);padding:24px;}
-.login-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:420px;box-shadow:var(--shadow);}
-.school-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
-.sch-logo{width:72px;height:72px;border-radius:12px;object-fit:contain;background:var(--surface);padding:6px;flex-shrink:0;}
-.sch-logo-fb{width:72px;height:72px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:26px;flex-shrink:0;display:none;}
-.sch-name{font-size:15px;font-weight:800;color:var(--primary);line-height:1.3;}
-.sch-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;}
-.login-title{font-size:22px;font-weight:700;margin-bottom:6px;}
-.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
-.field{margin-bottom:18px;}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;}
-.field input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit;}
-.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.12);}
-.btn-primary{width:100%;padding:13px;border:none;border-radius:8px;background:var(--accent);color:white;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
-.btn-primary:hover{background:#4F46E5;transform:translateY(-1px);}
-.login-error{background:#FEF2F2;border:1px solid #FECACA;border-radius:7px;padding:10px 14px;color:var(--wrong);font-size:13px;margin-bottom:16px;display:none;}
-.login-footer{text-align:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── APP SHELL ── */
-#app{display:none;min-height:100vh;flex-direction:column;}
-.topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-shrink:0;}
-.tb-brand{display:flex;align-items:center;gap:10px;}
-.tb-logo{width:40px;height:40px;border-radius:8px;object-fit:contain;background:var(--surface);padding:3px;}
-.tb-logo-fb{width:40px;height:40px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;}
-.tb-name{font-size:14px;font-weight:700;color:var(--primary);}
-.tb-name small{display:block;font-size:10px;font-weight:400;color:var(--muted);}
-.tb-right{display:flex;align-items:center;gap:12px;}
-.net-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;color:var(--muted);}
-.net-dot{width:7px;height:7px;border-radius:50%;}
-.nd-ethernet{background:var(--correct);}
-.nd-wifi{background:#3B82F6;}
-.nd-offline{background:#94A3B8;}
-.admin-name{font-size:13px;font-weight:600;color:var(--text);}
-.btn-out{background:none;border:1px solid var(--border);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s;}
-.btn-out:hover{border-color:var(--primary);color:var(--primary);}
+/* ══════════════════════════════════
+   LOGIN SCREEN - Split Layout
+══════════════════════════════════ */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.login-left {
+  flex: 1;
+  background: #dc2626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+}
+.login-left-content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  text-align: center;
+}
+.login-left h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.login-left h1 span {
+  display: block;
+  font-weight: 300;
+  font-size: 24px;
+  opacity: 0.9;
+  margin-top: 8px;
+}
+.login-left p {
+  font-size: 18px;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+.login-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.login-feature {
+  text-align: center;
+}
+.login-feature i {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: white;
+}
+.login-feature span {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.login-right {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+.login-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+}
+.login-card .subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.field {
+  margin-bottom: 24px;
+}
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field label i {
+  color: #dc2626;
+  margin-right: 6px;
+  font-size: 12px;
+}
+.field input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1e1e1e;
+  background: white;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.field input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.field input:hover {
+  border-color: #999;
+}
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary i {
+  font-size: 14px;
+}
+.btn-primary:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.login-error i {
+  font-size: 16px;
+}
+.login-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f0f0f0;
+  font-size: 13px;
+  color: #666;
+}
 
-.app-layout{display:flex;flex:1;min-height:0;}
-.sidebar{width:220px;background:var(--bg);border-right:1px solid var(--border);padding:16px 10px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
-.nav-section-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:12px 12px 6px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;color:var(--muted);border:none;background:none;width:100%;text-align:left;font-family:inherit;}
-.nav-item:hover{background:var(--surface);color:var(--text);}
-.nav-item.active{background:#EEF2FF;color:var(--accent);font-weight:600;}
-.nav-icon{font-size:15px;width:18px;text-align:center;}
-.nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;}
+/* ══════════════════════════════════
+   APP SHELL
+══════════════════════════════════ */
+#app {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.topbar {
+  background: white;
+  border-bottom: 2px solid #f0f0f0;
+  padding: 0 32px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tb-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: white;
+  padding: 4px;
+  border: 2px solid #f0f0f0;
+}
+.tb-logo-fb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+}
+.tb-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+.tb-name small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+}
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.net-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  padding: 6px 20px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+.net-pill i {
+  color: #dc2626;
+  font-size: 12px;
+}
+.admin-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e1e1e;
+  background: #f8f8f8;
+  padding: 6px 20px;
+  border-radius: 40px;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-name i {
+  color: #dc2626;
+}
+.btn-out {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  padding: 8px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-out i {
+  font-size: 12px;
+}
+.btn-out:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.1);
+}
 
-.main-content{flex:1;overflow-y:auto;padding:28px;}
-.page{display:none;}
-.page.active{display:block;}
-.page-header{margin-bottom:24px;}
-.page-header h2{font-size:22px;font-weight:700;}
-.page-header p{font-size:13px;color:var(--muted);margin-top:4px;}
+.app-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.sidebar {
+  width: 260px;
+  background: white;
+  border-right: 2px solid #f0f0f0;
+  padding: 20px 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+.nav-section-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 16px 16px 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: #666;
+  border: 2px solid transparent;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  margin-bottom: 4px;
+}
+.nav-item i {
+  width: 20px;
+  color: #dc2626;
+  font-size: 14px;
+}
+.nav-item:hover {
+  background: #f8f8f8;
+  border-color: #e0e0e0;
+  color: #1e1e1e;
+}
+.nav-item.active {
+  background: #1e1e1e;
+  color: white;
+  border-color: #1e1e1e;
+}
+.nav-item.active i {
+  color: white;
+}
+.nav-badge {
+  margin-left: auto;
+  background: #dc2626;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+.page-header {
+  margin-bottom: 24px;
+}
+.page-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-header h2 i {
+  color: #dc2626;
+}
+.page-header p {
+  font-size: 16px;
+  color: #666;
+  margin-top: 4px;
+  border-left: 4px solid #dc2626;
+  padding-left: 16px;
+}
 
 /* ── STAT CARDS ── */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;border-left:4px solid var(--border);box-shadow:var(--shadow);}
-.stat-card.blue{border-left-color:var(--accent);}
-.stat-card.green{border-left-color:var(--correct);}
-.stat-card.red{border-left-color:var(--wrong);}
-.stat-card.yellow{border-left-color:var(--warn);}
-.sc-val{font-size:28px;font-weight:800;color:var(--text);}
-.sc-lbl{font-size:11px;color:var(--muted);font-weight:500;margin-top:3px;text-transform:uppercase;letter-spacing:.4px;}
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  border-left: 6px solid #dc2626;
+}
+.stat-card .sc-val {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+.stat-card .sc-lbl {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-card .sc-lbl i {
+  color: #dc2626;
+  font-size: 12px;
+}
 
 /* ── CARDS ── */
-.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
-.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.card-header h3{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;}
-.card-body{padding:20px;}
+.card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  margin-bottom: 24px;
+}
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-header h3 i {
+  color: #dc2626;
+}
+.card-body {
+  padding: 24px;
+}
 
 /* ── BUTTONS ── */
-.btn{padding:9px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:all .15s;}
-.btn.accent{background:var(--accent);color:white;}
-.btn.accent:hover{background:#4F46E5;}
-.btn.outline{background:none;border:1.5px solid var(--border);color:var(--text);}
-.btn.outline:hover{border-color:var(--primary);color:var(--primary);}
-.btn.danger{background:var(--wrong);color:white;}
-.btn.sm{padding:6px 12px;font-size:11px;}
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn i {
+  font-size: 12px;
+}
+.btn.accent {
+  background: #1e1e1e;
+  color: white;
+}
+.btn.accent:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+}
+.btn.outline {
+  background: white;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+.btn.outline:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  transform: translateY(-1px);
+}
+.btn.danger {
+  background: #dc2626;
+  color: white;
+}
+.btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+}
+.btn.sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
 
-/* ── TABLE ── */
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:var(--surface);}
-td{padding:12px 14px;border-bottom:1px solid var(--surface);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:#F8FAFC;}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
-.pill.green{background:#DCFCE7;color:#166534;}
-.pill.red{background:#FEE2E2;color:#991B1B;}
-.pill.blue{background:#DBEAFE;color:#1E40AF;}
-.pill.yellow{background:#FEF3C7;color:#92400E;}
-.pill.gray{background:var(--surface);color:var(--muted);}
-.pill.purple{background:#EDE9FE;color:#5B21B6;}
+/* ── TABLE CONTAINER ── */
+.table-container {
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 800px;
+}
+th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #f0f0f0;
+  background: #f8f8f8;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+tr:hover td {
+  background: #f8f8f8;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+.pill i {
+  color: #dc2626;
+  font-size: 10px;
+}
+.pill.green { background: #f0fdf4; border-color: #86efac; color: #166534; }
+.pill.red { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+.pill.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+.pill.yellow { background: #fefce8; border-color: #fef08a; color: #854d0e; }
+
+/* ── TABS ── */
+.tab-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+.tab-btn {
+  background: none;
+  border: 2px solid transparent;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  border-radius: 40px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.tab-btn i {
+  margin-right: 6px;
+  color: #dc2626;
+}
+.tab-btn.active {
+  background: #1e1e1e;
+  color: white;
+  border-color: #1e1e1e;
+}
+.tab-btn.active i {
+  color: white;
+}
+.tab-btn:hover:not(.active) {
+  border-color: #e0e0e0;
+  color: #1e1e1e;
+}
+
+/* ── ADD FORM ── */
+.add-form {
+  padding: 20px;
+  background: #f8f8f8;
+  border-top: 2px solid #f0f0f0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.add-form input,
+.add-form select {
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: white;
+}
+.add-form input:focus,
+.add-form select:focus {
+  border-color: #dc2626;
+  outline: none;
+}
+.btn-add {
+  background: #1e1e1e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-add:hover {
+  background: #dc2626;
+}
+
+/* ── PASSWORD RESET FORM ── */
+.pwd-reset-form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.pwd-reset-form input {
+  padding: 6px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 12px;
+  width: 100px;
+}
+.pwd-reset-form input:focus {
+  border-color: #dc2626;
+  outline: none;
+}
+
+/* ── COMPUTER INFO ── */
+.computer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 2px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+.computer-item:hover {
+  background: #f8f8f8;
+}
+.computer-info {
+  flex: 1;
+}
+.computer-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.computer-name i {
+  color: #dc2626;
+}
+.computer-detail {
+  font-size: 13px;
+  color: #666;
+}
+.computer-tag {
+  background: #f8f8f8;
+  padding: 4px 12px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 2px solid #e0e0e0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.computer-tag i {
+  color: #dc2626;
+  font-size: 10px;
+}
 
 /* ── LOGS ── */
-.log-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--surface);align-items:flex-start;}
-.log-item:last-child{border-bottom:none;}
-.log-time{font-size:11px;color:var(--muted);white-space:nowrap;min-width:140px;padding-top:2px;}
-.log-action{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
-.la-LOGIN{background:#DCFCE7;color:#166534;}
-.la-UPLOAD{background:#EDE9FE;color:#5B21B6;}
-.la-SUBMIT{background:#DBEAFE;color:#1E40AF;}
-.la-DELETE_EXAM,.la-DELETE_USER,.la-CLEAR_RESULTS{background:#FEE2E2;color:#991B1B;}
-.la-ADD_USER{background:#DCFCE7;color:#166534;}
-.la-TAB_VIOLATION{background:#FEF3C7;color:#92400E;}
-.la-RESET_STUDENT{background:#FEF3C7;color:#92400E;}
-.log-detail{font-size:12px;color:var(--muted);flex:1;}
+.log-item {
+  padding: 14px 0;
+  border-bottom: 2px solid #f0f0f0;
+}
+.log-time {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+.log-action {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.log-detail {
+  font-size: 13px;
+  color: #1e1e1e;
+}
 
-/* ── USER TABS ── */
-.tab-row{display:flex;gap:6px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0;}
-.tab-btn{padding:8px 18px;border-radius:8px 8px 0 0;font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;background:none;color:var(--muted);font-family:inherit;border-bottom:none;margin-bottom:-1px;transition:all .15s;}
-.tab-btn.active{background:var(--bg);border-color:var(--border);border-bottom-color:var(--bg);color:var(--accent);}
-.tab-btn:hover:not(.active){color:var(--text);}
+/* ── AUDIT ── */
+.audit-item {
+  padding: 14px 0;
+  border-bottom: 2px solid #f0f0f0;
+}
+.audit-time {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+.audit-actor {
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-block;
+  margin-right: 8px;
+}
+.audit-action {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.audit-detail {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
 
-/* ── ADD USER FORM ── */
-.add-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;padding:16px 20px;border-top:1px solid var(--border);background:var(--surface);}
-.add-form input{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);}
-.add-form input:focus{border-color:var(--accent);}
-.btn-add{padding:9px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--accent);color:white;border:none;white-space:nowrap;}
+/* ── LINKS ── */
+.links-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.link-item {
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.link-label i {
+  color: #dc2626;
+  margin-right: 8px;
+}
+.link-url {
+  color: #1e1e1e;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 4px 12px;
+  border: 2px solid #1e1e1e;
+  border-radius: 40px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+.link-url:hover {
+  background: #1e1e1e;
+  color: white;
+}
 
-/* ── SYSTEM INFO ── */
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.info-item{background:var(--surface);border-radius:8px;padding:16px 18px;border:1px solid var(--border);}
-.info-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
-.info-val{font-size:15px;font-weight:700;color:var(--text);}
-.info-val.ok{color:var(--correct);}
-.links-list{display:flex;flex-direction:column;gap:10px;}
-.link-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;}
-.link-label{font-size:13px;font-weight:600;color:var(--text);}
-.link-url{font-size:12px;color:var(--accent);font-family:'Courier New',monospace;text-decoration:none;}
-.link-url:hover{text-decoration:underline;}
-
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);z-index:999;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.show{display:flex;}
-.modal{background:var(--bg);border:1px solid var(--border);border-radius:14px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;}
-.modal-h{padding:24px;border-bottom:1px solid var(--border);}
-.modal-h h3{font-size:17px;font-weight:700;margin-bottom:4px;}
-.modal-h p{font-size:13px;color:var(--muted);}
-.modal-b{padding:20px 24px 24px;}
-.modal-actions{display:flex;gap:10px;}
-.modal-actions button{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text);transition:all .15s;}
-.modal-actions button.primary{background:var(--accent);border-color:var(--accent);color:white;}
-.modal-actions button.danger{background:var(--wrong);border-color:var(--wrong);color:white;}
+/* ── INFO GRID ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.info-item {
+  padding: 12px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+.info-lbl {
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.info-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+.info-val.ok {
+  color: #dc2626;
+}
+.info-val.ok i {
+  color: #dc2626;
+  margin-right: 4px;
+}
 
 /* ── TOAST ── */
-#toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;transform:translateY(80px);transition:transform .3s;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.15);}
-#toast.show{transform:translateY(0);}
-#toast.ok{background:var(--correct);}
-#toast.err{background:var(--wrong);}
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e1e1e;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(80px);
+  transition: transform 0.3s ease;
+  z-index: 10001;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#toast i {
+  color: #dc2626;
+}
+#toast.show { transform: translateY(0); }
+#toast.ok { background: #1e1e1e; }
+#toast.err { background: #dc2626; }
+#toast.err i { color: white; }
 
-.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.modal-h {
+  padding: 28px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.modal-h h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-h h3 i {
+  color: #dc2626;
+}
+.modal-h p {
+  font-size: 15px;
+  color: #666;
+}
+.modal-b {
+  padding: 20px 28px 28px;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.modal-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+.modal-actions button.primary {
+  background: #1e1e1e;
+  border-color: #1e1e1e;
+  color: white;
+}
+.modal-actions button.primary:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+.modal-actions button.danger {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+.modal-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) { .stat-row { grid-template-columns: repeat(2,1fr); } .two-col { grid-template-columns: 1fr; } }
-@media (max-width: 680px) { .sidebar { display: none; } .main-content { padding: 16px; } }
-@media (max-width: 480px) { .stat-row { grid-template-columns: 1fr; } .add-form { grid-template-columns: 1fr; } }
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 14px;
+}
+.empty i {
+  font-size: 40px;
+  color: #dc2626;
+  margin-bottom: 12px;
+  display: block;
+}
 
 /* ── LOADER ── */
-.loader-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
-.loader-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
-.loader-text{font-size:14px;color:var(--muted);font-weight:500;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f0f0f0;
+  border-top-color: #dc2626;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loader-text {
+  font-size: 16px;
+  color: #1e1e1e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.loader-text i {
+  color: #dc2626;
+}
 
-/* ── AUDIT TRAIL ── */
-.audit-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--surface);align-items:flex-start;font-size:12px;}
-.audit-item:last-child{border-bottom:none;}
-.audit-time{color:var(--muted);white-space:nowrap;min-width:120px;padding-top:2px;font-size:11px;}
-.audit-actor{font-weight:700;color:var(--primary);min-width:80px;padding-top:2px;}
-.audit-action{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0;}
-.aa-LOGIN{background:#DCFCE7;color:#166534;}
-.aa-LOGIN_FAIL{background:#FEE2E2;color:#991B1B;}
-.aa-EXAM_UPLOAD{background:#EDE9FE;color:#5B21B6;}
-.aa-EXAM_SUBMIT{background:#DBEAFE;color:#1E40AF;}
-.aa-EXAM_DELETE,.aa-RESULTS_CLEAR_ALL,.aa-USER_DELETE{background:#FEE2E2;color:#991B1B;}
-.aa-USER_CREATE,.aa-PASSWORD_RESET{background:#DCFCE7;color:#166534;}
-.aa-TAB_VIOLATION,.aa-STUDENT_RESET,.aa-EXAM_STATUS_CHANGE{background:#FEF3C7;color:#92400E;}
-.audit-detail{color:var(--muted);flex:1;}
+/* ── FILTER ROW ── */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-select {
+  padding: 8px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e1e1e;
+  background: white;
+  outline: none;
+  min-width: 150px;
+}
+.filter-select:focus {
+  border-color: #dc2626;
+}
 
-/* ── CHART ── */
-.chart-wrap{position:relative;height:200px;}
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .stat-row { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 680px) {
+  .sidebar { display: none; }
+  .main-content { padding: 20px; }
+  .add-form { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .stat-row { grid-template-columns: 1fr; }
+  .filter-row { flex-direction: column; align-items: stretch; }
+}
 
-/* ── TOGGLE SWITCH ── */
-.toggle-switch{position:relative;display:inline-block;width:42px;height:22px;flex-shrink:0;}
-.toggle-switch input{opacity:0;width:0;height:0;}
-.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#CBD5E1;border-radius:22px;transition:.3s;}
-.toggle-slider:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
-.toggle-switch input:checked + .toggle-slider{background:var(--correct);}
-.toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
-
-/* ── ADD FORM ENHANCEMENTS ── */
-.add-form select{padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);}
-.add-form select:focus{border-color:var(--accent);}
-.add-form{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;padding:16px 20px;border-top:1px solid var(--border);background:var(--surface);}
-.pwd-reset-form{display:flex;gap:8px;align-items:center;}
-.pwd-reset-form input{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;}
+.dev-tag {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-top: 16px;
+  font-weight: 600;
+}
+.dev-tag i {
+  color: #dc2626;
+  margin: 0 4px;
+}
+.dev-tag span {
+  color: #dc2626;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN SCREEN - SPLIT LAYOUT -->
 <div id="loginScreen">
-  <div class="login-card">
-    <div class="school-header">
-      <img src="logo.png" class="sch-logo" id="loginLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('loginLogoFb').style.display='flex'">
-      <div class="sch-logo-fb" id="loginLogoFb">P</div>
-      <div>
-        <div class="sch-name">Peter Harvard International Schools</div>
-        <div class="sch-sub">System Administration Console</div>
+  <div class="login-left">
+    <div class="login-left-content">
+      <h1>Peter Harvard<br><span>International Schools</span></h1>
+      <p>System Administration Console</p>
+      <div class="login-features">
+        <div class="login-feature">
+          <i class="fa fa-cog"></i>
+          <span>System Settings</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-users"></i>
+          <span>User Management</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-database"></i>
+          <span>Data Management</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-shield"></i>
+          <span>Security Controls</span>
+        </div>
       </div>
     </div>
-    <div class="login-title">Admin Sign In</div>
-    <div class="login-sub">Access the system administration panel</div>
-    <div class="login-error" id="loginErr">Invalid credentials. Please try again.</div>
-    <div class="field"><label>Admin ID</label><input type="text" id="inId" placeholder="admin" autocomplete="off"></div>
-    <div class="field"><label>Password</label><input type="password" id="inPass" placeholder="••••••••"></div>
-    <button class="btn-primary" onclick="doLogin()">Sign In to Admin Console</button>
-    <div class="login-footer">Peter Harvard International Schools · Exam System v1.0<br><span style="color:#94A3B8">Developed by anointedthedeveloper</span></div>
+  </div>
+  <div class="login-right">
+    <div class="login-card">
+      <h2>Admin Sign In</h2>
+      <div class="subtitle">Access the system administration panel</div>
+      <div class="login-error" id="loginErr">
+        <i class="fa fa-exclamation-circle"></i> Invalid credentials. Please try again.
+      </div>
+      <div class="field">
+        <label><i class="fa fa-id-card"></i> ADMIN ID</label>
+        <input type="text" id="inId" placeholder="admin" autocomplete="off">
+      </div>
+      <div class="field">
+        <label><i class="fa fa-lock"></i> PASSWORD</label>
+        <input type="password" id="inPass" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">
+        <span>Sign In to Admin Console</span>
+        <i class="fa fa-arrow-right"></i>
+      </button>
+      <div class="login-footer">
+        <div><i class="fa fa-copyright"></i> 2026 Peter Harvard International Schools</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- APP -->
 <div id="app">
   <div class="loader-overlay" id="loaderOverlay" style="display:none">
     <div class="loader-spinner"></div>
-    <div class="loader-text">Loading…</div>
+    <div class="loader-text"><i class="fa fa-spinner fa-spin"></i> <span id="loaderText">Loading…</span></div>
   </div>
+  
   <div class="topbar">
     <div class="tb-brand">
-      <img src="logo.png" class="tb-logo" id="tbLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbLogoFb').style.display='flex'">
-      <div class="tb-logo-fb" id="tbLogoFb" style="display:none">P</div>
+      <img src="Badgejet.jpg" class="tb-logo" id="tbLogo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbLogoFb').style.display='flex'">
+      <div class="tb-logo-fb" id="tbLogoFb" style="display:none">PH</div>
       <div class="tb-name">Admin Console <small>Peter Harvard International Schools</small></div>
     </div>
     <div class="tb-right">
-      <div class="net-pill" id="netPill"><div class="net-dot nd-offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
-      <div class="admin-name" id="adminName">—</div>
-      <button class="btn-out" onclick="doLogout()">Sign Out</button>
+      <div class="net-pill" id="netPill">
+        <i class="fa fa-wifi" id="netIcon"></i>
+        <span id="netLabel">Checking…</span>
+      </div>
+      <div class="admin-name" id="adminName">
+        <i class="fa fa-user"></i> <span>—</span>
+      </div>
+      <button class="btn-out" onclick="doLogout()">
+        <i class="fa fa-sign-out"></i> Sign Out
+      </button>
     </div>
   </div>
 
   <div class="app-layout">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="nav-section-lbl">Dashboard</div>
-      <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard',this)"><span class="nav-icon">◈</span>Dashboard</button>
-      <button class="nav-item" data-page="logs" onclick="goPage('logs',this)"><span class="nav-icon">≡</span>System Logs <span class="nav-badge" id="logBadge">0</span></button>
-      <button class="nav-item" data-page="system" onclick="goPage('system',this)"><span class="nav-icon">◎</span>System Info</button>
-      <div class="nav-section-lbl">Management</div>
-      <button class="nav-item" data-page="users" onclick="goPage('users',this)"><span class="nav-icon">&#9673;</span>User Accounts</button>
-      <button class="nav-item" data-page="results" onclick="goPage('results',this)"><span class="nav-icon">&#9638;</span>All Results</button>
-      <button class="nav-item" data-page="students" onclick="goPage('students',this)"><span class="nav-icon">&#9782;</span>Student List</button>
-      <button class="nav-item" data-page="activity" onclick="goPage('activity',this)"><span class="nav-icon">&#8987;</span>Activity</button>
-      <button class="nav-item" data-page="audit" onclick="goPage('audit',this)"><span class="nav-icon">&#9741;</span>Audit Trail</button>
-      <button class="nav-item" data-page="charts" onclick="goPage('charts',this)"><span class="nav-icon">&#9641;</span>Charts</button>
+      <div class="nav-section-lbl"><i class="fa fa-dashboard"></i> Dashboard</div>
+      <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard',this)">
+        <i class="fa fa-dashboard"></i>Dashboard
+      </button>
+      <button class="nav-item" data-page="logs" onclick="goPage('logs',this)">
+        <i class="fa fa-list-alt"></i>System Logs
+        <span class="nav-badge" id="logBadge">0</span>
+      </button>
+      <button class="nav-item" data-page="system" onclick="goPage('system',this)">
+        <i class="fa fa-info-circle"></i>System Info
+      </button>
+      <button class="nav-item" data-page="computers" onclick="goPage('computers',this)">
+        <i class="fa fa-laptop"></i>Connected Computers
+      </button>
+      
+      <div class="nav-section-lbl"><i class="fa fa-cog"></i> Management</div>
+      <button class="nav-item" data-page="users" onclick="goPage('users',this)">
+        <i class="fa fa-users"></i>User Accounts
+      </button>
+      <button class="nav-item" data-page="results" onclick="goPage('results',this)">
+        <i class="fa fa-bar-chart"></i>All Results
+      </button>
+      <button class="nav-item" data-page="students" onclick="goPage('students',this)">
+        <i class="fa fa-graduation-cap"></i>Student List
+      </button>
+      <button class="nav-item" data-page="audit" onclick="goPage('audit',this)">
+        <i class="fa fa-clipboard"></i>Audit Trail
+      </button>
     </div>
 
-    <!-- Main -->
+    <!-- Main Content -->
     <div class="main-content">
-
-      <!-- DASHBOARD -->
+      <!-- DASHBOARD PAGE -->
       <div class="page active" id="page-dashboard">
-        <div class="page-header"><h2>System Dashboard</h2><p>Peter Harvard International Schools · Exam System Overview</p></div>
-        <div class="stat-row">
-          <div class="stat-card blue"><div class="sc-val" id="dExams">0</div><div class="sc-lbl">Exams</div></div>
-          <div class="stat-card green"><div class="sc-val" id="dUsers">0</div><div class="sc-lbl">Total Users</div></div>
-          <div class="stat-card red"><div class="sc-val" id="dResults">0</div><div class="sc-lbl">Submissions</div></div>
-          <div class="stat-card yellow"><div class="sc-val" id="dLogs">0</div><div class="sc-lbl">Log Events</div></div>
+        <div class="page-header">
+          <h2><i class="fa fa-dashboard"></i> System Dashboard</h2>
+          <p>Peter Harvard International Schools · Exam System v2.0 Overview</p>
         </div>
-        <div class="two-col">
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="sc-val" id="dExams">0</div>
+            <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="dUsers">0</div>
+            <div class="sc-lbl"><i class="fa fa-users"></i> Total Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="dResults">0</div>
+            <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-val" id="dComputers">0</div>
+            <div class="sc-lbl"><i class="fa fa-laptop"></i> Connected Computers</div>
+          </div>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div class="card">
-            <div class="card-header"><h3>Quick Links</h3></div>
+            <div class="card-header"><h3><i class="fa fa-link"></i> Quick Links</h3></div>
             <div class="card-body">
               <div class="links-list">
-                <div class="link-item"><span class="link-label">👨‍🎓 Student Portal</span><a class="link-url" href="/student.html" target="_blank">Open →</a></div>
-                <div class="link-item"><span class="link-label">👩‍🏫 Teacher Dashboard</span><a class="link-url" href="/teacher.html" target="_blank">Open →</a></div>
+                <div class="link-item">
+                  <span class="link-label"><i class="fa fa-graduation-cap"></i> Student Portal</span>
+                  <a class="link-url" href="/student.html" target="_blank">Open</a>
+                </div>
+                <div class="link-item">
+                  <span class="link-label"><i class="fa fa-mortar-board"></i> Teacher Dashboard</span>
+                  <a class="link-url" href="/teacher.html" target="_blank">Open</a>
+                </div>
               </div>
             </div>
           </div>
           <div class="card">
-            <div class="card-header"><h3>Recent Events</h3></div>
-            <div style="padding:0 20px;max-height:200px;overflow-y:auto;" id="dashLogs"><div class="empty">Loading…</div></div>
+            <div class="card-header"><h3><i class="fa fa-clock-o"></i> Recent Events</h3></div>
+            <div class="table-container" style="max-height:200px;">
+              <div id="dashLogs"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- LOGS -->
+      <!-- LOGS PAGE -->
       <div class="page" id="page-logs">
-        <div class="page-header"><h2>System Logs</h2><p>All system events in reverse chronological order</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-list-alt"></i> System Logs</h2>
+          <p>All system events in reverse chronological order</p>
+        </div>
         <div class="card">
-          <div class="card-header"><h3>Event Log</h3><button class="btn outline sm" onclick="loadLogs()">↻ Refresh</button></div>
-          <div style="padding:0 20px;max-height:600px;overflow-y:auto;" id="fullLogs"><div class="empty">Loading…</div></div>
+          <div class="card-header">
+            <h3><i class="fa fa-history"></i> Event Log</h3>
+            <button class="btn outline sm" onclick="loadLogs()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="table-container" style="max-height:600px;">
+            <div id="fullLogs"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- SYSTEM INFO -->
+      <!-- SYSTEM INFO PAGE -->
       <div class="page" id="page-system">
-        <div class="page-header"><h2>System Information</h2><p>Server and network details</p></div>
-        <div class="card" style="margin-bottom:20px;">
-          <div class="card-header"><h3>Server Status</h3><button class="btn outline sm" onclick="loadSystemInfo()">↻ Refresh</button></div>
+        <div class="page-header">
+          <h2><i class="fa fa-info-circle"></i> System Information</h2>
+          <p>Server and network details</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa fa-server"></i> Server Status</h3>
+            <button class="btn outline sm" onclick="loadSystemInfo()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
           <div class="card-body">
             <div class="info-grid" id="sysInfoGrid">
-              <div class="info-item"><div class="info-lbl">Status</div><div class="info-val ok">● Online</div></div>
-              <div class="info-item"><div class="info-lbl">LAN IP</div><div class="info-val" id="sysIP">—</div></div>
-              <div class="info-item"><div class="info-lbl">Port</div><div class="info-val" id="sysPort">—</div></div>
-              <div class="info-item"><div class="info-lbl">Server Time</div><div class="info-val" id="sysTime">—</div></div>
+              <div class="info-item">
+                <div class="info-lbl">Status</div>
+                <div class="info-val ok"><i class="fa fa-circle"></i> Online</div>
+              </div>
+              <div class="info-item">
+                <div class="info-lbl">Version</div>
+                <div class="info-val" id="sysVersion">2.0.0</div>
+              </div>
+              <div class="info-item">
+                <div class="info-lbl">LAN IP</div>
+                <div class="info-val" id="sysIP">—</div>
+              </div>
+              <div class="info-item">
+                <div class="info-lbl">Port</div>
+                <div class="info-val" id="sysPort">—</div>
+              </div>
+              <div class="info-item">
+                <div class="info-lbl">Server Time</div>
+                <div class="info-val" id="sysTime">—</div>
+              </div>
+              <div class="info-item">
+                <div class="info-lbl">Hostname</div>
+                <div class="info-val" id="sysHostname">—</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>Network Interfaces</h3></div>
+          <div class="card-header"><h3><i class="fa fa-wifi"></i> Network Interfaces</h3></div>
           <div class="card-body">
-            <div id="netInterfaces"><div class="empty">Loading…</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>Access URLs</h3></div>
-          <div class="card-body">
-            <div class="links-list" id="accessLinks"><div class="empty">Loading…</div></div>
+            <div id="netInterfaces"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
           </div>
         </div>
       </div>
 
-      <!-- USERS -->
-      <div class="page" id="page-users">
-        <div class="page-header"><h2>User Accounts</h2><p>Manage teacher, student, and admin accounts</p></div>
-        <div class="tab-row">
-          <button class="tab-btn active" onclick="switchTab('teachers',this)">👩‍🏫 Teachers</button>
-          <button class="tab-btn" onclick="switchTab('students',this)">👨‍🎓 Students</button>
-          <button class="tab-btn" onclick="switchTab('admins',this)">🔐 Admins</button>
+      <!-- COMPUTERS PAGE -->
+      <div class="page" id="page-computers">
+        <div class="page-header">
+          <h2><i class="fa fa-laptop"></i> Connected Computers</h2>
+          <p>All devices that have accessed the system</p>
         </div>
         <div class="card">
-          <div class="card-header"><h3 id="userTabTitle">Teachers</h3><button class="btn outline sm" onclick="loadUsers()">&#8635; Refresh</button></div>
-          <div id="userTableWrap"><div class="empty">Loading…</div></div>
+          <div class="card-header">
+            <h3><i class="fa fa-globe"></i> Active Connections</h3>
+            <button class="btn outline sm" onclick="loadComputers()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="table-container">
+            <div id="computersList"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS PAGE -->
+      <div class="page" id="page-users">
+        <div class="page-header">
+          <h2><i class="fa fa-users"></i> User Accounts</h2>
+          <p>Manage teacher, student, and admin accounts</p>
+        </div>
+        
+        <div class="tab-row">
+          <button class="tab-btn active" onclick="switchTab('teachers',this)">
+            <i class="fa fa-user"></i> Teachers
+          </button>
+          <button class="tab-btn" onclick="switchTab('students',this)">
+            <i class="fa fa-graduation-cap"></i> Students
+          </button>
+          <button class="tab-btn" onclick="switchTab('admins',this)">
+            <i class="fa fa-user-secret"></i> Admins
+          </button>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 id="userTabTitle">Teachers</h3>
+            <button class="btn outline sm" onclick="loadUsers()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="table-container">
+            <div id="userTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
           <div class="add-form">
             <input type="text" id="newId" placeholder="User ID">
             <input type="text" id="newName" placeholder="Full Name">
-            <input type="text" id="newExtra" placeholder="Class (student) or Subject (teacher)">
-            <input type="password" id="newPass" placeholder="Password (blank = none)">
-            <select id="newRoleOverride" style="display:none"></select>
-            <button class="btn-add" onclick="addUser()">+ Add</button>
+            <input type="text" id="newExtra" placeholder="Class or Subject">
+            <input type="password" id="newPass" placeholder="Password">
+            <button class="btn-add" onclick="addUser()">
+              <i class="fa fa-plus"></i> Add
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- RESULTS -->
+      <!-- RESULTS PAGE -->
       <div class="page" id="page-results">
-        <div class="page-header"><h2>All Results</h2><p>Complete view of all student submissions</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-bar-chart"></i> All Results</h2>
+          <p>Complete view of all student submissions</p>
+        </div>
         <div class="card">
           <div class="card-header">
-            <h3>Submissions</h3>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn outline sm" onclick="loadResults()">&#8635; Refresh</button>
-              <button class="btn accent sm" onclick="window.location='/api/results/csv'">&#8595; CSV</button>
-              <button class="btn outline sm" onclick="window.location='/api/results/json'">&#8595; JSON</button>
-              <button class="btn danger sm" onclick="clearAllResults()">&#10005; Clear All</button>
+            <h3><i class="fa fa-check-square"></i> Submissions</h3>
+            <div class="filter-row">
+              <select class="filter-select" id="filterClass" onchange="filterResults()">
+                <option value="">All Classes</option>
+                <option value="SS 1">SS 1</option>
+                <option value="SS 2">SS 2</option>
+                <option value="SS 3">SS 3</option>
+              </select>
+              
+              <select class="filter-select" id="filterSubject" onchange="filterResults()">
+                <option value="">All Subjects</option>
+              </select>
+              
+              <button class="btn outline sm" onclick="loadResults()">
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              <button class="btn accent sm" onclick="window.location='/api/results/csv'">
+                <i class="fa fa-file-code-o"></i> CSV
+              </button>
+              <button class="btn accent sm" onclick="window.location='/api/results/excel'">
+                <i class="fa fa-file-excel-o"></i> Excel
+              </button>
+              <button class="btn danger sm" onclick="clearAllResults()">
+                <i class="fa fa-trash"></i> Clear All
+              </button>
             </div>
           </div>
-          <div id="resultsTableWrap"><div class="empty">Loading…</div></div>
+          <div class="table-container">
+            <div id="resultsTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- STUDENT LIST -->
+      <!-- STUDENT LIST PAGE -->
       <div class="page" id="page-students">
-        <div class="page-header"><h2>Student List</h2><p>All registered students</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-graduation-cap"></i> Student List</h2>
+          <p>All registered students</p>
+        </div>
         <div class="card">
           <div class="card-header">
-            <h3>Students</h3>
+            <h3><i class="fa fa-users"></i> Students</h3>
             <div style="display:flex;gap:8px;">
-              <button class="btn outline sm" onclick="loadStudentList()">&#8635; Refresh</button>
-              <button class="btn accent sm" onclick="window.location='/api/student-list/csv'">&#8595; CSV</button>
-              <button class="btn outline sm" onclick="window.location='/api/student-list/json'">&#8595; JSON</button>
+              <button class="btn outline sm" onclick="loadStudentList()">
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              <button class="btn accent sm" onclick="window.location='/api/student-list/csv'">
+                <i class="fa fa-download"></i> CSV
+              </button>
             </div>
           </div>
-          <div id="adminStudentListWrap"><div class="empty">Loading…</div></div>
+          <div class="table-container">
+            <div id="adminStudentListWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
 
-      <!-- AUDIT TRAIL -->
+      <!-- AUDIT PAGE -->
       <div class="page" id="page-audit">
-        <div class="page-header"><h2>Audit Trail</h2><p>Complete chronological record of all system actions</p></div>
+        <div class="page-header">
+          <h2><i class="fa fa-clipboard"></i> Audit Trail</h2>
+          <p>Complete chronological record of all system actions</p>
+        </div>
         <div class="card">
-          <div class="card-header"><h3>Audit Log</h3><button class="btn outline sm" onclick="loadAudit()">&#8635; Refresh</button></div>
-          <div style="padding:0 20px;max-height:600px;overflow-y:auto;" id="auditFeed"><div class="empty">Loading…</div></div>
+          <div class="card-header">
+            <h3><i class="fa fa-history"></i> Audit Log</h3>
+            <button class="btn outline sm" onclick="loadAudit()">
+              <i class="fa fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="table-container" style="max-height:600px;">
+            <div id="auditFeed"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+          </div>
         </div>
       </div>
-
-      <!-- CHARTS -->
-      <div class="page" id="page-charts">
-        <div class="page-header"><h2>Charts &amp; Analytics</h2><p>System-wide performance overview</p></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" id="adminChartsGrid">
-          <div class="card"><div class="card-header"><h3>Score Distribution</h3></div><div class="card-body"><div class="chart-wrap"><canvas id="aScoreChart"></canvas></div></div></div>
-          <div class="card"><div class="card-header"><h3>Average by Exam</h3></div><div class="card-body"><div class="chart-wrap"><canvas id="aExamChart"></canvas></div></div></div>
-          <div class="card"><div class="card-header"><h3>Submissions Timeline</h3></div><div class="card-body"><div class="chart-wrap"><canvas id="aTimelineChart"></canvas></div></div></div>
-          <div class="card"><div class="card-header"><h3>Tab Violations</h3></div><div class="card-body"><div class="chart-wrap"><canvas id="aViolChart"></canvas></div></div></div>
-        </div>
-      </div>
-
-      <!-- ACTIVITY -->
-      <div class="page" id="page-activity">
-        <div class="page-header"><h2>Student Activity</h2><p>All student events and actions</p></div>
-        <div class="card">
-          <div class="card-header"><h3>Activity Feed</h3><button class="btn outline sm" onclick="loadActivity()">↻ Refresh</button></div>
-          <div style="padding:0 20px;max-height:600px;overflow-y:auto;" id="activityFeed"><div class="empty">Loading…</div></div>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL ═══ -->
+<!-- MODAL: Confirm -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal">
-    <div class="modal-h"><h3 id="confirmTitle">Confirm</h3><p id="confirmMsg">—</p></div>
+    <div class="modal-h">
+      <h3><i class="fa fa-question-circle"></i> <span id="confirmTitle">Confirm</span></h3>
+      <p id="confirmMsg">—</p>
+    </div>
     <div class="modal-b">
       <div class="modal-actions">
         <button onclick="closeModal()">Cancel</button>
-        <button id="confirmOkBtn" class="primary">Confirm</button>
+        <button class="primary" id="confirmOkBtn">Confirm</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ── STATE ────────────────────────────────────────────────────────────────────
-let currentTab = 'teachers';
-let serverIP = '';
+// PWA Registration
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(reg => console.log("Service Worker registered:", reg))
+      .catch(err => console.log("Service Worker registration failed:", err));
+  });
+}
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
+// STATE
+let currentTab = localStorage.getItem('adminCurrentTab') || 'teachers';
+let serverIP = '';
+let sessionToken = localStorage.getItem('adminSessionToken') || null;
+let adminName = '';
+let currentPage = localStorage.getItem('adminCurrentPage') || 'dashboard';
+let allResults = [];
+let filteredResults = [];
+let allSubjects = [];
+
+// HELPERS
 async function api(path, opts = {}) {
-  const r = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  const headers = { 'Content-Type': 'application/json' };
+  if (sessionToken) {
+    headers['Authorization'] = 'Bearer ' + sessionToken;
+  }
+  const r = await fetch(path, { headers, ...opts });
   return r.json().catch(() => ({}));
 }
+
 function toast(msg, type = '') {
   const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'show ' + type;
+  el.innerHTML = `<i class="fa fa-${type === 'err' ? 'exclamation-circle' : 'check-circle'}"></i> ${msg}`;
+  el.className = 'show ' + type;
   setTimeout(() => el.className = '', 3000);
 }
+
 function openModal(title, msg, okLabel, okFn, okClass = 'primary') {
-  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmTitle').innerHTML = `<i class="fa fa-question-circle"></i> ${title}`;
   document.getElementById('confirmMsg').textContent = msg;
   const btn = document.getElementById('confirmOkBtn');
-  btn.textContent = okLabel; btn.className = okClass;
+  btn.innerHTML = okLabel;
+  btn.className = okClass;
   btn.onclick = () => { closeModal(); okFn(); };
   document.getElementById('confirmModal').classList.add('show');
 }
-function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
-function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
-function fmtTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleTimeString(); }
 
-// ── AUTH ─────────────────────────────────────────────────────────────────────
+function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
+
+function fmtDateTime(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString(); }
+
+// SESSION CHECK - No flash
+async function checkSession() {
+  if (!sessionToken) return false;
+  
+  try {
+    const res = await api('/api/check-session', { 
+      method: 'POST',
+      body: JSON.stringify({ token: sessionToken })
+    });
+    
+    if (res.ok) {
+      adminName = res.name || res.id;
+      document.getElementById('adminName').innerHTML = `<i class="fa fa-user"></i> <span>${adminName}</span>`;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      updateNet();
+      setInterval(updateNet, 15000);
+      
+      // Restore last page
+      const savedPage = localStorage.getItem('adminCurrentPage') || 'dashboard';
+      goPage(savedPage, document.querySelector(`[data-page="${savedPage}"]`));
+      return true;
+    }
+  } catch (e) {}
+  
+  localStorage.removeItem('adminSessionToken');
+  sessionToken = null;
+  return false;
+}
+
+// AUTH
 async function doLogin() {
   const id = document.getElementById('inId').value.trim();
   const pass = document.getElementById('inPass').value;
-  const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ id, password: pass, role: 'admin' }) });
+  if (!id) return;
+  
+  showLoader('Signing in…');
+  
+  const res = await api('/api/login', { 
+    method: 'POST', 
+    body: JSON.stringify({ id, password: pass, role: 'admin' }) 
+  });
+  
+  hideLoader();
+  
   if (res.ok) {
-    document.getElementById('adminName').textContent = res.name || id;
+    sessionToken = res.token;
+    localStorage.setItem('adminSessionToken', res.token);
+    adminName = res.name || id;
+    document.getElementById('adminName').innerHTML = `<i class="fa fa-user"></i> <span>${adminName}</span>`;
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     updateNet();
     setInterval(updateNet, 15000);
-    loadDashboard();
-  } else { document.getElementById('loginErr').style.display = 'block'; }
+    goPage('dashboard', document.querySelector('[data-page="dashboard"]'));
+  } else if (res.error === 'User already logged in on another device') {
+    document.getElementById('loginErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Admin already logged in on another device';
+    document.getElementById('loginErr').style.display = 'flex';
+  } else { 
+    document.getElementById('loginErr').style.display = 'flex'; 
+  }
 }
-function doLogout() {
+
+async function doLogout() {
+  if (sessionToken) {
+    await api('/api/logout', { method: 'POST', body: JSON.stringify({ token: sessionToken }) });
+  }
+  localStorage.removeItem('adminSessionToken');
+  localStorage.removeItem('adminCurrentPage');
+  localStorage.removeItem('adminCurrentTab');
+  sessionToken = null;
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('inId').value = '';
   document.getElementById('inPass').value = '';
 }
 
-// ── NETWORK ──────────────────────────────────────────────────────────────────
+// NETWORK
 async function updateNet() {
   try {
     const info = await api('/api/info');
     serverIP = info.ip || location.hostname;
     const nets = info.networks || [];
-    const eth = nets.find(n => n.type === 'ethernet');
-    const wifi = nets.find(n => n.type === 'wifi');
-    const dot = document.getElementById('netDot');
-    dot.className = 'net-dot ' + (eth ? 'nd-ethernet' : wifi ? 'nd-wifi' : 'nd-offline');
-    document.getElementById('netLabel').textContent = eth ? '🔌 Ethernet' : wifi ? '📶 Wi-Fi' : 'No Network';
-  } catch {}
+    const connected = nets.length > 0;
+    
+    document.getElementById('netIcon').className = connected ? 'fa fa-wifi' : 'fa fa-exclamation-triangle';
+    document.getElementById('netLabel').textContent = connected ? 'Connected' : 'Offline';
+  } catch {
+    document.getElementById('netIcon').className = 'fa fa-exclamation-triangle';
+    document.getElementById('netLabel').textContent = 'Offline';
+  }
 }
 
-// ── NAV ───────────────────────────────────────────────────────────────────────
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+// LOADER
+function showLoader(text) {
+  document.getElementById('loaderText').innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${text || 'Loading…'}`;
+  document.getElementById('loaderOverlay').style.display = 'flex';
+}
+function hideLoader() { document.getElementById('loaderOverlay').style.display = 'none'; }
+
+// NAVIGATION - Save current page
+function goPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  
+  localStorage.setItem('adminCurrentPage', name);
+  currentPage = name;
+  
+  const loaders = {
+    dashboard: loadDashboard,
+    logs: loadLogs,
+    system: loadSystemInfo,
+    computers: loadComputers,
+    users: loadUsers,
+    results: loadResults,
+    audit: loadAudit,
+    students: loadStudentList
+  };
+  loaders[name]?.();
+}
+
+// DASHBOARD
 async function loadDashboard() {
-  const [exams, users, results, logs] = await Promise.all([api('/api/exams'), api('/api/users'), api('/api/results'), api('/api/logs')]);
+  const [exams, users, results, logs, computers] = await Promise.all([
+    api('/api/exams'), 
+    api('/api/users'), 
+    api('/api/results'), 
+    api('/api/logs'), 
+    api('/api/computers')
+  ]);
+  
   document.getElementById('dExams').textContent = Array.isArray(exams) ? exams.length : 0;
   const rArr = Array.isArray(results) ? results : [];
   const lArr = Array.isArray(logs) ? logs : [];
+  const cArr = Array.isArray(computers) ? computers : [];
+  
   document.getElementById('dResults').textContent = rArr.length;
-  document.getElementById('dLogs').textContent = lArr.length;
   document.getElementById('logBadge').textContent = lArr.length;
+  document.getElementById('dComputers').textContent = cArr.length;
+  
   if (users && typeof users === 'object') {
     const total = ((users.teachers||[]).length + (users.students||[]).length + (users.admins||[]).length);
     document.getElementById('dUsers').textContent = total;
   }
+  
   renderLogList(lArr.slice(0, 8), 'dashLogs');
 }
 
-// ── LOGS ──────────────────────────────────────────────────────────────────────
+// LOGS
 async function loadLogs() {
   const logs = await api('/api/logs');
   renderLogList(Array.isArray(logs) ? logs : [], 'fullLogs');
 }
+
 function renderLogList(logs, targetId) {
-  const actMap = { LOGIN:'LOGIN',UPLOAD:'UPLOAD',SUBMIT:'SUBMIT',DELETE_EXAM:'DELETE_EXAM',DELETE_USER:'DELETE_USER',CLEAR_RESULTS:'CLEAR_RESULTS',ADD_USER:'ADD_USER',TAB_VIOLATION:'TAB_VIOLATION',RESET_STUDENT:'RESET_STUDENT' };
   document.getElementById(targetId).innerHTML = logs.length ? logs.map(l => `
     <div class="log-item">
       <div class="log-time">${fmtDateTime(l.time)}</div>
-      <span class="log-action la-${actMap[l.action]||''}">${l.action}</span>
-      <div class="log-detail">${l.detail || ''}</div>
-    </div>`).join('') : '<div class="empty">No events</div>';
+      <span class="log-action">${l.action}</span>
+      <span class="log-detail">${l.detail || ''}</span>
+    </div>`).join('') : '<div class="empty"><i class="fa fa-inbox"></i>No events</div>';
 }
 
-// ── SYSTEM INFO ───────────────────────────────────────────────────────────────
+// COMPUTERS
+async function loadComputers() {
+  const computers = await api('/api/computers');
+  const cArr = Array.isArray(computers) ? computers : [];
+  
+  document.getElementById('computersList').innerHTML = cArr.length ? cArr.map(c => `
+    <div class="computer-item">
+      <div class="computer-info">
+        <div class="computer-name">
+          <i class="fa fa-laptop"></i> ${c.hostname || 'Unknown'}
+          <span class="computer-tag"><i class="fa fa-user"></i> ${c.studentName || 'Unknown'}</span>
+        </div>
+        <div class="computer-detail">
+          <i class="fa fa-globe"></i> IP: ${c.ip} · 
+          <i class="fa fa-link"></i> MAC: ${c.mac} · 
+          <i class="fa fa-plug"></i> ${c.interface}
+        </div>
+        <div class="computer-detail" style="margin-top:4px;">
+          <i class="fa fa-clock-o"></i> First: ${fmtDateTime(c.firstSeen)} · 
+          <i class="fa fa-clock-o"></i> Last: ${fmtDateTime(c.lastSeen)}
+        </div>
+      </div>
+      <div>
+        <span class="pill ${Date.now() - new Date(c.lastSeen).getTime() < 300000 ? 'green' : ''}">
+          <i class="fa fa-circle"></i> ${Date.now() - new Date(c.lastSeen).getTime() < 300000 ? 'Online' : 'Offline'}
+        </span>
+      </div>
+    </div>`).join('') : '<div class="empty"><i class="fa fa-laptop"></i>No computers recorded yet</div>';
+}
+
+// SYSTEM INFO
 async function loadSystemInfo() {
   const info = await api('/api/info');
-  const ip = info.ip || location.hostname;
-  const port = info.port || 3000;
-  serverIP = ip;
-  document.getElementById('sysIP').textContent = ip;
-  document.getElementById('sysPort').textContent = port;
+  serverIP = info.ip || location.hostname;
+  
+  document.getElementById('sysIP').textContent = info.ip || '—';
+  document.getElementById('sysPort').textContent = info.port || 3000;
   document.getElementById('sysTime').textContent = info.time ? new Date(info.time).toLocaleString() : '—';
+  document.getElementById('sysHostname').textContent = info.hostname || '—';
+  document.getElementById('sysVersion').textContent = info.version || '2.0.0';
 
   const nets = info.networks || [];
   document.getElementById('netInterfaces').innerHTML = nets.length ? nets.map(n => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--surface);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:2px solid #f0f0f0;">
       <div>
-        <div style="font-size:13px;font-weight:600">${n.name}</div>
-        <div style="font-size:12px;color:var(--muted);font-family:monospace">${n.address}</div>
+        <div style="font-size:14px;font-weight:700"><i class="fa fa-wifi"></i> ${n.name}</div>
+        <div style="font-size:13px;color:#666;font-family:monospace">${n.address}</div>
+        <div style="font-size:12px;color:#666;">MAC: ${n.mac}</div>
       </div>
-      <span class="pill ${n.type==='ethernet'?'green':'blue'}">${n.type === 'ethernet' ? '🔌 Ethernet' : '📶 Wi-Fi'}</span>
-    </div>`).join('') : '<div class="empty">No active interfaces detected</div>';
-
-  document.getElementById('accessLinks').innerHTML = `
-    <div class="link-item"><span class="link-label">👨‍🎓 Student Portal</span><a class="link-url" href="http://${ip}:${port}/student.html" target="_blank">http://${ip}:${port}/student.html</a></div>
-    <div class="link-item"><span class="link-label">👩‍🏫 Teacher Dashboard</span><a class="link-url" href="http://${ip}:${port}/teacher.html" target="_blank">http://${ip}:${port}/teacher.html</a></div>
-    <div class="link-item"><span class="link-label">🔐 Admin Console</span><a class="link-url" href="http://${ip}:${port}/admin.html" target="_blank">http://${ip}:${port}/admin.html</a></div>
-  `;
+      <span class="pill ${n.type === 'ethernet' ? 'green' : 'blue'}">
+        <i class="fa fa-plug"></i> ${n.type}
+      </span>
+    </div>`).join('') : '<div class="empty"><i class="fa fa-wifi"></i>No active interfaces</div>';
 }
 
-// ── USERS ─────────────────────────────────────────────────────────────────────
+// USERS
 async function loadUsers() {
   const users = await api('/api/users');
   const list = (users[currentTab] || []);
   document.getElementById('userTabTitle').textContent = currentTab.charAt(0).toUpperCase() + currentTab.slice(1);
   const extraLabel = currentTab === 'students' ? 'Class' : currentTab === 'teachers' ? 'Subject' : '—';
+  
   document.getElementById('userTableWrap').innerHTML = list.length ? `
-    <table><thead><tr><th>ID</th><th>Name</th><th>${extraLabel}</th><th>Password</th><th></th></tr></thead>
-    <tbody>${list.map(u => `<tr>
-      <td><span style="font-family:monospace;font-size:12px">${u.id}</span></td>
-      <td><strong>${u.name}</strong></td>
-      <td><span class="pill gray">${u.class||u.subject||'—'}</span></td>
-      <td style="color:var(--muted);font-size:12px">${u.password ? '&#9679;&#9679;&#9679;&#9679;&#9679;' : 'None'}</td>
-      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;">
-        <div class="pwd-reset-form">
-          <input type="password" placeholder="New password" id="pwd_${u.id}" style="width:120px;padding:5px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:11px;font-family:inherit;outline:none;">
-          <button class="btn accent sm" onclick="resetPassword('${currentTab.slice(0,-1)}','${u.id}')">Reset Pwd</button>
-        </div>
-        <button class="btn danger sm" onclick="deleteUser('${u.id}','${u.name}')">Remove</button>
-      </td>
-    </tr>`).join('')}</tbody></table>` : `<div class="empty">No ${currentTab} yet</div>`;
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>${extraLabel}</th><th>Password</th><th>Actions</th></tr></thead>
+      <tbody>${list.map(u => `<tr>
+        <td><code>${u.id}</code></td>
+        <td><strong>${u.name}</strong></td>
+        <td><span class="pill">${u.class||u.subject||'—'}</span></td>
+        <td>${u.password ? '●●●●●●' : 'None'}</td>
+        <td style="white-space:nowrap;">
+          <div class="pwd-reset-form">
+            <input type="password" placeholder="New" id="pwd_${u.id}">
+            <button class="btn accent sm" onclick="resetPassword('${currentTab.slice(0,-1)}','${u.id}')">
+              <i class="fa fa-key"></i>
+            </button>
+          </div>
+          <button class="btn danger sm" onclick="deleteUser('${u.id}','${u.name}')">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>` : `<div class="empty"><i class="fa fa-users"></i>No ${currentTab} yet</div>`;
 }
+
 function switchTab(tab, btn) {
   currentTab = tab;
+  localStorage.setItem('adminCurrentTab', tab);
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   loadUsers();
 }
+
 async function addUser() {
   const id = document.getElementById('newId').value.trim();
   const name = document.getElementById('newName').value.trim();
   const extra = document.getElementById('newExtra').value.trim();
   const pass = document.getElementById('newPass').value;
+  
   if (!id || !name) { toast('ID and Name required', 'err'); return; }
+  
   const role = currentTab.slice(0, -1);
   const body = { id, name, password: pass, role, createdBy: 'admin' };
   if (role === 'student') body.class = extra;
   if (role === 'teacher') body.subject = extra;
+  
   const res = await api('/api/users', { method: 'POST', body: JSON.stringify(body) });
   if (res.ok) {
     toast('User added', 'ok');
@@ -605,6 +1814,7 @@ async function addUser() {
     loadUsers();
   } else toast(res.error || 'Error adding user', 'err');
 }
+
 async function resetPassword(role, id) {
   const input = document.getElementById('pwd_' + id);
   const newPwd = input?.value || '';
@@ -615,174 +1825,152 @@ async function resetPassword(role, id) {
   if (res.ok) { toast('Password reset', 'ok'); if (input) input.value = ''; }
   else toast('Reset failed', 'err');
 }
+
 function deleteUser(id, name) {
-  openModal('Remove User', `Remove account "${name}" (${id})? This cannot be undone.`, 'Remove', async () => {
+  openModal('Remove User', `Remove account "${name}" (${id})?`, 'Remove', async () => {
     const role = currentTab.slice(0, -1);
     await fetch(`/api/users/${role}/${id}`, { method: 'DELETE' });
     toast('User removed'); loadUsers();
   }, 'danger');
 }
 
-// ── RESULTS ───────────────────────────────────────────────────────────────────
+// RESULTS
 async function loadResults() {
+  showLoader('Loading results…');
+  
   const results = await api('/api/results');
-  const rArr = Array.isArray(results) ? results : [];
-  document.getElementById('resultsTableWrap').innerHTML = rArr.length ? `
-    <table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Exam</th><th>Subject</th><th>Score</th><th>%</th><th>Violations</th><th>Submitted</th><th></th></tr></thead>
-    <tbody>${rArr.map(r => `<tr>
-      <td><strong>${r.student}</strong></td>
-      <td style="font-size:11px;color:var(--muted)">${r.studentId||'—'}</td>
-      <td><span class="pill gray">${r.studentClass||'—'}</span></td>
-      <td>${r.exam}</td>
-      <td style="font-size:11px;color:var(--muted)">${r.subject||'—'}</td>
-      <td>${r.score}/${r.total}</td>
-      <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
-      <td><span class="pill ${(r.tabViolations||0)>0?'yellow':'gray'}">${r.tabViolations||0}</span></td>
-      <td style="font-size:11px;color:var(--muted)">${fmtDateTime(r.submittedAt)}</td>
-      <td style="white-space:nowrap">
-        <button class="btn outline sm" title="Download" onclick="window.location='/api/results/csv/${r.id}'" style="margin-right:3px">&#8595;</button>
-        <button class="btn danger sm" onclick="deleteResult(${r.id})">&#10005;</button>
-      </td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No submissions yet</div>';
+  allResults = Array.isArray(results) ? results : [];
+  
+  // Get unique subjects
+  allSubjects = [...new Set(allResults.map(r => r.subject).filter(Boolean))].sort();
+  
+  const subjectSelect = document.getElementById('filterSubject');
+  subjectSelect.innerHTML = '<option value="">All Subjects</option>' + 
+    allSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
+  
+  // Restore filters
+  const savedClass = localStorage.getItem('adminResultsFilterClass') || '';
+  const savedSubject = localStorage.getItem('adminResultsFilterSubject') || '';
+  
+  document.getElementById('filterClass').value = savedClass;
+  document.getElementById('filterSubject').value = savedSubject;
+  
+  filterResults();
+  hideLoader();
 }
+
+function filterResults() {
+  const classFilter = document.getElementById('filterClass').value;
+  const subjectFilter = document.getElementById('filterSubject').value;
+  
+  localStorage.setItem('adminResultsFilterClass', classFilter);
+  localStorage.setItem('adminResultsFilterSubject', subjectFilter);
+  
+  filteredResults = allResults.filter(r => {
+    if (classFilter && r.studentClass !== classFilter) return false;
+    if (subjectFilter && r.subject !== subjectFilter) return false;
+    return true;
+  });
+  
+  renderResultsTable(filteredResults);
+}
+
+function renderResultsTable(results) {
+  document.getElementById('resultsTableWrap').innerHTML = results.length ? `
+    <table>
+      <thead><tr>
+        <th>Student</th>
+        <th>ID</th>
+        <th>Class</th>
+        <th>Exam</th>
+        <th>Subject</th>
+        <th>Score</th>
+        <th>%</th>
+        <th>Violations</th>
+        <th>Submitted</th>
+        <th>Actions</th>
+      </tr></thead>
+      <tbody>${results.map(r => `<tr>
+        <td><strong>${r.student}</strong></td>
+        <td><code>${r.studentId||'—'}</code></td>
+        <td><span class="pill">${r.studentClass||'—'}</span></td>
+        <td>${r.exam}</td>
+        <td>${r.subject||'—'}</td>
+        <td>${r.score}/${r.total}</td>
+        <td><span class="pill ${r.percentage>=70?'green':r.percentage>=50?'blue':'red'}">${r.percentage}%</span></td>
+        <td><span class="pill ${(r.tabViolations||0)>0?'yellow':''}">${r.tabViolations||0}</span></td>
+        <td>${fmtDateTime(r.submittedAt)}</td>
+        <td><button class="btn danger sm" onclick="deleteResult(${r.id})"><i class="fa fa-trash"></i></button></td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="empty"><i class="fa fa-inbox"></i>No submissions match your filters</div>';
+}
+
 async function deleteResult(id) {
-  await fetch('/api/result/' + id, { method: 'DELETE' });
-  toast('Result deleted'); loadResults();
+  if (confirm('Delete this result?')) {
+    await fetch('/api/result/' + id, { method: 'DELETE' });
+    toast('Result deleted'); loadResults();
+  }
 }
+
 function clearAllResults() {
-  openModal('Clear All Results', 'This will permanently delete ALL student results. Cannot be undone.', 'Clear All', async () => {
+  openModal('Clear All Results', 'This will permanently delete ALL student results.', 'Clear All', async () => {
     await fetch('/api/results', { method: 'DELETE' });
     toast('All results cleared'); loadResults();
   }, 'danger');
 }
 
-// ── ACTIVITY ─────────────────────────────────────────────────────────────────
-async function loadActivity() {
-  const acts = await api('/api/activity');
-  const aArr = Array.isArray(acts) ? acts.slice(0, 100) : [];
-  const actMap = { LOGIN:'🔑',SUBMIT:'✅',TAB_VIOLATION:'⚠️',RESET:'↺',LOGIN_FAIL:'🚫' };
-  document.getElementById('activityFeed').innerHTML = aArr.length ? aArr.map(a => `
-    <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--surface);align-items:flex-start;">
-      <div style="font-size:11px;color:var(--muted);white-space:nowrap;min-width:140px;padding-top:2px">${fmtDateTime(a.time)}</div>
-      <span class="log-action la-${a.action}">${actMap[a.action]||'◈'} ${a.action}</span>
-      <div style="flex:1;font-size:12px;color:var(--muted)">${a.studentName||''} — ${a.detail||''}</div>
-    </div>`).join('') : '<div class="empty">No activity recorded</div>';
-}
-
-// ── AUDIT TRAIL ───────────────────────────────────────────────────────────────
+// AUDIT
 async function loadAudit() {
   const audit = await api('/api/audit');
   const aArr = Array.isArray(audit) ? audit : [];
   document.getElementById('auditFeed').innerHTML = aArr.length ? aArr.map(a => `
     <div class="audit-item">
       <div class="audit-time">${fmtDateTime(a.time)}</div>
-      <div class="audit-actor">${a.actor||'system'}</div>
-      <span class="audit-action aa-${(a.action||'').replace(/[^A-Z_]/g,'')}">${a.action}</span>
+      <span class="audit-actor">${a.actor||'system'}</span>
+      <span class="audit-action">${a.action}</span>
       <div class="audit-detail">${a.detail||''}</div>
-    </div>`).join('') : '<div class="empty">No audit events yet</div>';
+    </div>`).join('') : '<div class="empty"><i class="fa fa-clipboard"></i>No audit events yet</div>';
 }
 
-// ── STUDENT LIST ─────────────────────────────────────────────────────────────
+// STUDENT LIST
 async function loadStudentList() {
   const students = await api('/api/student-list');
   const sArr = Array.isArray(students) ? students : [];
+  
   document.getElementById('adminStudentListWrap').innerHTML = sArr.length ? `
-    <table><thead><tr><th>Student ID</th><th>Student Name</th><th>Class</th><th>Password</th></tr></thead>
-    <tbody>${sArr.map(s => `<tr>
-      <td style="font-family:monospace;font-size:12px"><strong>${s.studentId}</strong></td>
-      <td>${s.studentName}</td>
-      <td><span class="pill gray">${s.class||'—'}</span></td>
-      <td><span class="pill ${s.passwordSet?'blue':'gray'}">${s.passwordSet?'Set':'None'}</span></td>
-    </tr>`).join('')}</tbody></table>` : '<div class="empty">No students found</div>';
+    <table>
+      <thead><tr><th>Student ID</th><th>Student Name</th><th>Class</th><th>Password</th></tr></thead>
+      <tbody>${sArr.map(s => `<tr>
+        <td><code>${s.studentId}</code></td>
+        <td><strong>${s.studentName}</strong></td>
+        <td><span class="pill">${s.class||'—'}</span></td>
+        <td><span class="pill ${s.passwordSet?'green':''}">${s.passwordSet?'Set':'None'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="empty"><i class="fa fa-users"></i>No students found</div>';
 }
 
-// ── CHARTS (inline canvas, no CDN) ───────────────────────────────────────────
-async function loadAdminCharts() {
-  const results = await api('/api/results');
-  const rArr = Array.isArray(results) ? results : [];
-  if (!rArr.length) {
-    document.getElementById('adminChartsGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">No results data yet to chart.</div>';
-    return;
-  }
-  setTimeout(() => {
-    const buckets = [0,0,0,0];
-    rArr.forEach(r=>{const p=r.percentage||0;if(p<50)buckets[0]++;else if(p<70)buckets[1]++;else if(p<90)buckets[2]++;else buckets[3]++;});
-    adminDrawChart('aScoreChart',{labels:['0-49%','50-69%','70-89%','90-100%'],data:buckets,colors:['#EF4444','#F59E0B','#6366F1','#22C55E'],title:'Score Distribution'});
-    const em={};
-    rArr.forEach(r=>{if(!em[r.exam])em[r.exam]=[];em[r.exam].push(r.percentage||0);});
-    const eL=Object.keys(em),eD=eL.map(e=>Math.round(em[e].reduce((a,b)=>a+b,0)/em[e].length));
-    adminDrawChart('aExamChart',{labels:eL,data:eD,colors:eL.map(()=>'#6366F1'),title:'Average % by Exam'});
-    const days={};
-    for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days[d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})]=0;}
-    rArr.forEach(r=>{if(!r.submittedAt)return;const k=new Date(r.submittedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});if(days[k]!==undefined)days[k]++;});
-    adminDrawChart('aTimelineChart',{labels:Object.keys(days),data:Object.values(days),colors:['#6366F1'],title:'Submissions (7 days)',type:'line'});
-    const vB={'0':0,'1':0,'2':0,'3+':0};
-    rArr.forEach(r=>{const v=r.tabViolations||0;if(v===0)vB['0']++;else if(v===1)vB['1']++;else if(v===2)vB['2']++;else vB['3+']++;});
-    adminDrawChart('aViolChart',{labels:['0 violations','1','2','3+'],data:Object.values(vB),colors:['#22C55E','#F59E0B','#EF4444','#7C3AED'],title:'Tab Violations'});
-  }, 100);
-}
-
-function adminDrawChart(canvasId, { labels, data, colors, title, type='bar' }) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  const W = canvas.parentElement.offsetWidth || 300;
-  const H = 185;
-  canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext('2d');
-  const pad = { top:26, right:14, bottom:44, left:34 };
-  const cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
-  const max = Math.max(...data, 1);
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#334155'; ctx.font='bold 11px system-ui'; ctx.textAlign='center';
-  ctx.fillText(title, W/2, 15);
-  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1;
-  for(let i=0;i<=4;i++){
-    const y=pad.top+cH-(i/4)*cH;
-    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
-    ctx.fillStyle='#94A3B8'; ctx.textAlign='right'; ctx.font='9px system-ui';
-    ctx.fillText(Math.round((i/4)*max),pad.left-3,y+3);
-  }
-  const bW=cW/labels.length;
-  if(type==='bar'){
-    labels.forEach((lbl,i)=>{
-      const bH=(data[i]/max)*cH,x=pad.left+i*bW+bW*0.12,y=pad.top+cH-bH;
-      ctx.fillStyle=Array.isArray(colors)?colors[i%colors.length]:colors;
-      ctx.beginPath();
-      if(ctx.roundRect)ctx.roundRect(x,y,bW*0.76,bH,3);else ctx.rect(x,y,bW*0.76,bH);
-      ctx.fill();
-      ctx.fillStyle='#64748B'; ctx.textAlign='center'; ctx.font='9px system-ui';
-      ctx.fillText(lbl.length>7?lbl.slice(0,6)+'…':lbl,pad.left+i*bW+bW/2,pad.top+cH+13);
-      if(data[i]>0){ctx.fillStyle='#0F172A';ctx.font='bold 10px system-ui';ctx.fillText(data[i],pad.left+i*bW+bW/2,y-4);}
-    });
-  } else {
-    ctx.beginPath(); ctx.strokeStyle=colors[0]||'#6366F1'; ctx.lineWidth=2;
-    labels.forEach((_,i)=>{const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.stroke();
-    labels.forEach((lbl,i)=>{
-      const x=pad.left+i*bW+bW/2,y=pad.top+cH-(data[i]/max)*cH;
-      ctx.fillStyle=colors[0]||'#6366F1';ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#64748B';ctx.textAlign='center';ctx.font='9px system-ui';ctx.fillText(lbl,x,pad.top+cH+13);
-    });
-  }
-}
-
-// ── NAV ───────────────────────────────────────────────────────────────────────
-function goPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (btn) btn.classList.add('active');
-  const loaders = {
-    dashboard: loadDashboard, logs: loadLogs, system: loadSystemInfo,
-    users: loadUsers, results: loadResults, activity: loadActivity,
-    audit: loadAudit, students: loadStudentList, charts: loadAdminCharts
-  };
-  loaders[name]?.();
-}
-
-// ── BOOT ─────────────────────────────────────────────────────────────────────
+// BOOT
 document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
 document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// Prevent flash of login page
+document.getElementById('app').style.display = 'none';
+document.getElementById('loginScreen').style.display = 'none';
+
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  
+  if (!hasSession) {
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+});
+
+// Handle page reload - stay on same page
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('adminCurrentPage', currentPage);
+});
 </script>
 </body>
 </html>
