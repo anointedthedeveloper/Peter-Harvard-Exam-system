@@ -1,0 +1,34 @@
+{
+  "7a140e765d8f828896648ef7aba2c8880cea92a8894183c2b85f43651b2669a2": {
+    "id": "teacher1",
+    "name": "Teacher One",
+    "role": "teacher",
+    "subject": "",
+    "class": "",
+    "lastAccessed": 1773391534475
+  },
+  "77fbbda83cb6c3f967aed4504c9f8dd3d50e4d87e2e7a4b93afbcd3f9815a7d3": {
+    "id": "PHIS/PP/687",
+    "name": "UBAH FRANCIS",
+    "role": "student",
+    "subject": "",
+    "class": "SS 3",
+    "lastAccessed": 1773391916190
+  },
+  "94c3a4ce0f13fcb75750a7c884064e8c925bc14ef45dc07742072b46b0466270": {
+    "id": "teacher1",
+    "name": "Teacher One",
+    "role": "teacher",
+    "subject": "",
+    "class": "",
+    "lastAccessed": 1773392067415
+  },
+  "f1857c3a0635c6d5fc2fc757bb962e170e6b2c7b75d757b77e79d1584826e594": {
+    "id": "PHIS/PP/687",
+    "name": "UBAH FRANCIS",
+    "role": "student",
+    "subject": "",
+    "class": "SS 3",
+    "lastAccessed": 1773392307239
+  }
+}

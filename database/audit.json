@@ -1,5 +1,326 @@
 [
   {
+    "id": 1773392307242.1726,
+    "time": "2026-03-13T08:58:27.242Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/687",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392289758.2983,
+    "time": "2026-03-13T08:58:09.758Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/1231",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.1.10"
+    }
+  },
+  {
+    "id": 1773392067419.7793,
+    "time": "2026-03-13T08:54:27.419Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773391916193.4065,
+    "time": "2026-03-13T08:51:56.193Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/687",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773391868868.704,
+    "time": "2026-03-13T08:51:08.868Z",
+    "action": "EXAM_UPLOAD",
+    "actor": "teacher",
+    "detail": "Uploaded exam: Mathematics",
+    "metadata": {
+      "filename": "deepseek_json_20260312_0d07d1.json",
+      "subject": "Civic Education",
+      "class": "SS3",
+      "questions": 5
+    }
+  },
+  {
+    "id": 1773391534479.126,
+    "time": "2026-03-13T08:45:34.479Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773391208426.4678,
+    "time": "2026-03-13T08:40:08.426Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/1235",
+    "detail": "student \"SAMUEL BLOSSOM CHUKWUEMEKA\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773390142076.9023,
+    "time": "2026-03-13T08:22:22.076Z",
+    "action": "LOGIN",
+    "actor": "PHIS/PP/687",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773390134668.4666,
+    "time": "2026-03-13T08:22:14.668Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/067",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773390133674.7788,
+    "time": "2026-03-13T08:22:13.674Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/067",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773390111072.451,
+    "time": "2026-03-13T08:21:51.072Z",
+    "action": "LOGIN_FAIL",
+    "actor": "student2",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389904744.5938,
+    "time": "2026-03-13T08:18:24.744Z",
+    "action": "LOGIN",
+    "actor": "student2",
+    "detail": "student \"ABDULWAHAB RAHAMA OYIZA\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389898143.8003,
+    "time": "2026-03-13T08:18:18.143Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389871027.4348,
+    "time": "2026-03-13T08:17:51.027Z",
+    "action": "LOGIN",
+    "actor": "student77",
+    "detail": "student \"UBAH FRANCIS\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389419386.3494,
+    "time": "2026-03-13T08:10:19.386Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/057",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389418792.9575,
+    "time": "2026-03-13T08:10:18.792Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/057",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389417583.6072,
+    "time": "2026-03-13T08:10:17.583Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/057",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389405621.1038,
+    "time": "2026-03-13T08:10:05.621Z",
+    "action": "LOGIN_FAIL",
+    "actor": "PHIS/PP/057",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389137872.3455,
+    "time": "2026-03-13T08:05:37.872Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #2 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 2
+    }
+  },
+  {
+    "id": 1773389120049.7603,
+    "time": "2026-03-13T08:05:20.049Z",
+    "action": "TAB_VIOLATION",
+    "actor": "student1",
+    "detail": "Tab switch violation #1 during \"Mathematics\"",
+    "metadata": {
+      "exam": "Mathematics",
+      "count": 1
+    }
+  },
+  {
+    "id": 1773389054430.2366,
+    "time": "2026-03-13T08:04:14.430Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773389052003.9167,
+    "time": "2026-03-13T08:04:12.003Z",
+    "action": "LOGIN_FAIL",
+    "actor": "student1",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386915999.534,
+    "time": "2026-03-13T07:28:35.999Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386911411.732,
+    "time": "2026-03-13T07:28:31.411Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386909581.125,
+    "time": "2026-03-13T07:28:29.581Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: teacher",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386907985.608,
+    "time": "2026-03-13T07:28:27.985Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: teacher",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386769816.848,
+    "time": "2026-03-13T07:26:09.816Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386767496.0464,
+    "time": "2026-03-13T07:26:07.496Z",
+    "action": "LOGIN_FAIL",
+    "actor": "student1",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773386744265.189,
+    "time": "2026-03-13T07:25:44.265Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: teacher",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1773385871871.3015,
     "time": "2026-03-13T07:11:11.871Z",
     "action": "TAB_VIOLATION",

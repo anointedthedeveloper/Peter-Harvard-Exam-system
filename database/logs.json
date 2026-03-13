@@ -301,5 +301,101 @@
     "action": "TAB_VIOLATION",
     "detail": "Student One - #2 in Mathematics",
     "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T07:26:09.811Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T07:28:31.409Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-03-13T07:28:35.998Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T08:04:14.428Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T08:05:20.046Z",
+    "action": "TAB_VIOLATION",
+    "detail": "Student One - #1 in Mathematics",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T08:05:37.838Z",
+    "action": "TAB_VIOLATION",
+    "detail": "Student One - #2 in Mathematics",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T08:17:51.025Z",
+    "action": "LOGIN",
+    "detail": "student: student77 (UBAH FRANCIS)",
+    "actor": "student77"
+  },
+  {
+    "time": "2026-03-13T08:18:18.142Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T08:18:24.743Z",
+    "action": "LOGIN",
+    "detail": "student: student2 (ABDULWAHAB RAHAMA OYIZA)",
+    "actor": "student2"
+  },
+  {
+    "time": "2026-03-13T08:22:22.075Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
+    "actor": "PHIS/PP/687"
+  },
+  {
+    "time": "2026-03-13T08:40:08.423Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/1235 (SAMUEL BLOSSOM CHUKWUEMEKA)",
+    "actor": "PHIS/PP/1235"
+  },
+  {
+    "time": "2026-03-13T08:45:34.477Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T08:51:08.866Z",
+    "action": "UPLOAD",
+    "detail": "Exam: deepseek_json_20260312_0d07d1.json | Subject: Civic Education | Class: SS3",
+    "actor": "system"
+  },
+  {
+    "time": "2026-03-13T08:51:56.191Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
+    "actor": "PHIS/PP/687"
+  },
+  {
+    "time": "2026-03-13T08:54:27.417Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
+  },
+  {
+    "time": "2026-03-13T08:58:27.240Z",
+    "action": "LOGIN",
+    "detail": "student: PHIS/PP/687 (UBAH FRANCIS)",
+    "actor": "PHIS/PP/687"
   }
 ]

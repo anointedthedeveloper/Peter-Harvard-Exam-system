@@ -11,6 +11,462 @@
       "id": "student1",
       "password": "",
       "name": "Student One"
+    },
+    {
+      "id": "PHIS/PP/1213",
+      "password": "",
+      "name": "ABDULWAHAB RAHAMA OYIZA",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/945",
+      "password": "",
+      "name": "ADEYINKA JESUSEFUNMI",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/946",
+      "password": "",
+      "name": "AGBALOKWU IKECHI",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/729",
+      "password": "",
+      "name": "AHMAD IBRAHIM MUHAMMAD",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/716",
+      "password": "",
+      "name": "ARCHIBONG HENRY",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1200",
+      "password": "",
+      "name": "ARO-LAMBO IBRAHIM KOLAWOLE",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/965",
+      "password": "",
+      "name": "BOMBUM ABANG DAVID",
+      "class": "SS 1"
+    },
+    {
+      "id": "Phis/pp/472",
+      "password": "",
+      "name": "CHIJIOKE UCHENNA DAVID",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1220",
+      "password": "",
+      "name": "CHRISTIAN DAVID",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/948",
+      "password": "",
+      "name": "IBHAWA EMMANUELLA",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1230",
+      "password": "",
+      "name": "IBRAHIM MOHAMMED ALKASIM",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/949",
+      "password": "",
+      "name": "IRABOR LUCIE",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1181",
+      "password": "",
+      "name": "IROENYEONWU EBUBE",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/959",
+      "password": "",
+      "name": "KELECHI AHUNANYA CHIDINMA",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/205",
+      "password": "",
+      "name": "KOLAWOLE OJO BUKOLA",
+      "class": "SS 1"
+    },
+    {
+      "id": "phis/pp/242",
+      "password": "",
+      "name": "ODIASE CHARLES OSAZE",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1003",
+      "password": "",
+      "name": "OGBOGU OSITADILIGA DOMINIC",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1018",
+      "password": "",
+      "name": "OKOROAFOR CHRISTABEL MUNACHISO",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/1005",
+      "password": "",
+      "name": "OYEWUSI AYOTUNDE FAVOUR",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/952",
+      "password": "",
+      "name": "SHEHU YAKUBU JIMETA",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/953",
+      "password": "",
+      "name": "UGWU SOMTOCHUKWU",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/728",
+      "password": "",
+      "name": "UMEGBORO PRAISE",
+      "class": "SS 1"
+    },
+    {
+      "id": "PHIS/PP/954",
+      "password": "",
+      "name": "WEALTH GREAT",
+      "class": "SS 1"
+    },
+    {
+      "id": "Phis/pp/383",
+      "password": "",
+      "name": "ABANG EMMANUELLA BOMBUM",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/353",
+      "password": "",
+      "name": "AKINLADE HAROLD OLUWASEYI",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/384",
+      "password": "",
+      "name": "AKUNNE KAYLA CHISOM",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/615",
+      "password": "",
+      "name": "ANTE NEMINE GRACE",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/684",
+      "password": "",
+      "name": "APOI FEGIRO DAVID",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1232",
+      "password": "",
+      "name": "BENSON LUCKY INALEGWO",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1097",
+      "password": "",
+      "name": "CHIBUEZE CHINEYE JUDITH",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/1098",
+      "password": "",
+      "name": "CHIBUEZE IZUCHUKWU SMART",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1146",
+      "password": "",
+      "name": "DIRISU DANIEL",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1228",
+      "password": "",
+      "name": "ENENCHE SHALOM OWOICHO",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1064",
+      "password": "",
+      "name": "EWUZIE EMMANUEL KENECHUKWU",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/725",
+      "password": "",
+      "name": "EZE CHINANZA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1053",
+      "password": "",
+      "name": "EZEKIEL OJOCHEGBE SUCCESS",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1014",
+      "password": "",
+      "name": "IBRAHIM AHUOIZA BASHEERA",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/379",
+      "password": "",
+      "name": "IBRAHIM AISHA JIBRIN",
+      "class": "SS 2"
+    },
+    {
+      "id": "phis/pp/203",
+      "password": "",
+      "name": "KOLAWOLE-OJO BISOLA RACHAEL",
+      "class": "SS 2"
+    },
+    {
+      "id": "phis/pp/097",
+      "password": "",
+      "name": "NNAEKWE MUNACHI GIFT",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1159",
+      "password": "",
+      "name": "OBASANYA EZEKIEL ADEFOLARIN",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1055",
+      "password": "",
+      "name": "OLADIPO ENIOLA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/805",
+      "password": "",
+      "name": "OLOMOLA JOSHUA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/0570",
+      "password": "",
+      "name": "ORISAKWE CHIDINMA MIRACLE",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/838",
+      "password": "",
+      "name": "SAFIRU A IBRAHIM EWELA",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/493",
+      "password": "",
+      "name": "SAMALI DEBORAH",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1006",
+      "password": "",
+      "name": "SULEIMON BOLUWATIFE MISTURA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1063",
+      "password": "",
+      "name": "UGWU RITA CHINAZA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/1049",
+      "password": "",
+      "name": "UGWU TREASURE EKPEREAMAKA",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/901",
+      "password": "",
+      "name": "UMAR ABDULJABAAR",
+      "class": "SS 2"
+    },
+    {
+      "id": "PHIS/PP/685",
+      "password": "",
+      "name": "UMEGBORO PEARL CHIAMAKA",
+      "class": "SS 2"
+    },
+    {
+      "id": "Phis/pp/264",
+      "password": "",
+      "name": "ABDULKAREEM UNAZE ZAINAB",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1212",
+      "password": "",
+      "name": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/686",
+      "password": "",
+      "name": "ADEYINKA JESUNIFEMI",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/638",
+      "password": "",
+      "name": "AKANDE DANIEL",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1224",
+      "password": "",
+      "name": "ALEGE FAWAZ OLAWALE",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/902",
+      "password": "",
+      "name": "ALHASSAN DAVID LOYE",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/636",
+      "password": "",
+      "name": "ANTE FRANCIS",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1038",
+      "password": "",
+      "name": "APOI RURO OBINNA",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/058",
+      "password": "",
+      "name": "ATANDA OLUWAFUNMILAYO JEMIMA",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1050",
+      "password": "",
+      "name": "BAIYE MIRACLE OZIOHU",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1030",
+      "password": "",
+      "name": "CHINEDU KAMSIRIOCHUKWU ALLWELL",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/966",
+      "password": "",
+      "name": "DAVID DARREN",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/057",
+      "password": "",
+      "name": "DOGARI PROSPER SHIKUMI",
+      "class": "SS 3"
+    },
+    {
+      "id": "Phis/pp/443",
+      "password": "",
+      "name": "EGWURUBE DIVINE OTSAPA",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/894",
+      "password": "",
+      "name": "EJILOGO PETER OCHANYI",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/915",
+      "password": "",
+      "name": "EMMANUEL CALEB",
+      "class": "SS 3"
+    },
+    {
+      "id": "phis/pp/188",
+      "password": "",
+      "name": "EMMANUEL WISDOM ATEKOJO",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1072",
+      "password": "",
+      "name": "IKENNA-ANYA DESTINY-SHARON",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/850",
+      "password": "",
+      "name": "LAMBERT EMENYONU CHIBUENYIM DAVID",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/967",
+      "password": "",
+      "name": "OGBOGU IFAKACHUKWU EMMANUEL",
+      "class": "SS 3"
+    },
+    {
+      "id": "Phis/pp/270",
+      "password": "",
+      "name": "OKHUOYA THANKGOD MIZITA JOEL",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1153",
+      "password": "",
+      "name": "OKLOBIA BISHOP AKONDU",
+      "class": "SS 3"
+    },
+    {
+      "id": "Phis/pp/399",
+      "password": "",
+      "name": "DOGARI PROSPER SHIKUMI",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/1235",
+      "password": "",
+      "name": "SAMUEL BLOSSOM CHUKWUEMEKA",
+      "class": "SS 3"
+    },
+    {
+      "id": "PHIS/PP/687",
+      "password": "",
+      "name": "UBAH FRANCIS",
+      "class": "SS 3"
     }
   ],
   "admins": [

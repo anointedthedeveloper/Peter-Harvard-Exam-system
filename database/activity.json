@@ -215,5 +215,82 @@
     "studentName": "Student One",
     "action": "TAB_VIOLATION",
     "detail": "Exam: Mathematics | Violation #2"
+  },
+  {
+    "time": "2026-03-13T07:26:09.818Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:04:14.431Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:05:20.045Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Mathematics | Violation #1"
+  },
+  {
+    "time": "2026-03-13T08:05:37.825Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Mathematics | Violation #2"
+  },
+  {
+    "time": "2026-03-13T08:17:51.029Z",
+    "studentId": "student77",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:18:18.145Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:18:24.748Z",
+    "studentId": "student2",
+    "studentName": "ABDULWAHAB RAHAMA OYIZA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:22:22.077Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:40:08.429Z",
+    "studentId": "PHIS/PP/1235",
+    "studentName": "SAMUEL BLOSSOM CHUKWUEMEKA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:51:56.195Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T08:58:27.243Z",
+    "studentId": "PHIS/PP/687",
+    "studentName": "UBAH FRANCIS",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   }
 ]

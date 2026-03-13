@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exam Portal – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
 <style>
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -129,6 +130,19 @@ body {
   background: var(--surface); border: 1px solid var(--border);
   padding: 6px 14px; border-radius: 20px;
   font-size: 13px; font-weight: 500; color: var(--text);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.class-badge {
+  background: var(--accent);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
 }
 .btn-ghost {
   background: none; border: 1px solid var(--border); border-radius: 7px;
@@ -155,7 +169,7 @@ body {
 }
 .exam-info { flex: 1; }
 .exam-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.exam-meta { display: flex; gap: 16px; font-size: 12px; color: var(--muted); font-weight: 500; }
+.exam-meta { display: flex; gap: 16px; font-size: 12px; color: var(--muted); font-weight: 500; flex-wrap: wrap; }
 .exam-meta span::before { margin-right: 4px; }
 .btn-start {
   background: var(--accent); color: white; border: none;
@@ -482,7 +496,7 @@ body {
     <div class="login-error" id="loginErr">Invalid ID or password. Please try again.</div>
     <div class="field">
       <label>Student ID</label>
-      <input type="text" id="inId" placeholder="e.g. student1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <input type="text" id="inId" placeholder="e.g. PHIS/PP/1213" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div class="field">
       <label>Password <span style="font-weight:400;color:var(--muted)">(leave blank if none)</span></label>
@@ -507,6 +521,7 @@ body {
     <div class="topbar-right">
       <div class="net-indicator" id="netIndicator"><div class="net-dot offline" id="netDot"></div><span id="netLabel">Checking…</span></div>
       <div class="student-chip" id="studentChip">Student</div>
+      <span class="class-badge" id="studentClassBadge">SS 1</span>
       <button class="btn-ghost" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
@@ -701,12 +716,13 @@ document.addEventListener('keydown', e => {
 // STATE
 // ══════════════════════════════════
 const S = {
-  studentId: null, studentName: null,
+  studentId: null, studentName: null, studentClass: null,
   examFile: null, examName: null,
   questions: [], answers: {}, marked: new Set(),
   current: 0, timeLeft: 0, timer: null,
   tabViolations: 0, submitted: false,
-  sessionInterval: null, netInterval: null
+  sessionInterval: null, netInterval: null,
+  sessionToken: localStorage.getItem('examSessionToken') || null
 };
 
 // ══════════════════════════════════
@@ -716,6 +732,47 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   const el = document.getElementById(id);
   el.style.display = 'flex';
+}
+
+// ══════════════════════════════════
+// SESSION MANAGEMENT
+// ══════════════════════════════════
+async function checkSession() {
+  if (!S.sessionToken) return false;
+  
+  try {
+    const res = await fetch('/api/check-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: S.sessionToken })
+    });
+    const data = await res.json();
+    
+    if (data.ok) {
+      S.studentId = data.id;
+      S.studentName = data.name;
+      S.studentClass = data.class;
+      S.role = data.role;
+      
+      document.getElementById('studentChip').textContent = S.studentName;
+      document.getElementById('studentClassBadge').textContent = S.studentClass || 'SS 1';
+      document.getElementById('etStudent').textContent = S.studentName;
+      document.getElementById('subStudentName').textContent = S.studentName;
+      
+      showScreen('s-select');
+      updateNetIndicator();
+      S.netInterval = setInterval(updateNetIndicator, 15000);
+      loadExams();
+      return true;
+    }
+  } catch (e) {
+    console.log('Session check failed');
+  }
+  
+  // Clear invalid token
+  localStorage.removeItem('examSessionToken');
+  S.sessionToken = null;
+  return false;
 }
 
 // ══════════════════════════════════
@@ -748,13 +805,30 @@ async function doLogin() {
   const id = document.getElementById('inId').value.trim();
   const pass = document.getElementById('inPass').value;
   if (!id) return;
+  
+  showLoader('Signing in…');
+  
   try {
-    const res = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, password: pass, role: 'student' }) }).then(r => r.json());
+    const res = await fetch('/api/login', { 
+      method:'POST', 
+      headers:{'Content-Type':'application/json'}, 
+      body: JSON.stringify({ id, password: pass, role: 'student' }) 
+    }).then(r => r.json());
+    
+    hideLoader();
+    
     if (res.ok) {
-      S.studentId = id;
-      S.studentName = res.name || id;
+      S.sessionToken = res.token;
+      localStorage.setItem('examSessionToken', res.token);
+      
+      S.studentId = res.id;
+      S.studentName = res.name;
+      S.studentClass = res.class;
+      
       document.getElementById('studentChip').textContent = S.studentName;
+      document.getElementById('studentClassBadge').textContent = S.studentClass || 'SS 1';
       document.getElementById('loginErr').style.display = 'none';
+      
       showScreen('s-select');
       updateNetIndicator();
       S.netInterval = setInterval(updateNetIndicator, 15000);
@@ -762,15 +836,39 @@ async function doLogin() {
     } else {
       document.getElementById('loginErr').style.display = 'block';
     }
-  } catch { document.getElementById('loginErr').textContent = 'Cannot connect to server.'; document.getElementById('loginErr').style.display = 'block'; }
+  } catch { 
+    hideLoader();
+    document.getElementById('loginErr').textContent = 'Cannot connect to server.'; 
+    document.getElementById('loginErr').style.display = 'block'; 
+  }
 }
 
-function doLogout() {
-  clearInterval(S.timer); clearInterval(S.sessionInterval); clearInterval(S.netInterval);
-  S.submitted = false; S.tabViolations = 0;
+async function doLogout() {
+  if (S.sessionToken) {
+    await fetch('/api/logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: S.sessionToken })
+    }).catch(() => {});
+  }
+  
+  localStorage.removeItem('examSessionToken');
+  clearInterval(S.timer); 
+  clearInterval(S.sessionInterval); 
+  clearInterval(S.netInterval);
+  S.submitted = false; 
+  S.tabViolations = 0;
   document.removeEventListener('visibilitychange', onVisibilityChange);
   document.exitFullscreen?.();
-  Object.assign(S, { studentId:null, studentName:null, examFile:null, examName:null, questions:[], answers:{}, marked:new Set(), current:0, timeLeft:0, timer:null, sessionInterval:null });
+  
+  Object.assign(S, { 
+    studentId:null, studentName:null, studentClass: null,
+    examFile:null, examName:null, 
+    questions:[], answers:{}, marked:new Set(), 
+    current:0, timeLeft:0, timer:null, 
+    sessionInterval:null, sessionToken: null
+  });
+  
   showScreen('s-login');
   document.getElementById('inId').value = '';
   document.getElementById('inPass').value = '';
@@ -786,18 +884,22 @@ function showLoader(text) {
 function hideLoader() { document.getElementById('loaderOverlay').style.display = 'none'; }
 
 // ══════════════════════════════════
-// EXAM SELECT
+// EXAM SELECT - Filtered by class
 // ══════════════════════════════════
 async function loadExams() {
   document.getElementById('examList').innerHTML = '<div class="loading-state">Loading…</div>';
   try {
-    const exams = await fetch('/api/exams').then(r => r.json());
+    const url = S.studentClass ? `/api/exams?class=${encodeURIComponent(S.studentClass)}` : '/api/exams';
+    const exams = await fetch(url).then(r => r.json());
+    
     // Only show active exams
     const activeExams = exams.filter(e => e.active !== false);
+    
     if (!activeExams.length) {
-      document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">📭</div>No exams available yet.<br>Please check with your teacher.</div>`;
+      document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">📭</div>No exams available for your class (${S.studentClass || 'SS 1'}).<br>Please check with your teacher.</div>`;
       return;
     }
+    
     document.getElementById('examList').innerHTML = activeExams.map(e => `
       <div class="exam-card">
         <div class="exam-icon">📝</div>
@@ -807,12 +909,13 @@ async function loadExams() {
             <span>&#9203; ${e.duration} minutes</span>
             <span>&#10067; ${e.questionCount} questions</span>
             ${e.subject ? `<span>&#128218; ${e.subject}</span>` : ''}
-            ${e.class ? `<span>&#127979; ${e.class}</span>` : ''}
+            ${e.class ? `<span>&#127979; ${e.class}</span>` : '<span>&#127979; All Classes</span>'}
           </div>
         </div>
         <button class="btn-start" onclick="openRules('${e.filename}', '${e.name.replace(/'/g,"\\'")}', ${e.questionCount}, ${e.duration})">Start &rarr;</button>
       </div>`).join('');
-    document.getElementById('selectSub').textContent = `${activeExams.length} exam${activeExams.length>1?'s':''} available`;
+    
+    document.getElementById('selectSub').textContent = `${activeExams.length} exam${activeExams.length>1?'s':''} available for your class`;
   } catch {
     document.getElementById('examList').innerHTML = `<div class="empty-exams"><div class="e-icon">&#9888;</div>Could not load exams. Check server connection.</div>`;
   }
@@ -844,6 +947,13 @@ async function beginExam() {
     hideLoader();
     if (data.error) { alert(data.error || 'Exam unavailable.'); return; }
     if (!data || !data.questions || !data.questions.length) { alert('Could not load exam questions. Try again.'); return; }
+
+    // Verify class access again
+    if (data.class && S.studentClass && data.class.toLowerCase() !== S.studentClass.toLowerCase()) {
+      alert('This exam is not available for your class.');
+      backToSelect();
+      return;
+    }
 
     // Shuffle questions and options
     S.questions = shuffle(data.questions).map((q, i) => ({ ...q, _idx: i, _options: shuffleOpts(q) }));
@@ -1144,11 +1254,20 @@ document.addEventListener('keydown', e => {
 });
 
 // ══════════════════════════════════
-// BOOT
+// BOOT - Check for existing session
 // ══════════════════════════════════
 document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('inPass').focus(); });
 document.getElementById('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-showScreen('s-login');
+
+// On page load, check if we have a saved session
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  if (!hasSession) {
+    showScreen('s-login');
+  }
+});
 </script>
 </body>
 </html>
