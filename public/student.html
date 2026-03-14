@@ -1828,39 +1828,48 @@ async function getAvailableExamsCount() {
   }
 }
 
-// CONTINUE AFTER SUBMIT
+// CONTINUE AFTER SUBMIT - FIXED AUTO REDIRECT
 async function continueAfterSubmit() {
   showLoader('Checking available exams…');
   const availableCount = await getAvailableExamsCount();
   hideLoader();
   
   if (availableCount > 0) {
+    // More exams available - return to select screen
     showScreen('s-select');
     loadExams();
+    toast(`${availableCount} more exam(s) available`, 'ok');
   } else {
+    // No more exams - show completion screen
     await showCompletionScreen();
   }
 }
 
 // SHOW COMPLETION SCREEN
 async function showCompletionScreen() {
-  const results = await fetch('/api/results').then(r => r.json());
-  const studentResults = Array.isArray(results) ? results.filter(r => r.studentId === S.studentId) : [];
-  const totalExams = studentResults.length;
-  const avgScore = totalExams > 0 
-    ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / totalExams)
-    : 0;
-  
-  document.getElementById('completedTotal').textContent = totalExams;
-  document.getElementById('completedAvg').textContent = avgScore + '%';
-  
-  showScreen('s-completed');
-  
-  setTimeout(() => {
-    if (document.getElementById('s-completed').style.display === 'flex') {
-      doLogout();
-    }
-  }, 10000);
+  try {
+    const results = await fetch('/api/results').then(r => r.json());
+    const studentResults = Array.isArray(results) ? results.filter(r => r.studentId === S.studentId) : [];
+    const totalExams = studentResults.length;
+    const avgScore = totalExams > 0 
+      ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / totalExams)
+      : 0;
+    
+    document.getElementById('completedTotal').textContent = totalExams;
+    document.getElementById('completedAvg').textContent = avgScore + '%';
+    
+    showScreen('s-completed');
+    
+    // Auto logout after 10 seconds on completion screen
+    setTimeout(() => {
+      if (document.getElementById('s-completed').style.display === 'flex') {
+        doLogout();
+      }
+    }, 10000);
+  } catch {
+    showScreen('s-completed');
+    setTimeout(() => doLogout(), 10000);
+  }
 }
 
 // LOAD EXAMS
@@ -2231,10 +2240,14 @@ async function doSubmit() {
   clearDraft();
   document.exitFullscreen?.().catch(() => {});
   
+  // Check available exams after submission
   const availableCount = await getAvailableExamsCount();
   if (availableCount > 0) {
+    // More exams available - show submitted screen with continue button
     showScreen('s-submitted');
+    toast(`${availableCount} more exam(s) available`, 'ok');
   } else {
+    // No more exams - go to completion screen
     await showCompletionScreen();
   }
 }

@@ -31,21 +31,21 @@
       "short_name": "Student",
       "description": "Take exams as a student",
       "url": "/student.html",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/pubic/Badgejet.ico", "sizes": "96x96" }]
     },
     {
       "name": "Teacher Dashboard",
       "short_name": "Teacher",
       "description": "Manage exams and view results",
       "url": "/teacher.html",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/pubic/Badgejet.ico", "sizes": "96x96" }]
     },
     {
       "name": "Admin Console",
       "short_name": "Admin",
       "description": "System administration",
       "url": "/admin.html",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/pubic/Badgejet.ico", "sizes": "96x96" }]
     }
   ]
 }

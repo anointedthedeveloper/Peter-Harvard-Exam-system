@@ -5,6 +5,13 @@
       "password": "pass123",
       "name": "Teacher One"
     }
+  ], 
+   "teachers": [
+    {
+      "id": "collins",
+      "password": "pass123",
+      "name": "Mr Collins"
+    }
   ],
   "students": [
     {
