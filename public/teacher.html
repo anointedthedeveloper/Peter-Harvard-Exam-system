@@ -2299,7 +2299,7 @@ function startMonitorRefresh() {
     api('/api/sessions').then(s => { 
       document.getElementById('activeBadge').textContent = Array.isArray(s) ? s.length : 0; 
     });
-  }, 15000);
+  }, 5000);
 }
 
 async function resetStudent(studentId, studentName, exam, examFilename) {

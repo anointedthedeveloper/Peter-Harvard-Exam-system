@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -885,11 +886,17 @@ const server = http.createServer(async (req, res) => {
         const examFilename = decodeURIComponent(parts[1]);
         
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const hasTaken = results.some(r => 
             r.studentId === studentId && r.examFilename === examFilename
         );
         
-        send(req, res, 200, { hasTaken });
+        // Check if student was reset for this exam or all exams
+        const wasReset = resetEntry === true || resetEntry === examFilename;
+        
+        send(req, res, 200, { hasTaken: hasTaken && !wasReset });
         return;
     }
 
@@ -897,8 +904,16 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && pathname.startsWith('/api/student-taken-exams/')) {
         const studentId = decodeURIComponent(pathname.replace('/api/student-taken-exams/', ''));
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const takenExams = results
             .filter(r => r.studentId === studentId)
+            .filter(r => {
+                if (resetEntry === true) return false;
+                if (resetEntry === r.examFilename) return false;
+                return true;
+            })
             .map(r => r.examFilename);
         
         send(req, res, 200, { takenExams, count: takenExams.length });
@@ -911,8 +926,16 @@ const server = http.createServer(async (req, res) => {
         const studentClass = url.searchParams.get('class');
         
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const takenExams = results
             .filter(r => r.studentId === studentId)
+            .filter(r => {
+                if (resetEntry === true) return false;
+                if (resetEntry === r.examFilename) return false;
+                return true;
+            })
             .map(r => r.examFilename);
         
         const files = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
@@ -1585,8 +1608,55 @@ const server = http.createServer(async (req, res) => {
         send(req, res, 200, activity); return;
     }
 
+    // UPDATE STUDENT (Teacher can edit student info)
+    if (req.method === 'PUT' && pathname.startsWith('/api/users/student/')) {
+        const studentId = decodeURIComponent(pathname.replace('/api/users/student/', ''));
+        const body = await getBody(req);
+        const users = readJSON(USERS_FILE) || { teachers: [], students: [], admins: [] };
+        const idx = users.students.findIndex(s => s.id === studentId);
+        if (idx === -1) { send(req, res, 404, { error: 'Student not found' }); return; }
+        if (body.name) users.students[idx].name = body.name;
+        if (body.class !== undefined) users.students[idx].class = body.class;
+        if (body.password) users.students[idx].password = body.password;
+        writeJSON(USERS_FILE, users);
+        auditLog('teacher', 'UPDATE_STUDENT', `Updated student: ${studentId}`);
+        send(req, res, 200, { ok: true }); return;
+    }
+
     send(req, res, 404, { error: 'Unknown endpoint' });
 });
+
+// HTTPS SERVER SETUP (for LAN PWA support)
+function findCertFiles() {
+    const ip = getServerIP();
+    const certDir = path.join(__dirname, 'cert');
+    const rootDir = __dirname;
+    
+    const candidates = [
+        [path.join(certDir, `${ip}.pem`), path.join(certDir, `${ip}-key.pem`)],
+        [path.join(certDir, 'cert.pem'), path.join(certDir, 'key.pem')],
+        [path.join(rootDir, 'cert.pem'), path.join(rootDir, 'key.pem')],
+    ];
+    
+    // Also scan cert dir for mkcert-style files (IP+N.pem)
+    if (fs.existsSync(certDir)) {
+        try {
+            fs.readdirSync(certDir)
+                .filter(f => f.startsWith(ip) && f.endsWith('.pem') && !f.endsWith('-key.pem'))
+                .forEach(f => {
+                    const keyFile = f.replace('.pem', '-key.pem');
+                    candidates.unshift([path.join(certDir, f), path.join(certDir, keyFile)]);
+                });
+        } catch (_) {}
+    }
+    
+    for (const [certPath, keyPath] of candidates) {
+        if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+            return { cert: fs.readFileSync(certPath), key: fs.readFileSync(keyPath) };
+        }
+    }
+    return null;
+}
 
 server.listen(PORT, '0.0.0.0', () => {
     const ip = getServerIP();
@@ -1618,4 +1688,24 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('║  🏫 Peter Harvard International Schools                         ║');
     console.log('║  📅 2026 - All Rights Reserved                                  ║');
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
+
+    // Start HTTPS server if cert files are found
+    const certFiles = findCertFiles();
+    if (certFiles) {
+        const HTTPS_PORT = process.env.HTTPS_PORT || 3443;
+        try {
+            https.createServer(certFiles, server._events.request).listen(HTTPS_PORT, '0.0.0.0', () => {
+                console.log(`✅  HTTPS server running on https://${ip}:${HTTPS_PORT}`);
+                console.log(`✅  PWA-ready HTTPS URLs:`);
+                console.log(`    Student:  https://${ip}:${HTTPS_PORT}/student.html`);
+                console.log(`    Teacher:  https://${ip}:${HTTPS_PORT}/teacher.html\n`);
+            });
+        } catch (e) {
+            console.log(`⚠️  HTTPS server failed to start: ${e.message}`);
+        }
+    } else {
+        console.log(`ℹ️  No SSL cert found. Place cert files in ./cert/ to enable HTTPS.`);
+        console.log(`    Run: mkcert.exe ${ip} localhost 127.0.0.1`);
+        console.log(`    Then move the generated .pem files to ./cert/\n`);
+    }
 });
