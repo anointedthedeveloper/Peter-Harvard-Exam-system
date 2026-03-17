@@ -4,7 +4,7 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 const VERSION = '2.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
