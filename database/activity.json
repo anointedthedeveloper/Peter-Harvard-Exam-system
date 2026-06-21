@@ -901,5 +901,19 @@
     "studentName": "Student One",
     "action": "LOGIN",
     "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T20:49:46.234Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-03-13T20:57:25.056Z",
+    "studentId": "student1",
+    "studentName": "Student One",
+    "action": "LOGIN",
+    "detail": "Student logged in"
   }
 ]

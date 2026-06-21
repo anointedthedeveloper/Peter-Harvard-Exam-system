@@ -886,5 +886,23 @@
     "action": "DELETE_EXAM",
     "detail": "DigitalTechss1.json",
     "actor": "system"
+  },
+  {
+    "time": "2026-03-13T20:49:46.218Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T20:57:25.044Z",
+    "action": "LOGIN",
+    "detail": "student: student1 (Student One)",
+    "actor": "student1"
+  },
+  {
+    "time": "2026-03-13T21:01:10.041Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher1 (Teacher One)",
+    "actor": "teacher1"
   }
 ]

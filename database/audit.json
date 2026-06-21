@@ -1,5 +1,38 @@
 [
   {
+    "id": 1773435670053.5193,
+    "time": "2026-03-13T21:01:10.053Z",
+    "action": "LOGIN",
+    "actor": "teacher1",
+    "detail": "teacher \"Teacher One\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773435445050.5017,
+    "time": "2026-03-13T20:57:25.050Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1773434986226.3428,
+    "time": "2026-03-13T20:49:46.226Z",
+    "action": "LOGIN",
+    "actor": "student1",
+    "detail": "student \"Student One\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1773424358562.6208,
     "time": "2026-03-13T17:52:38.562Z",
     "action": "EXAM_DELETE",
