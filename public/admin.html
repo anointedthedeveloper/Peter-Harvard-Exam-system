@@ -20,12 +20,33 @@ body {
   background: #f8f8f8;
   color: #1e1e1e;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #c8c8c8; }
+
+/* Visible keyboard focus everywhere */
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
 }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 70% { box-shadow: 0 0 0 6px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+@keyframes shimmer { 0% { background-position: -300px 0; } 100% { background-position: 300px 0; } }
+@keyframes popIn { from { opacity: 0; transform: scale(0.94) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
 
 /* ══════════════════════════════════
    LOGIN SCREEN - Split Layout
@@ -62,6 +83,7 @@ body {
   z-index: 1;
   max-width: 480px;
   text-align: center;
+  animation: slideUp 0.5s ease;
 }
 .login-left h1 {
   font-size: 48px;
@@ -90,6 +112,10 @@ body {
 }
 .login-feature {
   text-align: center;
+  transition: transform 0.2s ease;
+}
+.login-feature:hover {
+  transform: translateY(-3px);
 }
 .login-feature i {
   font-size: 32px;
@@ -113,6 +139,7 @@ body {
 .login-card {
   width: 100%;
   max-width: 400px;
+  animation: slideUp 0.5s ease 0.1s both;
 }
 .login-card h2 {
   font-size: 32px;
@@ -365,7 +392,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
   color: #666;
   border: 2px solid transparent;
   background: none;
@@ -373,17 +400,21 @@ body {
   text-align: left;
   font-family: inherit;
   margin-bottom: 4px;
+  position: relative;
 }
 .nav-item i {
   width: 20px;
   color: #dc2626;
   font-size: 14px;
+  transition: transform 0.15s ease;
 }
 .nav-item:hover {
   background: #f8f8f8;
   border-color: #e0e0e0;
   color: #1e1e1e;
 }
+.nav-item:hover i { transform: scale(1.1); }
+.nav-item:active { transform: scale(0.98); }
 .nav-item.active {
   background: #1e1e1e;
   color: white;
@@ -447,20 +478,42 @@ body {
   background: white;
   border: 2px solid #f0f0f0;
   border-radius: 12px;
-  padding: 24px;
+  padding: 22px 24px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   border-left: 6px solid #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+.stat-card .sc-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 .stat-card .sc-val {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 800;
   color: #1e1e1e;
+  line-height: 1;
 }
 .stat-card .sc-lbl {
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -480,6 +533,10 @@ body {
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   margin-bottom: 24px;
+  transition: box-shadow 0.2s ease;
+}
+.card:hover {
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 .card-header {
   padding: 20px 24px;
@@ -516,11 +573,12 @@ body {
   cursor: pointer;
   font-family: inherit;
   border: none;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
+.btn:active { transform: scale(0.97); }
 .btn i {
   font-size: 12px;
 }
@@ -587,12 +645,19 @@ td {
   padding: 14px 18px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+  transition: background 0.12s ease;
 }
 tr:last-child td {
   border-bottom: none;
 }
 tr:hover td {
-  background: #f8f8f8;
+  background: #fbfbfb;
+}
+tbody tr:nth-child(even) td {
+  background: #fcfcfc;
+}
+tbody tr:nth-child(even):hover td {
+  background: #f7f7f7;
 }
 .pill {
   display: inline-flex;
@@ -715,15 +780,17 @@ tr:hover td {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding: 16px;
   border-bottom: 2px solid #f0f0f0;
-  transition: all 0.2s ease;
+  transition: background 0.15s ease;
 }
 .computer-item:hover {
   background: #f8f8f8;
 }
 .computer-info {
   flex: 1;
+  min-width: 0;
 }
 .computer-name {
   font-size: 15px;
@@ -732,6 +799,7 @@ tr:hover td {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .computer-name i {
   color: #dc2626;
@@ -754,6 +822,24 @@ tr:hover td {
 .computer-tag i {
   color: #dc2626;
   font-size: 10px;
+}
+.computer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
+  animation: pulseDot 2s infinite;
+}
+.live-dot.off {
+  background: #999;
+  animation: none;
 }
 
 /* ── LOGS ── */
@@ -890,7 +976,8 @@ tr:hover td {
   font-size: 14px;
   font-weight: 600;
   transform: translateY(80px);
-  transition: transform 0.3s ease;
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(.2,.8,.2,1), opacity 0.25s ease;
   z-index: 10001;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   display: flex;
@@ -900,7 +987,7 @@ tr:hover td {
 #toast i {
   color: #dc2626;
 }
-#toast.show { transform: translateY(0); }
+#toast.show { transform: translateY(0); opacity: 1; }
 #toast.ok { background: #1e1e1e; }
 #toast.err { background: #dc2626; }
 #toast.err i { color: white; }
@@ -917,7 +1004,7 @@ tr:hover td {
   justify-content: center;
   padding: 20px;
 }
-.modal-overlay.show { display: flex; }
+.modal-overlay.show { display: flex; animation: fadeIn 0.15s ease; }
 .modal {
   background: white;
   border: 2px solid #f0f0f0;
@@ -926,6 +1013,7 @@ tr:hover td {
   max-width: 450px;
   box-shadow: 0 16px 32px rgba(0,0,0,0.1);
   overflow: hidden;
+  animation: popIn 0.18s ease;
 }
 .modal-h {
   padding: 28px;
@@ -997,6 +1085,16 @@ tr:hover td {
   color: #dc2626;
   margin-bottom: 12px;
   display: block;
+}
+
+/* ── SKELETON LOADING ── */
+.skeleton-row {
+  height: 16px;
+  border-radius: 6px;
+  margin: 10px 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #f6f6f6 37%, #f0f0f0 63%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
 }
 
 /* ── LOADER ── */
@@ -1208,20 +1306,32 @@ tr:hover td {
         </div>
         <div class="stat-row">
           <div class="stat-card">
-            <div class="sc-val" id="dExams">0</div>
-            <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams</div>
+            <div>
+              <div class="sc-val" id="dExams">0</div>
+              <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-file-text"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="dUsers">0</div>
-            <div class="sc-lbl"><i class="fa fa-users"></i> Total Users</div>
+            <div>
+              <div class="sc-val" id="dUsers">0</div>
+              <div class="sc-lbl"><i class="fa fa-users"></i> Total Users</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-users"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="dResults">0</div>
-            <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+            <div>
+              <div class="sc-val" id="dResults">0</div>
+              <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-check-square"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="dComputers">0</div>
-            <div class="sc-lbl"><i class="fa fa-laptop"></i> Connected Computers</div>
+            <div>
+              <div class="sc-val" id="dComputers">0</div>
+              <div class="sc-lbl"><i class="fa fa-laptop"></i> Connected Computers</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-laptop"></i></div>
           </div>
         </div>
         
@@ -1323,14 +1433,42 @@ tr:hover td {
       <div class="page" id="page-computers">
         <div class="page-header">
           <h2><i class="fa fa-laptop"></i> Connected Computers</h2>
-          <p>All devices that have accessed the system</p>
+          <p>All devices that have accessed the system — force-logout a student whose session needs to end immediately</p>
+        </div>
+        <div class="stat-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
+          <div class="stat-card">
+            <div>
+              <div class="sc-val" id="cTotal">0</div>
+              <div class="sc-lbl"><i class="fa fa-laptop"></i> Total Devices</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-laptop"></i></div>
+          </div>
+          <div class="stat-card">
+            <div>
+              <div class="sc-val" id="cOnline">0</div>
+              <div class="sc-lbl"><i class="fa fa-circle"></i> Online Now</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-wifi"></i></div>
+          </div>
+          <div class="stat-card">
+            <div>
+              <div class="sc-val" id="cActiveSessions">0</div>
+              <div class="sc-lbl"><i class="fa fa-user"></i> Active Student Sessions</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-user"></i></div>
+          </div>
         </div>
         <div class="card">
           <div class="card-header">
             <h3><i class="fa fa-globe"></i> Active Connections</h3>
-            <button class="btn outline sm" onclick="loadComputers()">
-              <i class="fa fa-refresh"></i> Refresh
-            </button>
+            <div style="display:flex;gap:8px;">
+              <button class="btn outline sm" onclick="loadComputers()">
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              <button class="btn danger sm" id="logoutAllBtn" onclick="forceLogoutAllActive()">
+                <i class="fa fa-sign-out"></i> Force Logout All Active
+              </button>
+            </div>
           </div>
           <div class="table-container">
             <div id="computersList"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
@@ -1705,13 +1843,32 @@ function renderLogList(logs, targetId) {
 async function loadComputers() {
   const computers = await api('/api/computers');
   const cArr = Array.isArray(computers) ? computers : [];
-  
-  document.getElementById('computersList').innerHTML = cArr.length ? cArr.map(c => `
+
+  const isOnline = c => Date.now() - new Date(c.lastSeen).getTime() < 300000;
+  const onlineCount = cArr.filter(isOnline).length;
+  // "Active session" = a device currently online with a student attached to it
+  const activeSessions = cArr.filter(c => isOnline(c) && c.studentName).length;
+
+  document.getElementById('cTotal').textContent = cArr.length;
+  document.getElementById('cOnline').textContent = onlineCount;
+  document.getElementById('cActiveSessions').textContent = activeSessions;
+  const allBtn = document.getElementById('logoutAllBtn');
+  if (allBtn) allBtn.disabled = activeSessions === 0;
+  if (allBtn) allBtn.style.opacity = activeSessions === 0 ? '0.5' : '1';
+  if (allBtn) allBtn.style.cursor = activeSessions === 0 ? 'not-allowed' : 'pointer';
+
+  document.getElementById('computersList').innerHTML = cArr.length ? cArr.map(c => {
+    const online = isOnline(c);
+    const hasStudent = !!c.studentName;
+    return `
     <div class="computer-item">
       <div class="computer-info">
         <div class="computer-name">
           <i class="fa fa-laptop"></i> ${c.hostname || 'Unknown'}
           <span class="computer-tag"><i class="fa fa-user"></i> ${c.studentName || 'Unknown'}</span>
+          <span class="pill ${online ? 'green' : ''}">
+            <span class="live-dot ${online ? '' : 'off'}"></span>&nbsp;${online ? 'Online' : 'Offline'}
+          </span>
         </div>
         <div class="computer-detail">
           <i class="fa fa-globe"></i> IP: ${c.ip} · 
@@ -1723,12 +1880,55 @@ async function loadComputers() {
           <i class="fa fa-clock-o"></i> Last: ${fmtDateTime(c.lastSeen)}
         </div>
       </div>
-      <div>
-        <span class="pill ${Date.now() - new Date(c.lastSeen).getTime() < 300000 ? 'green' : ''}">
-          <i class="fa fa-circle"></i> ${Date.now() - new Date(c.lastSeen).getTime() < 300000 ? 'Online' : 'Offline'}
-        </span>
+      <div class="computer-actions">
+        ${online && hasStudent ? `
+          <button class="btn danger sm" onclick="forceLogoutComputer('${c.mac}','${(c.studentName||'').replace(/'/g,"\\'")}')">
+            <i class="fa fa-sign-out"></i> Force Logout
+          </button>` : `
+          <span class="pill" style="opacity:0.6"><i class="fa fa-ban"></i> No active session</span>`}
       </div>
-    </div>`).join('') : '<div class="empty"><i class="fa fa-laptop"></i>No computers recorded yet</div>';
+    </div>`;
+  }).join('') : '<div class="empty"><i class="fa fa-laptop"></i>No computers recorded yet</div>';
+}
+
+async function forceLogoutComputer(mac, studentName) {
+  openModal(
+    'Force Logout Student',
+    `End the active session for ${studentName || 'this student'} right now? They will be signed out immediately and returned to the login screen.`,
+    '<i class="fa fa-sign-out"></i> Force Logout',
+    async () => {
+      const res = await fetch(`/api/computers/${encodeURIComponent(mac)}/force-logout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(sessionToken ? { Authorization: 'Bearer ' + sessionToken } : {}) },
+        body: JSON.stringify({ actor: adminName || 'admin' })
+      }).then(r => r.json()).catch(() => ({ ok: false }));
+
+      if (res.ok) { toast(`${studentName || 'Student'} logged out`, 'ok'); }
+      else { toast(res.error || 'Force logout failed', 'err'); }
+      loadComputers();
+    },
+    'danger'
+  );
+}
+
+async function forceLogoutAllActive() {
+  openModal(
+    'Force Logout All Active Students',
+    'This will immediately end every active student session on the network. Each student will be signed out and returned to the login screen.',
+    '<i class="fa fa-sign-out"></i> Logout Everyone',
+    async () => {
+      const res = await fetch('/api/computers/force-logout-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(sessionToken ? { Authorization: 'Bearer ' + sessionToken } : {}) },
+        body: JSON.stringify({ actor: adminName || 'admin' })
+      }).then(r => r.json()).catch(() => ({ ok: false }));
+
+      if (res.ok) { toast('All active students logged out', 'ok'); }
+      else { toast(res.error || 'Bulk logout failed', 'err'); }
+      loadComputers();
+    },
+    'danger'
+  );
 }
 
 // SYSTEM INFO
