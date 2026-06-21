@@ -1321,20 +1321,32 @@ tr:hover td {
         </div>
         <div class="stat-row">
           <div class="stat-card">
-            <div class="sc-val" id="ovExams">0</div>
-            <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams Uploaded</div>
+            <div>
+              <div class="sc-val" id="ovExams">0</div>
+              <div class="sc-lbl"><i class="fa fa-file-text"></i> Exams Uploaded</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-file-text"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="ovActive">0</div>
-            <div class="sc-lbl"><i class="fa fa-user-clock"></i> Active Students</div>
+            <div>
+              <div class="sc-val" id="ovActive">0</div>
+              <div class="sc-lbl"><i class="fa fa-user-clock"></i> Active Students</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-user-clock"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="ovResults">0</div>
-            <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+            <div>
+              <div class="sc-val" id="ovResults">0</div>
+              <div class="sc-lbl"><i class="fa fa-check-square"></i> Submissions</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-check-square"></i></div>
           </div>
           <div class="stat-card">
-            <div class="sc-val" id="ovAvg">—</div>
-            <div class="sc-lbl"><i class="fa fa-percent"></i> Avg. Score</div>
+            <div>
+              <div class="sc-val" id="ovAvg">—</div>
+              <div class="sc-lbl"><i class="fa fa-percent"></i> Avg. Score</div>
+            </div>
+            <div class="sc-icon"><i class="fa fa-percent"></i></div>
           </div>
         </div>
         <div class="card">
@@ -1551,13 +1563,18 @@ question,option_1,option_2,option_3,option_4,answer
           <h2><i class="fa fa-users"></i> Monitor Students</h2>
           <p>Live session view — updates every 15 seconds</p>
         </div>
-        <div style="font-size:13px;color:#666;margin-bottom:16px;">
-          <i class="fa fa-clock-o"></i> Last updated: <span id="monLastRefresh">—</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div style="font-size:13px;color:#666;">
+            <i class="fa fa-clock-o"></i> Last updated: <span id="monLastRefresh">—</span>
+          </div>
+          <button class="btn danger sm" id="endAllBtn" onclick="endAllActiveExams()">
+            <i class="fa fa-stop-circle"></i> End All Active Exams
+          </button>
         </div>
         <div id="monitorArea">
           <div id="monActiveSection">
             <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#1e1e1e;">
-              <i class="fa fa-circle" style="color:#22c55e;"></i> Active Now
+              <span class="live-dot"></span>&nbsp; Active Now
             </div>
             <div class="monitor-grid" id="monGrid"><div class="empty"><i class="fa fa-users"></i>No active students</div></div>
           </div>
@@ -2249,6 +2266,13 @@ async function loadMonitor() {
   const sArr = Array.isArray(sessions) ? sessions : [];
   const rArr = Array.isArray(results) ? results : [];
 
+  const endAllBtn = document.getElementById('endAllBtn');
+  if (endAllBtn) {
+    endAllBtn.disabled = sArr.length === 0;
+    endAllBtn.style.opacity = sArr.length === 0 ? '0.5' : '1';
+    endAllBtn.style.cursor = sArr.length === 0 ? 'not-allowed' : 'pointer';
+  }
+
   const monGrid = document.getElementById('monGrid');
   if (sArr.length) {
     monGrid.innerHTML = sArr.map(s => {
@@ -2258,7 +2282,7 @@ async function loadMonitor() {
       const violations = s.tabViolations || 0;
       const cardClass = violations >= 3 ? 'violated' : 'active';
       return `<div class="student-mon-card ${cardClass}">
-        <div class="smc-name"><i class="fa fa-user"></i> ${s.student}</div>
+        <div class="smc-name"><i class="fa fa-user"></i> ${s.student} <span class="live-dot" style="margin-left:auto;"></span></div>
         <div class="smc-exam">${s.exam}</div>
         <div class="smc-row"><span class="smc-key">Progress</span><span class="smc-val">${s.answered || 0}/${s.total || '?'}</span></div>
         <div class="smc-progress"><div class="smc-progress-fill" style="width:${pct}%"></div></div>
@@ -2323,6 +2347,26 @@ async function endExam(studentId) {
     toast('Student exam ended', 'ok');
     loadMonitor();
   } else { toast('Failed to end exam', 'err'); }
+}
+
+function endAllActiveExams() {
+  openModal(
+    'End All Active Exams',
+    'This will immediately end every active student exam session and log each student out. They will not be able to resume.',
+    '<i class="fa fa-stop-circle"></i> End All',
+    async () => {
+      const res = await fetch('/api/end-exam-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(sessionToken ? { Authorization: 'Bearer ' + sessionToken } : {}) },
+        body: JSON.stringify({ teacherId })
+      }).then(r => r.json()).catch(() => ({ ok: false }));
+
+      if (res.ok) toast('All active exams ended', 'ok');
+      else toast(res.error || 'Failed to end all exams', 'err');
+      loadMonitor();
+    },
+    'danger'
+  );
 }
 
 // ACTIVITY
