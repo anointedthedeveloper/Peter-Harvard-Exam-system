@@ -1,5 +1,49 @@
 [
   {
+    "id": 1782083150562.2397,
+    "time": "2026-06-21T23:05:50.562Z",
+    "action": "LOGIN",
+    "actor": "607403",
+    "detail": "student \"ABANG EMMANUELLA BOMBUM\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782083013871.8633,
+    "time": "2026-06-21T23:03:33.871Z",
+    "action": "PASSWORD_RESET",
+    "actor": "admin",
+    "detail": "Reset password for teacher: Mr Collins (collins)",
+    "metadata": {
+      "role": "teacher",
+      "userId": "collins"
+    }
+  },
+  {
+    "id": 1782082883395.8916,
+    "time": "2026-06-21T23:01:23.395Z",
+    "action": "LOGIN",
+    "actor": "admin",
+    "detail": "admin \"Administrator\" logged in",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782082874255.4807,
+    "time": "2026-06-21T23:01:14.255Z",
+    "action": "LOGIN_FAIL",
+    "actor": "admin",
+    "detail": "Failed login attempt for role: admin",
+    "metadata": {
+      "role": "admin",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1782080913251.7246,
     "time": "2026-06-21T22:28:33.251Z",
     "action": "LOGIN",

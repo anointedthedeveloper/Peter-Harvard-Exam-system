@@ -1358,16 +1358,20 @@ body {
   <div class="login-right">
     <div class="login-card">
       <h2>Student Sign In</h2>
-      <div class="subtitle">Enter your Student ID to continue</div>
+      <div class="subtitle">Enter your Student ID and Password to continue</div>
       <div class="login-error" id="loginErr">
-        <i class="fa fa-exclamation-circle"></i> Invalid Student ID. Please try again.
+        <i class="fa fa-exclamation-circle"></i> Invalid Student ID or Password. Please try again.
       </div>
       <div class="field">
         <label><i class="fa fa-id-card"></i> STUDENT ID</label>
-        <input type="text" id="inId" placeholder="e.g. PHIS/PP/001" autocomplete="off">
+        <input type="text" id="inId" placeholder="e.g. 123456" autocomplete="off">
+      </div>
+      <div class="field">
+        <label><i class="fa fa-lock"></i> PASSWORD</label>
+        <input type="password" id="inPassword" placeholder="Enter your password" autocomplete="off">
       </div>
       <div class="example-id">
-        <i class="fa fa-search"></i> Example: PHIS/PP/001, PHIS/PP/2000
+        <i class="fa fa-search"></i> Example: ID: 123456, Password: 123456
       </div>
       <button class="btn-primary" onclick="doLogin()">
         <span>Sign In to Dashboard</span>
@@ -1726,8 +1730,13 @@ async function updateNetIndicator() {
 // AUTH
 async function doLogin() {
   const id = document.getElementById('inId').value.trim();
+  const password = document.getElementById('inPassword').value.trim();
   if (!id) {
     toast('Please enter your Student ID', 'err');
+    return;
+  }
+  if (!password) {
+    toast('Please enter your Password', 'err');
     return;
   }
   
@@ -1737,7 +1746,7 @@ async function doLogin() {
     const res = await fetch('/api/login', { 
       method:'POST', 
       headers:{'Content-Type':'application/json'}, 
-      body: JSON.stringify({ id, password: '', role: 'student' }) 
+      body: JSON.stringify({ id, password, role: 'student' }) 
     }).then(r => r.json());
     
     hideLoader();

@@ -620,8 +620,21 @@ const server = http.createServer(async (req, res) => {
             }
         }
         
-        const file = pathname === '/' ? '/student.html' : pathname;
-        const filePath = path.join(PUBLIC_DIR, file);
+        // Route specific pages
+        if (pathname === '/' || pathname === '/student') {
+            serveFile(res, path.join(PUBLIC_DIR, 'student.html'));
+            return;
+        }
+        if (pathname === '/admin') {
+            serveFile(res, path.join(PUBLIC_DIR, 'admin.html'));
+            return;
+        }
+        if (pathname === '/teacher') {
+            serveFile(res, path.join(PUBLIC_DIR, 'teacher.html'));
+            return;
+        }
+        
+        const filePath = path.join(PUBLIC_DIR, pathname);
         if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) { serveFile(res, filePath); return; }
         
         // Serve 404 page for missing files
@@ -1884,6 +1897,12 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('║  🏫 Peter Harvard International Schools                         ║');
     console.log('║  📅 2026 - All Rights Reserved                                  ║');
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
+
+    // API 404 handler - return JSON for unmatched API routes
+    if (pathname.startsWith('/api/')) {
+        send(req, res, 404, { error: 'Not found' });
+        return;
+    }
 
     // Start HTTPS server if cert files are found
     const certFiles = findCertFiles();

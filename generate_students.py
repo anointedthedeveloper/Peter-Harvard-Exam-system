@@ -1,15 +1,12 @@
 import json
 import random
 
-# Student data - only SS students
+# Student data - only SS students (complete list from provided data)
 ss_students = [
     {"name": "ABANG EMMANUELLA BOMBUM", "class": "SS 2", "gender": "Female"},
     {"name": "ABDULKAREEM UNAZE ZAINAB", "class": "SS 3", "gender": "Female"},
     {"name": "ABDULWAHAB ABDULHAKEEM OGIRIMA", "class": "SS 3", "gender": "male"},
     {"name": "ABDULWAHAB RAHAMA OYIZA", "class": "SS 1 Success", "gender": "female"},
-    {"name": "ABUBAKAR AISHA ALIYU", "class": "JSS 2 Success", "gender": "Female"},
-    {"name": "ABDULKAREEM UNAZE ZAINAB", "class": "SS 3", "gender": "Female"},
-    {"name": "ABDULWAHAB ABDULHAKEEM OGIRIMA", "class": "SS 3", "gender": "male"},
     {"name": "ADEYINKA JESUNIFEMI", "class": "SS 3", "gender": "male"},
     {"name": "ADEYINKA JESUSEFUNMI", "class": "SS 1 Success", "gender": "female"},
     {"name": "AGBALOKWU IKECHI", "class": "SS 1 Success", "gender": "female"},
@@ -62,9 +59,13 @@ ss_students = [
     {"name": "OGBOGU OSITADILIGA DOMINIC", "class": "SS 1 Success", "gender": ""},
     {"name": "OKHUOYA THANKGOD MIZITA JOEL", "class": "SS 3", "gender": "female"},
     {"name": "OKLOBIA BISHOP AKONDU", "class": "SS 3", "gender": "male"},
+    {"name": "OKORO JORDAN OGBONNAYA", "class": "SS 3", "gender": "male"},
     {"name": "OKOROAFOR CHRISTABEL MUNACHISO", "class": "SS 1 Success", "gender": "female"},
     {"name": "OLADIPO ENIOLA", "class": "SS 2", "gender": "female"},
     {"name": "OLOMOLA JOSHUA", "class": "SS 2", "gender": "male"},
+    {"name": "OMOKHAGBO DIVINE ARIJE", "class": "SS 3", "gender": ""},
+    {"name": "ONIOVOSA LOVELY OGHENERO", "class": "Basic 2 Success", "gender": ""},
+    {"name": "ONYEABO CHIEHURA", "class": "SS 1", "gender": "male"},
     {"name": "ORISAKWE CHIDINMA MIRACLE", "class": "SS 2", "gender": "female"},
     {"name": "OYEWUSI AYOTUNDE FAVOUR", "class": "SS 1 Success", "gender": ""},
     {"name": "SAFIRU A IBRAHIM EWELA", "class": "SS 2", "gender": "male"},
@@ -78,6 +79,7 @@ ss_students = [
     {"name": "UMAR ABDULJABAAR", "class": "SS 2", "gender": "male"},
     {"name": "UMEGBORO PEARL CHIAMAKA", "class": "SS 2", "gender": "female"},
     {"name": "UMEGBORO PRAISE", "class": "SS 1 Success", "gender": ""},
+    {"name": "UTUNG ZUGWAL JUDITH", "class": "SS 3", "gender": "female"},
     {"name": "WEALTH GREAT", "class": "SS 1 Success", "gender": ""}
 ]
 

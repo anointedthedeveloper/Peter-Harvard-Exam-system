@@ -4,5 +4,23 @@
     "action": "LOGIN",
     "detail": "teacher: collins (Mr Collins)",
     "actor": "collins"
+  },
+  {
+    "time": "2026-06-21T23:01:23.392Z",
+    "action": "LOGIN",
+    "detail": "admin: admin (Administrator)",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-06-21T23:03:33.875Z",
+    "action": "PASSWORD_RESET",
+    "detail": "teacher: collins",
+    "actor": "admin"
+  },
+  {
+    "time": "2026-06-21T23:05:50.559Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
   }
 ]

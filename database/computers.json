@@ -1,66 +1,14 @@
-<<<<<<< HEAD
 [
   {
     "ip": "127.0.0.1",
     "mac": "00:00:00:00:00:00",
-    "hostname": "DESKTOP-L5RHF9S",
+    "hostname": "A-Server",
     "interface": "Unknown",
     "platform": "win32",
-    "timestamp": "2026-03-13T15:36:11.870Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "firstSeen": "2026-03-13T15:36:11.870Z",
-    "lastSeen": "2026-03-13T20:57:25.039Z"
-  },
-  {
-    "ip": "127.0.0.1",
-    "mac": "00:00:00:00:00:00",
-    "hostname": "DESKTOP-L5RHF9S",
-    "interface": "Unknown",
-    "platform": "win32",
-    "timestamp": "2026-03-13T16:25:24.743Z",
-    "studentId": "PHIS/PP/966",
-    "studentName": "DAVID DARREN",
-    "firstSeen": "2026-03-13T16:25:24.743Z",
-    "lastSeen": "2026-03-13T16:25:24.743Z"
-  },
-  {
-    "ip": "127.0.0.1",
-    "mac": "00:00:00:00:00:00",
-    "hostname": "DESKTOP-L5RHF9S",
-    "interface": "Unknown",
-    "platform": "win32",
-    "timestamp": "2026-03-13T16:27:54.402Z",
-    "studentId": "PHIS/PP/1063",
-    "studentName": "UGWU RITA CHINAZA",
-    "firstSeen": "2026-03-13T16:27:54.402Z",
-    "lastSeen": "2026-03-13T16:27:54.402Z"
-  },
-  {
-    "ip": "127.0.0.1",
-    "mac": "00:00:00:00:00:00",
-    "hostname": "DESKTOP-L5RHF9S",
-    "interface": "Unknown",
-    "platform": "win32",
-    "timestamp": "2026-03-13T16:28:18.380Z",
-    "studentId": "PHIS/PP/1006",
-    "studentName": "SULEIMON BOLUWATIFE MISTURA",
-    "firstSeen": "2026-03-13T16:28:18.380Z",
-    "lastSeen": "2026-03-13T16:28:18.380Z"
-  },
-  {
-    "ip": "192.168.1.3",
-    "mac": "28:c6:3f:ca:e1:6c",
-    "hostname": "DESKTOP-L5RHF9S",
-    "interface": "Wi-Fi",
-    "platform": "win32",
-    "timestamp": "2026-03-13T17:45:08.434Z",
-    "studentId": "student1",
-    "studentName": "Student One",
-    "firstSeen": "2026-03-13T17:45:08.434Z",
-    "lastSeen": "2026-03-13T17:45:08.434Z"
+    "timestamp": "2026-06-21T23:05:50.542Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "firstSeen": "2026-06-21T23:05:50.542Z",
+    "lastSeen": "2026-06-21T23:05:50.542Z"
   }
 ]
-=======
-[]
->>>>>>> ea72a9d73de4fea10fefc5b7a3aa49e41855224f

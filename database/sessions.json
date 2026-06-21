@@ -1,11 +1,20 @@
 {
-  "a55214356e1722c26e6cb8d6c567e815335f3012c9401a1ba6f163357c5d2e78": {
-    "id": "collins",
-    "name": "Mr Collins",
-    "role": "teacher",
+  "19e284f7d2eec20764534e95cce0d4c711767acb0fccd685453204601d9d77ce": {
+    "id": "admin",
+    "name": "Administrator",
+    "role": "admin",
     "subject": "",
     "class": "",
-    "lastAccessed": 1782080914938,
-    "createdAt": 1782080912921
+    "lastAccessed": 1782082883371,
+    "createdAt": 1782082883371
+  },
+  "9ae0ee25e0eea1c5779fa3c8154a6a5ba70bba4c14261a58d0e65533445ff6a2": {
+    "id": "607403",
+    "name": "ABANG EMMANUELLA BOMBUM",
+    "role": "student",
+    "subject": "",
+    "class": "SS 2",
+    "lastAccessed": 1782083150428,
+    "createdAt": 1782083150428
   }
 }

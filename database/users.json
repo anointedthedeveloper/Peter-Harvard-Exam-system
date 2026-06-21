@@ -2,539 +2,553 @@
   "teachers": [
     {
       "id": "collins",
-      "password": "pass123",
+      "password": "",
       "name": "Mr Collins"
     }
   ],
   "students": [
     {
-      "id": "439917",
-      "password": "439917",
+      "id": "607403",
+      "password": "607403",
       "name": "ABANG EMMANUELLA BOMBUM",
       "class": "SS 2",
       "gender": "Female"
     },
     {
-      "id": "171503",
-      "password": "171503",
+      "id": "990109",
+      "password": "990109",
       "name": "ABDULKAREEM UNAZE ZAINAB",
       "class": "SS 3",
       "gender": "Female"
     },
     {
-      "id": "660961",
-      "password": "660961",
+      "id": "935715",
+      "password": "935715",
       "name": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "874120",
-      "password": "874120",
+      "id": "596534",
+      "password": "596534",
       "name": "ABDULWAHAB RAHAMA OYIZA",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "405571",
-      "password": "405571",
-      "name": "ABUBAKAR AISHA ALIYU",
-      "class": "JSS 2 Success",
-      "gender": "Female"
-    },
-    {
-      "id": "631126",
-      "password": "631126",
-      "name": "ABDULKAREEM UNAZE ZAINAB",
-      "class": "SS 3",
-      "gender": "Female"
-    },
-    {
-      "id": "592941",
-      "password": "592941",
-      "name": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
-      "class": "SS 3",
-      "gender": "male"
-    },
-    {
-      "id": "951763",
-      "password": "951763",
+      "id": "641690",
+      "password": "641690",
       "name": "ADEYINKA JESUNIFEMI",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "153119",
-      "password": "153119",
+      "id": "407725",
+      "password": "407725",
       "name": "ADEYINKA JESUSEFUNMI",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "811838",
-      "password": "811838",
+      "id": "174879",
+      "password": "174879",
       "name": "AGBALOKWU IKECHI",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "487413",
-      "password": "487413",
+      "id": "348992",
+      "password": "348992",
       "name": "AHMAD IBRAHIM MUHAMMAD",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "713528",
-      "password": "713528",
+      "id": "401531",
+      "password": "401531",
       "name": "AKANDE DANIEL",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "148057",
-      "password": "148057",
+      "id": "427720",
+      "password": "427720",
       "name": "AKINLADE HAROLD OLUWASEYI",
       "class": "SS 2",
       "gender": "Male"
     },
     {
-      "id": "720143",
-      "password": "720143",
+      "id": "325716",
+      "password": "325716",
       "name": "AKUNNE KAYLA CHISOM",
       "class": "SS 2",
       "gender": ""
     },
     {
-      "id": "163832",
-      "password": "163832",
+      "id": "548817",
+      "password": "548817",
       "name": "ALEGE FAWAZ OLAWALE",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "196196",
-      "password": "196196",
+      "id": "449448",
+      "password": "449448",
       "name": "ALHASSAN DAVID LOYE",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "478817",
-      "password": "478817",
+      "id": "396234",
+      "password": "396234",
       "name": "ANTE FRANCIS",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "261519",
-      "password": "261519",
+      "id": "480051",
+      "password": "480051",
       "name": "ANTE NEMINE GRACE",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "470139",
-      "password": "470139",
+      "id": "710090",
+      "password": "710090",
       "name": "APOI FEGIRO DAVID",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "513052",
-      "password": "513052",
+      "id": "114203",
+      "password": "114203",
       "name": "APOI RURO OBINNA",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "708062",
-      "password": "708062",
+      "id": "129014",
+      "password": "129014",
       "name": "ARCHIBONG HENRY",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "531664",
-      "password": "531664",
+      "id": "131758",
+      "password": "131758",
       "name": "ARO-LAMBO IBRAHIM KOLAWOLE",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "297382",
-      "password": "297382",
+      "id": "600430",
+      "password": "600430",
       "name": "ATANDA OLUWAFUNMILAYO JEMIMA",
       "class": "SS 3",
       "gender": "Female"
     },
     {
-      "id": "221938",
-      "password": "221938",
+      "id": "350591",
+      "password": "350591",
       "name": "BENSON LUCKY INALEGWO",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "944131",
-      "password": "944131",
+      "id": "607834",
+      "password": "607834",
       "name": "BOMBUM ABANG DAVID",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "438072",
-      "password": "438072",
+      "id": "840433",
+      "password": "840433",
       "name": "CHIBUEZE CHINEYE JUDITH",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "704828",
-      "password": "704828",
+      "id": "449715",
+      "password": "449715",
       "name": "CHIBUEZE IZUCHUKWU SMART",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "693644",
-      "password": "693644",
+      "id": "357324",
+      "password": "357324",
       "name": "CHIJIOKE UCHENNA DAVID",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "663377",
-      "password": "663377",
+      "id": "658789",
+      "password": "658789",
       "name": "CHINEDU KAMSIRIOCHUKWU ALLWELL",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "794372",
-      "password": "794372",
+      "id": "583203",
+      "password": "583203",
       "name": "CHRISTIAN DAVID",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "700789",
-      "password": "700789",
+      "id": "143260",
+      "password": "143260",
       "name": "DAVID DARREN",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "248238",
-      "password": "248238",
+      "id": "289998",
+      "password": "289998",
       "name": "DIRISU DANIEL",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "473338",
-      "password": "473338",
+      "id": "830204",
+      "password": "830204",
       "name": "DOGARI PROSPER SHIKUMI",
       "class": "SS 3",
       "gender": ""
     },
     {
-      "id": "954718",
-      "password": "954718",
+      "id": "746938",
+      "password": "746938",
       "name": "EGWURUBE DIVINE OTSAPA",
       "class": "SS 3",
       "gender": ""
     },
     {
-      "id": "358762",
-      "password": "358762",
+      "id": "618541",
+      "password": "618541",
       "name": "EJILOGO PETER OCHANYI",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "340323",
-      "password": "340323",
+      "id": "100617",
+      "password": "100617",
       "name": "EMMANUEL CALEB",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "670499",
-      "password": "670499",
+      "id": "502311",
+      "password": "502311",
       "name": "EMMANUEL WISDOM ATEKOJO",
       "class": "SS 3",
       "gender": "Female"
     },
     {
-      "id": "473345",
-      "password": "473345",
+      "id": "873566",
+      "password": "873566",
       "name": "ENENCHE SHALOM OWOICHO",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "718972",
-      "password": "718972",
+      "id": "103120",
+      "password": "103120",
       "name": "EZE CHINANZA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "316330",
-      "password": "316330",
+      "id": "119937",
+      "password": "119937",
       "name": "EZEKIEL OJOCHEGBE SUCCESS",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "792766",
-      "password": "792766",
+      "id": "439185",
+      "password": "439185",
       "name": "EWUZIE EMMANUEL KENECHUKWU",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "716365",
-      "password": "716365",
+      "id": "728685",
+      "password": "728685",
       "name": "IBHAWA EMMANUELLA",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "708924",
-      "password": "708924",
+      "id": "308389",
+      "password": "308389",
       "name": "IBRAHIM AHUOIZA BASHEERA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "273549",
-      "password": "273549",
+      "id": "418373",
+      "password": "418373",
       "name": "IBRAHIM AISHA JIBRIN",
       "class": "SS 2",
       "gender": "Female"
     },
     {
-      "id": "310273",
-      "password": "310273",
+      "id": "675786",
+      "password": "675786",
       "name": "IBRAHIM MOHAMMED ALKASIM",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "382240",
-      "password": "382240",
+      "id": "697582",
+      "password": "697582",
       "name": "IKENNA-ANYA DESTINY-SHARON",
       "class": "SS 3",
       "gender": "female"
     },
     {
-      "id": "712427",
-      "password": "712427",
+      "id": "110397",
+      "password": "110397",
       "name": "IRABOR LUCIE",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "246293",
-      "password": "246293",
+      "id": "906502",
+      "password": "906502",
       "name": "IROENYEONWU EBUBE",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "753684",
-      "password": "753684",
+      "id": "782334",
+      "password": "782334",
       "name": "KELECHI AHUNANYA CHIDINMA",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "983808",
-      "password": "983808",
+      "id": "291450",
+      "password": "291450",
       "name": "KOLAWOLE OJO BUKOLA",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "725425",
-      "password": "725425",
+      "id": "175578",
+      "password": "175578",
       "name": "KOLAWOLE-OJO BISOLA RACHAEL",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "737202",
-      "password": "737202",
+      "id": "512581",
+      "password": "512581",
       "name": "LAMBERT EMENYONU CHIBUENYIM DAVID",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "936313",
-      "password": "936313",
+      "id": "113133",
+      "password": "113133",
       "name": "NNAEKWE MUNACHI GIFT",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "827152",
-      "password": "827152",
+      "id": "827980",
+      "password": "827980",
       "name": "OBASANYA EZEKIEL ADEFOLARIN",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "750926",
-      "password": "750926",
+      "id": "854639",
+      "password": "854639",
       "name": "ODIASE CHARLES OSAZE",
       "class": "SS 1 Success",
       "gender": "male"
     },
     {
-      "id": "709167",
-      "password": "709167",
+      "id": "133290",
+      "password": "133290",
       "name": "OGBOGU IFAKACHUKWU EMMANUEL",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "646339",
-      "password": "646339",
+      "id": "194919",
+      "password": "194919",
       "name": "OGBOGU OSITADILIGA DOMINIC",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "875880",
-      "password": "875880",
+      "id": "352213",
+      "password": "352213",
       "name": "OKHUOYA THANKGOD MIZITA JOEL",
       "class": "SS 3",
       "gender": "female"
     },
     {
-      "id": "670083",
-      "password": "670083",
+      "id": "657536",
+      "password": "657536",
       "name": "OKLOBIA BISHOP AKONDU",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "914880",
-      "password": "914880",
+      "id": "425526",
+      "password": "425526",
+      "name": "OKORO JORDAN OGBONNAYA",
+      "class": "SS 3",
+      "gender": "male"
+    },
+    {
+      "id": "574671",
+      "password": "574671",
       "name": "OKOROAFOR CHRISTABEL MUNACHISO",
       "class": "SS 1 Success",
       "gender": "female"
     },
     {
-      "id": "878572",
-      "password": "878572",
+      "id": "583100",
+      "password": "583100",
       "name": "OLADIPO ENIOLA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "664620",
-      "password": "664620",
+      "id": "578828",
+      "password": "578828",
       "name": "OLOMOLA JOSHUA",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "140858",
-      "password": "140858",
+      "id": "676379",
+      "password": "676379",
+      "name": "OMOKHAGBO DIVINE ARIJE",
+      "class": "SS 3",
+      "gender": ""
+    },
+    {
+      "id": "333566",
+      "password": "333566",
+      "name": "ONIOVOSA LOVELY OGHENERO",
+      "class": "Basic 2 Success",
+      "gender": ""
+    },
+    {
+      "id": "977813",
+      "password": "977813",
+      "name": "ONYEABO CHIEHURA",
+      "class": "SS 1",
+      "gender": "male"
+    },
+    {
+      "id": "610824",
+      "password": "610824",
       "name": "ORISAKWE CHIDINMA MIRACLE",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "952250",
-      "password": "952250",
+      "id": "928285",
+      "password": "928285",
       "name": "OYEWUSI AYOTUNDE FAVOUR",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "704887",
-      "password": "704887",
+      "id": "514555",
+      "password": "514555",
       "name": "SAFIRU A IBRAHIM EWELA",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "803503",
-      "password": "803503",
+      "id": "616761",
+      "password": "616761",
       "name": "SAMALI DEBORAH",
       "class": "SS 2",
       "gender": ""
     },
     {
-      "id": "157834",
-      "password": "157834",
+      "id": "265887",
+      "password": "265887",
       "name": "SHEHU YAKUBU JIMETA",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "613694",
-      "password": "613694",
+      "id": "586657",
+      "password": "586657",
       "name": "SULEIMON BOLUWATIFE MISTURA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "562289",
-      "password": "562289",
+      "id": "618111",
+      "password": "618111",
       "name": "UBAH FRANCIS",
       "class": "SS 3",
       "gender": "male"
     },
     {
-      "id": "576313",
-      "password": "576313",
+      "id": "508045",
+      "password": "508045",
       "name": "UGWU RITA CHINAZA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "273119",
-      "password": "273119",
+      "id": "517044",
+      "password": "517044",
       "name": "UGWU SOMTOCHUKWU",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "906260",
-      "password": "906260",
+      "id": "898473",
+      "password": "898473",
       "name": "UGWU TREASURE EKPEREAMAKA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "621391",
-      "password": "621391",
+      "id": "630862",
+      "password": "630862",
       "name": "UMAR ABDULJABAAR",
       "class": "SS 2",
       "gender": "male"
     },
     {
-      "id": "939452",
-      "password": "939452",
+      "id": "307666",
+      "password": "307666",
       "name": "UMEGBORO PEARL CHIAMAKA",
       "class": "SS 2",
       "gender": "female"
     },
     {
-      "id": "247021",
-      "password": "247021",
+      "id": "989547",
+      "password": "989547",
       "name": "UMEGBORO PRAISE",
       "class": "SS 1 Success",
       "gender": ""
     },
     {
-      "id": "126563",
-      "password": "126563",
+      "id": "237462",
+      "password": "237462",
+      "name": "UTUNG ZUGWAL JUDITH",
+      "class": "SS 3",
+      "gender": "female"
+    },
+    {
+      "id": "950439",
+      "password": "950439",
       "name": "WEALTH GREAT",
       "class": "SS 1 Success",
       "gender": ""
