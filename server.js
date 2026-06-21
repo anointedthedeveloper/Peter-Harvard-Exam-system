@@ -10,6 +10,7 @@ const VERSION = '2.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const DATABASE_DIR = path.join(__dirname, 'database');
+const RESULTS_DIR = path.join(DATABASE_DIR, 'exam_results');
 const RESULTS_FILE = path.join(DATABASE_DIR, 'results.json');
 const USERS_FILE = path.join(DATABASE_DIR, 'users.json');
 const LOGS_FILE = path.join(DATABASE_DIR, 'logs.json');
@@ -490,6 +491,40 @@ function deleteSession(token) {
     return false;
 }
 
+// Helper functions for per-exam results storage
+function getExamResultsFilename(examName, examClass, subject) {
+    const date = new Date().toISOString().split('T')[0];
+    const safeExamName = examName.replace(/[^a-zA-Z0-9]/g, '_');
+    const safeClass = examClass.replace(/[^a-zA-Z0-9]/g, '_');
+    const safeSubject = subject.replace(/[^a-zA-Z0-9]/g, '_');
+    return `${safeClass}_${date}_${safeSubject}_${safeExamName}.json`;
+}
+
+function readExamResults(filename) {
+    const filePath = path.join(RESULTS_DIR, filename);
+    if (!fs.existsSync(filePath)) return [];
+    return readJSON(filePath) || [];
+}
+
+function writeExamResults(filename, results) {
+    if (!fs.existsSync(RESULTS_DIR)) {
+        fs.mkdirSync(RESULTS_DIR, { recursive: true });
+    }
+    const filePath = path.join(RESULTS_DIR, filename);
+    writeJSON(filePath, results);
+}
+
+function getAllExamResults() {
+    if (!fs.existsSync(RESULTS_DIR)) return [];
+    const allResults = [];
+    const files = fs.readdirSync(RESULTS_DIR).filter(f => f.endsWith('.json'));
+    for (const file of files) {
+        const results = readJSON(path.join(RESULTS_DIR, file)) || [];
+        allResults.push(...results);
+    }
+    return allResults;
+}
+
 function cleanupSessions() {
     const sessions = readJSON(SESSIONS_FILE) || {};
     let changed = false;
@@ -691,23 +726,14 @@ const server = http.createServer(async (req, res) => {
         }
         
         if (user) {
-            // Check if user already has an active session
+            // Check if user already has an active session (prevent concurrent logins)
             if (activeTokens.has(user.id)) {
                 const existingToken = activeTokens.get(user.id);
                 const sessions = readJSON(SESSIONS_FILE) || {};
                 
-                // If the session exists, allow re-login from same device
+                // If the session exists and is valid, reject new login
                 if (sessions[existingToken]) {
-                    // Return the existing token instead of creating a new one
-                    send(req, res, 200, { 
-                        ok: true, 
-                        token: existingToken,
-                        name: user.name, 
-                        role, 
-                        subject: user.subject || '', 
-                        class: user.class || '',
-                        id: user.id
-                    });
+                    send(req, res, 409, { ok: false, error: 'User already logged in on another device' });
                     return;
                 } else {
                     // Session expired, remove from activeTokens
@@ -1066,7 +1092,7 @@ const server = http.createServer(async (req, res) => {
         const studentId = decodeURIComponent(parts[0]);
         const examFilename = decodeURIComponent(parts[1]);
         
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const resets = readJSON(RESETS_FILE) || {};
         const resetEntry = resets[studentId];
         
@@ -1084,7 +1110,7 @@ const server = http.createServer(async (req, res) => {
     // GET ALL TAKEN EXAMS FOR A STUDENT
     if (req.method === 'GET' && pathname.startsWith('/api/student-taken-exams/')) {
         const studentId = decodeURIComponent(pathname.replace('/api/student-taken-exams/', ''));
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const resets = readJSON(RESETS_FILE) || {};
         const resetEntry = resets[studentId];
         
@@ -1188,7 +1214,6 @@ const server = http.createServer(async (req, res) => {
             return;
         }
         
-        const results = readJSON(RESULTS_FILE) || [];
         const users = readJSON(USERS_FILE);
         const studentUser = (users?.students || []).find(u => u.id === body.studentId);
         const studentClass = studentUser?.class || body.studentClass || '';
@@ -1213,10 +1238,22 @@ const server = http.createServer(async (req, res) => {
             id: Date.now()
         };
         
-        results.push(entry);
-        writeJSON(RESULTS_FILE, results);
+        // Save to per-exam file
+        const examResultsFile = getExamResultsFilename(body.exam, examClass, examSubject);
+        const examResults = readExamResults(examResultsFile);
+        examResults.push(entry);
+        writeExamResults(examResultsFile, examResults);
+        
+        // Also save to legacy results.json for backward compatibility
+        const legacyResults = readJSON(RESULTS_FILE) || [];
+        legacyResults.push(entry);
+        writeJSON(RESULTS_FILE, legacyResults);
         
         saveSubmittedExam(entry);
+        
+        // Calculate class highest mark
+        const classResults = examResults.filter(r => r.studentClass === studentClass);
+        const highestMark = classResults.length > 0 ? Math.max(...classResults.map(r => r.percentage || 0)) : 0;
         
         sysLog('SUBMIT', `Student: ${body.student} | Exam: ${body.exam} | Score: ${body.score}/${body.total} (${body.percentage}%) | Class: ${studentClass}`, body.studentId);
         auditLog('EXAM_SUBMIT', body.studentId || body.student, `Submitted "${body.exam}" — Score: ${body.score}/${body.total} (${body.percentage}%)`, { exam: body.exam, score: body.score, total: body.total, percentage: body.percentage, tabViolations: body.tabViolations, studentClass });
@@ -1227,7 +1264,7 @@ const server = http.createServer(async (req, res) => {
         delete resets[body.studentId || body.student];
         writeJSON(RESETS_FILE, resets);
         
-        send(req, res, 200, { ok: true }); return;
+        send(req, res, 200, { ok: true, highestMark }); return;
     }
 
     // END EXAM
@@ -1387,7 +1424,7 @@ const server = http.createServer(async (req, res) => {
 
     // GET ALL RESULTS
     if (req.method === 'GET' && pathname === '/api/results') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         
         // Map results to include only needed fields and ensure exam data is complete
         const formattedResults = results.map(r => {
@@ -1431,7 +1468,7 @@ const server = http.createServer(async (req, res) => {
 
     // GET RESULTS SUBJECTS (for filter dropdown)
     if (req.method === 'GET' && pathname === '/api/results/subjects') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const subjects = [...new Set(results.map(r => {
             if (r.subject) return r.subject;
             if (r.examFilename) {
@@ -1452,7 +1489,7 @@ const server = http.createServer(async (req, res) => {
 
     // GET RESULTS EXAMS (for filter dropdown)
     if (req.method === 'GET' && pathname === '/api/results/exams') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const exams = [...new Set(results.map(r => r.exam).filter(Boolean))].sort();
         send(req, res, 200, exams);
         return;
@@ -1460,7 +1497,7 @@ const server = http.createServer(async (req, res) => {
 
     // RESULTS CSV DETAILED
     if (req.method === 'GET' && pathname === '/api/results/csv') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const formattedResults = results.map(r => {
             let examSubject = r.subject || '';
             let examClass = r.examClass || '';
@@ -1520,7 +1557,7 @@ const server = http.createServer(async (req, res) => {
 
     // RESULTS EXCEL
     if (req.method === 'GET' && pathname === '/api/results/excel') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const formattedResults = results.map(r => {
             let examSubject = r.subject || '';
             let examClass = r.examClass || '';
@@ -1581,7 +1618,7 @@ const server = http.createServer(async (req, res) => {
     // RESULTS BY CLASS CSV
     if (req.method === 'GET' && pathname === '/api/results/by-class') {
         const studentClass = url.searchParams.get('class');
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         
         const filtered = results.filter(r => r.studentClass === studentClass || r.examClass === studentClass);
         
@@ -1645,7 +1682,7 @@ const server = http.createServer(async (req, res) => {
     // RESULTS BY SUBJECT CSV
     if (req.method === 'GET' && pathname === '/api/results/by-subject') {
         const subject = url.searchParams.get('subject');
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         
         const filtered = results.filter(r => {
             let rSubject = r.subject;
@@ -1721,7 +1758,7 @@ const server = http.createServer(async (req, res) => {
     // SINGLE RESULT CSV
     if (req.method === 'GET' && pathname.startsWith('/api/results/csv/')) {
         const resultId = parseInt(pathname.replace('/api/results/csv/', ''));
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         const r = results.find(r => r.id === resultId);
         if (!r) { send(req, res, 404, { error: 'Result not found' }); return; }
         
@@ -1768,7 +1805,7 @@ const server = http.createServer(async (req, res) => {
 
     // RESULTS JSON DOWNLOAD
     if (req.method === 'GET' && pathname === '/api/results/json') {
-        const results = readJSON(RESULTS_FILE) || [];
+        const results = getAllExamResults();
         res.writeHead(200, { 
             'Content-Type': 'application/json', 
             'Content-Disposition': 'attachment; filename="results.json"', 
@@ -1788,13 +1825,45 @@ const server = http.createServer(async (req, res) => {
         send(req, res, 200, { ok: true }); return;
     }
 
-    // CLEAR ALL RESULTS
-    if (req.method === 'DELETE' && pathname === '/api/results') {
-        const count = (readJSON(RESULTS_FILE) || []).length;
-        writeJSON(RESULTS_FILE, []);
-        sysLog('CLEAR_RESULTS', `All ${count} results cleared`);
-        auditLog('RESULTS_CLEAR_ALL', 'admin', `Cleared all ${count} results`, { count });
-        send(req, res, 200, { ok: true }); return;
+    // CLEAR ALL RESULTS - DISABLED to ensure results don't clear
+    // Results are now stored in per-exam files and should not be cleared
+    // if (req.method === 'DELETE' && pathname === '/api/results') {
+    //     const count = (readJSON(RESULTS_FILE) || []).length;
+    //     writeJSON(RESULTS_FILE, []);
+    //     sysLog('CLEAR_RESULTS', `All ${count} results cleared`);
+    //     auditLog('RESULTS_CLEAR_ALL', 'admin', `Cleared all ${count} results`, { count });
+    //     send(req, res, 200, { ok: true }); return;
+    // }
+
+    // LEADERBOARD - Get exam leaderboard
+    if (req.method === 'GET' && pathname === '/api/leaderboard') {
+        const examName = url.searchParams.get('exam');
+        const examClass = url.searchParams.get('class');
+        const subject = url.searchParams.get('subject');
+        
+        let results = getAllExamResults();
+        
+        if (examName) {
+            results = results.filter(r => r.exam === examName);
+        }
+        if (examClass) {
+            results = results.filter(r => r.studentClass === examClass || r.examClass === examClass);
+        }
+        if (subject) {
+            results = results.filter(r => r.subject === subject);
+        }
+        
+        // Sort by percentage descending
+        results.sort((a, b) => (b.percentage || 0) - (a.percentage || 0));
+        
+        // Add rank
+        results = results.map((r, index) => ({
+            ...r,
+            rank: index + 1
+        }));
+        
+        send(req, res, 200, results);
+        return;
     }
 
     // LOGS
@@ -1899,10 +1968,8 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
 
     // API 404 handler - return JSON for unmatched API routes
-    if (pathname.startsWith('/api/')) {
-        send(req, res, 404, { error: 'Not found' });
-        return;
-    }
+    send(req, res, 404, { error: 'Not found' });
+    return;
 
     // Start HTTPS server if cert files are found
     const certFiles = findCertFiles();
