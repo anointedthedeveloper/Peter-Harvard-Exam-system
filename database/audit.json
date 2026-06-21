@@ -1,5 +1,16 @@
 [
   {
+    "id": 1782080913251.7246,
+    "time": "2026-06-21T22:28:33.251Z",
+    "action": "LOGIN",
+    "actor": "collins",
+    "detail": "teacher \"Mr Collins\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1782078858929.9497,
     "time": "2026-06-21T21:54:18.929Z",
     "action": "LOGIN_FAIL",
