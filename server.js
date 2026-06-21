@@ -141,6 +141,8 @@ if (!fs.existsSync(USERS_FILE)) {
 }
 
 // Helper functions
+const fileLocks = new Map(); // Simple file locking mechanism
+
 function readJSON(file) {
     try { 
         const data = fs.readFileSync(file, 'utf8');
@@ -154,9 +156,17 @@ function readJSON(file) {
 
 function writeJSON(file, data) {
     try {
-        fs.writeFileSync(file, JSON.stringify(data, null, 2));
+        // Write to temporary file first, then rename for atomic operation
+        const tempFile = file + '.tmp';
+        fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
+        fs.renameSync(tempFile, file);
     } catch (e) {
         console.error(`Error writing ${file}: ${e.message}`);
+        // Clean up temp file if it exists
+        const tempFile = file + '.tmp';
+        if (fs.existsSync(tempFile)) {
+            try { fs.unlinkSync(tempFile); } catch (_) {}
+        }
         throw e;
     }
 }
@@ -264,7 +274,18 @@ function parseBody(req) {
 function parseMultipart(req) {
     return new Promise((resolve, reject) => {
         const chunks = [];
-        req.on('data', c => chunks.push(c));
+        let totalSize = 0;
+        const MAX_SIZE = 10 * 1024 * 1024; // 10MB limit
+        
+        req.on('data', c => {
+            totalSize += c.length;
+            if (totalSize > MAX_SIZE) {
+                req.destroy();
+                return reject(new Error('File too large (max 10MB)'));
+            }
+            chunks.push(c);
+        });
+        
         req.on('end', () => {
             try {
                 const buf = Buffer.concat(chunks);
@@ -281,8 +302,10 @@ function parseMultipart(req) {
                     const nm = headers.match(/name="([^"]+)"/);
                     const fm = headers.match(/filename="([^"]+)"/);
                     if (nm && fm) {
+                        // Sanitize filename to prevent path traversal
+                        const safeFilename = fm[1].replace(/[^a-zA-Z0-9._-]/g, '_');
                         const content = bodyParts.join('\r\n\r\n').replace(/\r\n$/, '');
-                        files[nm[1]] = { filename: fm[1], content: Buffer.from(content, 'binary') };
+                        files[nm[1]] = { filename: safeFilename, content: Buffer.from(content, 'binary') };
                     }
                 }
                 resolve(files);
@@ -376,6 +399,13 @@ function send(req, res, status, data, type = 'application/json') {
 }
 
 function serveFile(res, filePath) {
+    // Prevent path traversal attacks
+    const normalizedPath = path.normalize(filePath);
+    if (!normalizedPath.startsWith(PUBLIC_DIR) && !normalizedPath.startsWith(__dirname)) {
+        send(null, res, 403, { error: 'Access denied' });
+        return;
+    }
+    
     const ext = path.extname(filePath).toLowerCase();
     const types = { 
         '.html': 'text/html', 
@@ -480,6 +510,28 @@ function cleanupSessions() {
 setInterval(cleanupSessions, 3600000);
 cleanupSessions(); // Run cleanup on startup
 
+// Cleanup rate limiting map periodically
+function cleanupRateLimits() {
+    const now = Date.now();
+    for (const [ip, attempts] of loginAttempts.entries()) {
+        if (now - attempts.lastAttempt > 3600000) { // 1 hour
+            loginAttempts.delete(ip);
+        }
+    }
+}
+setInterval(cleanupRateLimits, 3600000);
+
+// Cleanup live sessions periodically
+function cleanupLiveSessions() {
+    const now = Date.now();
+    for (const [studentId, session] of Object.entries(liveSessions)) {
+        if (now - session.lastSeen > 90000) { // 90 seconds
+            delete liveSessions[studentId];
+        }
+    }
+}
+setInterval(cleanupLiveSessions, 30000); // Every 30 seconds
+
 // Computers tracking
 function trackComputer(ip, studentId, studentName) {
     const computers = readJSON(COMPUTERS_FILE) || [];
@@ -498,7 +550,11 @@ function trackComputer(ip, studentId, studentName) {
         });
     }
     
-    writeJSON(COMPUTERS_FILE, computers);
+    // Clean up old computer entries (older than 30 days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const cleanedComputers = computers.filter(c => c.lastSeen >= thirtyDaysAgo);
+    
+    writeJSON(COMPUTERS_FILE, cleanedComputers);
 }
 
 // Submitted exams tracking
@@ -527,6 +583,19 @@ function shuffleArray(array) {
 }
 
 const server = http.createServer(async (req, res) => {
+    // Global error handler
+    res.on('error', (err) => {
+        console.error('Response error:', err);
+    });
+    
+    // Request error handler
+    req.on('error', (err) => {
+        console.error('Request error:', err);
+        if (!res.headersSent) {
+            send(req, res, 500, { error: 'Internal server error' });
+        }
+    });
+    
     if (req.method === 'OPTIONS') {
         res.writeHead(204, { 
             'Access-Control-Allow-Origin': '*',
@@ -774,22 +843,33 @@ const server = http.createServer(async (req, res) => {
         try {
             const studentClass = url.searchParams.get('class');
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
+            
+            if (!fs.existsSync(UPLOADS_DIR)) {
+                send(req, res, 200, []);
+                return;
+            }
+            
             const files = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
             
             let exams = files.map(f => {
-                const data = readJSON(path.join(UPLOADS_DIR, f));
-                const active = examStatus[f] !== false;
-                return {
-                    filename: f,
-                    name: data?.exam || f,
-                    subject: data?.subject || '',
-                    class: data?.class ? data.class.trim() : '',
-                    teacherId: data?.teacherId || '',
-                    duration: data?.duration || 30,
-                    questionCount: data?.questions?.length || 0,
-                    active
-                };
-            });
+                try {
+                    const data = readJSON(path.join(UPLOADS_DIR, f));
+                    const active = examStatus[f] !== false;
+                    return {
+                        filename: f,
+                        name: data?.exam || f,
+                        subject: data?.subject || '',
+                        class: data?.class ? data.class.trim() : '',
+                        teacherId: data?.teacherId || '',
+                        duration: data?.duration || 30,
+                        questionCount: data?.questions?.length || 0,
+                        active
+                    };
+                } catch (e) {
+                    console.error(`Error reading exam file ${f}:`, e.message);
+                    return null;
+                }
+            }).filter(Boolean);
             
             if (studentClass) {
                 const normalizedStudentClass = studentClass.trim().toLowerCase();
@@ -802,6 +882,7 @@ const server = http.createServer(async (req, res) => {
             
             send(req, res, 200, exams);
         } catch (e) { 
+            console.error('Error listing exams:', e.message);
             send(req, res, 200, []); 
         }
         return;
@@ -1268,10 +1349,15 @@ const server = http.createServer(async (req, res) => {
         const students = users?.students || [];
         const rows = [
             'Student ID,Student Name,Class,Password Set',
-            ...students.map(s => [`"${s.id}"`, `"${(s.name || '').replace(/"/g, '""')}"`, `"${s.class || ''}"`, s.password ? 'Yes' : 'No'].join(','))
+            ...students.map(s => [
+                `"${(s.id || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(s.name || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(s.class || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                s.password ? 'Yes' : 'No'
+            ].join(','))
         ];
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="student_list.csv"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1389,12 +1475,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1404,7 +1490,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="results_detailed.csv"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1449,12 +1535,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1464,7 +1550,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'application/vnd.ms-excel', 
+            'Content-Type': 'application/vnd.ms-excel; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="results.xls"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1513,12 +1599,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1528,7 +1614,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': `attachment; filename="results_${studentClass || 'all'}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1589,12 +1675,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1604,7 +1690,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': `attachment; filename="results_${subject || 'all'}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1637,12 +1723,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${examSubject}"`,
-                `"${examClass}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${examSubject.replace(/[^\w\s-]/g, '')}"`,
+                `"${examClass.replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1652,8 +1738,8 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
-            'Content-Disposition': `attachment; filename="result_${r.studentId || r.student}.csv"`, 
+            'Content-Type': 'text/csv; charset=utf-8', 
+            'Content-Disposition': `attachment; filename="result_${(r.studentId || r.student).replace(/[^\w\s-]/g, '')}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
         res.end(rows.join('\n')); return;
@@ -1810,4 +1896,41 @@ server.listen(PORT, '0.0.0.0', () => {
         console.log(`    Run: mkcert.exe ${ip} localhost 127.0.0.1`);
         console.log(`    Then move the generated .pem files to ./cert/\n`);
     }
+});
+
+// Graceful shutdown handler
+function gracefulShutdown(signal) {
+    console.log(`\n${signal} received. Starting graceful shutdown...`);
+    
+    server.close(() => {
+        console.log('HTTP server closed.');
+        
+        // Final cleanup
+        cleanupSessions();
+        cleanupRateLimits();
+        cleanupLiveSessions();
+        
+        console.log('Cleanup complete. Exiting.');
+        process.exit(0);
+    });
+    
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+        console.error('Forced shutdown after timeout');
+        process.exit(1);
+    }, 10000);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
