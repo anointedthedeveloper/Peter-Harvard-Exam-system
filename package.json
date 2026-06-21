@@ -1,0 +1,20 @@
+{
+  "name": "peter-harvard-exam-system",
+  "version": "2.0.0",
+  "description": "Exam system for Peter Harvard International Schools",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "exam",
+    "education",
+    "school"
+  ],
+  "author": "anointedthedeveloper",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

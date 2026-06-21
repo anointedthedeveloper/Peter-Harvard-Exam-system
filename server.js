@@ -25,6 +25,9 @@ const SUBMITTED_EXAMS_FILE = path.join(DATABASE_DIR, 'submitted_exams.json');
 const liveSessions = {};
 const activeTokens = new Map(); // Track active tokens by userId
 
+// Rate limiting for login attempts
+const loginAttempts = new Map(); // IP -> { count, lastAttempt }
+
 // Create directories
 [PUBLIC_DIR, UPLOADS_DIR, DATABASE_DIR].forEach(d => {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
@@ -138,12 +141,34 @@ if (!fs.existsSync(USERS_FILE)) {
 }
 
 // Helper functions
+const fileLocks = new Map(); // Simple file locking mechanism
+
 function readJSON(file) {
-    try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; }
+    try { 
+        const data = fs.readFileSync(file, 'utf8');
+        return JSON.parse(data);
+    } catch (e) {
+        if (e.code === 'ENOENT') return null;
+        console.error(`Error reading ${file}: ${e.message}`);
+        return null;
+    }
 }
 
 function writeJSON(file, data) {
-    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    try {
+        // Write to temporary file first, then rename for atomic operation
+        const tempFile = file + '.tmp';
+        fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
+        fs.renameSync(tempFile, file);
+    } catch (e) {
+        console.error(`Error writing ${file}: ${e.message}`);
+        // Clean up temp file if it exists
+        const tempFile = file + '.tmp';
+        if (fs.existsSync(tempFile)) {
+            try { fs.unlinkSync(tempFile); } catch (_) {}
+        }
+        throw e;
+    }
 }
 
 function sysLog(action, detail, actor) {
@@ -230,7 +255,18 @@ function parseBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
         req.on('data', chunk => body += chunk);
-        req.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve(body); } });
+        req.on('end', () => { 
+            try { 
+                if (!body || body.trim() === '') {
+                    resolve({});
+                    return;
+                }
+                resolve(JSON.parse(body)); 
+            } catch (e) { 
+                console.error('Error parsing request body:', e.message);
+                resolve({}); 
+            } 
+        });
         req.on('error', reject);
     });
 }
@@ -238,27 +274,45 @@ function parseBody(req) {
 function parseMultipart(req) {
     return new Promise((resolve, reject) => {
         const chunks = [];
-        req.on('data', c => chunks.push(c));
-        req.on('end', () => {
-            const buf = Buffer.concat(chunks);
-            const ct = req.headers['content-type'] || '';
-            const bm = ct.match(/boundary=(.+)/);
-            if (!bm) return reject(new Error('No boundary'));
-            const boundary = '--' + bm[1];
-            const parts = buf.toString('binary').split(boundary);
-            const files = {};
-            for (const part of parts) {
-                if (!part || part === '--\r\n') continue;
-                const [headers, ...bodyParts] = part.split('\r\n\r\n');
-                if (!headers) continue;
-                const nm = headers.match(/name="([^"]+)"/);
-                const fm = headers.match(/filename="([^"]+)"/);
-                if (nm && fm) {
-                    const content = bodyParts.join('\r\n\r\n').replace(/\r\n$/, '');
-                    files[nm[1]] = { filename: fm[1], content: Buffer.from(content, 'binary') };
-                }
+        let totalSize = 0;
+        const MAX_SIZE = 10 * 1024 * 1024; // 10MB limit
+        
+        req.on('data', c => {
+            totalSize += c.length;
+            if (totalSize > MAX_SIZE) {
+                req.destroy();
+                return reject(new Error('File too large (max 10MB)'));
             }
-            resolve(files);
+            chunks.push(c);
+        });
+        
+        req.on('end', () => {
+            try {
+                const buf = Buffer.concat(chunks);
+                const ct = req.headers['content-type'] || '';
+                const bm = ct.match(/boundary=(.+)/);
+                if (!bm) return reject(new Error('No boundary found in Content-Type'));
+                const boundary = '--' + bm[1];
+                const parts = buf.toString('binary').split(boundary);
+                const files = {};
+                for (const part of parts) {
+                    if (!part || part === '--\r\n') continue;
+                    const [headers, ...bodyParts] = part.split('\r\n\r\n');
+                    if (!headers) continue;
+                    const nm = headers.match(/name="([^"]+)"/);
+                    const fm = headers.match(/filename="([^"]+)"/);
+                    if (nm && fm) {
+                        // Sanitize filename to prevent path traversal
+                        const safeFilename = fm[1].replace(/[^a-zA-Z0-9._-]/g, '_');
+                        const content = bodyParts.join('\r\n\r\n').replace(/\r\n$/, '');
+                        files[nm[1]] = { filename: safeFilename, content: Buffer.from(content, 'binary') };
+                    }
+                }
+                resolve(files);
+            } catch (e) {
+                console.error('Error parsing multipart data:', e.message);
+                reject(e);
+            }
         });
         req.on('error', reject);
     });
@@ -345,6 +399,13 @@ function send(req, res, status, data, type = 'application/json') {
 }
 
 function serveFile(res, filePath) {
+    // Prevent path traversal attacks
+    const normalizedPath = path.normalize(filePath);
+    if (!normalizedPath.startsWith(PUBLIC_DIR) && !normalizedPath.startsWith(__dirname)) {
+        send(null, res, 403, { error: 'Access denied' });
+        return;
+    }
+    
     const ext = path.extname(filePath).toLowerCase();
     const types = { 
         '.html': 'text/html', 
@@ -447,6 +508,29 @@ function cleanupSessions() {
 }
 
 setInterval(cleanupSessions, 3600000);
+cleanupSessions(); // Run cleanup on startup
+
+// Cleanup rate limiting map periodically
+function cleanupRateLimits() {
+    const now = Date.now();
+    for (const [ip, attempts] of loginAttempts.entries()) {
+        if (now - attempts.lastAttempt > 3600000) { // 1 hour
+            loginAttempts.delete(ip);
+        }
+    }
+}
+setInterval(cleanupRateLimits, 3600000);
+
+// Cleanup live sessions periodically
+function cleanupLiveSessions() {
+    const now = Date.now();
+    for (const [studentId, session] of Object.entries(liveSessions)) {
+        if (now - session.lastSeen > 90000) { // 90 seconds
+            delete liveSessions[studentId];
+        }
+    }
+}
+setInterval(cleanupLiveSessions, 30000); // Every 30 seconds
 
 // Computers tracking
 function trackComputer(ip, studentId, studentName) {
@@ -466,7 +550,11 @@ function trackComputer(ip, studentId, studentName) {
         });
     }
     
-    writeJSON(COMPUTERS_FILE, computers);
+    // Clean up old computer entries (older than 30 days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const cleanedComputers = computers.filter(c => c.lastSeen >= thirtyDaysAgo);
+    
+    writeJSON(COMPUTERS_FILE, cleanedComputers);
 }
 
 // Submitted exams tracking
@@ -495,6 +583,19 @@ function shuffleArray(array) {
 }
 
 const server = http.createServer(async (req, res) => {
+    // Global error handler
+    res.on('error', (err) => {
+        console.error('Response error:', err);
+    });
+    
+    // Request error handler
+    req.on('error', (err) => {
+        console.error('Request error:', err);
+        if (!res.headersSent) {
+            send(req, res, 500, { error: 'Internal server error' });
+        }
+    });
+    
     if (req.method === 'OPTIONS') {
         res.writeHead(204, { 
             'Access-Control-Allow-Origin': '*',
@@ -528,6 +629,35 @@ const server = http.createServer(async (req, res) => {
     // AUTH - Login
     if (req.method === 'POST' && pathname === '/api/login') {
         const body = await parseBody(req);
+        
+        // Input validation
+        if (!body || typeof body !== 'object') {
+            send(req, res, 400, { ok: false, error: 'Invalid request body' });
+            return;
+        }
+        if (!body.role || !['student', 'teacher', 'admin'].includes(body.role)) {
+            send(req, res, 400, { ok: false, error: 'Invalid role' });
+            return;
+        }
+        if (!body.id || typeof body.id !== 'string' || body.id.trim() === '') {
+            send(req, res, 400, { ok: false, error: 'ID is required' });
+            return;
+        }
+        if (body.role !== 'student' && (!body.password || typeof body.password !== 'string')) {
+            send(req, res, 400, { ok: false, error: 'Password is required' });
+            return;
+        }
+        
+        // Rate limiting
+        const clientIp = req.socket.remoteAddress || 'unknown';
+        const now = Date.now();
+        const attempts = loginAttempts.get(clientIp) || { count: 0, lastAttempt: 0 };
+        
+        if (now - attempts.lastAttempt < 60000 && attempts.count >= 5) {
+            send(req, res, 429, { ok: false, error: 'Too many login attempts. Please wait 1 minute.' });
+            return;
+        }
+        
         const users = readJSON(USERS_FILE);
         const role = body.role;
         const list = users[role + 's'] || [];
@@ -592,7 +722,13 @@ const server = http.createServer(async (req, res) => {
                 class: user.class || '',
                 id: user.id
             });
+            
+            // Reset rate limit on successful login
+            loginAttempts.delete(clientIp);
         } else {
+            // Update rate limit on failed login
+            loginAttempts.set(clientIp, { count: attempts.count + 1, lastAttempt: now });
+            
             auditLog('LOGIN_FAIL', body.id || 'unknown', `Failed login attempt for role: ${role}`, { role, ip: req.socket.remoteAddress });
             send(req, res, 401, { ok: false, error: 'Invalid credentials' });
         }
@@ -707,22 +843,33 @@ const server = http.createServer(async (req, res) => {
         try {
             const studentClass = url.searchParams.get('class');
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
+            
+            if (!fs.existsSync(UPLOADS_DIR)) {
+                send(req, res, 200, []);
+                return;
+            }
+            
             const files = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
             
             let exams = files.map(f => {
-                const data = readJSON(path.join(UPLOADS_DIR, f));
-                const active = examStatus[f] !== false;
-                return {
-                    filename: f,
-                    name: data?.exam || f,
-                    subject: data?.subject || '',
-                    class: data?.class ? data.class.trim() : '',
-                    teacherId: data?.teacherId || '',
-                    duration: data?.duration || 30,
-                    questionCount: data?.questions?.length || 0,
-                    active
-                };
-            });
+                try {
+                    const data = readJSON(path.join(UPLOADS_DIR, f));
+                    const active = examStatus[f] !== false;
+                    return {
+                        filename: f,
+                        name: data?.exam || f,
+                        subject: data?.subject || '',
+                        class: data?.class ? data.class.trim() : '',
+                        teacherId: data?.teacherId || '',
+                        duration: data?.duration || 30,
+                        questionCount: data?.questions?.length || 0,
+                        active
+                    };
+                } catch (e) {
+                    console.error(`Error reading exam file ${f}:`, e.message);
+                    return null;
+                }
+            }).filter(Boolean);
             
             if (studentClass) {
                 const normalizedStudentClass = studentClass.trim().toLowerCase();
@@ -735,6 +882,7 @@ const server = http.createServer(async (req, res) => {
             
             send(req, res, 200, exams);
         } catch (e) { 
+            console.error('Error listing exams:', e.message);
             send(req, res, 200, []); 
         }
         return;
@@ -765,9 +913,21 @@ const server = http.createServer(async (req, res) => {
         try {
             const files = await parseMultipart(req);
             const file = files['exam'];
-            if (!file) { send(req, res, 400, { error: 'No file' }); return; }
+            if (!file) { send(req, res, 400, { error: 'No file uploaded' }); return; }
+            
             const content = file.content.toString('utf8');
             const data = JSON.parse(content);
+            
+            // Validate exam structure
+            if (!data || typeof data !== 'object') {
+                send(req, res, 400, { error: 'Invalid exam data structure' });
+                return;
+            }
+            if (!data.questions || !Array.isArray(data.questions) || data.questions.length === 0) {
+                send(req, res, 400, { error: 'Exam must have at least one question' });
+                return;
+            }
+            
             const saveName = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_');
             fs.writeFileSync(path.join(UPLOADS_DIR, saveName), content);
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
@@ -984,6 +1144,29 @@ const server = http.createServer(async (req, res) => {
     // SUBMIT EXAM
     if (req.method === 'POST' && pathname === '/api/submit') {
         const body = await parseBody(req);
+        
+        // Input validation
+        if (!body || typeof body !== 'object') {
+            send(req, res, 400, { ok: false, error: 'Invalid request body' });
+            return;
+        }
+        if (!body.studentId || typeof body.studentId !== 'string') {
+            send(req, res, 400, { ok: false, error: 'Student ID is required' });
+            return;
+        }
+        if (!body.student || typeof body.student !== 'string') {
+            send(req, res, 400, { ok: false, error: 'Student name is required' });
+            return;
+        }
+        if (!body.exam || typeof body.exam !== 'string') {
+            send(req, res, 400, { ok: false, error: 'Exam name is required' });
+            return;
+        }
+        if (typeof body.score !== 'number' || typeof body.total !== 'number') {
+            send(req, res, 400, { ok: false, error: 'Score and total are required numbers' });
+            return;
+        }
+        
         const results = readJSON(RESULTS_FILE) || [];
         const users = readJSON(USERS_FILE);
         const studentUser = (users?.students || []).find(u => u.id === body.studentId);
@@ -1166,10 +1349,15 @@ const server = http.createServer(async (req, res) => {
         const students = users?.students || [];
         const rows = [
             'Student ID,Student Name,Class,Password Set',
-            ...students.map(s => [`"${s.id}"`, `"${(s.name || '').replace(/"/g, '""')}"`, `"${s.class || ''}"`, s.password ? 'Yes' : 'No'].join(','))
+            ...students.map(s => [
+                `"${(s.id || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(s.name || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(s.class || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                s.password ? 'Yes' : 'No'
+            ].join(','))
         ];
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="student_list.csv"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1287,12 +1475,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1302,7 +1490,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="results_detailed.csv"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1347,12 +1535,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1362,7 +1550,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'application/vnd.ms-excel', 
+            'Content-Type': 'application/vnd.ms-excel; charset=utf-8', 
             'Content-Disposition': 'attachment; filename="results.xls"', 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1411,12 +1599,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1426,7 +1614,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': `attachment; filename="results_${studentClass || 'all'}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1487,12 +1675,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             ...formattedResults.map(r => [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.subject || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.examClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1502,7 +1690,7 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
+            'Content-Type': 'text/csv; charset=utf-8', 
             'Content-Disposition': `attachment; filename="results_${subject || 'all'}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
@@ -1535,12 +1723,12 @@ const server = http.createServer(async (req, res) => {
         const rows = [
             'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             [
-                `"${(r.student || '').replace(/"/g, '""')}"`,
-                `"${r.studentId || ''}"`,
-                `"${r.studentClass || ''}"`,
-                `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${examSubject}"`,
-                `"${examClass}"`,
+                `"${(r.student || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentId || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.studentClass || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${(r.exam || '').replace(/"/g, '""').replace(/[^\w\s-]/g, '')}"`,
+                `"${examSubject.replace(/[^\w\s-]/g, '')}"`,
+                `"${examClass.replace(/[^\w\s-]/g, '')}"`,
                 r.score,
                 r.total || '',
                 r.percentage,
@@ -1550,8 +1738,8 @@ const server = http.createServer(async (req, res) => {
         ];
         
         res.writeHead(200, { 
-            'Content-Type': 'text/csv', 
-            'Content-Disposition': `attachment; filename="result_${r.studentId || r.student}.csv"`, 
+            'Content-Type': 'text/csv; charset=utf-8', 
+            'Content-Disposition': `attachment; filename="result_${(r.studentId || r.student).replace(/[^\w\s-]/g, '')}.csv"`, 
             'Access-Control-Allow-Origin': '*'
         });
         res.end(rows.join('\n')); return;
@@ -1611,7 +1799,7 @@ const server = http.createServer(async (req, res) => {
     // UPDATE STUDENT (Teacher can edit student info)
     if (req.method === 'PUT' && pathname.startsWith('/api/users/student/')) {
         const studentId = decodeURIComponent(pathname.replace('/api/users/student/', ''));
-        const body = await getBody(req);
+        const body = await parseBody(req);
         const users = readJSON(USERS_FILE) || { teachers: [], students: [], admins: [] };
         const idx = users.students.findIndex(s => s.id === studentId);
         if (idx === -1) { send(req, res, 404, { error: 'Student not found' }); return; }
@@ -1619,7 +1807,7 @@ const server = http.createServer(async (req, res) => {
         if (body.class !== undefined) users.students[idx].class = body.class;
         if (body.password) users.students[idx].password = body.password;
         writeJSON(USERS_FILE, users);
-        auditLog('teacher', 'UPDATE_STUDENT', `Updated student: ${studentId}`);
+        auditLog('UPDATE_STUDENT', 'teacher', `Updated student: ${studentId}`);
         send(req, res, 200, { ok: true }); return;
     }
 
@@ -1708,4 +1896,41 @@ server.listen(PORT, '0.0.0.0', () => {
         console.log(`    Run: mkcert.exe ${ip} localhost 127.0.0.1`);
         console.log(`    Then move the generated .pem files to ./cert/\n`);
     }
+});
+
+// Graceful shutdown handler
+function gracefulShutdown(signal) {
+    console.log(`\n${signal} received. Starting graceful shutdown...`);
+    
+    server.close(() => {
+        console.log('HTTP server closed.');
+        
+        // Final cleanup
+        cleanupSessions();
+        cleanupRateLimits();
+        cleanupLiveSessions();
+        
+        console.log('Cleanup complete. Exiting.');
+        process.exit(0);
+    });
+    
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+        console.error('Forced shutdown after timeout');
+        process.exit(1);
+    }, 10000);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
