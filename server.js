@@ -623,7 +623,15 @@ const server = http.createServer(async (req, res) => {
         const file = pathname === '/' ? '/student.html' : pathname;
         const filePath = path.join(PUBLIC_DIR, file);
         if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) { serveFile(res, filePath); return; }
-        send(req, res, 404, { error: 'Not found' }); return;
+        
+        // Serve 404 page for missing files
+        const notFoundPath = path.join(PUBLIC_DIR, '404.html');
+        if (fs.existsSync(notFoundPath)) {
+            serveFile(res, notFoundPath);
+        } else {
+            send(req, res, 404, { error: 'Not found' });
+        }
+        return;
     }
 
     // AUTH - Login
