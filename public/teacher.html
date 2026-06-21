@@ -9,8 +9,12 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#dc2626">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PHIS Teacher">
+<!-- Add jsPDF for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <style>
 /* Reset & Base */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1493,6 +1497,33 @@ question,option_1,option_2,option_3,option_4,answer
             </div>
           </div>
         </div>
+
+        <!-- JSON Format Example Card -->
+        <div class="card">
+          <div class="card-header"><h3><i class="fa fa-info-circle"></i> JSON Format Accepted</h3></div>
+          <div class="card-body">
+            <p style="font-size:14px;color:#666;margin-bottom:16px;">Your JSON file should follow this structure:</p>
+            <div class="json-preview">{
+  "exam": "Networking Systems II",
+  "subject": "Computer Science",
+  "class": "SS 3",
+  "duration": 30,
+  "questions": [
+    {
+      "question": "A networking system is best described as",
+      "A": "a) a single standalone computer",
+      "B": "b) interconnected devices sharing data and resources",
+      "C": "c) a software application",
+      "D": "d) an operating system",
+      "answer": "B"
+    }
+  ]
+}</div>
+            <p style="font-size:12px;color:#666;margin-top:16px;">
+              <i class="fa fa-info-circle"></i> The "class" field is optional. If omitted, the exam will be available to all classes.
+            </p>
+          </div>
+        </div>
       </div>
 
       <!-- EXAMS PAGE -->
@@ -1559,7 +1590,7 @@ question,option_1,option_2,option_3,option_4,answer
         </div>
       </div>
 
-      <!-- RESULTS PAGE -->
+      <!-- RESULTS PAGE - UPDATED -->
       <div class="page" id="page-results">
         <div class="page-header">
           <h2><i class="fa fa-table"></i> Results</h2>
@@ -1599,8 +1630,14 @@ question,option_1,option_2,option_3,option_4,answer
                   <a onclick="downloadResultsExcel()">
                     <i class="fa fa-file-excel-o"></i> All as Excel
                   </a>
+                  <a onclick="downloadResultsPDF()">
+                    <i class="fa fa-file-pdf-o"></i> All as PDF
+                  </a>
                   <a onclick="downloadResultsFilteredCSV()">
                     <i class="fa fa-filter"></i> Filtered as CSV
+                  </a>
+                  <a onclick="downloadResultsFilteredPDF()">
+                    <i class="fa fa-file-pdf-o"></i> Filtered as PDF
                   </a>
                   <a onclick="downloadResultsByClass()">
                     <i class="fa fa-users"></i> By Class
@@ -1620,7 +1657,7 @@ question,option_1,option_2,option_3,option_4,answer
           <div id="resultsStats" class="results-stats"></div>
           
           <div class="table-container">
-            <div id="resultsTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading…</div></div>
+            <div id="resultsTableWrap"><div class="empty"><i class="fa fa-spinner fa-spin"></i>Loading results...</div></div>
           </div>
         </div>
       </div>
@@ -1914,6 +1951,9 @@ async function doLogin() {
     setInterval(updateNet, 15000);
     goPage('overview', document.querySelector('[data-page="overview"]'));
     startMonitorRefresh();
+  } else if (res.error === 'User already logged in on another device') {
+    document.getElementById('loginErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> This account is already logged in on another device.';
+    document.getElementById('loginErr').style.display = 'flex';
   } else { 
     document.getElementById('loginErr').style.display = 'flex'; 
   }
@@ -2112,7 +2152,11 @@ function goPage(name, btn) {
     students: loadStudentList,
     charts: loadCharts
   };
-  loaders[name]?.();
+  
+  // Load data for the page
+  if (loaders[name]) {
+    loaders[name]();
+  }
 }
 
 // OVERVIEW
@@ -2143,7 +2187,7 @@ async function loadOverview() {
         <td><strong>${r.student}</strong></td>
         <td>${r.exam}</td>
         <td>${r.subject || '—'}</td>
-        <td><span class="pill">${r.studentClass || '—'}</span></td>
+        <td><span class="pill">${r.studentClass || r.examClass || '—'}</span></td>
         <td>${r.score}/${r.total}</td>
         <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
         <td><button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')"><i class="fa fa-repeat"></i></button></td>
@@ -2255,7 +2299,7 @@ function startMonitorRefresh() {
     api('/api/sessions').then(s => { 
       document.getElementById('activeBadge').textContent = Array.isArray(s) ? s.length : 0; 
     });
-  }, 15000);
+  }, 5000);
 }
 
 async function resetStudent(studentId, studentName, exam, examFilename) {
@@ -2314,36 +2358,44 @@ async function viewStudentActivity(studentId, studentName) {
     </div>`).join('') : '<div class="empty"><i class="fa fa-history"></i>No activity</div>';
 }
 
-// RESULTS - Enhanced with filters
+// RESULTS - Fixed loading and filtering
 async function loadResults() {
   showLoader('Loading results…');
   
-  const results = await api('/api/results');
-  allResults = Array.isArray(results) ? results : [];
+  try {
+    const results = await api('/api/results');
+    console.log('Results loaded:', results); // Debug log
+    
+    allResults = Array.isArray(results) ? results : [];
+    
+    // Get unique subjects and exams for filters
+    allSubjects = [...new Set(allResults.map(r => r.subject).filter(Boolean))].sort();
+    allExams = [...new Set(allResults.map(r => r.exam).filter(Boolean))].sort();
+    
+    // Populate filter dropdowns
+    const subjectSelect = document.getElementById('filterSubject');
+    subjectSelect.innerHTML = '<option value="">All Subjects</option>' + 
+      allSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
+    
+    const examSelect = document.getElementById('filterExam');
+    examSelect.innerHTML = '<option value="">All Exams</option>' + 
+      allExams.map(e => `<option value="${e}">${e}</option>`).join('');
+    
+    // Restore filter values from localStorage
+    const savedClass = localStorage.getItem('resultsFilterClass') || '';
+    const savedSubject = localStorage.getItem('resultsFilterSubject') || '';
+    const savedExam = localStorage.getItem('resultsFilterExam') || '';
+    
+    document.getElementById('filterClass').value = savedClass;
+    document.getElementById('filterSubject').value = savedSubject;
+    document.getElementById('filterExam').value = savedExam;
+    
+    filterResults();
+  } catch (error) {
+    console.error('Error loading results:', error);
+    toast('Error loading results', 'err');
+  }
   
-  // Get unique subjects and exams for filters
-  allSubjects = [...new Set(allResults.map(r => r.subject).filter(Boolean))].sort();
-  allExams = [...new Set(allResults.map(r => r.exam).filter(Boolean))].sort();
-  
-  // Populate filter dropdowns
-  const subjectSelect = document.getElementById('filterSubject');
-  subjectSelect.innerHTML = '<option value="">All Subjects</option>' + 
-    allSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
-  
-  const examSelect = document.getElementById('filterExam');
-  examSelect.innerHTML = '<option value="">All Exams</option>' + 
-    allExams.map(e => `<option value="${e}">${e}</option>`).join('');
-  
-  // Restore filter values from localStorage
-  const savedClass = localStorage.getItem('resultsFilterClass') || '';
-  const savedSubject = localStorage.getItem('resultsFilterSubject') || '';
-  const savedExam = localStorage.getItem('resultsFilterExam') || '';
-  
-  document.getElementById('filterClass').value = savedClass;
-  document.getElementById('filterSubject').value = savedSubject;
-  document.getElementById('filterExam').value = savedExam;
-  
-  filterResults();
   hideLoader();
 }
 
@@ -2358,7 +2410,7 @@ function filterResults() {
   localStorage.setItem('resultsFilterExam', examFilter);
   
   filteredResults = allResults.filter(r => {
-    if (classFilter && r.studentClass !== classFilter) return false;
+    if (classFilter && r.studentClass !== classFilter && r.examClass !== classFilter) return false;
     if (subjectFilter && r.subject !== subjectFilter) return false;
     if (examFilter && r.exam !== examFilter) return false;
     return true;
@@ -2370,47 +2422,68 @@ function filterResults() {
   const avgPercentage = filteredResults.length ? 
     Math.round(filteredResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / filteredResults.length) : 0;
   
-  document.getElementById('resultsStats').innerHTML = `
+  document.getElementById('resultsStats').innerHTML = filteredResults.length ? `
     <div class="stat-item"><i class="fa fa-file-text"></i> <span>${filteredResults.length}</span> results</div>
     <div class="stat-item"><i class="fa fa-percent"></i> <span>${avgPercentage}%</span> average</div>
     <div class="stat-item"><i class="fa fa-check"></i> <span>${totalScore}/${totalPossible}</span> total</div>
-  `;
+  ` : '<div class="stat-item">No results match your filters</div>';
   
   renderResultsTable(filteredResults);
 }
 
 function renderResultsTable(results) {
-  document.getElementById('resultsTableWrap').innerHTML = results.length ? `
+  if (!results.length) {
+    document.getElementById('resultsTableWrap').innerHTML = '<div class="empty"><i class="fa fa-inbox"></i>No results found</div>';
+    return;
+  }
+  
+  document.getElementById('resultsTableWrap').innerHTML = `
     <table>
-      <thead><tr>
-        <th>Student</th>
-        <th>ID</th>
-        <th>Class</th>
-        <th>Exam</th>
-        <th>Subject</th>
-        <th>Score</th>
-        <th>%</th>
-        <th>Violations</th>
-        <th>Submitted</th>
-        <th>Actions</th>
-      </tr></thead>
-      <tbody>${results.map(r => `<tr>
-        <td><strong>${r.student}</strong></td>
-        <td><code>${r.studentId || '—'}</code></td>
-        <td><span class="pill">${r.studentClass || '—'}</span></td>
-        <td>${r.exam}</td>
-        <td>${r.subject || '—'}</td>
-        <td>${r.score}/${r.total}</td>
-        <td><span class="pill ${r.percentage >= 70 ? 'green' : r.percentage >= 50 ? 'blue' : 'red'}">${r.percentage}%</span></td>
-        <td><span class="pill ${(r.tabViolations||0) > 0 ? 'yellow' : ''}">${r.tabViolations || 0}</span></td>
-        <td>${fmtTime(r.submittedAt)}</td>
-        <td style="white-space:nowrap">
-          <button class="btn outline sm" onclick="downloadSingleResultCSV(${r.id})" title="Download"><i class="fa fa-download"></i></button>
-          <button class="btn warn sm" onclick="openRetakeModal('${r.studentId||r.student}','${r.student}','${r.exam}','${r.examFilename}')" title="Allow retake"><i class="fa fa-repeat"></i></button>
-          <button class="btn danger sm" onclick="deleteResult(${r.id})" title="Delete"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>`).join('')}</tbody>
-    </table>` : '<div class="empty"><i class="fa fa-inbox"></i>No submissions match your filters</div>';
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Student ID</th>
+          <th>Class</th>
+          <th>Exam</th>
+          <th>Subject</th>
+          <th>Score</th>
+          <th>%</th>
+          <th>Violations</th>
+          <th>Submitted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${results.map(r => `
+          <tr>
+            <td><strong>${r.student || '—'}</strong></td>
+            <td><code>${r.studentId || '—'}</code></td>
+            <td><span class="pill">${r.studentClass || r.examClass || '—'}</span></td>
+            <td>${r.exam || '—'}</td>
+            <td>${r.subject || '—'}</td>
+            <td>${r.score || 0}/${r.total || 0}</td>
+            <td>
+              <span class="pill ${(r.percentage || 0) >= 70 ? 'green' : (r.percentage || 0) >= 50 ? 'blue' : 'red'}">
+                ${r.percentage || 0}%
+              </span>
+            </td>
+            <td><span class="pill ${(r.tabViolations || 0) > 0 ? 'yellow' : ''}">${r.tabViolations || 0}</span></td>
+            <td>${r.submittedAt ? new Date(r.submittedAt).toLocaleString() : '—'}</td>
+            <td style="white-space:nowrap">
+              <button class="btn outline sm" onclick="downloadSingleResultPDF(${r.id}, '${r.student || ''}')" title="Download PDF">
+                <i class="fa fa-file-pdf-o"></i>
+              </button>
+              <button class="btn warn sm" onclick="openRetakeModal('${r.studentId || r.student}','${r.student}','${r.exam}','${r.examFilename}')" title="Allow retake">
+                <i class="fa fa-repeat"></i>
+              </button>
+              <button class="btn danger sm" onclick="deleteResult(${r.id})" title="Delete">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
 }
 
 async function deleteResult(id) {
@@ -2425,6 +2498,154 @@ function clearAllResults() {
     await fetch('/api/results', { method: 'DELETE' });
     toast('All results cleared'); loadResults();
   }, 'danger');
+}
+
+// PDF EXPORT FUNCTIONS
+function downloadResultsPDF() {
+  if (!allResults.length) {
+    toast('No results to export', 'err');
+    return;
+  }
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape' });
+    
+    doc.setFontSize(18);
+    doc.text('Exam Results - All Students', 14, 22);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 30);
+    
+    const tableColumn = ['Student', 'ID', 'Class', 'Exam', 'Subject', 'Score', '%', 'Violations'];
+    const tableRows = [];
+    
+    allResults.forEach(r => {
+      const rowData = [
+        r.student || '',
+        r.studentId || '',
+        r.studentClass || r.examClass || '',
+        r.exam || '',
+        r.subject || '',
+        `${r.score}/${r.total}`,
+        `${r.percentage}%`,
+        r.tabViolations || 0
+      ];
+      tableRows.push(rowData);
+    });
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 35,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [220, 38, 38] }
+    });
+    
+    doc.save(`all_results_${new Date().toISOString().slice(0,10)}.pdf`);
+    toast('PDF downloaded successfully', 'ok');
+  } catch (error) {
+    console.error('PDF Error:', error);
+    toast('Error generating PDF', 'err');
+  }
+}
+
+function downloadResultsFilteredPDF() {
+  if (!filteredResults.length) {
+    toast('No results to export', 'err');
+    return;
+  }
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape' });
+    
+    const classFilter = document.getElementById('filterClass').value;
+    const subjectFilter = document.getElementById('filterSubject').value;
+    const examFilter = document.getElementById('filterExam').value;
+    
+    let title = 'Exam Results';
+    if (classFilter || subjectFilter || examFilter) {
+      title += ' - Filtered:';
+      if (classFilter) title += ` Class:${classFilter}`;
+      if (subjectFilter) title += ` Subject:${subjectFilter}`;
+      if (examFilter) title += ` Exam:${examFilter}`;
+    }
+    
+    doc.setFontSize(16);
+    doc.text(title, 14, 22);
+    doc.setFontSize(8);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 30);
+    
+    const tableColumn = ['Student', 'ID', 'Class', 'Exam', 'Subject', 'Score', '%', 'Violations'];
+    const tableRows = [];
+    
+    filteredResults.forEach(r => {
+      const rowData = [
+        r.student || '',
+        r.studentId || '',
+        r.studentClass || r.examClass || '',
+        r.exam || '',
+        r.subject || '',
+        `${r.score}/${r.total}`,
+        `${r.percentage}%`,
+        r.tabViolations || 0
+      ];
+      tableRows.push(rowData);
+    });
+    
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 35,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [220, 38, 38] }
+    });
+    
+    doc.save(`filtered_results_${new Date().toISOString().slice(0,10)}.pdf`);
+    toast('PDF downloaded successfully', 'ok');
+  } catch (error) {
+    console.error('PDF Error:', error);
+    toast('Error generating PDF', 'err');
+  }
+}
+
+function downloadSingleResultPDF(id, studentName) {
+  const result = allResults.find(r => r.id === id);
+  if (!result) {
+    toast('Result not found', 'err');
+    return;
+  }
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.setFontSize(20);
+    doc.text('Exam Result', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.text(`Student: ${result.student}`, 20, 40);
+    doc.text(`Student ID: ${result.studentId || 'N/A'}`, 20, 50);
+    doc.text(`Class: ${result.studentClass || result.examClass || 'N/A'}`, 20, 60);
+    doc.text(`Exam: ${result.exam}`, 20, 70);
+    doc.text(`Subject: ${result.subject || 'N/A'}`, 20, 80);
+    
+    doc.setFontSize(16);
+    doc.text(`Score: ${result.score}/${result.total} (${result.percentage}%)`, 20, 100);
+    
+    doc.setFontSize(12);
+    doc.text(`Tab Violations: ${result.tabViolations || 0}`, 20, 120);
+    doc.text(`Submitted: ${result.submittedAt ? new Date(result.submittedAt).toLocaleString() : 'N/A'}`, 20, 130);
+    
+    doc.setFontSize(8);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 20, 280);
+    
+    doc.save(`result_${studentName || 'student'}_${new Date().toISOString().slice(0,10)}.pdf`);
+    toast('PDF downloaded successfully', 'ok');
+  } catch (error) {
+    console.error('PDF Error:', error);
+    toast('Error generating PDF', 'err');
+  }
 }
 
 // EXPORT FUNCTIONS
@@ -2449,19 +2670,17 @@ function downloadResultsFilteredCSV() {
   if (!filteredResults.length) { toast('No results to export', 'err'); return; }
   
   const rows = [
-    'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Time Taken (s),Submitted At',
+    'Student Name,Student ID,Class,Exam Name,Subject,Score,Total,Percentage,Tab Violations,Submitted At',
     ...filteredResults.map(r => [
       `"${(r.student || '').replace(/"/g, '""')}"`,
       `"${r.studentId || ''}"`,
-      `"${r.studentClass || ''}"`,
+      `"${r.studentClass || r.examClass || ''}"`,
       `"${(r.exam || '').replace(/"/g, '""')}"`,
       `"${r.subject || ''}"`,
-      `"${r.examClass || ''}"`,
       r.score,
       r.total || '',
       r.percentage,
       r.tabViolations || 0,
-      r.timeTaken || '',
       `"${r.submittedAt || ''}"`
     ].join(','))
   ];

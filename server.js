@@ -1,10 +1,11 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 const VERSION = '2.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
@@ -22,7 +23,7 @@ const SUBMITTED_EXAMS_FILE = path.join(DATABASE_DIR, 'submitted_exams.json');
 
 // Live sessions
 const liveSessions = {};
-const activeTokens = new Map();
+const activeTokens = new Map(); // Track active tokens by userId
 
 // Create directories
 [PUBLIC_DIR, UPLOADS_DIR, DATABASE_DIR].forEach(d => {
@@ -375,51 +376,73 @@ function serveFile(res, filePath) {
     });
 }
 
-// Session management
+// Session management with proper cleanup
 function saveSession(token, data) {
     const sessions = readJSON(SESSIONS_FILE) || {};
     const userId = data.id;
     
+    // Remove any existing session for this user
     if (activeTokens.has(userId)) {
         const oldToken = activeTokens.get(userId);
         delete sessions[oldToken];
+        activeTokens.delete(userId);
     }
     
-    sessions[token] = { ...data, lastAccessed: Date.now() };
+    // Save new session
+    sessions[token] = { 
+        ...data, 
+        lastAccessed: Date.now(),
+        createdAt: Date.now()
+    };
+    
     activeTokens.set(userId, token);
     writeJSON(SESSIONS_FILE, sessions);
+    return true;
 }
 
 function getSession(token) {
     const sessions = readJSON(SESSIONS_FILE) || {};
     const session = sessions[token];
-    if (session && Date.now() - session.lastAccessed < 86400000) {
+    
+    if (session) {
+        // Update last accessed
+        session.lastAccessed = Date.now();
+        sessions[token] = session;
+        writeJSON(SESSIONS_FILE, sessions);
         return session;
     }
+    
     return null;
 }
 
 function deleteSession(token) {
     const sessions = readJSON(SESSIONS_FILE) || {};
     const session = sessions[token];
+    
     if (session) {
         activeTokens.delete(session.id);
         delete sessions[token];
         writeJSON(SESSIONS_FILE, sessions);
+        return true;
     }
+    
+    return false;
 }
 
 function cleanupSessions() {
     const sessions = readJSON(SESSIONS_FILE) || {};
     let changed = false;
     const now = Date.now();
+    
     for (const [token, data] of Object.entries(sessions)) {
+        // Remove sessions older than 24 hours
         if (now - data.lastAccessed > 86400000) {
             activeTokens.delete(data.id);
             delete sessions[token];
             changed = true;
         }
     }
+    
     if (changed) writeJSON(SESSIONS_FILE, sessions);
 }
 
@@ -517,9 +540,28 @@ const server = http.createServer(async (req, res) => {
         }
         
         if (user) {
+            // Check if user already has an active session
             if (activeTokens.has(user.id)) {
-                send(req, res, 409, { ok: false, error: 'User already logged in on another device' });
-                return;
+                const existingToken = activeTokens.get(user.id);
+                const sessions = readJSON(SESSIONS_FILE) || {};
+                
+                // If the session exists, allow re-login from same device
+                if (sessions[existingToken]) {
+                    // Return the existing token instead of creating a new one
+                    send(req, res, 200, { 
+                        ok: true, 
+                        token: existingToken,
+                        name: user.name, 
+                        role, 
+                        subject: user.subject || '', 
+                        class: user.class || '',
+                        id: user.id
+                    });
+                    return;
+                } else {
+                    // Session expired, remove from activeTokens
+                    activeTokens.delete(user.id);
+                }
             }
             
             const token = generateSessionToken();
@@ -530,6 +572,7 @@ const server = http.createServer(async (req, res) => {
                 subject: user.subject || '',
                 class: user.class || ''
             };
+            
             saveSession(token, sessionData);
             
             if (role === 'student') {
@@ -843,11 +886,17 @@ const server = http.createServer(async (req, res) => {
         const examFilename = decodeURIComponent(parts[1]);
         
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const hasTaken = results.some(r => 
             r.studentId === studentId && r.examFilename === examFilename
         );
         
-        send(req, res, 200, { hasTaken });
+        // Check if student was reset for this exam or all exams
+        const wasReset = resetEntry === true || resetEntry === examFilename;
+        
+        send(req, res, 200, { hasTaken: hasTaken && !wasReset });
         return;
     }
 
@@ -855,8 +904,16 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && pathname.startsWith('/api/student-taken-exams/')) {
         const studentId = decodeURIComponent(pathname.replace('/api/student-taken-exams/', ''));
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const takenExams = results
             .filter(r => r.studentId === studentId)
+            .filter(r => {
+                if (resetEntry === true) return false;
+                if (resetEntry === r.examFilename) return false;
+                return true;
+            })
             .map(r => r.examFilename);
         
         send(req, res, 200, { takenExams, count: takenExams.length });
@@ -869,8 +926,16 @@ const server = http.createServer(async (req, res) => {
         const studentClass = url.searchParams.get('class');
         
         const results = readJSON(RESULTS_FILE) || [];
+        const resets = readJSON(RESETS_FILE) || {};
+        const resetEntry = resets[studentId];
+        
         const takenExams = results
             .filter(r => r.studentId === studentId)
+            .filter(r => {
+                if (resetEntry === true) return false;
+                if (resetEntry === r.examFilename) return false;
+                return true;
+            })
             .map(r => r.examFilename);
         
         const files = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
@@ -1111,20 +1176,117 @@ const server = http.createServer(async (req, res) => {
         res.end(rows.join('\n')); return;
     }
 
-    // RESULTS - Get all subjects for filter
+    // GET ALL RESULTS
+    if (req.method === 'GET' && pathname === '/api/results') {
+        const results = readJSON(RESULTS_FILE) || [];
+        
+        // Map results to include only needed fields and ensure exam data is complete
+        const formattedResults = results.map(r => {
+            // Try to get exam details from uploaded file if available
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                id: r.id,
+                student: r.student,
+                studentId: r.studentId,
+                exam: r.exam,
+                examFilename: r.examFilename,
+                subject: examSubject,
+                examClass: examClass,
+                studentClass: r.studentClass || '',
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
+        
+        send(req, res, 200, formattedResults);
+        return;
+    }
+
+    // GET RESULTS SUBJECTS (for filter dropdown)
     if (req.method === 'GET' && pathname === '/api/results/subjects') {
         const results = readJSON(RESULTS_FILE) || [];
-        const subjects = [...new Set(results.map(r => r.subject).filter(Boolean))];
+        const subjects = [...new Set(results.map(r => {
+            if (r.subject) return r.subject;
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        return examData?.subject || '';
+                    }
+                } catch (e) {}
+            }
+            return '';
+        }).filter(Boolean))].sort();
+        
         send(req, res, 200, subjects);
+        return;
+    }
+
+    // GET RESULTS EXAMS (for filter dropdown)
+    if (req.method === 'GET' && pathname === '/api/results/exams') {
+        const results = readJSON(RESULTS_FILE) || [];
+        const exams = [...new Set(results.map(r => r.exam).filter(Boolean))].sort();
+        send(req, res, 200, exams);
         return;
     }
 
     // RESULTS CSV DETAILED
     if (req.method === 'GET' && pathname === '/api/results/csv') {
         const results = readJSON(RESULTS_FILE) || [];
+        const formattedResults = results.map(r => {
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                student: r.student,
+                studentId: r.studentId,
+                studentClass: r.studentClass || '',
+                exam: r.exam,
+                subject: examSubject,
+                examClass: examClass,
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
+        
         const rows = [
-            'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
-            ...results.map(r => [
+            'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
+            ...formattedResults.map(r => [
                 `"${(r.student || '').replace(/"/g, '""')}"`,
                 `"${r.studentId || ''}"`,
                 `"${r.studentClass || ''}"`,
@@ -1133,12 +1295,12 @@ const server = http.createServer(async (req, res) => {
                 `"${r.examClass || ''}"`,
                 r.score,
                 r.total || '',
-                r.percentage != null ? r.percentage + '%' : '',
+                r.percentage,
                 r.tabViolations || 0,
-                r.timeTaken || '',
                 `"${r.submittedAt || ''}"`
             ].join(','))
         ];
+        
         res.writeHead(200, { 
             'Content-Type': 'text/csv', 
             'Content-Disposition': 'attachment; filename="results_detailed.csv"', 
@@ -1150,9 +1312,41 @@ const server = http.createServer(async (req, res) => {
     // RESULTS EXCEL
     if (req.method === 'GET' && pathname === '/api/results/excel') {
         const results = readJSON(RESULTS_FILE) || [];
+        const formattedResults = results.map(r => {
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                student: r.student,
+                studentId: r.studentId,
+                studentClass: r.studentClass || '',
+                exam: r.exam,
+                subject: examSubject,
+                examClass: examClass,
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
+        
         const rows = [
-            'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
-            ...results.map(r => [
+            'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
+            ...formattedResults.map(r => [
                 `"${(r.student || '').replace(/"/g, '""')}"`,
                 `"${r.studentId || ''}"`,
                 `"${r.studentClass || ''}"`,
@@ -1161,12 +1355,12 @@ const server = http.createServer(async (req, res) => {
                 `"${r.examClass || ''}"`,
                 r.score,
                 r.total || '',
-                r.percentage != null ? r.percentage + '%' : '',
+                r.percentage,
                 r.tabViolations || 0,
-                r.timeTaken || '',
                 `"${r.submittedAt || ''}"`
             ].join(','))
         ];
+        
         res.writeHead(200, { 
             'Content-Type': 'application/vnd.ms-excel', 
             'Content-Disposition': 'attachment; filename="results.xls"', 
@@ -1179,11 +1373,44 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && pathname === '/api/results/by-class') {
         const studentClass = url.searchParams.get('class');
         const results = readJSON(RESULTS_FILE) || [];
-        const filtered = studentClass ? results.filter(r => r.studentClass === studentClass) : results;
+        
+        const filtered = results.filter(r => r.studentClass === studentClass || r.examClass === studentClass);
+        
+        const formattedResults = filtered.map(r => {
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                student: r.student,
+                studentId: r.studentId,
+                studentClass: r.studentClass || '',
+                exam: r.exam,
+                subject: examSubject,
+                examClass: examClass,
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
         
         const rows = [
-            'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
-            ...filtered.map(r => [
+            'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
+            ...formattedResults.map(r => [
                 `"${(r.student || '').replace(/"/g, '""')}"`,
                 `"${r.studentId || ''}"`,
                 `"${r.studentClass || ''}"`,
@@ -1192,12 +1419,12 @@ const server = http.createServer(async (req, res) => {
                 `"${r.examClass || ''}"`,
                 r.score,
                 r.total || '',
-                r.percentage != null ? r.percentage + '%' : '',
+                r.percentage,
                 r.tabViolations || 0,
-                r.timeTaken || '',
                 `"${r.submittedAt || ''}"`
             ].join(','))
         ];
+        
         res.writeHead(200, { 
             'Content-Type': 'text/csv', 
             'Content-Disposition': `attachment; filename="results_${studentClass || 'all'}.csv"`, 
@@ -1210,11 +1437,56 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && pathname === '/api/results/by-subject') {
         const subject = url.searchParams.get('subject');
         const results = readJSON(RESULTS_FILE) || [];
-        const filtered = subject ? results.filter(r => r.subject === subject) : results;
+        
+        const filtered = results.filter(r => {
+            let rSubject = r.subject;
+            if (!rSubject && r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        rSubject = examData?.subject || '';
+                    }
+                } catch (e) {}
+            }
+            return rSubject === subject;
+        });
+        
+        const formattedResults = filtered.map(r => {
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                student: r.student,
+                studentId: r.studentId,
+                studentClass: r.studentClass || '',
+                exam: r.exam,
+                subject: examSubject,
+                examClass: examClass,
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
         
         const rows = [
-            'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
-            ...filtered.map(r => [
+            'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
+            ...formattedResults.map(r => [
                 `"${(r.student || '').replace(/"/g, '""')}"`,
                 `"${r.studentId || ''}"`,
                 `"${r.studentClass || ''}"`,
@@ -1223,12 +1495,12 @@ const server = http.createServer(async (req, res) => {
                 `"${r.examClass || ''}"`,
                 r.score,
                 r.total || '',
-                r.percentage != null ? r.percentage + '%' : '',
+                r.percentage,
                 r.tabViolations || 0,
-                r.timeTaken || '',
                 `"${r.submittedAt || ''}"`
             ].join(','))
         ];
+        
         res.writeHead(200, { 
             'Content-Type': 'text/csv', 
             'Content-Disposition': `attachment; filename="results_${subject || 'all'}.csv"`, 
@@ -1243,23 +1515,40 @@ const server = http.createServer(async (req, res) => {
         const results = readJSON(RESULTS_FILE) || [];
         const r = results.find(r => r.id === resultId);
         if (!r) { send(req, res, 404, { error: 'Result not found' }); return; }
+        
+        let examSubject = r.subject || '';
+        let examClass = r.examClass || '';
+        
+        if (r.examFilename) {
+            try {
+                const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                if (fs.existsSync(examPath)) {
+                    const examData = readJSON(examPath);
+                    if (examData) {
+                        examSubject = examData.subject || examSubject;
+                        examClass = examData.class || examClass;
+                    }
+                }
+            } catch (e) {}
+        }
+        
         const rows = [
-            'Student Name,Student ID,Class,Exam Name,Subject,Exam Class,Score,Total Questions,Percentage,Tab Violations,Time Taken (s),Submitted At',
+            'Student Name,Student ID,Student Class,Exam Name,Subject,Exam Class,Score,Total,Percentage,Tab Violations,Submitted At',
             [
                 `"${(r.student || '').replace(/"/g, '""')}"`,
                 `"${r.studentId || ''}"`,
                 `"${r.studentClass || ''}"`,
                 `"${(r.exam || '').replace(/"/g, '""')}"`,
-                `"${r.subject || ''}"`,
-                `"${r.examClass || ''}"`,
+                `"${examSubject}"`,
+                `"${examClass}"`,
                 r.score,
                 r.total || '',
-                r.percentage != null ? r.percentage + '%' : '',
+                r.percentage,
                 r.tabViolations || 0,
-                r.timeTaken || '',
                 `"${r.submittedAt || ''}"`
             ].join(',')
         ];
+        
         res.writeHead(200, { 
             'Content-Type': 'text/csv', 
             'Content-Disposition': `attachment; filename="result_${r.studentId || r.student}.csv"`, 
@@ -1319,8 +1608,55 @@ const server = http.createServer(async (req, res) => {
         send(req, res, 200, activity); return;
     }
 
+    // UPDATE STUDENT (Teacher can edit student info)
+    if (req.method === 'PUT' && pathname.startsWith('/api/users/student/')) {
+        const studentId = decodeURIComponent(pathname.replace('/api/users/student/', ''));
+        const body = await getBody(req);
+        const users = readJSON(USERS_FILE) || { teachers: [], students: [], admins: [] };
+        const idx = users.students.findIndex(s => s.id === studentId);
+        if (idx === -1) { send(req, res, 404, { error: 'Student not found' }); return; }
+        if (body.name) users.students[idx].name = body.name;
+        if (body.class !== undefined) users.students[idx].class = body.class;
+        if (body.password) users.students[idx].password = body.password;
+        writeJSON(USERS_FILE, users);
+        auditLog('teacher', 'UPDATE_STUDENT', `Updated student: ${studentId}`);
+        send(req, res, 200, { ok: true }); return;
+    }
+
     send(req, res, 404, { error: 'Unknown endpoint' });
 });
+
+// HTTPS SERVER SETUP (for LAN PWA support)
+function findCertFiles() {
+    const ip = getServerIP();
+    const certDir = path.join(__dirname, 'cert');
+    const rootDir = __dirname;
+    
+    const candidates = [
+        [path.join(certDir, `${ip}.pem`), path.join(certDir, `${ip}-key.pem`)],
+        [path.join(certDir, 'cert.pem'), path.join(certDir, 'key.pem')],
+        [path.join(rootDir, 'cert.pem'), path.join(rootDir, 'key.pem')],
+    ];
+    
+    // Also scan cert dir for mkcert-style files (IP+N.pem)
+    if (fs.existsSync(certDir)) {
+        try {
+            fs.readdirSync(certDir)
+                .filter(f => f.startsWith(ip) && f.endsWith('.pem') && !f.endsWith('-key.pem'))
+                .forEach(f => {
+                    const keyFile = f.replace('.pem', '-key.pem');
+                    candidates.unshift([path.join(certDir, f), path.join(certDir, keyFile)]);
+                });
+        } catch (_) {}
+    }
+    
+    for (const [certPath, keyPath] of candidates) {
+        if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+            return { cert: fs.readFileSync(certPath), key: fs.readFileSync(keyPath) };
+        }
+    }
+    return null;
+}
 
 server.listen(PORT, '0.0.0.0', () => {
     const ip = getServerIP();
@@ -1328,26 +1664,48 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('║            PETER HARVARD INTERNATIONAL SCHOOLS                ║');
     console.log('║                 EXAM SYSTEM  v2.0.0                           ║');
     console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log(`║  🌐 Local:    http://localhost:${PORT}                       ║`);
-    console.log(`║  🌍 Network:  http://${ip}:${PORT}                           ║`);
+    console.log(`║  🌐 Local:    http://localhost:${PORT}                         ║`);
+    console.log(`║  🌍 Network:  http://${ip}:${PORT}                             ║`);
     console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log(`║  👨‍🎓 Student : http://localhost:${PORT}/student.html        ║`);
-    console.log(`║  👩‍🏫 Teacher : http://localhost:${PORT}/teacher.html         ║`);
-    console.log(`║  🔐 Admin   : http://localhost:${PORT}/admin.html            ║`);
+    console.log(`║  👨‍🎓 Student : http://localhost:${PORT}/student.html          ║`);
+    console.log(`║  👩‍🏫 Teacher : http://localhost:${PORT}/teacher.html          ║`);
     console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  ✨ NEW FEATURES:                                            ║');
-    console.log('║  • Question randomization for each student                   ║');
-    console.log('║  • Flexible CSV upload (accepts various column names)        ║');
-    console.log('║  • Stay on same page after reload                            ║');
-    console.log('║  • Dynamic subject filtering in results                      ║');
-    console.log('║  • Allow retake for students                                 ║');
+    console.log('║  ✨ NEW FEATURES:                                              ║');
+    console.log('║  • Question randomization for each student                     ║');
+    console.log('║  • Flexible CSV upload (accepts various column names)          ║');
+    console.log('║  • Stay on same page after reload                              ║');
+    console.log('║  • Dynamic subject filtering in results                        ║');
+    console.log('║  • Allow retake for students                                   ║');
+    console.log('║  • PDF export for results                                      ║');
+    console.log('║  • Auto redirect after exam completion                         ║');
+    console.log('║  • Fixed session persistence                                   ║');
     console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  📁 CSV Columns Accepted:                                    ║');
-    console.log('║  question, option_1/option1/opt1/A, option_2/option2/opt2/B ║');
-    console.log('║  option_3/option3/opt3/C, option_4/option4/opt4/D, answer   ║');
+    console.log('║  📁 CSV Columns Accepted:                                      ║');
+    console.log('║  question, option_1/option1/opt1/A, option_2/option2/opt2/B   ║');
+    console.log('║  option_3/option3/opt3/C, option_4/option4/opt4/D, answer     ║');
     console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  👨‍💻 Developed by: anointedthedeveloper                       ║');
-    console.log('║  🏫 Peter Harvard International Schools                       ║');
-    console.log('║  📅 2026 - All Rights Reserved                                ║');
+    console.log('║  👨‍💻 Developed by: anointedthedeveloper                         ║');
+    console.log('║  🏫 Peter Harvard International Schools                         ║');
+    console.log('║  📅 2026 - All Rights Reserved                                  ║');
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
+
+    // Start HTTPS server if cert files are found
+    const certFiles = findCertFiles();
+    if (certFiles) {
+        const HTTPS_PORT = process.env.HTTPS_PORT || 3443;
+        try {
+            https.createServer(certFiles, server._events.request).listen(HTTPS_PORT, '0.0.0.0', () => {
+                console.log(`✅  HTTPS server running on https://${ip}:${HTTPS_PORT}`);
+                console.log(`✅  PWA-ready HTTPS URLs:`);
+                console.log(`    Student:  https://${ip}:${HTTPS_PORT}/student.html`);
+                console.log(`    Teacher:  https://${ip}:${HTTPS_PORT}/teacher.html\n`);
+            });
+        } catch (e) {
+            console.log(`⚠️  HTTPS server failed to start: ${e.message}`);
+        }
+    } else {
+        console.log(`ℹ️  No SSL cert found. Place cert files in ./cert/ to enable HTTPS.`);
+        console.log(`    Run: mkcert.exe ${ip} localhost 127.0.0.1`);
+        console.log(`    Then move the generated .pem files to ./cert/\n`);
+    }
 });

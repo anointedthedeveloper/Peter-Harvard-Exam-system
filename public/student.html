@@ -1326,7 +1326,7 @@ body {
 
 <!-- TAB WARNING BAR -->
 <div class="tab-warning-bar" id="tabWarningBar">
-  <i class="fa fa-exclamation-triangle"></i> WARNING: You left the exam tab! Your exam will be submitted immediately! <i class="fa fa-exclamation-triangle"></i>
+  <i class="fa fa-exclamation-triangle"></i> <span id="tabWarningText">WARNING: You left the exam tab! <strong>If you leave again, your exam will be submitted immediately!</strong></span> <i class="fa fa-exclamation-triangle"></i>
 </div>
 
 <!-- LOGIN SCREEN - SPLIT LAYOUT -->
@@ -1602,13 +1602,15 @@ body {
   <div class="modal danger-modal">
     <div class="modal-header">
       <i class="fa fa-exclamation-triangle"></i>
-      <h3><i class="fa fa-warning"></i> EMERGENCY WARNING!</h3>
-      <p><strong>You have left the exam tab!</strong></p>
-      <p style="margin-top:15px;color:#dc2626;font-weight:700;">YOUR EXAM WILL BE SUBMITTED IMMEDIATELY!</p>
+      <h3><i class="fa fa-warning"></i> TAB VIOLATION WARNING</h3>
+      <p><strong>You have left or are attempting to leave the exam tab!</strong></p>
+      <p style="margin-top:12px;color:#dc2626;font-weight:700;">If you leave or switch tabs again, your exam will be AUTOMATICALLY SUBMITTED.</p>
+      <p style="margin-top:8px;font-size:13px;color:#555;">Stay on this tab to continue your exam safely.</p>
     </div>
     <div class="modal-body">
       <div class="modal-actions">
-        <button class="primary" onclick="window.location.reload()">UNDERSTOOD</button>
+        <button class="primary" onclick="closeModal('modalTabWarn')">Stay &amp; Continue Exam</button>
+        <button class="danger" onclick="closeModal('modalTabWarn');doSubmit()">Submit Exam Now</button>
       </div>
     </div>
   </div>
@@ -1645,7 +1647,9 @@ const S = {
   tabViolations: 0, submitted: false,
   sessionInterval: null, netInterval: null,
   sessionToken: localStorage.getItem('examSessionToken') || null,
-  isLeaving: false
+  isLeaving: false,
+  tabWarnedOnce: false,
+  tabCountdownTimer: null
 };
 
 // SCREEN MANAGEMENT
@@ -1828,39 +1832,48 @@ async function getAvailableExamsCount() {
   }
 }
 
-// CONTINUE AFTER SUBMIT
+// CONTINUE AFTER SUBMIT - FIXED AUTO REDIRECT
 async function continueAfterSubmit() {
   showLoader('Checking available exams…');
   const availableCount = await getAvailableExamsCount();
   hideLoader();
   
   if (availableCount > 0) {
+    // More exams available - return to select screen
     showScreen('s-select');
     loadExams();
+    toast(`${availableCount} more exam(s) available`, 'ok');
   } else {
+    // No more exams - show completion screen
     await showCompletionScreen();
   }
 }
 
 // SHOW COMPLETION SCREEN
 async function showCompletionScreen() {
-  const results = await fetch('/api/results').then(r => r.json());
-  const studentResults = Array.isArray(results) ? results.filter(r => r.studentId === S.studentId) : [];
-  const totalExams = studentResults.length;
-  const avgScore = totalExams > 0 
-    ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / totalExams)
-    : 0;
-  
-  document.getElementById('completedTotal').textContent = totalExams;
-  document.getElementById('completedAvg').textContent = avgScore + '%';
-  
-  showScreen('s-completed');
-  
-  setTimeout(() => {
-    if (document.getElementById('s-completed').style.display === 'flex') {
-      doLogout();
-    }
-  }, 10000);
+  try {
+    const results = await fetch('/api/results').then(r => r.json());
+    const studentResults = Array.isArray(results) ? results.filter(r => r.studentId === S.studentId) : [];
+    const totalExams = studentResults.length;
+    const avgScore = totalExams > 0 
+      ? Math.round(studentResults.reduce((sum, r) => sum + (r.percentage || 0), 0) / totalExams)
+      : 0;
+    
+    document.getElementById('completedTotal').textContent = totalExams;
+    document.getElementById('completedAvg').textContent = avgScore + '%';
+    
+    showScreen('s-completed');
+    
+    // Auto logout after 10 seconds on completion screen
+    setTimeout(() => {
+      if (document.getElementById('s-completed').style.display === 'flex') {
+        doLogout();
+      }
+    }, 10000);
+  } catch {
+    showScreen('s-completed');
+    setTimeout(() => doLogout(), 10000);
+  }
 }
 
 // LOAD EXAMS
@@ -1959,6 +1972,8 @@ async function beginExam() {
     S.current = 0;
     S.submitted = false;
     S.tabViolations = 0;
+    S.tabWarnedOnce = false;
+    if (S.tabCountdownTimer) { clearInterval(S.tabCountdownTimer); S.tabCountdownTimer = null; }
     S.timeLeft = (data.duration || 30) * 60;
     S.examName = data.exam;
 
@@ -1985,7 +2000,7 @@ async function beginExam() {
 }
 
 // TAB TRACKING
-function handleTabViolation(immediate = true) {
+function handleTabViolation(autoSubmit = false) {
   if (S.submitted) return;
   
   S.tabViolations++;
@@ -2003,33 +2018,76 @@ function handleTabViolation(immediate = true) {
   const warningBar = document.getElementById('tabWarningBar');
   warningBar.classList.add('show');
   
-  if (immediate) {
+  if (autoSubmit) {
     setTimeout(() => {
-      if (!S.submitted) {
-        doSubmit();
-      }
+      if (!S.submitted) doSubmit();
     }, 500);
   }
 }
 
 function onVisibilityChange() {
   if (S.submitted) return;
+  
   if (document.visibilityState === 'hidden') {
-    handleTabViolation(true);
+    S.tabViolations++;
+    fetch('/api/tabviolation', { 
+      method:'POST', 
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ studentId: S.studentId, student: S.studentName, exam: S.examName, count: S.tabViolations }) 
+    }).catch(() => {});
+    
+    const badge = document.getElementById('violBadge');
+    badge.innerHTML = `<i class="fa fa-exclamation-triangle"></i> <span>${S.tabViolations}</span>`;
+    badge.classList.add('warn');
+    document.getElementById('tabWarningBar').classList.add('show');
+    
+    if (!S.tabWarnedOnce) {
+      // First leave: warn, start a 30-second countdown before auto-submit
+      S.tabWarnedOnce = true;
+      const warningBar = document.getElementById('tabWarningBar');
+      document.getElementById('tabWarningText').innerHTML = 
+        'WARNING: You left the exam tab! <strong>Return immediately or your exam will be submitted in <span id="tabCountdown">30</span>s!</strong>';
+      
+      let countdown = 30;
+      const cdEl = () => document.getElementById('tabCountdown');
+      if (S.tabCountdownTimer) clearInterval(S.tabCountdownTimer);
+      S.tabCountdownTimer = setInterval(() => {
+        countdown--;
+        if (cdEl()) cdEl().textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(S.tabCountdownTimer);
+          S.tabCountdownTimer = null;
+          if (!S.submitted) doSubmit();
+        }
+      }, 1000);
+    } else {
+      // Second+ leave: submit immediately
+      if (S.tabCountdownTimer) clearInterval(S.tabCountdownTimer);
+      setTimeout(() => {
+        if (!S.submitted) doSubmit();
+      }, 500);
+    }
+  } else if (document.visibilityState === 'visible') {
+    // Student returned to the tab
+    if (S.tabWarnedOnce && S.tabCountdownTimer) {
+      clearInterval(S.tabCountdownTimer);
+      S.tabCountdownTimer = null;
+      // Update warning bar message now that they're back
+      document.getElementById('tabWarningText').innerHTML = 
+        'WARNING: Tab violation recorded! <strong>If you leave this tab again, your exam will be AUTOMATICALLY SUBMITTED!</strong>';
+      // Show the warning modal so they see it clearly
+      openModal('modalTabWarn');
+    }
   }
 }
 
 function onBeforeUnload(e) {
   if (S.submitted) return;
+  // Show warning modal (they will see it if they cancel the navigation)
   openModal('modalTabWarn');
-  setTimeout(() => {
-    if (!S.submitted) {
-      doSubmit();
-    }
-  }, 100);
   e.preventDefault();
-  e.returnValue = '';
-  return '';
+  e.returnValue = 'If you leave this page, your exam will be submitted!';
+  return 'If you leave this page, your exam will be submitted!';
 }
 
 function setupTabTracking() {
@@ -2231,10 +2289,14 @@ async function doSubmit() {
   clearDraft();
   document.exitFullscreen?.().catch(() => {});
   
+  // Check available exams after submission
   const availableCount = await getAvailableExamsCount();
   if (availableCount > 0) {
+    // More exams available - show submitted screen with continue button
     showScreen('s-submitted');
+    toast(`${availableCount} more exam(s) available`, 'ok');
   } else {
+    // No more exams - go to completion screen
     await showCompletionScreen();
   }
 }
