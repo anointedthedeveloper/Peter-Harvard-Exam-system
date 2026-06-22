@@ -1,26 +1,74 @@
 [
   {
-    "time": "2026-06-21T22:28:32.982Z",
+    "time": "2026-06-22T20:59:13.029Z",
     "action": "LOGIN",
-    "detail": "teacher: collins (Mr Collins)",
-    "actor": "collins"
+    "detail": "student: 935715 (ABDULWAHAB ABDULHAKEEM OGIRIMA)",
+    "actor": "935715"
   },
   {
-    "time": "2026-06-21T23:01:23.392Z",
+    "time": "2026-06-22T20:59:41.044Z",
     "action": "LOGIN",
-    "detail": "admin: admin (Administrator)",
-    "actor": "admin"
+    "detail": "student: 935715 (ABDULWAHAB ABDULHAKEEM OGIRIMA)",
+    "actor": "935715"
   },
   {
-    "time": "2026-06-21T23:03:33.875Z",
-    "action": "PASSWORD_RESET",
-    "detail": "teacher: collins",
-    "actor": "admin"
+    "time": "2026-06-22T21:02:16.428Z",
+    "action": "UPLOAD",
+    "detail": "Exam: deepseek_json_20260622_2daa48.json | Subject: Computer Science | Class: SS 3",
+    "actor": "system"
   },
   {
-    "time": "2026-06-21T23:05:50.559Z",
+    "time": "2026-06-22T21:03:17.555Z",
+    "action": "TAB_VIOLATION",
+    "detail": "ABDULWAHAB ABDULHAKEEM OGIRIMA - #1 in Networking Systems II",
+    "actor": "935715"
+  },
+  {
+    "time": "2026-06-22T21:03:46.382Z",
+    "action": "TAB_VIOLATION",
+    "detail": "ABDULWAHAB ABDULHAKEEM OGIRIMA - #2 in Networking Systems II",
+    "actor": "935715"
+  },
+  {
+    "time": "2026-06-22T21:03:47.401Z",
+    "action": "SUBMIT",
+    "detail": "Student: ABDULWAHAB ABDULHAKEEM OGIRIMA | Exam: Networking Systems II | Score: 1/20 (5%) | Class: SS 3",
+    "actor": "935715"
+  },
+  {
+    "time": "2026-06-22T21:04:05.317Z",
     "action": "LOGIN",
-    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
-    "actor": "607403"
+    "detail": "student: 935715 (ABDULWAHAB ABDULHAKEEM OGIRIMA)",
+    "actor": "935715"
+  },
+  {
+    "time": "2026-06-22T21:04:11.713Z",
+    "action": "RESET_STUDENT",
+    "detail": "Reset 935715 for exam: deepseek_json_20260622_2daa48.json",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-22T21:09:15.083Z",
+    "action": "EXAM_STATUS",
+    "detail": "deepseek_json_20260622_2daa48.json: deactivated",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-22T21:09:19.818Z",
+    "action": "EXAM_STATUS",
+    "detail": "deepseek_json_20260622_2daa48.json: activated",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-22T21:11:03.295Z",
+    "action": "LOGIN",
+    "detail": "student: 676379 (OMOKHAGBO DIVINE ARIJE)",
+    "actor": "676379"
+  },
+  {
+    "time": "2026-06-22T21:11:17.166Z",
+    "action": "SUBMIT",
+    "detail": "Student: OMOKHAGBO DIVINE ARIJE | Exam: Networking Systems II | Score: 1/20 (5%) | Class: SS 3",
+    "actor": "676379"
   }
 ]

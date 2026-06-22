@@ -1,9 +1,65 @@
 [
   {
-    "time": "2026-06-21T23:05:50.616Z",
-    "studentId": "607403",
-    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "time": "2026-06-22T20:59:13.051Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
     "action": "LOGIN",
     "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-22T20:59:41.051Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-22T21:03:17.551Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Networking Systems II | Violation #1"
+  },
+  {
+    "time": "2026-06-22T21:03:46.378Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: Networking Systems II | Violation #2"
+  },
+  {
+    "time": "2026-06-22T21:03:47.409Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 1/20 (5%) | Class: SS 3"
+  },
+  {
+    "time": "2026-06-22T21:04:05.338Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-22T21:04:11.718Z",
+    "studentId": "935715",
+    "studentName": "935715",
+    "action": "RESET",
+    "detail": "Exam reset by teacher for: deepseek_json_20260622_2daa48.json"
+  },
+  {
+    "time": "2026-06-22T21:11:03.300Z",
+    "studentId": "676379",
+    "studentName": "OMOKHAGBO DIVINE ARIJE",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-22T21:11:17.173Z",
+    "studentId": "676379",
+    "studentName": "OMOKHAGBO DIVINE ARIJE",
+    "action": "SUBMIT",
+    "detail": "Exam: Networking Systems II | Score: 1/20 (5%) | Class: SS 3"
   }
 ]

@@ -26,6 +26,15 @@ const SUBMITTED_EXAMS_FILE = path.join(DATABASE_DIR, 'submitted_exams.json');
 const liveSessions = {};
 const activeTokens = new Map(); // Track active tokens by userId
 
+// Initialize activeTokens from sessions file on startup
+function initializeActiveTokens() {
+    const sessions = readJSON(SESSIONS_FILE) || {};
+    for (const [token, session] of Object.entries(sessions)) {
+        activeTokens.set(session.id, token);
+    }
+}
+initializeActiveTokens();
+
 // Rate limiting for login attempts
 const loginAttempts = new Map(); // IP -> { count, lastAttempt }
 
@@ -727,9 +736,22 @@ const server = http.createServer(async (req, res) => {
         
         if (user) {
             // Check if user already has an active session (prevent concurrent logins)
+            const sessions = readJSON(SESSIONS_FILE) || {};
+            
+            // First, clean up any stale sessions for this user from the file
+            for (const [token, session] of Object.entries(sessions)) {
+                if (session.id === user.id) {
+                    // If this session is not in activeTokens, it's stale - remove it
+                    if (!activeTokens.has(user.id) || activeTokens.get(user.id) !== token) {
+                        delete sessions[token];
+                        writeJSON(SESSIONS_FILE, sessions);
+                    }
+                }
+            }
+            
+            // Now check if user has an active session
             if (activeTokens.has(user.id)) {
                 const existingToken = activeTokens.get(user.id);
-                const sessions = readJSON(SESSIONS_FILE) || {};
                 
                 // If the session exists and is valid, reject new login
                 if (sessions[existingToken]) {
@@ -1966,10 +1988,6 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('║  🏫 Peter Harvard International Schools                         ║');
     console.log('║  📅 2026 - All Rights Reserved                                  ║');
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
-
-    // API 404 handler - return JSON for unmatched API routes
-    send(req, res, 404, { error: 'Not found' });
-    return;
 
     // Start HTTPS server if cert files are found
     const certFiles = findCertFiles();

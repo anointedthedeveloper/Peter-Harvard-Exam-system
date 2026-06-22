@@ -1,0 +1,170 @@
+{
+  "exam": "Networking Systems II",
+  "subject": "Computer Science",
+  "class": "SS 3",
+  "duration": 40,
+  "instructions": "Answer all questions. Choose the most appropriate option for each question. Each question carries 2.5 marks.",
+  "questions": [
+    {
+      "question": "A networking system is best described as",
+      "A": "a) a single standalone computer",
+      "B": "b) interconnected devices sharing data and resources",
+      "C": "c) a software application",
+      "D": "d) an operating system",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a characteristic of a Peer-to-Peer network model?",
+      "A": "a) Centralized administration",
+      "B": "b) Dedicated servers for resource sharing",
+      "C": "c) No centralized control over resources",
+      "D": "d) Requires a domain controller",
+      "answer": "C"
+    },
+    {
+      "question": "The OSI model consists of how many layers?",
+      "A": "a) 5",
+      "B": "b) 6",
+      "C": "c) 7",
+      "D": "d) 8",
+      "answer": "C"
+    },
+    {
+      "question": "Which layer of the OSI model is responsible for routing data packets across networks?",
+      "A": "a) Data Link Layer",
+      "B": "b) Network Layer",
+      "C": "c) Transport Layer",
+      "D": "d) Session Layer",
+      "answer": "B"
+    },
+    {
+      "question": "What is the primary function of the Transport Layer (Layer 4) in the OSI model?",
+      "A": "a) Error detection and correction at the bit level",
+      "B": "b) End-to-end communication and data flow control",
+      "C": "c) Physical addressing using MAC addresses",
+      "D": "d) Converting data into signals for transmission",
+      "answer": "B"
+    },
+    {
+      "question": "Which protocol is responsible for resolving IP addresses to MAC addresses?",
+      "A": "a) DNS",
+      "B": "b) DHCP",
+      "C": "c) ARP",
+      "D": "d) ICMP",
+      "answer": "C"
+    },
+    {
+      "question": "What type of IP address is 192.168.1.10?",
+      "A": "a) Public IP address",
+      "B": "b) Private IP address",
+      "C": "c) Loopback address",
+      "D": "d) Broadcast address",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following network devices operates at the Data Link Layer (Layer 2) and forwards data based on MAC addresses?",
+      "A": "a) Hub",
+      "B": "b) Router",
+      "C": "c) Switch",
+      "D": "d) Gateway",
+      "answer": "C"
+    },
+    {
+      "question": "A subnet mask of 255.255.255.0 is equivalent to a CIDR notation of",
+      "A": "a) /8",
+      "B": "b) /16",
+      "C": "c) /24",
+      "D": "d) /32",
+      "answer": "C"
+    },
+    {
+      "question": "Which protocol is used to automatically assign IP addresses to devices on a network?",
+      "A": "a) HTTP",
+      "B": "b) FTP",
+      "C": "c) DHCP",
+      "D": "d) SNMP",
+      "answer": "C"
+    },
+    {
+      "question": "What is the purpose of the Domain Name System (DNS)?",
+      "A": "a) To convert domain names to IP addresses",
+      "B": "b) To encrypt data for secure transmission",
+      "C": "c) To manage network bandwidth",
+      "D": "d) To provide physical addressing",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a connectionless protocol at the Transport Layer?",
+      "A": "a) TCP",
+      "B": "b) UDP",
+      "C": "c) IP",
+      "D": "d) HTTP",
+      "answer": "B"
+    },
+    {
+      "question": "A network topology where all devices are connected to a central device (like a switch) is called",
+      "A": "a) Bus topology",
+      "B": "b) Ring topology",
+      "C": "c) Star topology",
+      "D": "d) Mesh topology",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a security threat that involves intercepting and altering communication between two parties without their knowledge?",
+      "A": "a) Denial of Service (DoS)",
+      "B": "b) Man-in-the-Middle (MitM) attack",
+      "C": "c) Phishing",
+      "D": "d) Virus infection",
+      "answer": "B"
+    },
+    {
+      "question": "What is the maximum data transfer rate of a standard Category 5e (Cat5e) Ethernet cable?",
+      "A": "a) 10 Mbps",
+      "B": "b) 100 Mbps",
+      "C": "c) 1 Gbps",
+      "D": "d) 10 Gbps",
+      "answer": "C"
+    },
+    {
+      "question": "Which IEEE standard defines Wireless LAN (Wi-Fi) networking?",
+      "A": "a) 802.3",
+      "B": "b) 802.11",
+      "C": "c) 802.15",
+      "D": "d) 802.16",
+      "answer": "B"
+    },
+    {
+      "question": "The process of breaking data into smaller units for transmission over a network is known as",
+      "A": "a) Encapsulation",
+      "B": "b) Fragmentation",
+      "C": "c) Decapsulation",
+      "D": "d) Multiplexing",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a valid IPv6 address?",
+      "A": "a) 192.168.1.1",
+      "B": "b) 2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "C": "c) 255.255.255.0",
+      "D": "d) 10.0.0.1",
+      "answer": "B"
+    },
+    {
+      "question": "What is the role of a firewall in a network?",
+      "A": "a) To amplify signals for long-distance transmission",
+      "B": "b) To monitor and control incoming and outgoing network traffic based on security rules",
+      "C": "c) To assign IP addresses to devices",
+      "D": "d) To resolve domain names",
+      "answer": "B"
+    },
+    {
+      "question": "In the TCP/IP model, which layer is equivalent to the combination of the Application, Presentation, and Session layers of the OSI model?",
+      "A": "a) Network Interface Layer",
+      "B": "b) Internet Layer",
+      "C": "c) Transport Layer",
+      "D": "d) Application Layer",
+      "answer": "D"
+    }
+  ],
+  "teacherId": "teacher"
+}

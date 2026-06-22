@@ -2,8 +2,8 @@
   "teachers": [
     {
       "id": "teacher",
-      "password": "little lamb",
-      "name": "Mr Collins"
+      "password": "littlelamb",
+      "name": "Teacher"
     }
   ],
   "students": [

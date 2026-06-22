@@ -1,14 +1,26 @@
 [
   {
-    "ip": "127.0.0.1",
+    "ip": "192.168.18.6",
     "mac": "00:00:00:00:00:00",
     "hostname": "A-Server",
     "interface": "Unknown",
     "platform": "win32",
-    "timestamp": "2026-06-21T23:05:50.542Z",
-    "studentId": "607403",
-    "studentName": "ABANG EMMANUELLA BOMBUM",
-    "firstSeen": "2026-06-21T23:05:50.542Z",
-    "lastSeen": "2026-06-21T23:05:50.542Z"
+    "timestamp": "2026-06-22T20:59:13.026Z",
+    "studentId": "935715",
+    "studentName": "ABDULWAHAB ABDULHAKEEM OGIRIMA",
+    "firstSeen": "2026-06-22T20:59:13.026Z",
+    "lastSeen": "2026-06-22T21:04:05.315Z"
+  },
+  {
+    "ip": "192.168.18.6",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "A-Server",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-06-22T21:11:03.293Z",
+    "studentId": "676379",
+    "studentName": "OMOKHAGBO DIVINE ARIJE",
+    "firstSeen": "2026-06-22T21:11:03.293Z",
+    "lastSeen": "2026-06-22T21:11:03.293Z"
   }
 ]
