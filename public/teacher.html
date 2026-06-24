@@ -1358,16 +1358,19 @@ tr:hover td {
         </div>
         
         <div class="upload-tabs">
-          <button class="upload-tab active" onclick="switchUploadTab('json')">
+          <button class="upload-tab" onclick="switchUploadTab('json')">
             <i class="fa fa-file-code-o"></i> JSON Upload
           </button>
           <button class="upload-tab" onclick="switchUploadTab('csv')">
             <i class="fa fa-file-excel-o"></i> CSV Upload
           </button>
+          <button class="upload-tab active" onclick="switchUploadTab('excel')">
+            <i class="fa fa-file-excel-o"></i> Excel Upload
+          </button>
         </div>
         
         <!-- JSON Upload -->
-        <div id="jsonUploadSection">
+        <div id="jsonUploadSection" style="display:none;">
           <div class="card">
             <div class="card-header"><h3><i class="fa fa-cog"></i> JSON Upload Settings</h3></div>
             <div class="card-body">
@@ -1391,7 +1394,7 @@ tr:hover td {
                 </div>
                 <div>
                   <label><i class="fa fa-clock-o"></i> Duration (min)</label>
-                  <input type="number" id="jsonDuration" value="30" min="1" max="180">
+                  <input type="number" id="jsonDuration" value="45" min="1" max="180">
                 </div>
               </div>
               <datalist id="subjectList">
@@ -1429,7 +1432,7 @@ tr:hover td {
         </div>
         
         <!-- CSV Upload -->
-        <div id="csvUploadSection" style="display:none;">
+        <div id="csvUploadSection">
           <div class="card">
             <div class="card-header"><h3><i class="fa fa-cog"></i> CSV Upload Settings</h3></div>
             <div class="card-body">
@@ -1453,7 +1456,7 @@ tr:hover td {
                 </div>
                 <div>
                   <label><i class="fa fa-clock-o"></i> Duration (min)</label>
-                  <input type="number" id="csvDuration" value="30" min="1" max="180">
+                  <input type="number" id="csvDuration" value="45" min="1" max="180">
                 </div>
               </div>
               
@@ -1485,15 +1488,108 @@ tr:hover td {
           </div>
           
           <div class="card">
-            <div class="card-header"><h3><i class="fa fa-info-circle"></i> CSV Format Accepted</h3></div>
+            <div class="card-header">
+              <h3><i class="fa fa-info-circle"></i> CSV Format Guide</h3>
+              <button class="btn accent sm" onclick="copyCsvTemplate()">
+                <i class="fa fa-copy"></i> Copy Template
+              </button>
+            </div>
             <div class="card-body">
-              <p style="font-size:14px;color:#666;margin-bottom:16px;">Your CSV file can use these column names:</p>
-              <div class="json-preview">question, option_1/option1/opt1/A, option_2/option2/opt2/B, 
-option_3/option3/opt3/C, option_4/option4/opt4/D, answer
+              <p style="font-size:14px;color:#666;margin-bottom:16px;">Your CSV file should include exam metadata and questions in natural format:</p>
+              <div class="json-preview" id="csvTemplate">exam_name,Health Education Exam
+subject,Health Education
+class,SS 1
+duration,30
+number,question,option_a,option_b,option_c,option_d,answer
+1,Which habit is good for health?,a) smoking,b) drinking,c) exercise,d) overeating,c
+2,What is the recommended daily water intake?,a) 1 glass,b) 8 glasses,c) 20 glasses,d) no water,b
+3,Which food group provides protein?,a) fruits,b) vegetables,c) meat,d) sweets,c
+4,How often should you exercise?,a) never,b) once a year,c) weekly,d) daily,c</div>
+              <p style="font-size:13px;color:#666;margin-top:16px;">
+                <i class="fa fa-lightbulb-o"></i> <strong>Format Explanation:</strong><br>
+                • First 4 lines: exam metadata (name, subject, class, duration in minutes)<br>
+                • Line 5: Question header (number, question, options a-d, answer)<br>
+                • Question format: "1,Question text,a) option A,b) option B,c) option C,d) option D,c"<br>
+                • Answer can be: letter (a/b/c/d), letter with parenthesis (a), or option identifier<br>
+                • You can also use just the option text without "a)" prefix<br>
+                • Lines starting with # are treated as comments and ignored
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Excel Upload -->
+        <div id="excelUploadSection">
+          <div class="card">
+            <div class="card-header"><h3><i class="fa fa-cog"></i> Excel Upload Settings</h3></div>
+            <div class="card-body">
+              <div class="upload-fields">
+                <div>
+                  <label><i class="fa fa-tag"></i> Exam Name *</label>
+                  <input type="text" id="excelExamName" placeholder="e.g. Geography Examination">
+                </div>
+                <div>
+                  <label><i class="fa fa-book"></i> Subject</label>
+                  <input type="text" id="excelSubject" placeholder="e.g. Geography">
+                </div>
+                <div>
+                  <label><i class="fa fa-users"></i> Target Class</label>
+                  <select id="excelClass">
+                    <option value="">All Classes</option>
+                    <option value="SS 1">SS 1</option>
+                    <option value="SS 2">SS 2</option>
+                    <option value="SS 3">SS 3</option>
+                  </select>
+                </div>
+                <div>
+                  <label><i class="fa fa-clock-o"></i> Duration (min)</label>
+                  <input type="number" id="excelDuration" value="45" min="1" max="180">
+                </div>
+              </div>
+              
+              <div class="upload-zone" id="excelUploadZone">
+                <input type="file" accept=".xls,.xlsx" id="excelFileInput" onchange="handleExcelFile(this.files[0])">
+                <div class="uz-icon"><i class="fa fa-cloud-upload"></i></div>
+                <div class="uz-title">Drop Excel file here or click to browse</div>
+                <div class="uz-sub">Only .xls and .xlsx files accepted</div>
+              </div>
+              
+              <div id="excelPreview" style="display:none;margin-top:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <div>
+                    <strong id="excelPrevName">—</strong>
+                    <span style="font-size:13px;color:#666;margin-left:10px;" id="excelPrevMeta"></span>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn outline sm" onclick="clearExcelUpload()">
+                      <i class="fa fa-times"></i> Clear
+                    </button>
+                    <button class="btn accent sm" onclick="doExcelUpload()">
+                      <i class="fa fa-upload"></i> Upload
+                    </button>
+                  </div>
+                </div>
+                <div class="json-preview" id="excelPrevContent"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header"><h3><i class="fa fa-info-circle"></i> Excel Format Guide</h3></div>
+            <div class="card-body">
+              <p style="font-size:14px;color:#666;margin-bottom:16px;">Your Excel file should have these columns (in any order):</p>
+              <div class="json-preview">Question Type, Group, Level, Questions, Mark, Option 1, Option 2, Option 3, Option 4, Answer
 
 Example:
-question,option_1,option_2,option_3,option_4,answer
-"What is 2+2?","3","4","5","6",option_2</div>
+single choice, SS 2, Medium, "The four major cardinal points are ______.", 1, "North, South, East and West", "North, South, Up and Down", "East, West, Left and Right", "North-East, South-East, North-West and South-West", Option 1</div>
+              <p style="font-size:13px;color:#666;margin-top:16px;">
+                <i class="fa fa-lightbulb-o"></i> <strong>Tips:</strong><br>
+                • Required columns: Questions, Option 1-4, Answer<br>
+                • Optional columns: Group (for class), Level, Mark<br>
+                • Answer should be: Option 1, Option 2, Option 3, or Option 4<br>
+                • The Group column value will be used as the class if not specified in the form<br>
+                • You can create this file in Excel and save as .xls or .xlsx
+              </p>
             </div>
           </div>
         </div>
@@ -1826,9 +1922,10 @@ let teacherName = '';
 let teacherId = '';
 let pendingJsonFile = null;
 let pendingCsvFile = null;
+let pendingExcelFile = null;
 let monitorTimer = null;
 let sessionToken = localStorage.getItem('teacherSessionToken') || null;
-let uploadTab = 'json';
+let uploadTab = 'excel';
 let allResults = [];
 let filteredResults = [];
 let allSubjects = [];
@@ -1999,9 +2096,21 @@ function hideLoader() { document.getElementById('loaderOverlay').style.display =
 function switchUploadTab(tab) {
   uploadTab = tab;
   document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.upload-tab')[tab === 'json' ? 0 : 1].classList.add('active');
+  const tabIndex = tab === 'json' ? 0 : tab === 'csv' ? 1 : 2;
+  document.querySelectorAll('.upload-tab')[tabIndex].classList.add('active');
   document.getElementById('jsonUploadSection').style.display = tab === 'json' ? 'block' : 'none';
   document.getElementById('csvUploadSection').style.display = tab === 'csv' ? 'block' : 'none';
+  document.getElementById('excelUploadSection').style.display = tab === 'excel' ? 'block' : 'none';
+}
+
+// COPY CSV TEMPLATE
+function copyCsvTemplate() {
+  const template = document.getElementById('csvTemplate').textContent;
+  navigator.clipboard.writeText(template).then(() => {
+    toast('CSV template copied to clipboard!', 'ok');
+  }).catch(() => {
+    toast('Failed to copy template', 'err');
+  });
 }
 
 // JSON UPLOAD
@@ -2098,7 +2207,7 @@ async function doCsvUpload() {
   const examName = document.getElementById('csvExamName').value.trim() || 'CSV Exam';
   const subject = document.getElementById('csvSubject').value.trim() || 'General';
   const examClass = document.getElementById('csvClass').value;
-  const duration = parseInt(document.getElementById('csvDuration').value) || 30;
+  const duration = parseInt(document.getElementById('csvDuration').value) || 45;
   
   const form = new FormData();
   form.append('exam', pendingCsvFile.file);
@@ -2116,6 +2225,68 @@ async function doCsvUpload() {
   } else toast('Upload failed: ' + (res.error || ''), 'err');
 }
 
+// EXCEL UPLOAD
+function handleExcelFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const content = e.target.result;
+      pendingExcelFile = { file, content };
+      document.getElementById('excelPrevName').textContent = file.name;
+      document.getElementById('excelPrevMeta').textContent = 'Excel file ready for upload';
+      document.getElementById('excelPrevContent').textContent = 'File loaded successfully. Click Upload to process.';
+      document.getElementById('excelPreview').style.display = 'block';
+    } catch { toast('Invalid Excel file', 'err'); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function clearExcelUpload() {
+  pendingExcelFile = null;
+  document.getElementById('excelPreview').style.display = 'none';
+  document.getElementById('excelFileInput').value = '';
+}
+
+async function doExcelUpload() {
+  if (!pendingExcelFile) return;
+  
+  const examName = document.getElementById('excelExamName').value.trim();
+  const subject = document.getElementById('excelSubject').value.trim() || 'General';
+  const examClass = document.getElementById('excelClass').value;
+  const duration = parseInt(document.getElementById('excelDuration').value) || 45;
+  
+  if (!examName) {
+    toast('Please enter an exam name', 'err');
+    document.getElementById('excelExamName').focus();
+    return;
+  }
+  
+  const form = new FormData();
+  form.append('exam', pendingExcelFile.file);
+  
+  showLoader('Processing Excel…');
+  
+  const url = `/api/upload-excel?name=${encodeURIComponent(examName)}&subject=${encodeURIComponent(subject)}&class=${encodeURIComponent(examClass)}&duration=${duration}`;
+  const res = await fetch(url, { method: 'POST', body: form }).then(r => r.json());
+  
+  hideLoader();
+  if (res.ok) { 
+    toast(`Exam uploaded with ${res.questions} questions!`, 'ok'); 
+    clearExcelUpload(); 
+    loadExams();
+  } else {
+    if (res.needsMetadata) {
+      toast('Please provide exam name in the form', 'err');
+      if (res.extractedClass) {
+        document.getElementById('excelClass').value = res.extractedClass;
+      }
+    } else {
+      toast('Upload failed: ' + (res.error || ''), 'err');
+    }
+  }
+}
+
 // DROPZONE
 const jsonZone = document.getElementById('jsonUploadZone');
 if (jsonZone) {
@@ -2129,6 +2300,13 @@ if (csvZone) {
   csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag'); });
   csvZone.addEventListener('dragleave', () => csvZone.classList.remove('drag'));
   csvZone.addEventListener('drop', e => { e.preventDefault(); csvZone.classList.remove('drag'); handleCsvFile(e.dataTransfer.files[0]); });
+}
+
+const excelZone = document.getElementById('excelUploadZone');
+if (excelZone) {
+  excelZone.addEventListener('dragover', e => { e.preventDefault(); excelZone.classList.add('drag'); });
+  excelZone.addEventListener('dragleave', () => excelZone.classList.remove('drag'));
+  excelZone.addEventListener('drop', e => { e.preventDefault(); excelZone.classList.remove('drag'); handleExcelFile(e.dataTransfer.files[0]); });
 }
 
 // NAVIGATION - Save current page

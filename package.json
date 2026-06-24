@@ -16,5 +16,8 @@
   "license": "ISC",
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

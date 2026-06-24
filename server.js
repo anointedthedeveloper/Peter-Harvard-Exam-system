@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const XLSX = require('xlsx');
 
 const PORT = process.env.PORT || 5000;
 const VERSION = '2.0.0';
@@ -1009,67 +1010,133 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // UPLOAD CSV EXAM - FLEXIBLE HANDLER
+    // UPLOAD CSV EXAM - NEW FORMAT WITH METADATA AND NATURAL QUESTIONS
     if (req.method === 'POST' && pathname === '/api/upload-csv') {
         try {
+            console.log('CSV Upload: Starting...');
             const files = await parseMultipart(req);
+            console.log('CSV Upload: Files parsed', Object.keys(files));
             const file = files['exam'];
-            if (!file) { send(req, res, 400, { error: 'No file' }); return; }
+            if (!file) { 
+                console.log('CSV Upload: No file found');
+                send(req, res, 400, { error: 'No file' }); 
+                return; 
+            }
             
             const content = file.content.toString('utf8').replace(/^\uFEFF/, ''); // Remove BOM if present
             const lines = content.split('\n').filter(line => line.trim());
+            console.log('CSV Upload: Lines parsed', lines.length);
             
             if (lines.length < 2) {
-                send(req, res, 400, { error: 'CSV file must have header and at least one question' });
+                send(req, res, 400, { error: 'CSV file must have at least metadata and one question' });
                 return;
             }
             
-            const header = parseCSVLine(lines[0]);
-            const { valid, missingColumns, columnMapping } = validateCSVHeaders(header);
+            // Parse metadata from first 4 lines (exam_name, subject, class, duration)
+            const metadata = {};
+            let questionStartIndex = 0;
             
-            if (!valid) {
-                send(req, res, 400, { error: `Missing required columns: ${missingColumns.join(', ')}. Found: ${header.join(', ')}` });
-                return;
+            for (let i = 0; i < Math.min(4, lines.length); i++) {
+                const line = lines[i];
+                if (line.includes(',')) {
+                    const parts = line.split(',').map(p => p.trim());
+                    const key = parts[0].toLowerCase().replace(/[^a-z0-9_]/g, '');
+                    const value = parts.slice(1).join(',').replace(/^"|"$/g, '');
+                    
+                    if (key === 'exam_name' || key === 'exam') metadata.exam = value;
+                    else if (key === 'subject') metadata.subject = value;
+                    else if (key === 'class') metadata.class = value;
+                    else if (key === 'duration') metadata.duration = parseInt(value) || 30;
+                }
+                
+                // Check if this is the question header line
+                if (line.toLowerCase().includes('question') || line.toLowerCase().includes('number')) {
+                    questionStartIndex = i + 1;
+                    break;
+                }
             }
             
-            // Map column indices
-            const colIndices = {};
-            header.forEach((col, index) => {
-                const normalized = col.toLowerCase().trim().replace(/[^a-z0-9_]/g, '');
-                if (normalized.includes('question') || normalized === 'q') colIndices.question = index;
-                if (normalized.includes('option_1') || normalized.includes('option1') || normalized.includes('opt1') || normalized.includes('optiona') || normalized === 'a') colIndices.option_1 = index;
-                if (normalized.includes('option_2') || normalized.includes('option2') || normalized.includes('opt2') || normalized.includes('optionb') || normalized === 'b') colIndices.option_2 = index;
-                if (normalized.includes('option_3') || normalized.includes('option3') || normalized.includes('opt3') || normalized.includes('optionc') || normalized === 'c') colIndices.option_3 = index;
-                if (normalized.includes('option_4') || normalized.includes('option4') || normalized.includes('opt4') || normalized.includes('optiond') || normalized === 'd') colIndices.option_4 = index;
-                if (normalized.includes('answer') || normalized.includes('correct') || normalized.includes('ans')) colIndices.answer = index;
-            });
+            // If no metadata found, use URL params as fallback
+            const examName = metadata.exam || url.searchParams.get('name') || `CSV Exam ${new Date().toLocaleDateString()}`;
+            const subject = metadata.subject || url.searchParams.get('subject') || 'General';
+            const examClass = metadata.class || url.searchParams.get('class') || '';
+            const duration = metadata.duration || parseInt(url.searchParams.get('duration')) || 30;
+            
+            // Find question start if not found yet
+            if (questionStartIndex === 0) {
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].toLowerCase().includes('question') || lines[i].toLowerCase().includes('number')) {
+                        questionStartIndex = i + 1;
+                        break;
+                    }
+                }
+                // Still not found? Assume questions start after metadata (line 4)
+                if (questionStartIndex === 0) questionStartIndex = 4;
+            }
             
             const questions = [];
-            for (let i = 1; i < lines.length; i++) {
-                const values = parseCSVLine(lines[i]);
+            
+            // Parse questions in natural format: "1,Which is good,a) smoking,b) drinking,c) exercise,d) overeating,c"
+            for (let i = questionStartIndex; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line || line.startsWith('#')) continue; // Skip empty lines and comments
                 
-                const question = {
-                    question: values[colIndices.question] || '',
-                    A: values[colIndices.option_1] || '',
-                    B: values[colIndices.option_2] || '',
-                    C: values[colIndices.option_3] || '',
-                    D: values[colIndices.option_4] || ''
-                };
+                const values = parseCSVLine(line);
+                if (values.length < 2) continue;
                 
-                // Handle answer mapping
-                const answerValue = values[colIndices.answer] || '';
-                const answerMap = {
-                    'option_1': 'A', 'option1': 'A', 'opt1': 'A', 'a': 'A', 'A': 'A',
-                    'option_2': 'B', 'option2': 'B', 'opt2': 'B', 'b': 'B', 'B': 'B',
-                    'option_3': 'C', 'option3': 'C', 'opt3': 'C', 'c': 'C', 'C': 'C',
-                    'option_4': 'D', 'option4': 'D', 'opt4': 'D', 'd': 'D', 'D': 'D'
-                };
+                // Extract question text (second column usually)
+                let questionText = values[1] || '';
                 
-                question.answer = answerMap[answerValue.toLowerCase()] || 'A';
+                // Parse options from natural format like "a) smoking" or just "smoking"
+                const options = { A: '', B: '', C: '', D: '' };
+                const optionPattern = /^([a-dA-D])\)?\s*(.+)$/;
+                
+                for (let j = 2; j < Math.min(values.length, 6); j++) {
+                    const optText = values[j] || '';
+                    const match = optText.match(optionPattern);
+                    
+                    if (match) {
+                        // Format: "a) smoking" -> extract letter and text
+                        const letter = match[1].toUpperCase();
+                        options[letter] = match[2].trim();
+                    } else if (optText.trim()) {
+                        // Format: just the text, assign by position
+                        const letters = ['A', 'B', 'C', 'D'];
+                        const pos = j - 2;
+                        if (pos < 4) {
+                            options[letters[pos]] = optText.trim();
+                        }
+                    }
+                }
+                
+                // Extract answer (last column usually)
+                const answerValue = values[values.length - 1] || '';
+                let answer = 'A';
+                
+                // Check if answer is in format "a)" or just "a" or the option text
+                const answerMatch = answerValue.match(/^([a-dA-D])\)?/);
+                if (answerMatch) {
+                    answer = answerMatch[1].toUpperCase();
+                } else if (answerValue.toLowerCase() === 'a' || answerValue.toLowerCase() === 'option_1' || answerValue.toLowerCase() === 'option1') {
+                    answer = 'A';
+                } else if (answerValue.toLowerCase() === 'b' || answerValue.toLowerCase() === 'option_2' || answerValue.toLowerCase() === 'option2') {
+                    answer = 'B';
+                } else if (answerValue.toLowerCase() === 'c' || answerValue.toLowerCase() === 'option_3' || answerValue.toLowerCase() === 'option3') {
+                    answer = 'C';
+                } else if (answerValue.toLowerCase() === 'd' || answerValue.toLowerCase() === 'option_4' || answerValue.toLowerCase() === 'option4') {
+                    answer = 'D';
+                }
                 
                 // Skip empty questions
-                if (question.question.trim()) {
-                    questions.push(question);
+                if (questionText.trim()) {
+                    questions.push({
+                        question: questionText,
+                        A: options.A,
+                        B: options.B,
+                        C: options.C,
+                        D: options.D,
+                        answer: answer
+                    });
                 }
             }
             
@@ -1077,11 +1144,6 @@ const server = http.createServer(async (req, res) => {
                 send(req, res, 400, { error: 'No valid questions found in CSV' });
                 return;
             }
-            
-            const subject = url.searchParams.get('subject') || 'General';
-            const examClass = url.searchParams.get('class') || '';
-            const examName = url.searchParams.get('name') || `CSV Exam ${new Date().toLocaleDateString()}`;
-            const duration = parseInt(url.searchParams.get('duration')) || 30;
             
             const examData = {
                 exam: examName,
@@ -1103,7 +1165,137 @@ const server = http.createServer(async (req, res) => {
             
             send(req, res, 200, { ok: true, filename: saveName, questions: questions.length });
         } catch (e) { 
+            console.error('CSV Upload Error:', e);
             send(req, res, 400, { error: 'Invalid CSV file: ' + e.message }); 
+        }
+        return;
+    }
+
+    // UPLOAD EXCEL EXAM (XLS/XLSX)
+    if (req.method === 'POST' && pathname === '/api/upload-excel') {
+        try {
+            console.log('Excel Upload: Starting...');
+            const files = await parseMultipart(req);
+            console.log('Excel Upload: Files parsed', Object.keys(files));
+            const file = files['exam'];
+            if (!file) { 
+                console.log('Excel Upload: No file found');
+                send(req, res, 400, { error: 'No file' }); 
+                return; 
+            }
+            
+            console.log('Excel Upload: File found, size:', file.content.length);
+            
+            // Parse Excel file
+            const workbook = XLSX.read(file.content, { type: 'buffer' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const data = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            
+            console.log('Excel Upload: Rows parsed', data.length);
+            
+            if (data.length < 2) {
+                send(req, res, 400, { error: 'Excel file must have header and at least one question' });
+                return;
+            }
+            
+            // Find column indices from header row
+            const header = data[0].map(h => (h || '').toString().toLowerCase().trim());
+            const colIndices = {};
+            
+            header.forEach((col, index) => {
+                if (col.includes('question')) colIndices.question = index;
+                else if (col.includes('option 1') || col.includes('option1')) colIndices.option_1 = index;
+                else if (col.includes('option 2') || col.includes('option2')) colIndices.option_2 = index;
+                else if (col.includes('option 3') || col.includes('option3')) colIndices.option_3 = index;
+                else if (col.includes('option 4') || col.includes('option4')) colIndices.option_4 = index;
+                else if (col.includes('answer')) colIndices.answer = index;
+                else if (col.includes('group')) colIndices.group = index;
+                else if (col.includes('level')) colIndices.level = index;
+            });
+            
+            // Extract class from first data row if available
+            let examClass = '';
+            if (colIndices.group !== undefined && data.length > 1) {
+                examClass = data[1][colIndices.group] || '';
+            }
+            
+            const questions = [];
+            
+            // Parse questions from data rows (skip header)
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                if (!row || row.length === 0) continue;
+                
+                const questionText = colIndices.question !== undefined ? (row[colIndices.question] || '') : '';
+                if (!questionText.trim()) continue;
+                
+                const question = {
+                    question: questionText,
+                    A: colIndices.option_1 !== undefined ? (row[colIndices.option_1] || '') : '',
+                    B: colIndices.option_2 !== undefined ? (row[colIndices.option_2] || '') : '',
+                    C: colIndices.option_3 !== undefined ? (row[colIndices.option_3] || '') : '',
+                    D: colIndices.option_4 !== undefined ? (row[colIndices.option_4] || '') : ''
+                };
+                
+                // Parse answer
+                const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().toLowerCase() : '';
+                if (answerValue.includes('option 1') || answerValue === 'a') question.answer = 'A';
+                else if (answerValue.includes('option 2') || answerValue === 'b') question.answer = 'B';
+                else if (answerValue.includes('option 3') || answerValue === 'c') question.answer = 'C';
+                else if (answerValue.includes('option 4') || answerValue === 'd') question.answer = 'D';
+                else question.answer = 'A';
+                
+                questions.push(question);
+            }
+            
+            if (questions.length === 0) {
+                send(req, res, 400, { error: 'No valid questions found in Excel file' });
+                return;
+            }
+            
+            // Get metadata from URL params or use defaults
+            const examName = url.searchParams.get('name') || '';
+            const subject = url.searchParams.get('subject') || 'General';
+            const urlClass = url.searchParams.get('class') || '';
+            const duration = parseInt(url.searchParams.get('duration')) || 45;
+            
+            // Use class from Excel if not provided in URL
+            const finalClass = urlClass || examClass;
+            
+            // Check if exam name is provided
+            if (!examName) {
+                send(req, res, 400, { 
+                    error: 'Exam name is required. Please provide it in the upload form.',
+                    needsMetadata: true,
+                    extractedClass: finalClass,
+                    questionCount: questions.length
+                });
+                return;
+            }
+            
+            const examData = {
+                exam: examName,
+                subject: subject,
+                class: finalClass,
+                duration: duration,
+                questions: questions
+            };
+            
+            const saveName = file.filename.replace(/\.(xls|xlsx)$/i, '.json').replace(/[^a-zA-Z0-9._-]/g, '_');
+            fs.writeFileSync(path.join(UPLOADS_DIR, saveName), JSON.stringify(examData, null, 2));
+            
+            const examStatus = readJSON(EXAM_STATUS_FILE) || {};
+            examStatus[saveName] = true;
+            writeJSON(EXAM_STATUS_FILE, examStatus);
+            
+            sysLog('UPLOAD_EXCEL', `Excel Exam: ${saveName} | Questions: ${questions.length} | Duration: ${duration} min`, 'teacher');
+            auditLog('EXAM_UPLOAD_EXCEL', 'teacher', `Uploaded Excel exam: ${examName}`, { filename: saveName, questions: questions.length, subject, class: finalClass, duration });
+            
+            send(req, res, 200, { ok: true, filename: saveName, questions: questions.length });
+        } catch (e) { 
+            console.error('Excel Upload Error:', e);
+            send(req, res, 400, { error: 'Invalid Excel file: ' + e.message }); 
         }
         return;
     }

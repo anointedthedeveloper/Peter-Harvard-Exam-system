@@ -1,0 +1,9 @@
+exam_name,Health Education Exam
+subject,Health Education
+class,SS 1
+duration,30
+number,question,option_a,option_b,option_c,option_d,answer
+1,Which habit is good for health?,a) smoking,b) drinking,c) exercise,d) overeating,c
+2,What is the recommended daily water intake?,a) 1 glass,b) 8 glasses,c) 20 glasses,d) no water,b
+3,Which food group provides protein?,a) fruits,b) vegetables,c) meat,d) sweets,c
+4,How often should you exercise?,a) never,b) once a year,c) weekly,d) daily,c

@@ -1,0 +1,128 @@
+[
+  {
+    "time": "2026-06-24T16:40:23.100Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.125Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.136Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.150Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.165Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.175Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:40:25.274Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:44:57.847Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:50:28.955Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:51:44.440Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:53:32.870Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: deepseek_text_20260624_b60b38.txt | Questions: 1 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:53:58.265Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: deepseek_text_20260624_b60b38.txt | Questions: 1 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:58:39.979Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:59:21.095Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: test_exam.json | Questions: 4 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T16:59:37.219Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T17:00:31.662Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T17:00:42.229Z",
+    "action": "UPLOAD_CSV",
+    "detail": "CSV Exam: deepseek_text_20260624_b60b38.txt | Questions: 1 | Duration: 30 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T19:06:40.843Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T19:08:02.021Z",
+    "action": "UPLOAD_EXCEL",
+    "detail": "Excel Exam: SS_2_GEOGRAPHY_EXAMINATION_Questions.json | Questions: 50 | Duration: 45 min",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-24T19:09:10.256Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-24T19:13:05.291Z",
+    "action": "SUBMIT",
+    "detail": "Student: ABANG EMMANUELLA BOMBUM | Exam: geograhpy | Score: 24/50 (48%) | Class: SS 2",
+    "actor": "607403"
+  }
+]

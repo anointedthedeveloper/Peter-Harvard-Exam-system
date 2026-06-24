@@ -1,0 +1,40 @@
+{
+  "exam": "Health Education Exam",
+  "subject": "Health Education",
+  "class": "SS 1",
+  "duration": 30,
+  "questions": [
+    {
+      "question": "Which habit is good for health?",
+      "A": "smoking",
+      "B": "drinking",
+      "C": "exercise",
+      "D": "overeating",
+      "answer": "C"
+    },
+    {
+      "question": "What is the recommended daily water intake?",
+      "A": "1 glass",
+      "B": "8 glasses",
+      "C": "20 glasses",
+      "D": "no water",
+      "answer": "B"
+    },
+    {
+      "question": "Which food group provides protein?",
+      "A": "fruits",
+      "B": "vegetables",
+      "C": "meat",
+      "D": "sweets",
+      "answer": "C"
+    },
+    {
+      "question": "How often should you exercise?",
+      "A": "never",
+      "B": "once a year",
+      "C": "weekly",
+      "D": "daily",
+      "answer": "C"
+    }
+  ]
+}

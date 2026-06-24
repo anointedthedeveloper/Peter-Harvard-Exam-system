@@ -1,0 +1,16 @@
+{
+  "exam": "CSV Exam",
+  "subject": "General",
+  "class": "",
+  "duration": 30,
+  "questions": [
+    {
+      "question": "B",
+      "A": "C",
+      "B": "or D).",
+      "C": "",
+      "D": "",
+      "answer": "A"
+    }
+  ]
+}

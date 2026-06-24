@@ -1,0 +1,408 @@
+{
+  "exam": "geograhpy",
+  "subject": "hh",
+  "class": "SS 2",
+  "duration": 45,
+  "questions": [
+    {
+      "question": "The four major cardinal points are ______.",
+      "A": "North, South, East and West",
+      "B": "North, South, Up and Down",
+      "C": "East, West, Left and Right",
+      "D": "North-East, South-East, North-West and South-West",
+      "answer": "A"
+    },
+    {
+      "question": "To measure a curved distance on a map, one may use ____.    ",
+      "A": "Ruler only",
+      "B": "Protractor",
+      "C": "Thread ",
+      "D": "Pencil",
+      "answer": "C"
+    },
+    {
+      "question": "Bearing is measured in ______.",
+      "A": "kilometers",
+      "B": "meters",
+      "C": "degrees",
+      "D": "liters",
+      "answer": "C"
+    },
+    {
+      "question": "Bearings are measured in a clockwise direction from _______.",
+      "A": "South",
+      "B": "East",
+      "C": "West",
+      "D": "North",
+      "answer": "D"
+    },
+    {
+      "question": "The direction opposite to East is _______.",
+      "A": "North",
+      "B": "West",
+      "C": "South",
+      "D": "North-East",
+      "answer": "B"
+    },
+    {
+      "question": "Direction is expressed using _______.",
+      "A": "Contour lines",
+      "B": "Cardinal points",
+      "C": "equator",
+      "D": "south pole",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a relief feature?",
+      "A": "Valley",
+      "B": "Map",
+      "C": "Latitude",
+      "D": "Compass",
+      "answer": "A"
+    },
+    {
+      "question": "A lowland between two hills or mountains is called a ______.",
+      "A": "Ridge",
+      "B": "Plateau",
+      "C": "Valley",
+      "D": "Cliff",
+      "answer": "C"
+    },
+    {
+      "question": "A broad highland with leveled surface is known as ______.",
+      "A": "Plateau",
+      "B": "Valley",
+      "C": "Ridge",
+      "D": "Knoll",
+      "answer": "A"
+    },
+    {
+      "question": "Contour lines that are close together indicate ______.",
+      "A": "Steep slope",
+      "B": "Gentle slope",
+      "C": "Escarpment",
+      "D": "Hill",
+      "answer": "A"
+    },
+    {
+      "question": "A benchmarks is ______.",
+      "A": "A parmanent mark showing height",
+      "B": "Road sign",
+      "C": "River feature",
+      "D": "Contour lines",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is NOT a method of representing relief?",
+      "A": "Contour lines",
+      "B": "Hill shading",
+      "C": "Spot heights",
+      "D": "Pie chart",
+      "answer": "D"
+    },
+    {
+      "question": "Lines joining places of equal height are called _______.",
+      "A": "Contour lines",
+      "B": "Longitude lines",
+      "C": "Latitude lines",
+      "D": "Isobars",
+      "answer": "A"
+    },
+    {
+      "question": "Spot heights on maps show the _______.",
+      "A": "Direction",
+      "B": "Rainfall",
+      "C": "Exact height",
+      "D": "Distance",
+      "answer": "C"
+    },
+    {
+      "question": "Hill shading represents relief by using _______.",
+      "A": "Colours and shades",
+      "B": "Numbers only",
+      "C": "Symbols only",
+      "D": "Arrows",
+      "answer": "A"
+    },
+    {
+      "question": "Bench marks on maps indicate ________.",
+      "A": "population density",
+      "B": "actual height",
+      "C": "road direction",
+      "D": "rainfall amount",
+      "answer": "B"
+    },
+    {
+      "question": "Population refers to the _______.",
+      "A": "number of animals in an area",
+      "B": "number of people living in an area",
+      "C": "size of farmland",
+      "D": "amount of rainfall",
+      "answer": "B"
+    },
+    {
+      "question": "Population density means ________.",
+      "A": "number of houses in an area",
+      "B": "number of people per unit area",
+      "C": "number of roads in a town",
+      "D": "D. number of schools in a city",
+      "answer": "B"
+    },
+    {
+      "question": "Population density is calculated as _______.",
+      "A": "Population × Land Area",
+      "B": "Land Area ÷ Population",
+      "C": "Population ÷ Land Area",
+      "D": "Population + Land Area",
+      "answer": "C"
+    },
+    {
+      "question": "Which continent has the highest population in the world?",
+      "A": "Africa",
+      "B": "Europe",
+      "C": "Asia",
+      "D": "Australia",
+      "answer": "C"
+    },
+    {
+      "question": "Areas with favourable climate usually have ________.",
+      "A": "high population",
+      "B": "medium population",
+      "C": "low population",
+      "D": "no population",
+      "answer": "A"
+    },
+    {
+      "question": "One factor affecting population distribution is ________.",
+      "A": "soil type",
+      "B": "moonlight",
+      "C": "stars",
+      "D": "eclipse",
+      "answer": "A"
+    },
+    {
+      "question": "Migration means _______.",
+      "A": "movement of goods",
+      "B": "movement of people from one place to another",
+      "C": "movement of water from river to tank",
+      "D": "movement of vehicles",
+      "answer": "B"
+    },
+    {
+      "question": "Rural-urban migration means movement from ______.",
+      "A": "village to town",
+      "B": "town to village",
+      "C": "one country to another",
+      "D": "school to home",
+      "answer": "A"
+    },
+    {
+      "question": "Which type of scale type is written as \"1 cm to 1km\"?",
+      "A": "linear scale",
+      "B": "bar scale",
+      "C": "Rational scale",
+      "D": "Statement scale",
+      "answer": "D"
+    },
+    {
+      "question": "One merit of migration is _______.",
+      "A": "overpopulation",
+      "B": "increased labour force",
+      "C": "crime increase",
+      "D": "traffic congestion",
+      "answer": "B"
+    },
+    {
+      "question": "One demerit of migration is ________.",
+      "A": "cultural exchange",
+      "B": "skilled labour availability",
+      "C": "overcrowding in cities",
+      "D": "improved economy",
+      "answer": "C"
+    },
+    {
+      "question": "The movement of people within a country is called _____.",
+      "A": "international migration",
+      "B": "internal migration",
+      "C": "external migration",
+      "D": "forced migration",
+      "answer": "B"
+    },
+    {
+      "question": "Conventional symbols are _______.",
+      "A": "Local sign",
+      "B": "standard sign used globally",
+      "C": "Secret signs",
+      "D": "Road signs only",
+      "answer": "B"
+    },
+    {
+      "question": "Trigonometrical stations on maps are represented by ______.",
+      "A": "Triangles with a dot",
+      "B": "circle with a dot",
+      "C": "squares with a dot",
+      "D": "Arrows with a direction",
+      "answer": "A"
+    },
+    {
+      "question": "A settlement where people live close together with many social amenities is called _______.",
+      "A": "Rural settlement",
+      "B": "Urban settlement",
+      "C": "Dispersed settlement",
+      "D": "Isolated settlement",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a factor influencing Growth of settlement?",
+      "A": "Accessibility",
+      "B": "climate",
+      "C": "Relief",
+      "D": "All of the above",
+      "answer": "D"
+    },
+    {
+      "question": "A settlement pattern in which houses are scattered and far apart is known as ______.",
+      "A": "nucleated settlement",
+      "B": "linear settlement",
+      "C": "dispersed settlement",
+      "D": "circular settlement",
+      "answer": "C"
+    },
+    {
+      "question": "Settlements that develop along roads or rivers are called",
+      "A": "Linear settlements",
+      "B": "Dispersed settlements",
+      "C": "Circular settlements",
+      "D": "Nucleated settlements",
+      "answer": "A"
+    },
+    {
+      "question": "A valley containing water is called _______.",
+      "A": "Dry valley",
+      "B": "River valley",
+      "C": "Hanging valley",
+      "D": "Gorge",
+      "answer": "B"
+    },
+    {
+      "question": "Urban settlements are usually characterized by _____________.",
+      "A": "Low population",
+      "B": "farming activities",
+      "C": "availability of social amenities",
+      "D": "Scattered houses",
+      "answer": "C"
+    },
+    {
+      "question": "A map is a ___________ representation of earth surface.  ",
+      "A": "photographic",
+      "B": "graphical",
+      "C": "digital",
+      "D": "physical",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is not a key element of the map ______.",
+      "A": "title",
+      "B": "scale",
+      "C": "legend",
+      "D": "rainfall",
+      "answer": "D"
+    },
+    {
+      "question": "Map reading is the skill of interpreting __________ on a map.",
+      "A": "book",
+      "B": "picture",
+      "C": "symbols and scale",
+      "D": "colour only",
+      "answer": "C"
+    },
+    {
+      "question": "A map scale shows the relationship between _____________.",
+      "A": "length and breath",
+      "B": "map distance and ground distance",
+      "C": "latitude and longitude",
+      "D": "height and depth",
+      "answer": "B"
+    },
+    {
+      "question": "________ is represented by V-Shaped contour lines.",
+      "A": "Valley",
+      "B": "Round top hill",
+      "C": "Mountain",
+      "D": "Hill",
+      "answer": "A"
+    },
+    {
+      "question": "Population data are mainly obtained through ______. ",
+      "A": "trade",
+      "B": "cencus",
+      "C": "transport",
+      "D": "quarrying",
+      "answer": "B"
+    },
+    {
+      "question": "The World population reached 6 billion in ____________.  ",
+      "A": 1964,
+      "B": 1974,
+      "C": 1984,
+      "D": 1999,
+      "answer": "D"
+    },
+    {
+      "question": "Rapid population growth occurs when ________.",
+      "A": "Birth rate is low",
+      "B": "Death rate is high",
+      "C": "birth rate exceeds death rate",
+      "D": "migration stops",
+      "answer": "C"
+    },
+    {
+      "question": "Improved medical care reduces ________. ",
+      "A": "population",
+      "B": "trade",
+      "C": "death rate",
+      "D": "rainfall",
+      "answer": "C"
+    },
+    {
+      "question": "The movement of people out of a country is known as ______.",
+      "A": "Immigration",
+      "B": "migration",
+      "C": "emigration",
+      "D": "urbanization",
+      "answer": "C"
+    },
+    {
+      "question": "Urban-rural migration refers to movement from________.",
+      "A": "village to city",
+      "B": "city to village",
+      "C": "country to country",
+      "D": "continent to continent",
+      "answer": "B"
+    },
+    {
+      "question": "Immigration leads to _____.",
+      "A": "inter-marriage",
+      "B": "cultural isolation",
+      "C": "reduced labour force",
+      "D": "desertification",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following influence settlement location __________.",
+      "A": "Relief",
+      "B": "Climate",
+      "C": "water supply",
+      "D": "All of the above",
+      "answer": "D"
+    },
+    {
+      "question": "Conurbation results from ______.    ",
+      "A": "Joining of town and cities",
+      "B": "seperation of villages",
+      "C": "migration",
+      "D": "industrial decline",
+      "answer": "A"
+    }
+  ]
+}
