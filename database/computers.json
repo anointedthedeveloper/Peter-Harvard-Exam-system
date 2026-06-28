@@ -1,14 +1,1 @@
-[
-  {
-    "ip": "192.168.18.6",
-    "mac": "00:00:00:00:00:00",
-    "hostname": "A-Server",
-    "interface": "Unknown",
-    "platform": "win32",
-    "timestamp": "2026-06-24T19:09:10.253Z",
-    "studentId": "607403",
-    "studentName": "ABANG EMMANUELLA BOMBUM",
-    "firstSeen": "2026-06-24T19:09:10.253Z",
-    "lastSeen": "2026-06-24T19:09:10.253Z"
-  }
-]
+[]

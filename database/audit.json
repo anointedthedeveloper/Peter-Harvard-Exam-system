@@ -1,263 +1,145 @@
 [
   {
-    "id": 1782328385294.1797,
-    "time": "2026-06-24T19:13:05.294Z",
-    "action": "EXAM_SUBMIT",
-    "actor": "607403",
-    "detail": "Submitted \"geograhpy\" — Score: 24/50 (48%)",
-    "metadata": {
-      "exam": "geograhpy",
-      "score": 24,
-      "total": 50,
-      "percentage": 48,
-      "tabViolations": 0,
-      "studentClass": "SS 2"
-    }
-  },
-  {
-    "id": 1782328150259.5308,
-    "time": "2026-06-24T19:09:10.259Z",
-    "action": "LOGIN",
-    "actor": "607403",
-    "detail": "student \"ABANG EMMANUELLA BOMBUM\" logged in",
-    "metadata": {
-      "role": "student",
-      "ip": "192.168.18.6"
-    }
-  },
-  {
-    "id": 1782328082026.686,
-    "time": "2026-06-24T19:08:02.026Z",
-    "action": "EXAM_UPLOAD_EXCEL",
+    "id": 1782651350848.249,
+    "time": "2026-06-28T12:55:50.848Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "Uploaded Excel exam: geograhpy",
+    "detail": "Edited exam: ECONOMICS SSS2",
     "metadata": {
-      "filename": "SS_2_GEOGRAPHY_EXAMINATION_Questions.json",
-      "questions": 50,
-      "subject": "hh",
-      "class": "SS 2",
-      "duration": 45
+      "filename": "ECONOMICS_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782328001131.8,
-    "time": "2026-06-24T19:06:41.131Z",
-    "action": "LOGIN",
+    "id": 1782651341154.0347,
+    "time": "2026-06-28T12:55:41.154Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
+    "detail": "Edited exam: DIGITAL TECHNOLOGY SSS2",
     "metadata": {
-      "role": "teacher",
-      "ip": "127.0.0.1"
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320442232.5327,
-    "time": "2026-06-24T17:00:42.232Z",
-    "action": "EXAM_UPLOAD_CSV",
+    "id": 1782651330023.1047,
+    "time": "2026-06-28T12:55:30.023Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "Uploaded CSV exam: CSV Exam",
+    "detail": "Edited exam: ECONOMICS SSS1",
     "metadata": {
-      "filename": "deepseek_text_20260624_b60b38.txt",
-      "questions": 1,
-      "subject": "General",
-      "class": "",
-      "duration": 30
+      "filename": "ECONOMICS_SSS1.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320431665.977,
-    "time": "2026-06-24T17:00:31.665Z",
-    "action": "LOGIN",
+    "id": 1782651318903.8496,
+    "time": "2026-06-28T12:55:18.903Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
+    "detail": "Edited exam: DIGITAL TECHNOLOGY SSS2",
     "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.6"
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320377222.889,
-    "time": "2026-06-24T16:59:37.222Z",
-    "action": "LOGIN",
+    "id": 1782651315584.9019,
+    "time": "2026-06-28T12:55:15.584Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
+    "detail": "Edited exam: ECONOMICS SSS2",
     "metadata": {
-      "role": "teacher",
-      "ip": "127.0.0.1"
+      "filename": "ECONOMICS_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320361098.8655,
-    "time": "2026-06-24T16:59:21.098Z",
-    "action": "EXAM_UPLOAD_CSV",
+    "id": 1782651310434.0198,
+    "time": "2026-06-28T12:55:10.434Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "Uploaded CSV exam: Health Education Exam",
+    "detail": "Edited exam: GEOGRAPHY SSS2",
     "metadata": {
-      "filename": "test_exam.json",
-      "questions": 4,
-      "subject": "Health Education",
-      "class": "SS 1",
-      "duration": 30
+      "filename": "GEOGRAPHY_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320319981.8284,
-    "time": "2026-06-24T16:58:39.981Z",
-    "action": "LOGIN",
+    "id": 1782651302243.4773,
+    "time": "2026-06-28T12:55:02.243Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
+    "detail": "Edited exam: GEOGRAPHY SSS1",
     "metadata": {
-      "role": "teacher",
-      "ip": "127.0.0.1"
+      "filename": "GEOGRAPHY_SSS1.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320038269.6763,
-    "time": "2026-06-24T16:53:58.269Z",
-    "action": "EXAM_UPLOAD_CSV",
+    "id": 1782651296209.7512,
+    "time": "2026-06-28T12:54:56.209Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "Uploaded CSV exam: CSV Exam",
+    "detail": "Edited exam: GEOGRAPHY SSS2",
     "metadata": {
-      "filename": "deepseek_text_20260624_b60b38.txt",
-      "questions": 1,
-      "subject": "General",
-      "class": "",
-      "duration": 30
+      "filename": "GEOGRAPHY_SSS2.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782320012873.8562,
-    "time": "2026-06-24T16:53:32.873Z",
-    "action": "EXAM_UPLOAD_CSV",
+    "id": 1782651289521.3704,
+    "time": "2026-06-28T12:54:49.521Z",
+    "action": "EXAM_EDIT",
     "actor": "teacher",
-    "detail": "Uploaded CSV exam: CSV Exam",
+    "detail": "Edited exam: LIVESTOCK SSS1",
     "metadata": {
-      "filename": "deepseek_text_20260624_b60b38.txt",
-      "questions": 1,
-      "subject": "General",
-      "class": "",
-      "duration": 30
+      "filename": "LIVESTOCK_SSS1.json",
+      "questions": 50
     }
   },
   {
-    "id": 1782319904444.668,
-    "time": "2026-06-24T16:51:44.444Z",
+    "id": 1782651279537.027,
+    "time": "2026-06-28T12:54:39.537Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: DIGITAL TECHNOLOGY SSS1",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS1.json",
+      "questions": 50
+    }
+  },
+  {
+    "id": 1782651260279.293,
+    "time": "2026-06-28T12:54:20.279Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: BIOLOGY SSS2",
+    "metadata": {
+      "filename": "BIOLOGY_SSS2.json",
+      "questions": 50
+    }
+  },
+  {
+    "id": 1782651233675.2173,
+    "time": "2026-06-28T12:53:53.675Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: BIOLOGY SSS1",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "questions": 50
+    }
+  },
+  {
+    "id": 1782650654280.0962,
+    "time": "2026-06-28T12:44:14.280Z",
     "action": "LOGIN",
     "actor": "teacher",
     "detail": "teacher \"Teacher\" logged in",
     "metadata": {
       "role": "teacher",
       "ip": "127.0.0.1"
-    }
-  },
-  {
-    "id": 1782319894092.9648,
-    "time": "2026-06-24T16:51:34.092Z",
-    "action": "LOGIN_FAIL",
-    "actor": "teacher",
-    "detail": "Failed login attempt for role: student",
-    "metadata": {
-      "role": "student",
-      "ip": "127.0.0.1"
-    }
-  },
-  {
-    "id": 1782319828958.558,
-    "time": "2026-06-24T16:50:28.958Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.6"
-    }
-  },
-  {
-    "id": 1782319497860.584,
-    "time": "2026-06-24T16:44:57.860Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.6"
-    }
-  },
-  {
-    "id": 1782319225277.906,
-    "time": "2026-06-24T16:40:25.277Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319225179.1548,
-    "time": "2026-06-24T16:40:25.179Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319225168.5007,
-    "time": "2026-06-24T16:40:25.168Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319225154.163,
-    "time": "2026-06-24T16:40:25.154Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319225138.8845,
-    "time": "2026-06-24T16:40:25.138Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319225128.1096,
-    "time": "2026-06-24T16:40:25.128Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
-    }
-  },
-  {
-    "id": 1782319223336.7368,
-    "time": "2026-06-24T16:40:23.336Z",
-    "action": "LOGIN",
-    "actor": "teacher",
-    "detail": "teacher \"Teacher\" logged in",
-    "metadata": {
-      "role": "teacher",
-      "ip": "192.168.18.5"
     }
   }
 ]

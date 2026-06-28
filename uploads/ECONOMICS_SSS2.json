@@ -1,0 +1,408 @@
+{
+  "exam": "ECONOMICS SSS2",
+  "subject": "ECONOMICS",
+  "class": "SS 2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "_________ is the aspect of economics that deals with government revenue and expenditure. ",
+      "A": "equity finance",
+      "B": "public relations",
+      "C": "public finance",
+      "D": "public debenture",
+      "answer": "C"
+    },
+    {
+      "question": "Labor market is a place where?",
+      "A": "workers and employers meet",
+      "B": "workers and services meet ",
+      "C": "workers and government meet",
+      "D": "the government meet with citizens",
+      "answer": "A"
+    },
+    {
+      "question": "All of the followings are monetary activities of the government in public finance, except_______",
+      "A": "counting debts",
+      "B": "borrowing",
+      "C": "spending",
+      "D": "lending and receiving money",
+      "answer": "A"
+    },
+    {
+      "question": "  The meaning of GDP is called?",
+      "A": "gross domestic prediction",
+      "B": " gross domestic product ",
+      "C": "gross domestic plant",
+      "D": "gross domestic principal",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are aims of public finance, except _________ ",
+      "A": "revenue generation",
+      "B": "price stability",
+      "C": "good fiscal policy",
+      "D": "capital market",
+      "answer": "D"
+    },
+    {
+      "question": "The full meaning of GNP is ________ ",
+      "A": " Gross national product",
+      "B": " Gross national promises",
+      "C": " Group national premises ",
+      "D": "Group national product",
+      "answer": "A"
+    },
+    {
+      "question": "Mr. john has a total of 40 labor force ready to render their services. What is this called?",
+      "A": "Supply of labor",
+      "B": "Demand for labor",
+      "C": "Debenture",
+      "D": "Profit marginalization",
+      "answer": "A"
+    },
+    {
+      "question": "All the activities if public finance include all of the followings except _________",
+      "A": "Borrowing money",
+      "B": "Spending money",
+      "C": "Lending money",
+      "D": "Destruction of spoilt currency",
+      "answer": "D"
+    },
+    {
+      "question": "One of the following is a consequence for the employer if he/she pays too much for labor.",
+      "A": "Capital will be affected ",
+      "B": " Demand for labor is high ",
+      "C": " Demand for supply is high ",
+      "D": " Demand for man power is high",
+      "answer": "A"
+    },
+    {
+      "question": "A wholesaler market is a market where a__________ buys goods in large quantity from the manufacturer.",
+      "A": "Wholesaler",
+      "B": "Retailer",
+      "C": "Manufacturer",
+      "D": "Supplier",
+      "answer": "A"
+    },
+    {
+      "question": "Those who are ready to work but have no job is known as _________ youths ",
+      "A": "Scarce",
+      "B": "Unemeployed",
+      "C": "Vibrant",
+      "D": "Lazy",
+      "answer": "B"
+    },
+    {
+      "question": "The method of sharing revenue among the 3 tiers of government is known as ________",
+      "A": "Revenue allocation",
+      "B": "Revenue distribution",
+      "C": "Revenue domestication",
+      "D": "Revenue clustering",
+      "answer": "A"
+    },
+    {
+      "question": "Another name for commodity is known as ________",
+      "A": "Goods",
+      "B": "Services",
+      "C": "Land",
+      "D": "Retail",
+      "answer": "A"
+    },
+    {
+      "question": " The government plan of action concerning the raising of revenue through taxation and other means and deciding the pattern of expenditure to be applied is known as ________",
+      "A": "Fiscal policy",
+      "B": "Debenture",
+      "C": "Bond",
+      "D": "Draft",
+      "answer": "A"
+    },
+    {
+      "question": " One of the following is a type of taxes ",
+      "A": "Direct and indirect tax",
+      "B": "Money tax",
+      "C": "Goods tax",
+      "D": "Payers tax",
+      "answer": "A"
+    },
+    {
+      "question": "When a customer and a consumer derive satisfaction from a commodity, it is known as ________",
+      "A": "Utility",
+      "B": "Satisfactory commodity",
+      "C": "Extra utility",
+      "D": "Extra satisfaction",
+      "answer": "A"
+    },
+    {
+      "question": "MU stands for _________",
+      "A": "Marginal utility",
+      "B": "Mentored utility",
+      "C": "Total utility",
+      "D": "Man made utility",
+      "answer": "B"
+    },
+    {
+      "question": " The type of tax imposed directly to the people, companies, organizations and agencies are _________",
+      "A": "Indirect tax",
+      "B": "Direct tax",
+      "C": "Capital tax",
+      "D": "Expenditure tax",
+      "answer": "B"
+    },
+    {
+      "question": "The initial money use to set up a business is called _________",
+      "A": "Business funds",
+      "B": "Initial funds",
+      "C": "Capital",
+      "D": "Profit",
+      "answer": "C"
+    },
+    {
+      "question": " NPF stands for _______",
+      "A": "Nigeria police force",
+      "B": "National provident fund",
+      "C": "National police fund",
+      "D": "None of the above",
+      "answer": "A"
+    },
+    {
+      "question": "The type of tax imposed directly on goods and services are _______",
+      "A": "Indirect tax",
+      "B": "Direct tax",
+      "C": "Capital tax",
+      "D": "Expenditure tax",
+      "answer": "A"
+    },
+    {
+      "question": "One of the following is not a type of direct tax",
+      "A": "Company tax",
+      "B": "Expenditure tax",
+      "C": "Capital tax",
+      "D": "Sales tax",
+      "answer": "D"
+    },
+    {
+      "question": " One of the following is not a type of indirect tax",
+      "A": "Personal income tax",
+      "B": "Import and export duties",
+      "C": "Purchase tax",
+      "D": "Excise duties",
+      "answer": "A"
+    },
+    {
+      "question": " The financial statement of the total revenue and expenditure of a government, individual business within some time is known as _________ ",
+      "A": "Balanced budget",
+      "B": "Budget",
+      "C": "Surplus budget",
+      "D": "Deficit budget",
+      "answer": "B"
+    },
+    {
+      "question": "Economics has no certain definition. ",
+      "A": "true",
+      "B": "",
+      "C": "none of the above",
+      "D": "all of the above",
+      "answer": "A"
+    },
+    {
+      "question": "The marketing of agricultural produce is the duty of ________ ",
+      "A": "marketing unit",
+      "B": "marketing board",
+      "C": "market",
+      "D": "government",
+      "answer": "B"
+    },
+    {
+      "question": "What can be given in exchange of goods and services rendered in labor market",
+      "A": "goods",
+      "B": "money",
+      "C": "commodity",
+      "D": "ledger",
+      "answer": "B"
+    },
+    {
+      "question": "Money can be in the following forms. ",
+      "A": " paper, coins and cryptocurrencies",
+      "B": " trade by barter",
+      "C": " coins and cheque",
+      "D": " paper, coins and ledger ",
+      "answer": "A"
+    },
+    {
+      "question": "One of the following is not a factor affecting the demand for money.",
+      "A": "interest rate",
+      "B": "the level of income",
+      "C": "inflation",
+      "D": "debenture",
+      "answer": "D"
+    },
+    {
+      "question": "The highest financial institution in Nigeria is _________",
+      "A": "commercial bank",
+      "B": "central bank",
+      "C": "open market operation",
+      "D": "merchant bank",
+      "answer": "B"
+    },
+    {
+      "question": "One of the following is an example of primary industry.",
+      "A": "agriculture",
+      "B": "crude oil mining",
+      "C": "fishing",
+      "D": "real stage",
+      "answer": "D"
+    },
+    {
+      "question": "_________ involves the extraction and refinement of resources found in nature ",
+      "A": "extraction industry",
+      "B": "mining industry",
+      "C": "manufacturing industry",
+      "D": "training industry",
+      "answer": "A"
+    },
+    {
+      "question": "Unemployment is represented by ________ symbol.",
+      "A": "A",
+      "B": "U",
+      "C": "L",
+      "D": "UE",
+      "answer": "B"
+    },
+    {
+      "question": "One of the followings is not an importance of primary industries. ",
+      "A": "water supply",
+      "B": "raw material supply",
+      "C": "foreign exchange earnings",
+      "D": "employment generation",
+      "answer": "A"
+    },
+    {
+      "question": " The formula for unemployment is_________ ",
+      "A": "number of employed persons/working labor force x 100/1",
+      "B": " number of unemployed persons/working labor force x 100/1",
+      "C": " number of employed persons/non-working labor force x 100/1 ",
+      "D": " number of persons/working labor force x 100/1",
+      "answer": "A"
+    },
+    {
+      "question": "One of the followings is not a factor affecting the demand for labor. ",
+      "A": " size of manufacturing",
+      "B": "nature of supply",
+      "C": " nature of industries",
+      "D": " state of employment",
+      "answer": "B"
+    },
+    {
+      "question": "Types of wage rate are _______ and _______",
+      "A": " time rate system and piece rate system",
+      "B": " time rate system and time rate source",
+      "C": "time pace system and time rate system",
+      "D": "time system",
+      "answer": "A"
+    },
+    {
+      "question": " A decrease in supply without any change in demand will lead to excess of demand over supply.",
+      "A": "true",
+      "B": "",
+      "C": "none of the above",
+      "D": "all of the above",
+      "answer": "A"
+    },
+    {
+      "question": "One of the followings is not a type of supply. ",
+      "A": "composite supply",
+      "B": "joint supply",
+      "C": "competitive supply",
+      "D": "defined supply",
+      "answer": "D"
+    },
+    {
+      "question": "Net National Product (NNP) is:",
+      "A": "GDP + DEPRESSION",
+      "B": " GNP – DEPRECIATION",
+      "C": " GDP – taxes",
+      "D": "GNP + subsidies",
+      "answer": "B"
+    },
+    {
+      "question": "Personal income is ________",
+      "A": "income received by individuals",
+      "B": "government revenue ",
+      "C": " corporate profits only",
+      "D": "export earnings",
+      "answer": "A"
+    },
+    {
+      "question": " The abbreviation of national income is _________",
+      "A": "NI",
+      "B": "NIL",
+      "C": "NB",
+      "D": "N",
+      "answer": "A"
+    },
+    {
+      "question": "A central bank is responsible for _________",
+      "A": "selling goods",
+      "B": "controlling money supply",
+      "C": "lending to individuals",
+      "D": "importing goods",
+      "answer": "B"
+    },
+    {
+      "question": "One of the following is not a component of agriculture.",
+      "A": "livestock farming",
+      "B": "crop rotation",
+      "C": "forestry",
+      "D": "birder farming",
+      "answer": "D"
+    },
+    {
+      "question": "All of the followings are examples of tertiary industries, except _________",
+      "A": " telecommunication",
+      "B": " transportation",
+      "C": "commerce and trade",
+      "D": " infrastructure development",
+      "answer": "D"
+    },
+    {
+      "question": " TU stands for ________",
+      "A": "Marginal utility",
+      "B": "total utility",
+      "C": "total unity",
+      "D": "total entity",
+      "answer": "B"
+    },
+    {
+      "question": "Most west African export crops are handled by marketing boards. ",
+      "A": "true",
+      "B": "",
+      "C": "none of the above",
+      "D": "not sure",
+      "answer": "A"
+    },
+    {
+      "question": "Before money was invented, people used a system known as ___________ ",
+      "A": "credit",
+      "B": "trade by barter",
+      "C": "banking",
+      "D": "auction",
+      "answer": "B"
+    },
+    {
+      "question": "Manufacturing, mining, construction, processing, transport are types of __________",
+      "A": "firms",
+      "B": "industries",
+      "C": "companies",
+      "D": "shops",
+      "answer": "B"
+    },
+    {
+      "question": "Nigeria is a __________ world economy. A. third B. first C. second D. fifth",
+      "A": "third",
+      "B": "first",
+      "C": "second",
+      "D": "fifth",
+      "answer": "A"
+    }
+  ]
+}

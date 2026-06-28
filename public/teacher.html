@@ -2399,7 +2399,10 @@ async function loadExams() {
               <span class="toggle-slider"></span>
             </label>
           </td>
-          <td><button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')"><i class="fa fa-trash"></i></button></td>
+          <td>
+            <button class="btn outline sm" onclick="viewExamDetails('${e.filename}')" title="View/Edit Questions"><i class="fa fa-eye"></i></button>
+            <button class="btn danger sm" onclick="deleteExam('${e.filename}','${e.name.replace(/'/g,"\\'")}')"><i class="fa fa-trash"></i></button>
+          </td>
         </tr>`}).join('')}
     </tbody></table>` : '<div class="empty"><i class="fa fa-folder-open"></i>No exams uploaded yet</div>';
 }
@@ -2417,6 +2420,161 @@ function deleteExam(filename, name) {
     await fetch('/api/exam/' + encodeURIComponent(filename), { method: 'DELETE' });
     toast('Exam deleted'); loadExams();
   }, 'danger');
+}
+
+async function viewExamDetails(filename) {
+  showLoader('Loading exam details...');
+  try {
+    const response = await fetch('/api/exam-details/' + encodeURIComponent(filename));
+    const exam = await response.json();
+    
+    if (response.ok) {
+      showExamEditor(exam, filename);
+    } else {
+      toast('Failed to load exam', 'err');
+    }
+  } catch (e) {
+    toast('Error loading exam', 'err');
+  } finally {
+    hideLoader();
+  }
+}
+
+function showExamEditor(exam, filename) {
+  const modalHtml = `
+    <div class="modal-overlay show" id="examEditorModal">
+      <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-h">
+          <h3><i class="fa fa-edit"></i> Edit Exam: ${exam.exam}</h3>
+          <p>Subject: ${exam.subject} | Class: ${exam.class} | Duration: ${exam.duration} min</p>
+        </div>
+        <div class="modal-b">
+          <div class="upload-fields" style="margin-bottom: 20px;">
+            <div>
+              <label><i class="fa fa-file-text"></i> Exam Name</label>
+              <input type="text" id="editExamName" value="${exam.exam}">
+            </div>
+            <div>
+              <label><i class="fa fa-book"></i> Subject</label>
+              <input type="text" id="editSubject" value="${exam.subject}">
+            </div>
+            <div>
+              <label><i class="fa fa-users"></i> Class</label>
+              <select id="editClass">
+                <option value="SS 1" ${exam.class === 'SS 1' ? 'selected' : ''}>SS 1</option>
+                <option value="SS 2" ${exam.class === 'SS 2' ? 'selected' : ''}>SS 2</option>
+                <option value="SS 3" ${exam.class === 'SS 3' ? 'selected' : ''}>SS 3</option>
+              </select>
+            </div>
+            <div>
+              <label><i class="fa fa-clock-o"></i> Duration (min)</label>
+              <input type="number" id="editDuration" value="${exam.duration}">
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1e1e1e;">
+              <i class="fa fa-question-circle" style="color: #dc2626;"></i> Questions (${exam.questions.length})
+            </h4>
+            <div id="questionsEditor" style="max-height: 400px; overflow-y: auto; border: 2px solid #f0f0f0; border-radius: 8px; padding: 16px;">
+              ${exam.questions.map((q, idx) => `
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                  <div style="font-weight: 700; margin-bottom: 8px; color: #1e1e1e;">Question ${idx + 1}</div>
+                  <div class="field" style="margin-bottom: 12px;">
+                    <input type="text" id="q${idx}_question" value="${q.question}" placeholder="Question text">
+                  </div>
+                  <div class="upload-fields" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                    <div>
+                      <label>Option A</label>
+                      <input type="text" id="q${idx}_A" value="${q.A}">
+                    </div>
+                    <div>
+                      <label>Option B</label>
+                      <input type="text" id="q${idx}_B" value="${q.B}">
+                    </div>
+                    <div>
+                      <label>Option C</label>
+                      <input type="text" id="q${idx}_C" value="${q.C}">
+                    </div>
+                    <div>
+                      <label>Option D</label>
+                      <input type="text" id="q${idx}_D" value="${q.D}">
+                    </div>
+                  </div>
+                  <div style="margin-top: 12px;">
+                    <label style="font-size: 12px; font-weight: 700; color: #1e1e1e;">Correct Answer:</label>
+                    <select id="q${idx}_answer" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 6px; margin-left: 8px;">
+                      <option value="A" ${q.answer === 'A' ? 'selected' : ''}>A</option>
+                      <option value="B" ${q.answer === 'B' ? 'selected' : ''}>B</option>
+                      <option value="C" ${q.answer === 'C' ? 'selected' : ''}>C</option>
+                      <option value="D" ${q.answer === 'D' ? 'selected' : ''}>D</option>
+                    </select>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button onclick="closeExamEditor()">Cancel</button>
+            <button class="primary" onclick="saveExam('${filename}')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closeExamEditor() {
+  const modal = document.getElementById('examEditorModal');
+  if (modal) modal.remove();
+}
+
+async function saveExam(filename) {
+  const questions = [];
+  const questionInputs = document.querySelectorAll('#questionsEditor > div');
+  
+  questionInputs.forEach((div, idx) => {
+    questions.push({
+      question: document.getElementById(`q${idx}_question`).value,
+      A: document.getElementById(`q${idx}_A`).value,
+      B: document.getElementById(`q${idx}_B`).value,
+      C: document.getElementById(`q${idx}_C`).value,
+      D: document.getElementById(`q${idx}_D`).value,
+      answer: document.getElementById(`q${idx}_answer`).value
+    });
+  });
+  
+  const examData = {
+    exam: document.getElementById('editExamName').value,
+    subject: document.getElementById('editSubject').value,
+    class: document.getElementById('editClass').value,
+    duration: parseInt(document.getElementById('editDuration').value),
+    questions: questions
+  };
+  
+  showLoader('Saving exam...');
+  try {
+    const response = await fetch('/api/exam/' + encodeURIComponent(filename), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(examData)
+    });
+    
+    if (response.ok) {
+      toast('Exam saved successfully', 'ok');
+      closeExamEditor();
+      loadExams();
+    } else {
+      toast('Failed to save exam', 'err');
+    }
+  } catch (e) {
+    toast('Error saving exam', 'err');
+  } finally {
+    hideLoader();
+  }
 }
 
 // MONITOR

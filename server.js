@@ -1204,14 +1204,18 @@ const server = http.createServer(async (req, res) => {
             const colIndices = {};
             
             header.forEach((col, index) => {
-                if (col.includes('question')) colIndices.question = index;
-                else if (col.includes('option 1') || col.includes('option1')) colIndices.option_1 = index;
-                else if (col.includes('option 2') || col.includes('option2')) colIndices.option_2 = index;
-                else if (col.includes('option 3') || col.includes('option3')) colIndices.option_3 = index;
-                else if (col.includes('option 4') || col.includes('option4')) colIndices.option_4 = index;
-                else if (col.includes('answer')) colIndices.answer = index;
-                else if (col.includes('group')) colIndices.group = index;
-                else if (col.includes('level')) colIndices.level = index;
+                // Exact match for question column (avoid 'question type', 'question level')
+                if (col === 'question' || col === 'questions') colIndices.question = index;
+                // Match option columns with various formats
+                else if (col === 'option 1' || col === 'option1' || col === 'option_1') colIndices.option_1 = index;
+                else if (col === 'option 2' || col === 'option2' || col === 'option_2') colIndices.option_2 = index;
+                else if (col === 'option 3' || col === 'option3' || col === 'option_3') colIndices.option_3 = index;
+                else if (col === 'option 4' || col === 'option4' || col === 'option_4') colIndices.option_4 = index;
+                // Match answer column
+                else if (col === 'answer' || col === 'correct_answer' || col === 'correct') colIndices.answer = index;
+                // Match class/group columns
+                else if (col === 'group' || col === 'class') colIndices.group = index;
+                else if (col === 'level') colIndices.level = index;
             });
             
             // Extract class from first data row if available
@@ -1240,10 +1244,10 @@ const server = http.createServer(async (req, res) => {
                 
                 // Parse answer
                 const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().toLowerCase() : '';
-                if (answerValue.includes('option 1') || answerValue === 'a') question.answer = 'A';
-                else if (answerValue.includes('option 2') || answerValue === 'b') question.answer = 'B';
-                else if (answerValue.includes('option 3') || answerValue === 'c') question.answer = 'C';
-                else if (answerValue.includes('option 4') || answerValue === 'd') question.answer = 'D';
+                if (answerValue.includes('option 1') || answerValue.includes('option_1') || answerValue === 'a') question.answer = 'A';
+                else if (answerValue.includes('option 2') || answerValue.includes('option_2') || answerValue === 'b') question.answer = 'B';
+                else if (answerValue.includes('option 3') || answerValue.includes('option_3') || answerValue === 'c') question.answer = 'C';
+                else if (answerValue.includes('option 4') || answerValue.includes('option_4') || answerValue === 'd') question.answer = 'D';
                 else question.answer = 'A';
                 
                 questions.push(question);
@@ -1400,6 +1404,63 @@ const server = http.createServer(async (req, res) => {
         sysLog('EXAM_STATUS', `${filename}: ${examStatus[filename] ? 'activated' : 'deactivated'}`, body.teacherId || 'teacher');
         auditLog('EXAM_STATUS_CHANGE', body.teacherId || 'teacher', `Exam "${filename}" set to ${examStatus[filename] ? 'ACTIVE' : 'INACTIVE'}`, { filename, active: examStatus[filename] });
         send(req, res, 200, { ok: true, active: examStatus[filename] }); return;
+    }
+
+    // GET EXAM DETAILS WITH ANSWERS (for teachers)
+    if (req.method === 'GET' && pathname.startsWith('/api/exam-details/')) {
+        const filename = decodeURIComponent(pathname.replace('/api/exam-details/', ''));
+        const filePath = path.join(UPLOADS_DIR, filename);
+        
+        if (!fs.existsSync(filePath)) {
+            send(req, res, 404, { error: 'Exam not found' });
+            return;
+        }
+        
+        const examData = readJSON(filePath);
+        send(req, res, 200, examData);
+        return;
+    }
+
+    // EDIT EXAM (PUT)
+    if (req.method === 'PUT' && pathname.startsWith('/api/exam/')) {
+        const filename = decodeURIComponent(pathname.replace('/api/exam/', ''));
+        const filePath = path.join(UPLOADS_DIR, filename);
+        
+        if (!fs.existsSync(filePath)) {
+            send(req, res, 404, { error: 'Exam not found' });
+            return;
+        }
+        
+        const body = await parseBody(req);
+        
+        // Validate required fields
+        if (!body || typeof body !== 'object') {
+            send(req, res, 400, { error: 'Invalid request body' });
+            return;
+        }
+        
+        // Read existing exam
+        const existingExam = readJSON(filePath);
+        
+        // Update exam metadata if provided
+        if (body.exam !== undefined) existingExam.exam = body.exam;
+        if (body.subject !== undefined) existingExam.subject = body.subject;
+        if (body.class !== undefined) existingExam.class = body.class;
+        if (body.duration !== undefined) existingExam.duration = parseInt(body.duration);
+        
+        // Update questions if provided
+        if (body.questions !== undefined && Array.isArray(body.questions)) {
+            existingExam.questions = body.questions;
+        }
+        
+        // Save updated exam
+        writeJSON(filePath, existingExam);
+        
+        sysLog('EDIT_EXAM', `Edited exam: ${filename}`, 'teacher');
+        auditLog('EXAM_EDIT', 'teacher', `Edited exam: ${existingExam.exam || filename}`, { filename, questions: existingExam.questions?.length });
+        
+        send(req, res, 200, { ok: true, exam: existingExam });
+        return;
     }
 
     // SUBMIT EXAM

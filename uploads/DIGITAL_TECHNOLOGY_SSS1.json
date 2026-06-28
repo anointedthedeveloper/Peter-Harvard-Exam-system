@@ -1,0 +1,408 @@
+{
+  "exam": "DIGITAL TECHNOLOGY SSS1",
+  "subject": "DIGITAL",
+  "class": "SS 1",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "ICT stands for ___________ ",
+      "A": "international communication technology ",
+      "B": "information and computer technology",
+      "C": "information and communication technology",
+      "D": "internet and connection technology ",
+      "answer": "C"
+    },
+    {
+      "question": "The step by step process of solving a given problem is known as _________",
+      "A": "algorithm",
+      "B": "flowchart",
+      "C": "process",
+      "D": "procedure",
+      "answer": "A"
+    },
+    {
+      "question": "Cell phones, routers, switches are examples of __________ ",
+      "A": "ict gadget ",
+      "B": "ict costumes ",
+      "C": "communication gadgets ",
+      "D": "ict hubs",
+      "answer": "A"
+    },
+    {
+      "question": "We have two types of communication strategies in ICT",
+      "A": "synchronous communication and straight",
+      "B": "straight and asynchronous ",
+      "C": "synchronous and asynchronous ",
+      "D": "synchronous and Assynt ",
+      "answer": "C"
+    },
+    {
+      "question": "The meaning of PSTN is ___________ ",
+      "A": "public switched telephone network ",
+      "B": "public switched telephone note ",
+      "C": "public switched telephone nature ",
+      "D": "public switched telecom network",
+      "answer": "A"
+    },
+    {
+      "question": "A traditional landline system used for voice communication is known as _________",
+      "A": "public switched telephone network ",
+      "B": "circuit switched packet telephone ",
+      "C": "satellite telephone",
+      "D": "mobile phone (GSM) ",
+      "answer": "A"
+    },
+    {
+      "question": "Communications via satellites often used in remote areas such as kubwa, dutse alhaji are known as _________ ",
+      "A": "circuit switched packet telephone system ",
+      "B": "satellite telephone system",
+      "C": "fixed wireless telephone system ",
+      "D": "broadcasting",
+      "answer": "B"
+    },
+    {
+      "question": "The transmission of audio and video to a wide audience by the use of radio, television, websites and satellite is known as __________ ",
+      "A": "satellite telephone system ",
+      "B": "satellite tv system ",
+      "C": "broadcasting",
+      "D": "mobile phone system",
+      "answer": "C"
+    },
+    {
+      "question": "All bank branch of GTB communicate their office information through _________ ",
+      "A": "space satellite ",
+      "B": "radio active signal devices",
+      "C": "broadband networks ",
+      "D": "secured passwords systems",
+      "answer": "B"
+    },
+    {
+      "question": "Phone networks are made up of ________ ",
+      "A": "3G, 4G, 9G ",
+      "B": "3G, 4G, 5G ",
+      "C": "3G, 4G, 1G ",
+      "D": "2G,1G, 5G ",
+      "answer": "B"
+    },
+    {
+      "question": "A data network is an electronic communication system that allows interconnected devices to transmit, receive and share data or resources, ",
+      "A": "true",
+      "B": "",
+      "C": "none of the baove",
+      "D": "all of the above",
+      "answer": "A"
+    },
+    {
+      "question": "LAN means ",
+      "A": "local area networking ",
+      "B": "local advance network ",
+      "C": "local area network ",
+      "D": "local area neutral",
+      "answer": "C"
+    },
+    {
+      "question": "A network that spans within a city is known as _________ ",
+      "A": "local area neutral ",
+      "B": "metropolitan area network ",
+      "C": "wide area network ",
+      "D": "personal area network",
+      "answer": "B"
+    },
+    {
+      "question": "________ is the collection of methods, practices, algorithms and methodologies that transforms data into information and knowledge desired by and useful for individual and group users in organizations and other entities",
+      "A": "information source ",
+      "B": "information system",
+      "C": "information signals",
+      "D": "information dome",
+      "answer": "B"
+    },
+    {
+      "question": "GPS stands for? ",
+      "A": "global position source ",
+      "B": "global positioning system ",
+      "C": "global position system",
+      "D": "global posture system ",
+      "answer": "B"
+    },
+    {
+      "question": "GLS stands for? ",
+      "A": "global position source ",
+      "B": "geographic inclined system ",
+      "C": "geographic information source",
+      "D": "geographic information system ",
+      "answer": "D"
+    },
+    {
+      "question": "A space craft that is launched into the space and equipped with camera and sensors to record and transmit information is known as _________ ",
+      "A": "satellite ",
+      "B": "dish",
+      "C": "radio active device",
+      "D": "space craft",
+      "answer": "A"
+    },
+    {
+      "question": "When you buy a DSTV, the signal comes from ",
+      "A": "satellite",
+      "B": "dish",
+      "C": "radio active device",
+      "D": "space craft",
+      "answer": "A"
+    },
+    {
+      "question": "The need for a satellite is for ",
+      "A": "picking lights ",
+      "B": "picking signals from the earth ",
+      "C": "picking sound ",
+      "D": "sending signals to the earth ",
+      "answer": "D"
+    },
+    {
+      "question": "A satellite rotates",
+      "A": "true",
+      "B": "",
+      "C": "none of the above",
+      "D": "all of the above",
+      "answer": "A"
+    },
+    {
+      "question": "AI which means artificial intelligence was invented to do _________ ",
+      "A": "cook food",
+      "B": "make life easier",
+      "C": "make life hard",
+      "D": "have conversation with us",
+      "answer": "B"
+    },
+    {
+      "question": "The use of ict to learn online is known as __________ ",
+      "A": "online tutorship ",
+      "B": "educational learning",
+      "C": "E-learning ",
+      "D": "E-commerce  ",
+      "answer": "C"
+    },
+    {
+      "question": "All of the followings are uses of ICT in the bank, except _________ ",
+      "A": "recording customer details",
+      "B": "writing cheques ",
+      "C": "printing teller ",
+      "D": "counting money ",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are uses of ICT in the Hospitals, except _________ ",
+      "A": "recording customer details ",
+      "B": "writing designs ",
+      "C": "printing patient details ",
+      "D": "counting money ",
+      "answer": "B"
+    },
+    {
+      "question": "GPS are used in which sectors of the economy? ",
+      "A": "health sector",
+      "B": "learnning sector",
+      "C": "transportation sector",
+      "D": "E-commerce sector",
+      "answer": "C"
+    },
+    {
+      "question": "Another name given to turning on the computer is called? ",
+      "A": "shut down",
+      "B": "booting",
+      "C": "melt down",
+      "D": "cold engine",
+      "answer": "B"
+    },
+    {
+      "question": "When your computer is fully turned on, the first display you see is called? ",
+      "A": "icons",
+      "B": "mouse cursor",
+      "C": "desktop",
+      "D": "taskbar",
+      "answer": "C"
+    },
+    {
+      "question": "Small or tiny pictures of software seen when the computer is fully turned on is called? ",
+      "A": "time bar",
+      "B": "pics",
+      "C": "app pics ",
+      "D": "icons",
+      "answer": "D"
+    },
+    {
+      "question": "All of the followings are components of a task bar, except _________ ",
+      "A": "start menu",
+      "B": "quick launch toolbar",
+      "C": "system tray ",
+      "D": "icons",
+      "answer": "D"
+    },
+    {
+      "question": "When you want to run an application, the first step is to ________ ",
+      "A": "close all applications ",
+      "B": "click the task bar ",
+      "C": "click the start button ",
+      "D": "click the desktop area ",
+      "answer": "C"
+    },
+    {
+      "question": "The application use to type documents is categorized as _________ ",
+      "A": "word document ",
+      "B": "word processors",
+      "C": "word WPS",
+      "D": "MS Office",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are examples of word processors except ________ ",
+      "A": "google docs ",
+      "B": "Microsoft word ",
+      "C": "wps writer ",
+      "D": "note word",
+      "answer": "D"
+    },
+    {
+      "question": "The knowledge of ICT can be applied in all of the areas except _________ ",
+      "A": "homes",
+      "B": "journalism",
+      "C": "creative writing burial",
+      "D": "",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + P is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "rulers",
+      "answer": "B"
+    },
+    {
+      "question": "Ctrl + V is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "pasting objects ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + O is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "open a new document ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + P is used for ________ in word documents",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "rulers",
+      "answer": "C"
+    },
+    {
+      "question": "Ctrl + C is used for ________ in word documents.",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "copy a text",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + A is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document ",
+      "C": "creating shortcut ",
+      "D": "selecting a group of text ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + B is used for ________ in word documents",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating documents",
+      "D": "bold text",
+      "answer": "D"
+    },
+    {
+      "question": "Application use for meetings are known as ",
+      "A": "word documents ",
+      "B": "presentation packages ",
+      "C": "excel packages ",
+      "D": "google sheets ",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are examples of presentation packages, except ________",
+      "A": "visme",
+      "B": "emaze",
+      "C": "slide wiki",
+      "D": "note copy",
+      "answer": "D"
+    },
+    {
+      "question": "_______ are devices you can touch and see",
+      "A": "software",
+      "B": "hardware",
+      "C": "keyboard",
+      "D": "mouse",
+      "answer": "B"
+    },
+    {
+      "question": "What is the brain of the computer? ",
+      "A": "CPU",
+      "B": "RAM",
+      "C": "motherboard",
+      "D": "power supply",
+      "answer": "A"
+    },
+    {
+      "question": "What hardware is responsible for cooling the CPU when it is hot ",
+      "A": "RAM",
+      "B": "heat sink",
+      "C": "fan",
+      "D": "blower",
+      "answer": "B"
+    },
+    {
+      "question": "Transitions involve all except one ",
+      "A": "dissolve",
+      "B": "fading",
+      "C": "pushing",
+      "D": "appear",
+      "answer": "D"
+    },
+    {
+      "question": "A sequence of related instructions that tell the computer how to carry out task is known as _________",
+      "A": "computer data ",
+      "B": "computer logic ",
+      "C": "computer program ",
+      "D": "algorithm",
+      "answer": "C"
+    },
+    {
+      "question": "The set of rules governing how the wards, symbols and expressions in the language must be written to form a valid statement is known as __________ ",
+      "A": "computer symmetric ",
+      "B": "",
+      "C": "synta",
+      "D": "semantics",
+      "answer": "B"
+    },
+    {
+      "question": "All are levels of programming languages except _________ ",
+      "A": "machine language ",
+      "B": "low level language",
+      "C": "high level language ",
+      "D": "medium level language",
+      "answer": "D"
+    },
+    {
+      "question": "BASIC stands for ___________ ",
+      "A": "beginners all purpose symbolic instruction code ",
+      "B": "beginner’s all-purpose symbolic instruction codec ",
+      "C": "beginners all-purpose system instruction code",
+      "D": "beginners’ all-purpose symbolic instructions code",
+      "answer": "A"
+    }
+  ]
+}

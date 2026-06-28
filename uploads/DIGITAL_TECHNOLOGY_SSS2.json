@@ -1,0 +1,408 @@
+{
+  "exam": "DIGITAL TECHNOLOGY SSS2",
+  "subject": "DIGITAL",
+  "class": "SS 2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "The step by step process of archiving a given task. ",
+      "A": "flowchart",
+      "B": "algorithm",
+      "C": "process",
+      "D": "flowchart upper",
+      "answer": "B"
+    },
+    {
+      "question": "Every algorithm begins with _________ ",
+      "A": "hello",
+      "B": "start",
+      "C": "run ",
+      "D": "follow up",
+      "answer": "B"
+    },
+    {
+      "question": "Flowchart is _________ ",
+      "A": "a symbolic diagram ",
+      "B": "a logical symbol ",
+      "C": "symbols",
+      "D": "a symbolic representation of algorithm",
+      "answer": "D"
+    },
+    {
+      "question": "The emerging technology means ",
+      "A": "the old technology ",
+      "B": "advanced technology ",
+      "C": "upcoming technology ",
+      "D": "none of the above",
+      "answer": "C"
+    },
+    {
+      "question": "Cell phones, routers, switches are examples of __________ ",
+      "A": "ict gadgets",
+      "B": "ict costumes",
+      "C": "communication gadgets",
+      "D": "hubs",
+      "answer": "A"
+    },
+    {
+      "question": "The transmission of audio and video to a wide audience by the use of radio, television, websites and satellite is known as __________ ",
+      "A": "satellite telephone system ",
+      "B": "satellite tv system",
+      "C": "broadcasting",
+      "D": "mobile phone system",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a popular spreadsheet software? ",
+      "A": "Microsoft word ",
+      "B": "Microsoft excel",
+      "C": "Internet explorer ",
+      "D": "paint",
+      "answer": "B"
+    },
+    {
+      "question": "What is a spreadsheet application used for? ",
+      "A": "word processing ",
+      "B": "creating presentations.",
+      "C": "organizing and analyzing data ",
+      "D": "designing graphics ",
+      "answer": "C"
+    },
+    {
+      "question": "RAM in a computer plays the role of ",
+      "A": "fetching information from monitor ",
+      "B": "fetching information from processor ",
+      "C": "fetching information from Hard disc drive ",
+      "D": "storing information permanently ",
+      "answer": "B"
+    },
+    {
+      "question": "which of the followings are graphic packages? ",
+      "A": "BASIC",
+      "B": "CorelDRAW",
+      "C": "TORTRAN",
+      "D": "HTML ",
+      "answer": "B"
+    },
+    {
+      "question": "All bank branch of GTB communicate their office information through _________",
+      "A": "space satellite ",
+      "B": "radio active signal devices ",
+      "C": "broadband networks ",
+      "D": "secured password systems",
+      "answer": "B"
+    },
+    {
+      "question": "machine language ",
+      "A": "machine language ",
+      "B": "low level language ",
+      "C": "high level language ",
+      "D": "medium level language ",
+      "answer": "D"
+    },
+    {
+      "question": "Which of the following is a computer program? ",
+      "A": "BASIC ",
+      "B": "MS-PAINT ",
+      "C": "DATA",
+      "D": "FRENCH ",
+      "answer": "B"
+    },
+    {
+      "question": "The set of rules governing how the wards, symbols and expressions in the language must be written to form a valid statement is known as __________ ",
+      "A": "computer symmetric ",
+      "B": "syntax",
+      "C": "semantics",
+      "D": "programming language  ",
+      "answer": "B"
+    },
+    {
+      "question": "What is the brain of the computer? ",
+      "A": "cpu",
+      "B": "ram",
+      "C": "motherboard",
+      "D": "power supply",
+      "answer": "A"
+    },
+    {
+      "question": "What is the sole aim of using an email? ",
+      "A": "to send messages ",
+      "B": "to make call ",
+      "C": " to hold virtual meetings",
+      "D": "to send videos ",
+      "answer": "A"
+    },
+    {
+      "question": "The “E” in an E-mail stands for? ",
+      "A": "entertainment",
+      "B": "electronic",
+      "C": "email",
+      "D": "exit",
+      "answer": "B"
+    },
+    {
+      "question": "How does an email know the destination it will deliver its message to? ",
+      "A": "by using address ",
+      "B": "the cc ",
+      "C": "the reach out ",
+      "D": "the username ",
+      "answer": "A"
+    },
+    {
+      "question": "All of these are components of an email address, except __________ ",
+      "A": "username",
+      "B": "the @ symbol ",
+      "C": "domain name ",
+      "D": "the cc",
+      "answer": "D"
+    },
+    {
+      "question": "All of the followings are advantages of email, except ___________ ",
+      "A": "speed",
+      "B": "global reach",
+      "C": "record keeping ",
+      "D": "slow in delivery ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + P is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document ",
+      "C": "creating shortcut ",
+      "D": "rulers",
+      "answer": "B"
+    },
+    {
+      "question": "Ctrl + C is used for ________ in word documents",
+      "A": "saving document ",
+      "B": "printing document ",
+      "C": "creating shortcut ",
+      "D": "copy a text ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + A is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating shortcut ",
+      "D": "selecting a group of text ",
+      "answer": "D"
+    },
+    {
+      "question": "Ctrl + B is used for ________ in word documents. ",
+      "A": "saving document ",
+      "B": "printing document",
+      "C": "creating documents ",
+      "D": "creating documents ",
+      "answer": "D"
+    },
+    {
+      "question": "A fundamental unit of storing data in a computer is known as __________ ",
+      "A": "information",
+      "B": "computer file",
+      "C": "reports",
+      "D": "texts",
+      "answer": "C"
+    },
+    {
+      "question": "__________ is the smallest meaningful unit of data representation within a computer that can be independently managed. ",
+      "A": "information",
+      "B": "computer file",
+      "C": "reports",
+      "D": "texts",
+      "answer": "B"
+    },
+    {
+      "question": "One of the followings is not a category of the types of information. ",
+      "A": "document files ",
+      "B": "program files ",
+      "C": "data files ",
+      "D": "quantum file ",
+      "answer": "D"
+    },
+    {
+      "question": "All of the followings are types of data files, except __________",
+      "A": ".exe ",
+      "B": ".docx ",
+      "C": ".png ",
+      "D": ".mp3 ",
+      "answer": "A"
+    },
+    {
+      "question": "The smallest unit of data, represented by a single character is known as __________ ",
+      "A": "field",
+      "B": "data item",
+      "C": "record",
+      "D": "database",
+      "answer": "B"
+    },
+    {
+      "question": "A single piece of information about an object or entity is known as ___________ ",
+      "A": "field",
+      "B": "data item",
+      "C": "record",
+      "D": "database",
+      "answer": "A"
+    },
+    {
+      "question": "A collection of related records is known as __________ ",
+      "A": "field",
+      "B": "data item",
+      "C": "record",
+      "D": "database",
+      "answer": "C"
+    },
+    {
+      "question": "All of the followings are types of data items except __________ ",
+      "A": "field",
+      "B": "numeric",
+      "C": "alphabetic",
+      "D": "alphanumeric",
+      "answer": "A"
+    },
+    {
+      "question": "The logical relationships among the various records that constitute the file, particularly with respect to the means of identification and access to any specific record is known as __________ ",
+      "A": "field arrangement ",
+      "B": "data item ",
+      "C": "file organization",
+      "D": "database",
+      "answer": "C"
+    },
+    {
+      "question": "All of the followings are types of file organization, except _________ ",
+      "A": "serial",
+      "B": "sequential",
+      "C": "sequential sequence",
+      "D": "index sequential ",
+      "answer": "C"
+    },
+    {
+      "question": "All of the followings are methods of accessing files, except _________ ",
+      "A": "serial access ",
+      "B": "random access ",
+      "C": "sequential access ",
+      "D": "index sequential ",
+      "answer": "D"
+    },
+    {
+      "question": "One of the following cannot be performed on a computer file. ",
+      "A": "close",
+      "B": "move",
+      "C": "rename",
+      "D": "clear",
+      "answer": "D"
+    },
+    {
+      "question": "AI which means artificial intelligence was invented to do _________ ",
+      "A": "cook food ",
+      "B": "make life easier ",
+      "C": "make life hard ",
+      "D": "have conversation with us ",
+      "answer": "B"
+    },
+    {
+      "question": "The use of ict to learn online is known as __________ ",
+      "A": "online tutorship ",
+      "B": "educational learning ",
+      "C": "E-learning ",
+      "D": "E-commerce  ",
+      "answer": "C"
+    },
+    {
+      "question": "All of the followings are uses of ICT in the bank, except _________ ",
+      "A": "recording customer details ",
+      "B": "writing cheques ",
+      "C": "printing teller ",
+      "D": " counting money",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are uses of ICT in the Hospitals, except _________ ",
+      "A": "recording customer details ",
+      "B": "writing designs ",
+      "C": "printing patient details ",
+      "D": "counting money",
+      "answer": "B"
+    },
+    {
+      "question": " To begin writing BASIC programming code, you need to start with ____________",
+      "A": "write",
+      "B": "rem",
+      "C": "let",
+      "D": "eniac",
+      "answer": "B"
+    },
+    {
+      "question": " To store a variable in BASIC programming, you will need to make use of",
+      "A": "write",
+      "B": "rem",
+      "C": "let",
+      "D": "eniac",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is an example of a search engine? ",
+      "A": "google",
+      "B": "whatsapp",
+      "C": "facebook",
+      "D": "instagram",
+      "answer": "A"
+    },
+    {
+      "question": "The internet helps us to _________ ",
+      "A": "eat",
+      "B": "sleep",
+      "C": "gather information",
+      "D": "drive a car",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a popular spreadsheet software? ",
+      "A": "Microsoft word ",
+      "B": "Microsoft excel. ",
+      "C": "Internet explorer ",
+      "D": "paint",
+      "answer": "B"
+    },
+    {
+      "question": "What is the main purpose of ICT? ",
+      "A": "to communicate ",
+      "B": "to educate. ",
+      "C": "to entertain ",
+      "D": " all of the above",
+      "answer": "D"
+    },
+    {
+      "question": "One is not an importance of digital technology. ",
+      "A": "makes communication faster and easier ",
+      "B": "Helps in learning and accessing information",
+      "C": " used in education, medicals ",
+      "D": " it weakens the brain",
+      "answer": "D"
+    },
+    {
+      "question": "What is a spreadsheet application used for? ",
+      "A": "word processing ",
+      "B": "creating presentations.",
+      "C": "organizing and analyzing data ",
+      "D": "designing graphics ",
+      "answer": "C"
+    },
+    {
+      "question": "What is a presentation package? ",
+      "A": "a software for word processing ",
+      "B": "a software used to display information in form of a slide show ",
+      "C": "a device for printing documents",
+      "D": "a type of spreadsheet software ",
+      "answer": "B"
+    },
+    {
+      "question": "All of the following are examples of programming language except __________ ",
+      "A": "Visual basic ",
+      "B": "FORTRAN ",
+      "C": "JavaScript",
+      "D": "meme",
+      "answer": "D"
+    }
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "exam": "BIOLOGY SSS1",
+  "subject": "BIOLOGY",
+  "class": "SS 1",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "Microorganisms can be seen only with the aid of a ",
+      "A": "Microscope",
+      "B": "",
+      "C": "Magnifying glass",
+      "D": "Lens",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is NOT a microorganism?",
+      "A": "Virus",
+      "B": "",
+      "C": "Mushroom",
+      "D": "Amoeba",
+      "answer": "A"
+    },
+    {
+      "question": "Bacteria are mainly found in ",
+      "A": "Water only",
+      "B": "",
+      "C": "Soil, air, and water",
+      "D": "Plants only",
+      "answer": "A"
+    },
+    {
+      "question": "Which microorganism causes malaria?  ",
+      "A": "Virus",
+      "B": "",
+      "C": "Protozoa",
+      "D": "Fungi",
+      "answer": "A"
+    },
+    {
+      "question": "Which of these is a virus?   ",
+      "A": "HIV",
+      "B": "",
+      "C": "Amoeba",
+      "D": "Yeast",
+      "answer": "A"
+    },
+    {
+      "question": "Microorganisms that cause diseases are called",
+      "A": "Saprophytes",
+      "B": "",
+      "C": "Producers",
+      "D": "Parasites",
+      "answer": "A"
+    },
+    {
+      "question": "Which microorganism is used in baking?   ",
+      "A": "Yeast",
+      "B": "",
+      "C": "Virus",
+      "D": " Algae",
+      "answer": "A"
+    },
+    {
+      "question": "Amoeba moves using",
+      "A": "Flagella",
+      "B": "",
+      "C": "Pseudopodia",
+      "D": "Tentacles",
+      "answer": "A"
+    },
+    {
+      "question": "Which of these is NOT a habitat of microorganisms?",
+      "A": "Water",
+      "B": "",
+      "C": "Soil ",
+      "D": "Fire",
+      "answer": "A"
+    },
+    {
+      "question": "Which group do bacteria belong to?",
+      "A": "Animals",
+      "B": "",
+      "C": "Prokaryotes ",
+      "D": "Fungi",
+      "answer": "A"
+    },
+    {
+      "question": "Fungi reproduce mainly by",
+      "A": "Binary fission    ",
+      "B": "",
+      "C": "Spores",
+      "D": "Fragmentation",
+      "answer": "A"
+    },
+    {
+      "question": "Which microorganism is beneficial?  ",
+      "A": "Lactobacillus",
+      "B": "",
+      "C": "Cholera vibrio ",
+      "D": "HIV",
+      "answer": "A"
+    },
+    {
+      "question": "Fermentation is carried out by",
+      "A": "Bacteria and yeast   ",
+      "B": "",
+      "C": "Algae",
+      "D": "Protozoa",
+      "answer": "A"
+    },
+    {
+      "question": "Yogurt is produced using",
+      "A": "Virus",
+      "B": "",
+      "C": "Fungi",
+      "D": "Protozoa",
+      "answer": "A"
+    },
+    {
+      "question": "Which process produces alcohol?   ",
+      "A": "Fermentation",
+      "B": "",
+      "C": "Digestion",
+      "D": "Photosynthesis",
+      "answer": "A"
+    },
+    {
+      "question": "Which is NOT a preventive measure?   ",
+      "A": "Clean water   ",
+      "B": "",
+      "C": "Poor hygiene   ",
+      "D": "Sanitation",
+      "answer": "A"
+    },
+    {
+      "question": "Drugs that kill bacteria are ",
+      "A": "Antibiotics",
+      "B": "",
+      "C": "Hormones",
+      "D": "Enzymes",
+      "answer": "A"
+    },
+    {
+      "question": "Aquatic habitat refers to",
+      "A": "land",
+      "B": "",
+      "C": "Air",
+      "D": "Desert",
+      "answer": "A"
+    },
+    {
+      "question": "Fish breathe using",
+      "A": "Spiracles",
+      "B": "",
+      "C": "Skin ",
+      "D": "Gills",
+      "answer": "A"
+    },
+    {
+      "question": "Water temperature affects",
+      "A": "Aquatic organisms     ",
+      "B": "",
+      "C": "soil",
+      "D": "Air",
+      "answer": "A"
+    },
+    {
+      "question": "Personal hygiene helps to    ",
+      "A": "Increase infection    ",
+      "B": "",
+      "C": "Reduce",
+      "D": "Prevent disease   ",
+      "answer": "A"
+    },
+    {
+      "question": "Antibiotics should be taken",
+      "A": "Once only    ",
+      "B": "",
+      "C": "Without advice",
+      "D": "As prescribed     ",
+      "answer": "A"
+    },
+    {
+      "question": "Which is a viral disease?   ",
+      "A": "Typhoid",
+      "B": "",
+      "C": "Tuberculosis",
+      "D": "Cholera",
+      "answer": "A"
+    },
+    {
+      "question": "Malaria is transmitted by",
+      "A": "Cockroach",
+      "B": "",
+      "C": "Rat ",
+      "D": "Mosquito",
+      "answer": "A"
+    },
+    {
+      "question": "Clean water prevents    ",
+      "A": "Diabetes",
+      "B": "",
+      "C": "Hypertension",
+      "D": "Cholera",
+      "answer": "A"
+    },
+    {
+      "question": "Vaccines help to    ",
+      "A": "cause diseases",
+      "B": "",
+      "C": "Spread infection     ",
+      "D": "Sanitation",
+      "answer": "A"
+    },
+    {
+      "question": "Antibiotics are used to treat   ",
+      "A": "Bacterial diseases     ",
+      "B": "",
+      "C": "Fungal diseases   ",
+      "D": "Genetic ",
+      "answer": "A"
+    },
+    {
+      "question": "Which disease is caused by bacteria?   ",
+      "A": "influenza",
+      "B": "",
+      "C": "AIDS ",
+      "D": "Tuberculosis",
+      "answer": "A"
+    },
+    {
+      "question": "HIV affects the    ",
+      "A": "Immune system    ",
+      "B": "",
+      "C": "Respiratory system  ",
+      "D": "Nervous system",
+      "answer": "A"
+    },
+    {
+      "question": "Cholera is caused by   ",
+      "A": "protozoa",
+      "B": "",
+      "C": "Bacteria",
+      "D": "Fungi",
+      "answer": "A"
+    },
+    {
+      "question": "Soil type affects   ",
+      "A": "Plants only   ",
+      "B": "",
+      "C": "Both plants and animals      ",
+      "D": "None",
+      "answer": "A"
+    },
+    {
+      "question": "Cactus is adapted to     ",
+      "A": "Grassland",
+      "B": "",
+      "C": "Water ",
+      "D": "Desert",
+      "answer": "A"
+    },
+    {
+      "question": "Grasslands are dominated by   ",
+      "A": "Grasses",
+      "B": "",
+      "C": "Shrubs ",
+      "D": "Flowers",
+      "answer": "A"
+    },
+    {
+      "question": "Trees reduce     ",
+      "A": "wind",
+      "B": "",
+      "C": "Temperature ",
+      "D": " Heat",
+      "answer": "A"
+    },
+    {
+      "question": "Animals adapt by    ",
+      "A": "Hibernation",
+      "B": "",
+      "C": "Aestivation",
+      "D": "All of the above",
+      "answer": "A"
+    },
+    {
+      "question": "Spirogyra reproduces by    ",
+      "A": "division",
+      "B": "",
+      "C": "Fusion      ",
+      "D": "Fragmentation ",
+      "answer": "A"
+    },
+    {
+      "question": "Sexual reproduction involves    ",
+      "A": "Two parents    ",
+      "B": "",
+      "C": "No parent     ",
+      "D": "Cell only",
+      "answer": "A"
+    },
+    {
+      "question": "Asexual reproduction produces    ",
+      "A": "variation",
+      "B": "",
+      "C": "Different species     ",
+      "D": "Mutations",
+      "answer": "A"
+    },
+    {
+      "question": "Decomposition is mainly carried out by  ",
+      "A": "Microorganisms",
+      "B": "",
+      "C": "Plants ",
+      "D": "Humans",
+      "answer": "A"
+    },
+    {
+      "question": "Penicillin is produced by  ",
+      "A": "Virus",
+      "B": "",
+      "C": "Fungi",
+      "D": "Algae",
+      "answer": "A"
+    },
+    {
+      "question": "Bread rises due to    ",
+      "A": "Yeast activity     ",
+      "B": "",
+      "C": "Heat",
+      "D": "Sugar",
+      "answer": "A"
+    },
+    {
+      "question": "Microorganisms help in     ",
+      "A": "Decomposition only         ",
+      "B": "",
+      "C": "Recycling nutrients              ",
+      "D": "Destroying soil",
+      "answer": "A"
+    },
+    {
+      "question": "Salinity refers to     ",
+      "A": "Salt content     ",
+      "B": "",
+      "C": "Light",
+      "D": "Pressure",
+      "answer": "A"
+    },
+    {
+      "question": "Example of freshwater habitat     ",
+      "A": "Sea ",
+      "B": "",
+      "C": "Pond",
+      "D": "Lagoon",
+      "answer": "A"
+    },
+    {
+      "question": "Marine habitat has    ",
+      "A": "High salt      ",
+      "B": "",
+      "C": "No salt           ",
+      "D": "Freshwater",
+      "answer": "A"
+    },
+    {
+      "question": "Adaptation in fish includes    ",
+      "A": "Feathers",
+      "B": "",
+      "C": "Fur",
+      "D": "fins",
+      "answer": "A"
+    },
+    {
+      "question": "Terrestrial habitat refers to    ",
+      "A": "Land",
+      "B": "",
+      "C": "Air",
+      "D": "Ocean",
+      "answer": "A"
+    },
+    {
+      "question": "Which microorganism fixes nitrogen?   ",
+      "A": "Amoeba",
+      "B": "",
+      "C": "Yeast ",
+      "D": "Virus",
+      "answer": "A"
+    },
+    {
+      "question": "Producers are",
+      "A": "Plants",
+      "B": "",
+      "C": "Humans ",
+      "D": "Fungi",
+      "answer": "A"
+    },
+    {
+      "question": "Consumers depend on",
+      "A": "air",
+      "B": "",
+      "C": "Water",
+      "D": "Plants",
+      "answer": "A"
+    }
+  ]
+}

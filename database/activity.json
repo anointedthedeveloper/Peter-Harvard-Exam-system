@@ -1,16 +1,1 @@
-[
-  {
-    "time": "2026-06-24T19:09:10.261Z",
-    "studentId": "607403",
-    "studentName": "ABANG EMMANUELLA BOMBUM",
-    "action": "LOGIN",
-    "detail": "Student logged in"
-  },
-  {
-    "time": "2026-06-24T19:13:05.296Z",
-    "studentId": "607403",
-    "studentName": "ABANG EMMANUELLA BOMBUM",
-    "action": "SUBMIT",
-    "detail": "Exam: geograhpy | Score: 24/50 (48%) | Class: SS 2"
-  }
-]
+[]

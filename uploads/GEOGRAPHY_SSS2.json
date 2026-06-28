@@ -1,8 +1,8 @@
 {
-  "exam": "geograhpy",
-  "subject": "hh",
+  "exam": "GEOGRAPHY SSS2",
+  "subject": "GEOGRAPHY",
   "class": "SS 2",
-  "duration": 45,
+  "duration": 60,
   "questions": [
     {
       "question": "The four major cardinal points are ______.",
@@ -197,7 +197,7 @@
       "answer": "A"
     },
     {
-      "question": "Which type of scale type is written as \"1 cm to 1km\"?",
+      "question": "Which type of scale type is written as ",
       "A": "linear scale",
       "B": "bar scale",
       "C": "Rational scale",
@@ -342,10 +342,10 @@
     },
     {
       "question": "The World population reached 6 billion in ____________.  ",
-      "A": 1964,
-      "B": 1974,
-      "C": 1984,
-      "D": 1999,
+      "A": "1964",
+      "B": "1974",
+      "C": "1984",
+      "D": "1999",
       "answer": "D"
     },
     {

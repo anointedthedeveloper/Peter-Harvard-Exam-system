@@ -1,0 +1,408 @@
+{
+  "exam": "LIVESTOCK SSS1",
+  "subject": "LIVESTOCK",
+  "class": "SS 1",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "Cattle are mainly reared for",
+      "A": "milk and meat     ",
+      "B": "wool",
+      "C": "eggs",
+      "D": "feathers",
+      "answer": "A"
+    },
+    {
+      "question": "The male cattle is called",
+      "A": "cow",
+      "B": "bull",
+      "C": "heifer",
+      "D": "calf",
+      "answer": "A"
+    },
+    {
+      "question": "A young female cattle that has not calved is",
+      "A": "cow",
+      "B": "heifer ",
+      "C": "bull",
+      "D": "steer",
+      "answer": "A"
+    },
+    {
+      "question": "Extensive system of cattle farming involves",
+      "A": "zero grazing    ",
+      "B": "Indoor feeding",
+      "C": "housing only                                 ",
+      "D": "free range grazing    ",
+      "answer": "A"
+    },
+    {
+      "question": "Zero grazing is practiced in",
+      "A": "extensive system  ",
+      "B": "semi-intensive    ",
+      "C": "intensive system ",
+      "D": "nomadic system",
+      "answer": "A"
+    },
+    {
+      "question": "Artificial insemination involves",
+      "A": "natural mating  ",
+      "B": "surgical breeding   ",
+      "C": "use of collected semen  ",
+      "D": "cloning",
+      "answer": "A"
+    },
+    {
+      "question": "Cross breeding improves",
+      "A": "disease spread     ",
+      "B": "productivity",
+      "C": "weakness",
+      "D": "infertility",
+      "answer": "A"
+    },
+    {
+      "question": "Gestation period of cattle is about",
+      "A": "90 days     ",
+      "B": "150 days     ",
+      "C": "280 days       ",
+      "D": "365 days",
+      "answer": "A"
+    },
+    {
+      "question": "A disease common in cattle is    ",
+      "A": "Newcastle",
+      "B": "Mastitis",
+      "C": "cholera",
+      "D": "rabies",
+      "answer": "A"
+    },
+    {
+      "question": "Foot and mouth disease affects",
+      "A": "skin only      ",
+      "B": "mouth and hooves      ",
+      "C": "lungs",
+      "D": "eyes",
+      "answer": "A"
+    },
+    {
+      "question": "Vaccination helps to   ",
+      "A": "spread disease     ",
+      "B": "prevent disease     ",
+      "C": "cause infection",
+      "D": "reduce feeding",
+      "answer": "A"
+    },
+    {
+      "question": "Pig farming is also called   ",
+      "A": "apiculture",
+      "B": "pisciculture",
+      "C": "piggering",
+      "D": "poultry",
+      "answer": "A"
+    },
+    {
+      "question": "A female pig is called   ",
+      "A": "sow",
+      "B": "boar",
+      "C": "gilt",
+      "D": "ewe",
+      "answer": "A"
+    },
+    {
+      "question": "A male pig is called     ",
+      "A": "buck",
+      "B": "boar",
+      "C": "ram",
+      "D": "bull",
+      "answer": "A"
+    },
+    {
+      "question": "Pig gestation period is about     ",
+      "A": "30 days        ",
+      "B": "60 days         ",
+      "C": "114 days            ",
+      "D": "200 days",
+      "answer": "A"
+    },
+    {
+      "question": "Pig feed should be rich in    ",
+      "A": "fiber only     ",
+      "B": "protein and energy       ",
+      "C": "water only          ",
+      "D": "ash only",
+      "answer": "A"
+    },
+    {
+      "question": "Rabbits are reared mainly for   ",
+      "A": "wool and meat         ",
+      "B": "milk",
+      "C": "eggs",
+      "D": "feathers",
+      "answer": "A"
+    },
+    {
+      "question": "A male rabbit is called    ",
+      "A": "buck ",
+      "B": "doe",
+      "C": "ram",
+      "D": "boar",
+      "answer": "A"
+    },
+    {
+      "question": "A female rabbit is called   ",
+      "A": "sow",
+      "B": "doe",
+      "C": "ewe",
+      "D": "hen",
+      "answer": "A"
+    },
+    {
+      "question": "Rabbit house is called   ",
+      "A": "pen",
+      "B": "coop",
+      "C": "hutch",
+      "D": "sty",
+      "answer": "A"
+    },
+    {
+      "question": "Record of sales is called   ",
+      "A": "breeding record     ",
+      "B": "sales record     ",
+      "C": "feeding record     ",
+      "D": "health record",
+      "answer": "A"
+    },
+    {
+      "question": "Government policy may support farmers through    ",
+      "A": "taxation only     ",
+      "B": "subsidies",
+      "C": "banning farming                       ",
+      "D": "importation only",
+      "answer": "A"
+    },
+    {
+      "question": "Artificial insemination reduces   ",
+      "A": "cost",
+      "B": "production",
+      "C": "quality",
+      "D": "growth",
+      "answer": "A"
+    },
+    {
+      "question": "Heat period in animals is when    ",
+      "A": "sick",
+      "B": "ready to mate            ",
+      "C": "sleeping",
+      "D": "eating",
+      "answer": "A"
+    },
+    {
+      "question": "Feed conversion efficiency refers to    ",
+      "A": "waste",
+      "B": "disease",
+      "C": "growth from feed          ",
+      "D": "feeding cost",
+      "answer": "A"
+    },
+    {
+      "question": "Livestock farming can create    ",
+      "A": "jobs",
+      "B": "drought",
+      "C": "flood",
+      "D": "erosion",
+      "answer": "A"
+    },
+    {
+      "question": "One business opportunity in livestock is    ",
+      "A": "feed production    ",
+      "B": "mining",
+      "C": "fishing",
+      "D": "carpentry",
+      "answer": "A"
+    },
+    {
+      "question": "Processing milk into cheese is   ",
+      "A": "waste",
+      "B": "value addition     ",
+      "C": "storage",
+      "D": "marketi",
+      "answer": "A"
+    },
+    {
+      "question": "Animal health management includes",
+      "A": "feeding only          ",
+      "B": "vaccination and treatment    ",
+      "C": "housing only                 ",
+      "D": "breeding only",
+      "answer": "A"
+    },
+    {
+      "question": "Livestock farming contributes to  ",
+      "A": "food insecurity     ",
+      "B": "food security       ",
+      "C": "pollution only  ",
+      "D": "unemployment",
+      "answer": "A"
+    },
+    {
+      "question": "Disease caused by bacteria in cattle is    ",
+      "A": "anthrax",
+      "B": "malaria",
+      "C": "influenza",
+      "D": "ringworm",
+      "answer": "A"
+    },
+    {
+      "question": "Internal parasites in livestock are   ",
+      "A": "lice",
+      "B": " ticks       ",
+      "C": "worms",
+      "D": "flies",
+      "answer": "A"
+    },
+    {
+      "question": "External parasites include   ",
+      "A": "worms",
+      "B": "ticks",
+      "C": "bacteria",
+      "D": "viruses",
+      "answer": "A"
+    },
+    {
+      "question": "Castration is done to    ",
+      "A": "increase aggression    ",
+      "B": "control breeding   ",
+      "C": "cause disease     ",
+      "D": "reduce growth",
+      "answer": "A"
+    },
+    {
+      "question": "Dehorning prevents  ",
+      "A": "feeding",
+      "B": "growth",
+      "C": "growth",
+      "D": "reproduction",
+      "answer": "A"
+    },
+    {
+      "question": "Weaning means  ",
+      "A": "feeding adult animals   ",
+      "B": "separating young from mother   ",
+      "C": "mating",
+      "D": "vaccination",
+      "answer": "A"
+    },
+    {
+      "question": "Balanced diet contains   ",
+      "A": "one nutrient     ",
+      "B": "all nutrients    ",
+      "C": "water only       ",
+      "D": "minerals only",
+      "answer": "A"
+    },
+    {
+      "question": "Silage is  ",
+      "A": "dry feed    ",
+      "B": "preserved green feed     ",
+      "C": "water",
+      "D": "grain",
+      "answer": "A"
+    },
+    {
+      "question": "Hay is    ",
+      "A": "fresh grass    ",
+      "B": "dried grass        ",
+      "C": "meat",
+      "D": "fish",
+      "answer": "A"
+    },
+    {
+      "question": "Livestock business provides    ",
+      "A": "unemployment",
+      "B": "income",
+      "C": "poverty",
+      "D": "disease",
+      "answer": "A"
+    },
+    {
+      "question": "Rabbits are herbivores because they eat",
+      "A": "meat",
+      "B": "plants",
+      "C": "fish",
+      "D": " insects",
+      "answer": "A"
+    },
+    {
+      "question": "Grass cutter is also known as",
+      "A": "cane rat      ",
+      "B": "squirrel",
+      "C": "rat",
+      "D": "mouse",
+      "answer": "A"
+    },
+    {
+      "question": "Grass cutters feed mainly on",
+      "A": "meat",
+      "B": "grasses",
+      "C": "grains",
+      "D": "ish",
+      "answer": "A"
+    },
+    {
+      "question": "Grass cutter farming is profitable due to",
+      "A": "low demand  ",
+      "B": "high reproduction",
+      "C": "slow growth    ",
+      "D": "poor meat",
+      "answer": "A"
+    },
+    {
+      "question": "Housing for pigs is called",
+      "A": "pen",
+      "B": "coop",
+      "C": "hutch",
+      "D": "sty",
+      "answer": "A"
+    },
+    {
+      "question": "Good farm record helps in     ",
+      "A": "losses",
+      "B": "planning",
+      "C": "disease spread           ",
+      "D": "confusion",
+      "answer": "A"
+    },
+    {
+      "question": "Marketing of livestock involves",
+      "A": "feeding only     ",
+      "B": "selling animals/products   ",
+      "C": "breeding only      ",
+      "D": "housing",
+      "answer": "A"
+    },
+    {
+      "question": "Value addition means    ",
+      "A": "reducing price  ",
+      "B": "storing only",
+      "C": "wasting product    ",
+      "D": "improving product quality  ",
+      "answer": "A"
+    },
+    {
+      "question": "Cooperative societies help farmers to   ",
+      "A": "work alone      ",
+      "B": "access loans     ",
+      "C": "increase cost      ",
+      "D": "reduce",
+      "answer": "A"
+    },
+    {
+      "question": "One example of livestock product is   ",
+      "A": "cement",
+      "B": "milk",
+      "C": "sand  ",
+      "D": "wood",
+      "answer": "A"
+    }
+  ]
+}

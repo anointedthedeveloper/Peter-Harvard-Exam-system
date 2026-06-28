@@ -1,0 +1,408 @@
+{
+  "exam": "BIOLOGY SSS2",
+  "subject": "BIOLOGY",
+  "class": "SS 2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "The maintenance of a constant internal environment is called",
+      "A": "Respiration",
+      "B": "Homeostasis ",
+      "C": " Excretion       ",
+      "D": "Circulation",
+      "answer": "A"
+    },
+    {
+      "question": "Which organ regulates body temperature?      ",
+      "A": "Liver",
+      "B": "Heart",
+      "C": "Kidney ",
+      "D": "skin",
+      "answer": "A"
+    },
+    {
+      "question": "The control centre of homeostasis is the    ",
+      "A": "Cerebrum",
+      "B": "Hypothalamus ",
+      "C": "Medulla",
+      "D": "Cerebellum",
+      "answer": "A"
+    },
+    {
+      "question": "Excess glucose is stored in the liver as    ",
+      "A": "Fat",
+      "B": "Glycogen",
+      "C": "Protein ",
+      "D": "Starch ",
+      "answer": "A"
+    },
+    {
+      "question": "The hormone that lowers blood sugar is     ",
+      "A": "Adrenaline",
+      "B": "Insulin",
+      "C": "Thyroxine",
+      "D": "Glucagon",
+      "answer": "A"
+    },
+    {
+      "question": "The kidney regulates     ",
+      "A": "Oxygen level   ",
+      "B": "Water and salts    ",
+      "C": "Heat only     ",
+      "D": "Hormones",
+      "answer": "A"
+    },
+    {
+      "question": "Sweating helps to   ",
+      "A": "Increase temperature   ",
+      "B": "store heat",
+      "C": "Reduce temperature             ",
+      "D": "Stop heat loss",
+      "answer": "A"
+    },
+    {
+      "question": "Vasodilation causes    ",
+      "A": "Heat gain    ",
+      "B": "Heat loss     ",
+      "C": "No change      ",
+      "D": "Coldness",
+      "answer": "A"
+    },
+    {
+      "question": "The outermost layer of the skin is   ",
+      "A": "Dermis",
+      "B": "Epidermis",
+      "C": "Fat layer      ",
+      "D": "Muscle",
+      "answer": "A"
+    },
+    {
+      "question": "The pigment responsible for skin colour is    ",
+      "A": "Keratin",
+      "B": "Melanin",
+      "C": "Haemoglobin ",
+      "D": "Chlorophyll",
+      "answer": "A"
+    },
+    {
+      "question": "Sweat is produced by   ",
+      "A": "Sebaceous glands    ",
+      "B": "Sweat glands    ",
+      "C": "Oil glands        ",
+      "D": "Nerve cells",
+      "answer": "A"
+    },
+    {
+      "question": "The dermis contains  ",
+      "A": "Blood vessels    ",
+      "B": "Bones ",
+      "C": "Muscles only       ",
+      "D": "Brain cells",
+      "answer": "A"
+    },
+    {
+      "question": "Hair follicles are found in the     ",
+      "A": "Epidermis",
+      "B": "Dermis",
+      "C": "Fat layer       ",
+      "D": "Bone",
+      "answer": "A"
+    },
+    {
+      "question": "The skin helps in    ",
+      "A": "Digestion ",
+      "B": "Respiration",
+      "C": "Excretion ",
+      "D": "Photosynthesis",
+      "answer": "A"
+    },
+    {
+      "question": "Goose pimples occur due to   ",
+      "A": "Cold",
+      "B": "Heat",
+      "C": "hunger",
+      "D": "Sleep",
+      "answer": "A"
+    },
+    {
+      "question": "The CNS consists of  ",
+      "A": "Brain and nerves    ",
+      "B": "Brain and spinal cord    ",
+      "C": "Nerves only      ",
+      "D": "Brain only",
+      "answer": "A"
+    },
+    {
+      "question": "The largest part of the brain is   ",
+      "A": "Cerebellum",
+      "B": "Hypothalamus",
+      "C": "Medulla",
+      "D": "Cerebrum",
+      "answer": "A"
+    },
+    {
+      "question": "The cerebellum controls  ",
+      "A": "Thinking",
+      "B": "Balance",
+      "C": "Breathing",
+      "D": "Vision",
+      "answer": "A"
+    },
+    {
+      "question": "The medulla controls  ",
+      "A": "Voluntary actions   ",
+      "B": "Reflex actions   ",
+      "C": "Involuntary actions   ",
+      "D": "Memory",
+      "answer": "A"
+    },
+    {
+      "question": "The spinal cord is protected by     ",
+      "A": "Skull ",
+      "B": "Backbone",
+      "C": "Skin ",
+      "D": "Muscles",
+      "answer": "A"
+    },
+    {
+      "question": "The brain is enclosed in the",
+      "A": "Rib",
+      "B": "Skin",
+      "C": "Vertebra",
+      "D": "skull",
+      "answer": "A"
+    },
+    {
+      "question": "The PNS consists of   ",
+      "A": "Brain only    ",
+      "B": "Nerves outside CNS    ",
+      "C": "Spinal cord only     ",
+      "D": "Skull",
+      "answer": "A"
+    },
+    {
+      "question": "Cranial nerves arise from the    ",
+      "A": "Spine",
+      "B": "Skin",
+      "C": "Brain",
+      "D": "Muscles ",
+      "answer": "A"
+    },
+    {
+      "question": "The autonomic nervous system controls    ",
+      "A": "Spinal cord     ",
+      "B": "Brain",
+      "C": "Heart",
+      "D": "Liver",
+      "answer": "A"
+    },
+    {
+      "question": "Overpopulation leads to",
+      "A": "Plenty resources    ",
+      "B": "Competition",
+      "C": "Balance",
+      "D": "Growth",
+      "answer": "A"
+    },
+    {
+      "question": "Factors affecting population include",
+      "A": "Food",
+      "B": "Water",
+      "C": "Space",
+      "D": "All of the above",
+      "answer": "A"
+    },
+    {
+      "question": "Emigration means",
+      "A": "Coming in     ",
+      "B": "Going out        ",
+      "C": "Birth",
+      "D": "Death",
+      "answer": "A"
+    },
+    {
+      "question": "Population growth curve is",
+      "A": "Straight ",
+      "B": "circle ",
+      "C": "S-shaped        ",
+      "D": "Triangle",
+      "answer": "A"
+    },
+    {
+      "question": "Balance in nature is also called",
+      "A": "Ecology",
+      "B": "Equilibrium",
+      "C": "Biology",
+      "D": "Zoology",
+      "answer": "A"
+    },
+    {
+      "question": "Relay neurones are found in   ",
+      "A": "Skin",
+      "B": "CNS",
+      "C": "Heart",
+      "D": "Muscles",
+      "answer": "A"
+    },
+    {
+      "question": "The organ of sight is   ",
+      "A": "Ear",
+      "B": "nose ",
+      "C": "Eye",
+      "D": "Tongue",
+      "answer": "A"
+    },
+    {
+      "question": "The retina contains    ",
+      "A": "Blood",
+      "B": "Musles",
+      "C": "Bones",
+      "D": "Receptors",
+      "answer": "A"
+    },
+    {
+      "question": "The iris controls   ",
+      "A": "Light entry   ",
+      "B": "Image formation    ",
+      "C": "Smell",
+      "D": "Taste",
+      "answer": "A"
+    },
+    {
+      "question": "The ear is responsible for   ",
+      "A": "Sight",
+      "B": "Hearing",
+      "C": "Smell ",
+      "D": "Taste",
+      "answer": "A"
+    },
+    {
+      "question": "A population is    ",
+      "A": "All organisms   ",
+      "B": "Same species in an area   ",
+      "C": "Different species    ",
+      "D": "Plants only",
+      "answer": "A"
+    },
+    {
+      "question": "Population density means  ",
+      "A": "Number per area   ",
+      "B": "size only",
+      "C": "Age",
+      "D": "Growth",
+      "answer": "A"
+    },
+    {
+      "question": "Birth rate increases population   ",
+      "A": "true",
+      "B": "",
+      "C": "Not sure         ",
+      "D": "None",
+      "answer": "A"
+    },
+    {
+      "question": "Death rate decreases population   ",
+      "A": "",
+      "B": "not sure ",
+      "C": "true",
+      "D": "None",
+      "answer": "A"
+    },
+    {
+      "question": "Migration includes   ",
+      "A": "Birth",
+      "B": "death",
+      "C": "Immigration",
+      "D": "Feeding",
+      "answer": "A"
+    },
+    {
+      "question": "The nose detects    ",
+      "A": "Taste",
+      "B": "Smell ",
+      "C": "Sight ",
+      "D": "Sound",
+      "answer": "A"
+    },
+    {
+      "question": "Taste buds are found on the   ",
+      "A": "Tongue",
+      "B": "Eye",
+      "C": "Skin ",
+      "D": "Ear",
+      "answer": "A"
+    },
+    {
+      "question": "Receptors respond to   ",
+      "A": "food",
+      "B": "Blood ",
+      "C": "Hormones ",
+      "D": "Stimuli ",
+      "answer": "A"
+    },
+    {
+      "question": "The sympathetic nervous system prepares the body for",
+      "A": "Rest",
+      "B": "Sleep",
+      "C": "Emergency ",
+      "D": "Digestion",
+      "answer": "A"
+    },
+    {
+      "question": "The parasympathetic system works during  ",
+      "A": "Stress",
+      "B": "Emergency",
+      "C": "Rest",
+      "D": "Fear",
+      "answer": "A"
+    },
+    {
+      "question": "Nerves carry  ",
+      "A": "Blood",
+      "B": "Food",
+      "C": "Impulses",
+      "D": "Hormone",
+      "answer": "A"
+    },
+    {
+      "question": "The basic unit of the nervous system is    ",
+      "A": "Axon",
+      "B": "Neurone",
+      "C": "Nerve",
+      "D": "Brain",
+      "answer": "A"
+    },
+    {
+      "question": "Antibiotics should be taken    ",
+      "A": "Anytime ",
+      "B": "As prescribed     ",
+      "C": "Once only    ",
+      "D": "Without advice",
+      "answer": "A"
+    },
+    {
+      "question": "Which is a viral disease?   ",
+      "A": "Measles",
+      "B": "Cholera",
+      "C": "Typhoid",
+      "D": "Tuberculosis",
+      "answer": "A"
+    },
+    {
+      "question": "Malaria is transmitted by   ",
+      "A": "Housefly ",
+      "B": "Mosquito",
+      "C": "Cockroach",
+      "D": "Rat ",
+      "answer": "A"
+    },
+    {
+      "question": "Clean water prevents    ",
+      "A": "Cancer",
+      "B": "Diabetes ",
+      "C": "cholera",
+      "D": "Hypertension",
+      "answer": "A"
+    }
+  ]
+}
