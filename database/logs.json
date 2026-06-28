@@ -76,5 +76,53 @@
     "action": "EDIT_EXAM",
     "detail": "Edited exam: ECONOMICS_SSS2.json",
     "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:08:37.976Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:10:04.615Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:18:49.713Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:18:52.166Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:22:29.351Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:48:26.745Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T13:49:18.981Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:03:38.450Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
   }
 ]

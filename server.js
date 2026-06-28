@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const XLSX = require('xlsx');
 
 const PORT = process.env.PORT || 5000;
-const VERSION = '2.0.0';
+const VERSION = '2.1.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const DATABASE_DIR = path.join(__dirname, 'database');
@@ -145,7 +145,7 @@ if (!fs.existsSync(USERS_FILE)) {
         id: s.id,
         password: '',
         name: s.name,
-        class: s.class
+        class: normalizeClassName(s.class)
     }));
     
     fs.writeFileSync(USERS_FILE, JSON.stringify(initialUsers, null, 2));
@@ -153,6 +153,17 @@ if (!fs.existsSync(USERS_FILE)) {
 
 // Helper functions
 const fileLocks = new Map(); // Simple file locking mechanism
+
+// Normalize class names (SS1 = SSS1, SS2 = SSS2, SS3 = SSS3)
+function normalizeClassName(className) {
+    if (!className) return className;
+    const normalized = className.toUpperCase().trim();
+    // Convert SS1 to SSS1, SS2 to SSS2, SS3 to SSS3
+    if (normalized === 'SS1') return 'SSS1';
+    if (normalized === 'SS2') return 'SSS2';
+    if (normalized === 'SS3') return 'SSS3';
+    return normalized;
+}
 
 function readJSON(file) {
     try { 
@@ -435,7 +446,14 @@ function serveFile(res, filePath) {
     };
     
     fs.readFile(filePath, (err, data) => {
-        if (err) { send(null, res, 404, { error: 'Not found' }); return; }
+        if (err) { 
+            if (!res.headersSent) {
+                send(null, res, 404, { error: 'Not found' }); 
+            }
+            return; 
+        }
+        
+        if (res.headersSent) return;
         
         const headers = {
             'Content-Type': types[ext] || 'text/plain',
@@ -448,7 +466,7 @@ function serveFile(res, filePath) {
     });
 }
 
-// Session management with proper cleanup
+// Session management with proper cleanup and improved persistence
 function saveSession(token, data) {
     const sessions = readJSON(SESSIONS_FILE) || {};
     const userId = data.id;
@@ -460,11 +478,12 @@ function saveSession(token, data) {
         activeTokens.delete(userId);
     }
     
-    // Save new session
+    // Save new session with extended expiry (7 days for persistence across reloads)
     sessions[token] = { 
         ...data, 
         lastAccessed: Date.now(),
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
     };
     
     activeTokens.set(userId, token);
@@ -477,10 +496,21 @@ function getSession(token) {
     const session = sessions[token];
     
     if (session) {
-        // Update last accessed
-        session.lastAccessed = Date.now();
-        sessions[token] = session;
-        writeJSON(SESSIONS_FILE, sessions);
+        // Check if session is expired
+        if (Date.now() > session.expiresAt) {
+            // Session expired, clean it up
+            activeTokens.delete(session.id);
+            delete sessions[token];
+            writeJSON(SESSIONS_FILE, sessions);
+            return null;
+        }
+        
+        // Update last accessed (only write if more than 1 minute since last update to reduce I/O)
+        if (Date.now() - session.lastAccessed > 60000) {
+            session.lastAccessed = Date.now();
+            sessions[token] = session;
+            writeJSON(SESSIONS_FILE, sessions);
+        }
         return session;
     }
     
@@ -541,8 +571,8 @@ function cleanupSessions() {
     const now = Date.now();
     
     for (const [token, data] of Object.entries(sessions)) {
-        // Remove sessions older than 24 hours
-        if (now - data.lastAccessed > 86400000) {
+        // Remove expired sessions (7 days)
+        if (data.expiresAt && now > data.expiresAt) {
             activeTokens.delete(data.id);
             delete sessions[token];
             changed = true;
@@ -628,27 +658,49 @@ function shuffleArray(array) {
 }
 
 const server = http.createServer(async (req, res) => {
+    // Set timeout for connections (5 minutes)
+    req.setTimeout(300000, () => {
+        if (!res.headersSent) {
+            send(req, res, 408, { error: 'Request timeout' });
+        }
+        req.destroy();
+    });
+
+    // Set keep-alive
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Keep-Alive', 'timeout=300');
+
     // Global error handler
     res.on('error', (err) => {
         console.error('Response error:', err);
+        if (!res.headersSent) {
+            try {
+                res.end();
+            } catch (e) {}
+        }
     });
     
     // Request error handler
     req.on('error', (err) => {
         console.error('Request error:', err);
         if (!res.headersSent) {
-            send(req, res, 500, { error: 'Internal server error' });
+            try {
+                send(req, res, 500, { error: 'Internal server error' });
+            } catch (e) {}
         }
     });
     
     if (req.method === 'OPTIONS') {
-        res.writeHead(204, { 
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,PATCH',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            'Access-Control-Allow-Credentials': 'true'
-        });
-        res.end(); return;
+        if (!res.headersSent) {
+            res.writeHead(204, { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,PATCH',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Credentials': 'true'
+            });
+            res.end();
+        }
+        return;
     }
     
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -770,7 +822,7 @@ const server = http.createServer(async (req, res) => {
                 name: user.name, 
                 role,
                 subject: user.subject || '',
-                class: user.class || ''
+                class: normalizeClassName(user.class || '')
             };
             
             saveSession(token, sessionData);
@@ -789,7 +841,7 @@ const server = http.createServer(async (req, res) => {
                 name: user.name, 
                 role, 
                 subject: user.subject || '', 
-                class: user.class || '',
+                class: normalizeClassName(user.class || ''),
                 id: user.id
             });
             
@@ -924,16 +976,23 @@ const server = http.createServer(async (req, res) => {
             let exams = files.map(f => {
                 try {
                     const data = readJSON(path.join(UPLOADS_DIR, f));
-                    const active = examStatus[f] !== false;
+                    // Check exam status: adminDisabled takes precedence over teacherEnabled
+                    const status = examStatus[f] || {};
+                    const adminDisabled = status.adminDisabled === true;
+                    const teacherEnabled = status.teacherEnabled === true;
+                    const active = !adminDisabled || teacherEnabled;
+                    
                     return {
                         filename: f,
                         name: data?.exam || f,
                         subject: data?.subject || '',
-                        class: data?.class ? data.class.trim() : '',
+                        class: normalizeClassName(data?.class || ''),
                         teacherId: data?.teacherId || '',
                         duration: data?.duration || 30,
                         questionCount: data?.questions?.length || 0,
-                        active
+                        active,
+                        adminDisabled,
+                        teacherEnabled
                     };
                 } catch (e) {
                     console.error(`Error reading exam file ${f}:`, e.message);
@@ -942,10 +1001,10 @@ const server = http.createServer(async (req, res) => {
             }).filter(Boolean);
             
             if (studentClass) {
-                const normalizedStudentClass = studentClass.trim().toLowerCase();
+                const normalizedStudentClass = normalizeClassName(studentClass);
                 exams = exams.filter(e => {
                     if (!e.class) return true;
-                    const normalizedExamClass = e.class.toLowerCase();
+                    const normalizedExamClass = normalizeClassName(e.class);
                     return normalizedExamClass === normalizedStudentClass;
                 });
             }
@@ -965,7 +1024,15 @@ const server = http.createServer(async (req, res) => {
         if (!fs.existsSync(filePath)) { send(req, res, 404, { error: 'Exam not found' }); return; }
         
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-        if (examStatus[filename] === false) { send(req, res, 403, { error: 'This exam is currently unavailable' }); return; }
+        const status = examStatus[filename] || {};
+        const adminDisabled = status.adminDisabled === true;
+        const teacherEnabled = status.teacherEnabled === true;
+        
+        // Exam is unavailable if admin disabled it AND teacher hasn't enabled it
+        if (adminDisabled && !teacherEnabled) {
+            send(req, res, 403, { error: 'This exam is currently unavailable' });
+            return;
+        }
         
         const examData = readJSON(filePath);
         
@@ -1367,7 +1434,12 @@ const server = http.createServer(async (req, res) => {
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
         
         let available = files.filter(f => {
-            if (examStatus[f] === false) return false;
+            const status = examStatus[f] || {};
+            const adminDisabled = status.adminDisabled === true;
+            const teacherEnabled = status.teacherEnabled === true;
+            
+            // Exam is unavailable if admin disabled it AND teacher hasn't enabled it
+            if (adminDisabled && !teacherEnabled) return false;
             if (takenExams.includes(f)) return false;
             
             const data = readJSON(path.join(UPLOADS_DIR, f));
@@ -1394,16 +1466,53 @@ const server = http.createServer(async (req, res) => {
         send(req, res, 200, { ok: true }); return;
     }
 
-    // SET EXAM ACTIVE/INACTIVE
+    // SET EXAM ACTIVE/INACTIVE (Teacher toggle)
     if ((req.method === 'POST' || req.method === 'PATCH') && pathname.startsWith('/api/exam-status/')) {
         const filename = decodeURIComponent(pathname.replace('/api/exam-status/', ''));
         const body = await parseBody(req);
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-        examStatus[filename] = body.active === true || body.active === 'true';
+        
+        // Initialize status object if it doesn't exist
+        if (!examStatus[filename]) {
+            examStatus[filename] = {};
+        }
+        
+        // Teacher can enable/disable their exams
+        if (body.teacherEnabled !== undefined) {
+            examStatus[filename].teacherEnabled = body.teacherEnabled === true || body.teacherEnabled === 'true';
+        }
+        
+        // Legacy support for old 'active' field
+        if (body.active !== undefined) {
+            examStatus[filename].teacherEnabled = body.active === true || body.active === 'true';
+        }
+        
         writeJSON(EXAM_STATUS_FILE, examStatus);
-        sysLog('EXAM_STATUS', `${filename}: ${examStatus[filename] ? 'activated' : 'deactivated'}`, body.teacherId || 'teacher');
-        auditLog('EXAM_STATUS_CHANGE', body.teacherId || 'teacher', `Exam "${filename}" set to ${examStatus[filename] ? 'ACTIVE' : 'INACTIVE'}`, { filename, active: examStatus[filename] });
-        send(req, res, 200, { ok: true, active: examStatus[filename] }); return;
+        sysLog('EXAM_STATUS', `${filename}: teacherEnabled=${examStatus[filename].teacherEnabled}`, body.teacherId || 'teacher');
+        auditLog('EXAM_STATUS_CHANGE', body.teacherId || 'teacher', `Exam "${filename}" teacher set to ${examStatus[filename].teacherEnabled ? 'ENABLED' : 'DISABLED'}`, { filename, teacherEnabled: examStatus[filename].teacherEnabled });
+        send(req, res, 200, { ok: true, teacherEnabled: examStatus[filename].teacherEnabled }); return;
+    }
+
+    // ADMIN TOGGLE EXAM (Admin can disable/enable exams globally)
+    if ((req.method === 'POST' || req.method === 'PATCH') && pathname.startsWith('/api/admin-exam-status/')) {
+        const filename = decodeURIComponent(pathname.replace('/api/admin-exam-status/', ''));
+        const body = await parseBody(req);
+        const examStatus = readJSON(EXAM_STATUS_FILE) || {};
+        
+        // Initialize status object if it doesn't exist
+        if (!examStatus[filename]) {
+            examStatus[filename] = {};
+        }
+        
+        // Admin can disable/enable exams globally (overrides teacher)
+        if (body.adminDisabled !== undefined) {
+            examStatus[filename].adminDisabled = body.adminDisabled === true || body.adminDisabled === 'true';
+        }
+        
+        writeJSON(EXAM_STATUS_FILE, examStatus);
+        sysLog('ADMIN_EXAM_STATUS', `${filename}: adminDisabled=${examStatus[filename].adminDisabled}`, body.adminId || 'admin');
+        auditLog('ADMIN_EXAM_STATUS_CHANGE', body.adminId || 'admin', `Exam "${filename}" admin set to ${examStatus[filename].adminDisabled ? 'DISABLED' : 'ENABLED'}`, { filename, adminDisabled: examStatus[filename].adminDisabled });
+        send(req, res, 200, { ok: true, adminDisabled: examStatus[filename].adminDisabled }); return;
     }
 
     // GET EXAM DETAILS WITH ANSWERS (for teachers)
@@ -1631,7 +1740,7 @@ const server = http.createServer(async (req, res) => {
         if (!users[listKey]) { send(req, res, 400, { error: 'Invalid role' }); return; }
         if (users[listKey].find(u => u.id.toLowerCase() === body.id.toLowerCase())) { send(req, res, 400, { error: 'ID already exists' }); return; }
         const newUser = { id: body.id, password: body.password || '', name: body.name };
-        if (body.role === 'student' && body.class) newUser.class = body.class;
+        if (body.role === 'student' && body.class) newUser.class = normalizeClassName(body.class);
         if (body.role === 'teacher' && body.subject) newUser.subject = body.subject;
         users[listKey].push(newUser);
         writeJSON(USERS_FILE, users);
@@ -1672,7 +1781,7 @@ const server = http.createServer(async (req, res) => {
     // STUDENT LIST
     if (req.method === 'GET' && pathname === '/api/student-list') {
         const users = readJSON(USERS_FILE);
-        const students = (users?.students || []).map(s => ({ studentId: s.id, studentName: s.name, class: s.class || '', passwordSet: !!s.password }));
+        const students = (users?.students || []).map(s => ({ studentId: s.id, studentName: s.name, class: normalizeClassName(s.class || ''), passwordSet: !!s.password }));
         send(req, res, 200, students); return;
     }
 
@@ -1888,6 +1997,116 @@ const server = http.createServer(async (req, res) => {
             'Access-Control-Allow-Origin': '*'
         });
         res.end(rows.join('\n')); return;
+    }
+
+    // RESULTS PDF (Printable HTML)
+    if (req.method === 'GET' && pathname === '/api/results/pdf') {
+        const results = getAllExamResults();
+        const formattedResults = results.map(r => {
+            let examSubject = r.subject || '';
+            let examClass = r.examClass || '';
+            
+            if (r.examFilename) {
+                try {
+                    const examPath = path.join(UPLOADS_DIR, r.examFilename);
+                    if (fs.existsSync(examPath)) {
+                        const examData = readJSON(examPath);
+                        if (examData) {
+                            examSubject = examData.subject || examSubject;
+                            examClass = examData.class || examClass;
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            return {
+                student: r.student,
+                studentId: r.studentId,
+                studentClass: r.studentClass || '',
+                exam: r.exam,
+                subject: examSubject,
+                examClass: examClass,
+                score: r.score || 0,
+                total: r.total || 0,
+                percentage: r.percentage || 0,
+                tabViolations: r.tabViolations || 0,
+                submittedAt: r.submittedAt
+            };
+        });
+        
+        const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Results - Peter Harvard International Schools</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; color: #1a1a1a; }
+        .header { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+        @media print {
+            body { margin: 0; }
+            table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Peter Harvard International Schools</h1>
+        <h2>Exam Results Report</h2>
+        <p>Generated: ${new Date().toLocaleString()}</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Class</th>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Total</th>
+                <th>Percentage</th>
+                <th>Tab Violations</th>
+                <th>Submitted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${formattedResults.map(r => `
+                <tr>
+                    <td>${r.student}</td>
+                    <td>${r.studentId}</td>
+                    <td>${r.studentClass}</td>
+                    <td>${r.exam}</td>
+                    <td>${r.subject}</td>
+                    <td>${r.score}</td>
+                    <td>${r.total}</td>
+                    <td>${r.percentage}%</td>
+                    <td>${r.tabViolations}</td>
+                    <td>${r.submittedAt}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+    <div class="footer">
+        <p>Total Results: ${formattedResults.length}</p>
+        <p>Peter Harvard International Schools - Exam System v${VERSION}</p>
+    </div>
+</body>
+</html>`;
+        
+        res.writeHead(200, { 
+            'Content-Type': 'text/html; charset=utf-8', 
+            'Content-Disposition': 'inline; filename="results.html"', 
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(html); return;
     }
 
     // RESULTS BY CLASS CSV
@@ -2211,36 +2430,48 @@ function findCertFiles() {
     return null;
 }
 
+// Configure server for high concurrency
+server.maxConnections = 150;
+server.maxHeadersCount = 1000;
+
 server.listen(PORT, '0.0.0.0', () => {
     const ip = getServerIP();
-    console.log('\n╔══════════════════════════════════════════════════════════════╗');
-    console.log('║            PETER HARVARD INTERNATIONAL SCHOOLS                ║');
-    console.log('║                 EXAM SYSTEM  v2.0.0                           ║');
-    console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log(`║  🌐 Local:    http://localhost:${PORT}                         ║`);
-    console.log(`║  🌍 Network:  http://${ip}:${PORT}                             ║`);
-    console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log(`║  👨‍🎓 Student : http://localhost:${PORT}/student.html          ║`);
-    console.log(`║  👩‍🏫 Teacher : http://localhost:${PORT}/teacher.html          ║`);
-    console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  ✨ NEW FEATURES:                                              ║');
-    console.log('║  • Question randomization for each student                     ║');
-    console.log('║  • Flexible CSV upload (accepts various column names)          ║');
-    console.log('║  • Stay on same page after reload                              ║');
-    console.log('║  • Dynamic subject filtering in results                        ║');
-    console.log('║  • Allow retake for students                                   ║');
-    console.log('║  • PDF export for results                                      ║');
-    console.log('║  • Auto redirect after exam completion                         ║');
-    console.log('║  • Fixed session persistence                                   ║');
-    console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  📁 CSV Columns Accepted:                                      ║');
-    console.log('║  question, option_1/option1/opt1/A, option_2/option2/opt2/B   ║');
-    console.log('║  option_3/option3/opt3/C, option_4/option4/opt4/D, answer     ║');
-    console.log('╠══════════════════════════════════════════════════════════════╣');
-    console.log('║  👨‍💻 Developed by: anointedthedeveloper                         ║');
-    console.log('║  🏫 Peter Harvard International Schools                         ║');
-    console.log('║  📅 2026 - All Rights Reserved                                  ║');
-    console.log('╚══════════════════════════════════════════════════════════════╝\n');
+console.log(`
+ █████╗ ███╗   ██╗ ██████╗ ██████╗ ██╗   ██╗████████╗███████╗
+██╔══██╗████╗  ██║██╔═══██╗██╔══██╗╚██╗ ██╔╝╚══██╔══╝██╔════╝
+███████║██╔██╗ ██║██║   ██║██████╔╝ ╚████╔╝    ██║   █████╗
+██╔══██║██║╚██╗██║██║   ██║██╔══██╗  ╚██╔╝     ██║   ██╔══╝
+██║  ██║██║ ╚████║╚██████╔╝██████╔╝   ██║      ██║   ███████╗
+╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═════╝    ╚═╝      ╚═╝   ╚══════╝
+`);
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log('  PETER HARVARD INTERNATIONAL SCHOOLS - EXAM SYSTEM v2.1.0');
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log(`  🌐 Local:    http://localhost:${PORT}`);
+    console.log(`  🌍 Network:  http://${ip}:${PORT}`);
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log(`  👨‍🎓 Student : http://localhost:${PORT}/student.html`);
+    console.log(`  👩‍🏫 Teacher : http://localhost:${PORT}/teacher.html`);
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log('  ✨ FEATURES:');
+    console.log('  ✓ Question randomization for each student');
+    console.log('  ✓ Flexible CSV upload (various column names)');
+    console.log('  ✓ Stay on same page after reload');
+    console.log('  ✓ Dynamic subject filtering in results');
+    console.log('  ✓ Allow retake for students');
+    console.log('  ✓ PDF export for results');
+    console.log('  ✓ Auto redirect after exam completion');
+    console.log('  ✓ Fixed session persistence (7-day cache)');
+    console.log('  ✓ Optimized for 100+ concurrent connections');
+    console.log('  ✓ Improved exam visibility logic');
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log('  📁 CSV Columns: question, option_1/2/3/4, answer');
+    console.log('  ════════════════════════════════════════════════════════════════');
+    console.log('  ⚡ Powered by AnoByte');
+    console.log('  🏫 Peter Harvard International Schools');
+    console.log('  📅 2026 - All Rights Reserved');
+    console.log('  ════════════════════════════════════════════════════════════════\n');
+    console.log('✓ Server startup completed successfully\n');
 
     // Start HTTPS server if cert files are found
     const certFiles = findCertFiles();

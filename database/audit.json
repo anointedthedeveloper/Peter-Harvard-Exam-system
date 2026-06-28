@@ -1,5 +1,115 @@
 [
   {
+    "id": 1782655418456.675,
+    "time": "2026-06-28T14:03:38.456Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782654558984.3647,
+    "time": "2026-06-28T13:49:18.984Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782654506749.1228,
+    "time": "2026-06-28T13:48:26.749Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782654500919.2786,
+    "time": "2026-06-28T13:48:20.919Z",
+    "action": "LOGIN_FAIL",
+    "actor": "teacher",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652992882.509,
+    "time": "2026-06-28T13:23:12.882Z",
+    "action": "LOGIN_FAIL",
+    "actor": "teacher",
+    "detail": "Failed login attempt for role: student",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652949354.7476,
+    "time": "2026-06-28T13:22:29.354Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652732172.9507,
+    "time": "2026-06-28T13:18:52.172Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652729717.0242,
+    "time": "2026-06-28T13:18:49.717Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652204619.9883,
+    "time": "2026-06-28T13:10:04.619Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782652117992.2095,
+    "time": "2026-06-28T13:08:37.992Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1782651350848.249,
     "time": "2026-06-28T12:55:50.848Z",
     "action": "EXAM_EDIT",

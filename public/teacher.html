@@ -30,6 +30,42 @@ body {
 @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.5); } 50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.8); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 30px rgba(220, 38, 38, 0.5); } 50% { box-shadow: 0 0 60px rgba(220, 38, 38, 0.8); } }
+
+/* ── Smooth Transitions ── */
+button, .btn, .btn-primary, .btn-secondary, .btn-outline {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+button:hover, .btn:hover, .btn-primary:hover, .btn-secondary:hover, .btn-outline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+button:active, .btn:active, .btn-primary:active, .btn-secondary:active, .btn-outline:active {
+  transform: translateY(0);
+}
+
+/* ── Input Transitions ── */
+input, select, textarea {
+  transition: all 0.3s ease;
+}
+input:focus, select:focus, textarea:focus {
+  transform: scale(1.01);
+}
+
+/* ── Card Hover Effects ── */
+.card, .stat-card, .exam-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:hover, .stat-card:hover, .exam-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
 
 
    /*LOGIN SCREEN - Split Layout*/
@@ -41,7 +77,7 @@ body {
 }
 .login-left {
   flex: 1;
-  background: #dc2626;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,6 +86,7 @@ body {
   color: white;
   position: relative;
   overflow: hidden;
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 .login-left::before {
   content: '';
@@ -58,12 +95,26 @@ body {
   right: -50%;
   width: 200%;
   height: 200%;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transform: rotate(30deg);
+  animation: shimmer 4s infinite linear;
+  z-index: 0;
+}
+.login-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.5) 0%, rgba(185, 28, 28, 0.6) 50%, rgba(153, 27, 27, 0.5) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  z-index: 0;
 }
 .login-left-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 480px;
   text-align: center;
 }
@@ -73,6 +124,7 @@ body {
   margin-bottom: 16px;
   letter-spacing: -0.5px;
   line-height: 1.2;
+  animation: slideUp 0.6s ease;
 }
 .login-left h1 span {
   display: block;
@@ -80,6 +132,7 @@ body {
   font-size: 24px;
   opacity: 0.9;
   margin-top: 8px;
+  animation: fadeIn 0.8s ease 0.3s both;
 }
 .login-left p {
   font-size: 18px;
@@ -94,11 +147,22 @@ body {
 }
 .login-feature {
   text-align: center;
+  animation: slideUp 0.5s ease both;
 }
+.login-feature:nth-child(1) { animation-delay: 0.4s; }
+.login-feature:nth-child(2) { animation-delay: 0.5s; }
+.login-feature:nth-child(3) { animation-delay: 0.6s; }
+.login-feature:nth-child(4) { animation-delay: 0.7s; }
 .login-feature i {
   font-size: 32px;
   margin-bottom: 12px;
   color: white;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+.login-feature:hover i {
+  animation: float 1s ease infinite;
+  color: #ffd700;
 }
 .login-feature span {
   display: block;
@@ -3189,5 +3253,7 @@ window.addEventListener('beforeunload', () => {
   localStorage.setItem('teacherCurrentPage', currentPage);
 });
 </script>
+</body>
+</html>t>
 </body>
 </html>

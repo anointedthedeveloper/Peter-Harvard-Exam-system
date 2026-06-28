@@ -48,4 +48,4 @@ Double Click start.bat
 }
 ```
 
-Developed by anointedthedeveloper
+Powered by AnoByte
