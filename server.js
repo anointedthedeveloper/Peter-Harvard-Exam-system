@@ -158,11 +158,12 @@ const fileLocks = new Map(); // Simple file locking mechanism
 function normalizeClassName(className) {
     if (!className) return className;
     const normalized = className.toUpperCase().trim();
-    // Convert SS1 to SSS1, SS2 to SSS2, SS3 to SSS3
-    if (normalized === 'SS1') return 'SSS1';
-    if (normalized === 'SS2') return 'SSS2';
-    if (normalized === 'SS3') return 'SSS3';
-    return normalized;
+    // Remove spaces and convert SS1 to SSS1, SS2 to SSS2, SS3 to SSS3
+    const noSpaces = normalized.replace(/\s+/g, '');
+    if (noSpaces === 'SS1') return 'SSS1';
+    if (noSpaces === 'SS2') return 'SSS2';
+    if (noSpaces === 'SS3') return 'SSS3';
+    return noSpaces;
 }
 
 function readJSON(file) {
@@ -978,9 +979,10 @@ const server = http.createServer(async (req, res) => {
                     const data = readJSON(path.join(UPLOADS_DIR, f));
                     // Check exam status: adminDisabled takes precedence over teacherEnabled
                     const status = examStatus[f] || {};
+                    // Handle both old format (true) and new format ({teacherEnabled, adminDisabled})
                     const adminDisabled = status.adminDisabled === true;
-                    const teacherEnabled = status.teacherEnabled === true;
-                    const active = !adminDisabled || teacherEnabled;
+                    const teacherEnabled = status.teacherEnabled === true || status === true;
+                    const active = !adminDisabled && teacherEnabled;
                     
                     return {
                         filename: f,
@@ -1025,11 +1027,12 @@ const server = http.createServer(async (req, res) => {
         
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
         const status = examStatus[filename] || {};
+        // Handle both old format (true) and new format ({teacherEnabled, adminDisabled})
         const adminDisabled = status.adminDisabled === true;
-        const teacherEnabled = status.teacherEnabled === true;
+        const teacherEnabled = status.teacherEnabled === true || status === true;
         
-        // Exam is unavailable if admin disabled it AND teacher hasn't enabled it
-        if (adminDisabled && !teacherEnabled) {
+        // Exam is unavailable if admin disabled it OR teacher hasn't enabled it
+        if (adminDisabled || !teacherEnabled) {
             send(req, res, 403, { error: 'This exam is currently unavailable' });
             return;
         }
@@ -1068,7 +1071,7 @@ const server = http.createServer(async (req, res) => {
             const saveName = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_');
             fs.writeFileSync(path.join(UPLOADS_DIR, saveName), content);
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-            examStatus[saveName] = true;
+            examStatus[saveName] = { teacherEnabled: true, adminDisabled: false };
             writeJSON(EXAM_STATUS_FILE, examStatus);
             sysLog('UPLOAD', `Exam: ${saveName} | Subject: ${data.subject || 'N/A'} | Class: ${data.class || 'N/A'}`);
             auditLog('EXAM_UPLOAD', 'teacher', `Uploaded exam: ${data.exam || saveName}`, { filename: saveName, subject: data.subject, class: data.class, questions: data.questions?.length });
@@ -1224,7 +1227,7 @@ const server = http.createServer(async (req, res) => {
             fs.writeFileSync(path.join(UPLOADS_DIR, saveName), JSON.stringify(examData, null, 2));
             
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-            examStatus[saveName] = true;
+            examStatus[saveName] = { teacherEnabled: true, adminDisabled: false };
             writeJSON(EXAM_STATUS_FILE, examStatus);
             
             sysLog('UPLOAD_CSV', `CSV Exam: ${saveName} | Questions: ${questions.length} | Duration: ${duration} min`, 'teacher');
@@ -1357,7 +1360,7 @@ const server = http.createServer(async (req, res) => {
             fs.writeFileSync(path.join(UPLOADS_DIR, saveName), JSON.stringify(examData, null, 2));
             
             const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-            examStatus[saveName] = true;
+            examStatus[saveName] = { teacherEnabled: true, adminDisabled: false };
             writeJSON(EXAM_STATUS_FILE, examStatus);
             
             sysLog('UPLOAD_EXCEL', `Excel Exam: ${saveName} | Questions: ${questions.length} | Duration: ${duration} min`, 'teacher');
@@ -1435,11 +1438,12 @@ const server = http.createServer(async (req, res) => {
         
         let available = files.filter(f => {
             const status = examStatus[f] || {};
+            // Handle both old format (true) and new format ({teacherEnabled, adminDisabled})
             const adminDisabled = status.adminDisabled === true;
-            const teacherEnabled = status.teacherEnabled === true;
+            const teacherEnabled = status.teacherEnabled === true || status === true;
             
-            // Exam is unavailable if admin disabled it AND teacher hasn't enabled it
-            if (adminDisabled && !teacherEnabled) return false;
+            // Exam is unavailable if admin disabled it OR teacher hasn't enabled it
+            if (adminDisabled || !teacherEnabled) return false;
             if (takenExams.includes(f)) return false;
             
             const data = readJSON(path.join(UPLOADS_DIR, f));
@@ -1506,6 +1510,10 @@ const server = http.createServer(async (req, res) => {
         
         // Admin can disable/enable exams globally (overrides teacher)
         if (body.adminDisabled !== undefined) {
+            // Ensure status is an object, not just true
+            if (examStatus[filename] === true) {
+                examStatus[filename] = { teacherEnabled: true, adminDisabled: false };
+            }
             examStatus[filename].adminDisabled = body.adminDisabled === true || body.adminDisabled === 'true';
         }
         

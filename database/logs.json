@@ -124,5 +124,161 @@
     "action": "LOGIN",
     "detail": "teacher: teacher (Teacher)",
     "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:21:34.069Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:21:46.000Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:21:50.643Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:21:51.083Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:21:55.989Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:22:03.217Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:24:11.944Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:24:42.227Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:24:46.024Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:24:46.664Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:24:49.658Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:25:56.518Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:30:07.635Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:30:13.935Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:30:18.294Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=undefined",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:39:25.623Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:39:35.282Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:39:51.276Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:40:03.525Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:40:51.409Z",
+    "action": "SUBMIT",
+    "detail": "Student: ABANG EMMANUELLA BOMBUM | Exam: BIOLOGY SSS2 | Score: 48/50 (96%) | Class: SS 2",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:46:02.019Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:46:12.048Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:46:17.166Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:46:29.760Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-28T14:46:33.564Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-28T14:46:48.046Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
   }
 ]

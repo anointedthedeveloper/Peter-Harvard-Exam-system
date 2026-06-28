@@ -1743,7 +1743,7 @@ const S = {
   questions: [], answers: {}, marked: new Set(),
   current: 0, timeLeft: 0, timer: null,
   tabViolations: 0, submitted: false,
-  sessionInterval: null, netInterval: null,
+  sessionInterval: null, netInterval: null, examPollInterval: null,
   sessionToken: localStorage.getItem('examSessionToken') || null,
   isLeaving: false,
   tabWarnedOnce: false,
@@ -1783,6 +1783,9 @@ async function checkSession() {
       updateNetIndicator();
       S.netInterval = setInterval(updateNetIndicator, 15000);
       loadExams();
+      // Poll for exam availability updates every 30 seconds
+      if (S.examPollInterval) clearInterval(S.examPollInterval);
+      S.examPollInterval = setInterval(loadExams, 30000);
       return true;
     }
   } catch {}
@@ -1861,6 +1864,9 @@ async function doLogin() {
       updateNetIndicator();
       S.netInterval = setInterval(updateNetIndicator, 15000);
       loadExams();
+      // Poll for exam availability updates every 30 seconds
+      if (S.examPollInterval) clearInterval(S.examPollInterval);
+      S.examPollInterval = setInterval(loadExams, 30000);
     } else if (res.error === 'User already logged in on another device') {
       document.getElementById('loginErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> This account is already logged in on another device.';
       document.getElementById('loginErr').style.display = 'block';
