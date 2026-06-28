@@ -1,7 +1,7 @@
 {
   "exam": "ECONOMICS SSS1",
   "subject": "ECONOMICS",
-  "class": "SS 1",
+  "class": "SSS1",
   "duration": 60,
   "questions": [
     {
@@ -38,10 +38,10 @@
     },
     {
       "question": "If cost price of one book is 2000 naira. The seller sold 8 books and made 500 naira on each of the 8 books. How much is the total profit? ",
-      "A": "5000",
-      "B": "4000",
-      "C": "3000",
-      "D": "3500",
+      "A": 5000,
+      "B": 4000,
+      "C": 3000,
+      "D": 3500,
       "answer": "B"
     },
     {
@@ -230,7 +230,7 @@
     },
     {
       "question": "The size of a market can affect the demand for labor.",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the above",
       "D": "all of the above",

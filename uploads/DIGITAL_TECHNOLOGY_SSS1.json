@@ -1,7 +1,7 @@
 {
   "exam": "DIGITAL TECHNOLOGY SSS1",
   "subject": "DIGITAL",
-  "class": "SS 1",
+  "class": "SSS1",
   "duration": 60,
   "questions": [
     {
@@ -86,7 +86,7 @@
     },
     {
       "question": "A data network is an electronic communication system that allows interconnected devices to transmit, receive and share data or resources, ",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the baove",
       "D": "all of the above",
@@ -158,7 +158,7 @@
     },
     {
       "question": "A satellite rotates",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the above",
       "D": "all of the above",

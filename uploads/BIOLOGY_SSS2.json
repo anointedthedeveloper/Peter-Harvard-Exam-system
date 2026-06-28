@@ -1,7 +1,7 @@
 {
   "exam": "BIOLOGY SSS2",
   "subject": "BIOLOGY",
-  "class": "SS 2",
+  "class": "ss2",
   "duration": 60,
   "questions": [
     {
@@ -10,7 +10,7 @@
       "B": "Homeostasis ",
       "C": " Excretion       ",
       "D": "Circulation",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Which organ regulates body temperature?      ",
@@ -18,7 +18,7 @@
       "B": "Heart",
       "C": "Kidney ",
       "D": "skin",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The control centre of homeostasis is the    ",
@@ -26,7 +26,7 @@
       "B": "Hypothalamus ",
       "C": "Medulla",
       "D": "Cerebellum",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Excess glucose is stored in the liver as    ",
@@ -34,7 +34,7 @@
       "B": "Glycogen",
       "C": "Protein ",
       "D": "Starch ",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The hormone that lowers blood sugar is     ",
@@ -42,7 +42,7 @@
       "B": "Insulin",
       "C": "Thyroxine",
       "D": "Glucagon",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The kidney regulates     ",
@@ -50,7 +50,7 @@
       "B": "Water and salts    ",
       "C": "Heat only     ",
       "D": "Hormones",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Sweating helps to   ",
@@ -58,7 +58,7 @@
       "B": "store heat",
       "C": "Reduce temperature             ",
       "D": "Stop heat loss",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Vasodilation causes    ",
@@ -66,7 +66,7 @@
       "B": "Heat loss     ",
       "C": "No change      ",
       "D": "Coldness",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The outermost layer of the skin is   ",
@@ -82,7 +82,7 @@
       "B": "Melanin",
       "C": "Haemoglobin ",
       "D": "Chlorophyll",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Sweat is produced by   ",
@@ -90,7 +90,7 @@
       "B": "Sweat glands    ",
       "C": "Oil glands        ",
       "D": "Nerve cells",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The dermis contains  ",
@@ -106,7 +106,7 @@
       "B": "Dermis",
       "C": "Fat layer       ",
       "D": "Bone",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The skin helps in    ",
@@ -114,7 +114,7 @@
       "B": "Respiration",
       "C": "Excretion ",
       "D": "Photosynthesis",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Goose pimples occur due to   ",
@@ -130,7 +130,7 @@
       "B": "Brain and spinal cord    ",
       "C": "Nerves only      ",
       "D": "Brain only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The largest part of the brain is   ",
@@ -138,7 +138,7 @@
       "B": "Hypothalamus",
       "C": "Medulla",
       "D": "Cerebrum",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The cerebellum controls  ",
@@ -146,7 +146,7 @@
       "B": "Balance",
       "C": "Breathing",
       "D": "Vision",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The medulla controls  ",
@@ -154,7 +154,7 @@
       "B": "Reflex actions   ",
       "C": "Involuntary actions   ",
       "D": "Memory",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "The spinal cord is protected by     ",
@@ -162,7 +162,7 @@
       "B": "Backbone",
       "C": "Skin ",
       "D": "Muscles",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The brain is enclosed in the",
@@ -170,7 +170,7 @@
       "B": "Skin",
       "C": "Vertebra",
       "D": "skull",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The PNS consists of   ",
@@ -178,7 +178,7 @@
       "B": "Nerves outside CNS    ",
       "C": "Spinal cord only     ",
       "D": "Skull",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Cranial nerves arise from the    ",
@@ -186,7 +186,7 @@
       "B": "Skin",
       "C": "Brain",
       "D": "Muscles ",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "The autonomic nervous system controls    ",
@@ -202,7 +202,7 @@
       "B": "Competition",
       "C": "Balance",
       "D": "Growth",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Factors affecting population include",
@@ -210,7 +210,7 @@
       "B": "Water",
       "C": "Space",
       "D": "All of the above",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "Emigration means",
@@ -218,7 +218,7 @@
       "B": "Going out        ",
       "C": "Birth",
       "D": "Death",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Population growth curve is",
@@ -226,7 +226,7 @@
       "B": "circle ",
       "C": "S-shaped        ",
       "D": "Triangle",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Balance in nature is also called",
@@ -234,7 +234,7 @@
       "B": "Equilibrium",
       "C": "Biology",
       "D": "Zoology",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Relay neurones are found in   ",
@@ -242,7 +242,7 @@
       "B": "CNS",
       "C": "Heart",
       "D": "Muscles",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The organ of sight is   ",
@@ -250,7 +250,7 @@
       "B": "nose ",
       "C": "Eye",
       "D": "Tongue",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "The retina contains    ",
@@ -258,7 +258,7 @@
       "B": "Musles",
       "C": "Bones",
       "D": "Receptors",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The iris controls   ",
@@ -274,7 +274,7 @@
       "B": "Hearing",
       "C": "Smell ",
       "D": "Taste",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "A population is    ",
@@ -282,7 +282,7 @@
       "B": "Same species in an area   ",
       "C": "Different species    ",
       "D": "Plants only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Population density means  ",
@@ -294,7 +294,7 @@
     },
     {
       "question": "Birth rate increases population   ",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "Not sure         ",
       "D": "None",
@@ -304,9 +304,9 @@
       "question": "Death rate decreases population   ",
       "A": "",
       "B": "not sure ",
-      "C": "true",
+      "C": true,
       "D": "None",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Migration includes   ",
@@ -314,7 +314,7 @@
       "B": "death",
       "C": "Immigration",
       "D": "Feeding",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "The nose detects    ",
@@ -322,7 +322,7 @@
       "B": "Smell ",
       "C": "Sight ",
       "D": "Sound",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Taste buds are found on the   ",
@@ -338,7 +338,7 @@
       "B": "Blood ",
       "C": "Hormones ",
       "D": "Stimuli ",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "The sympathetic nervous system prepares the body for",
@@ -346,7 +346,7 @@
       "B": "Sleep",
       "C": "Emergency ",
       "D": "Digestion",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "The parasympathetic system works during  ",
@@ -354,7 +354,7 @@
       "B": "Emergency",
       "C": "Rest",
       "D": "Fear",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Nerves carry  ",
@@ -362,7 +362,7 @@
       "B": "Food",
       "C": "Impulses",
       "D": "Hormone",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "The basic unit of the nervous system is    ",
@@ -370,7 +370,7 @@
       "B": "Neurone",
       "C": "Nerve",
       "D": "Brain",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Antibiotics should be taken    ",
@@ -378,7 +378,7 @@
       "B": "As prescribed     ",
       "C": "Once only    ",
       "D": "Without advice",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Which is a viral disease?   ",
@@ -394,7 +394,7 @@
       "B": "Mosquito",
       "C": "Cockroach",
       "D": "Rat ",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Clean water prevents    ",
@@ -402,7 +402,7 @@
       "B": "Diabetes ",
       "C": "cholera",
       "D": "Hypertension",
-      "answer": "A"
+      "answer": "C"
     }
   ]
 }

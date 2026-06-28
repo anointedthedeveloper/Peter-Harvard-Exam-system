@@ -1180,21 +1180,40 @@ const server = http.createServer(async (req, res) => {
                 }
                 
                 // Extract answer (last column usually)
-                const answerValue = values[values.length - 1] || '';
+                const answerValue = (values[values.length - 1] || '').trim();
                 let answer = 'A';
                 
+                // Try to match numeric answers (1, 2, 3, 4)
+                const numMatch = answerValue.match(/^([1-4])$/);
+                if (numMatch) {
+                    const num = parseInt(numMatch[1]);
+                    answer = ['A', 'B', 'C', 'D'][num - 1];
+                }
                 // Check if answer is in format "a)" or just "a" or the option text
-                const answerMatch = answerValue.match(/^([a-dA-D])\)?/);
-                if (answerMatch) {
-                    answer = answerMatch[1].toUpperCase();
-                } else if (answerValue.toLowerCase() === 'a' || answerValue.toLowerCase() === 'option_1' || answerValue.toLowerCase() === 'option1') {
-                    answer = 'A';
-                } else if (answerValue.toLowerCase() === 'b' || answerValue.toLowerCase() === 'option_2' || answerValue.toLowerCase() === 'option2') {
-                    answer = 'B';
-                } else if (answerValue.toLowerCase() === 'c' || answerValue.toLowerCase() === 'option_3' || answerValue.toLowerCase() === 'option3') {
-                    answer = 'C';
-                } else if (answerValue.toLowerCase() === 'd' || answerValue.toLowerCase() === 'option_4' || answerValue.toLowerCase() === 'option4') {
-                    answer = 'D';
+                else {
+                    const answerMatch = answerValue.match(/^([a-dA-D])\)?/);
+                    if (answerMatch) {
+                        answer = answerMatch[1].toUpperCase();
+                    } else if (answerValue.toLowerCase() === 'a' || answerValue.toLowerCase() === 'option_1' || answerValue.toLowerCase() === 'option1') {
+                        answer = 'A';
+                    } else if (answerValue.toLowerCase() === 'b' || answerValue.toLowerCase() === 'option_2' || answerValue.toLowerCase() === 'option2') {
+                        answer = 'B';
+                    } else if (answerValue.toLowerCase() === 'c' || answerValue.toLowerCase() === 'option_3' || answerValue.toLowerCase() === 'option3') {
+                        answer = 'C';
+                    } else if (answerValue.toLowerCase() === 'd' || answerValue.toLowerCase() === 'option_4' || answerValue.toLowerCase() === 'option4') {
+                        answer = 'D';
+                    } else {
+                        // Try to match against option text values
+                        const opt1 = options.A.toLowerCase().trim();
+                        const opt2 = options.B.toLowerCase().trim();
+                        const opt3 = options.C.toLowerCase().trim();
+                        const opt4 = options.D.toLowerCase().trim();
+                        
+                        if (answerValue.toLowerCase() === opt1) answer = 'A';
+                        else if (answerValue.toLowerCase() === opt2) answer = 'B';
+                        else if (answerValue.toLowerCase() === opt3) answer = 'C';
+                        else if (answerValue.toLowerCase() === opt4) answer = 'D';
+                    }
                 }
                 
                 // Skip empty questions
@@ -1313,12 +1332,51 @@ const server = http.createServer(async (req, res) => {
                 };
                 
                 // Parse answer
-                const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().toLowerCase() : '';
-                if (answerValue.includes('option 1') || answerValue.includes('option_1') || answerValue === 'a') question.answer = 'A';
-                else if (answerValue.includes('option 2') || answerValue.includes('option_2') || answerValue === 'b') question.answer = 'B';
-                else if (answerValue.includes('option 3') || answerValue.includes('option_3') || answerValue === 'c') question.answer = 'C';
-                else if (answerValue.includes('option 4') || answerValue.includes('option_4') || answerValue === 'd') question.answer = 'D';
-                else question.answer = 'A';
+                const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().trim() : '';
+                let answer = 'A';
+                
+                if (answerValue) {
+                    // Try to match numeric answers (1, 2, 3, 4)
+                    const numMatch = answerValue.match(/^([1-4])$/);
+                    if (numMatch) {
+                        const num = parseInt(numMatch[1]);
+                        answer = ['A', 'B', 'C', 'D'][num - 1];
+                    }
+                    // Try to match letter patterns
+                    else {
+                        const letterMatch = answerValue.match(/^([a-dA-D])\)?/);
+                        if (letterMatch) {
+                            answer = letterMatch[1].toUpperCase();
+                        } 
+                        // Try to match option text patterns
+                        else if (answerValue.toLowerCase().includes('option 1') || answerValue.toLowerCase().includes('option_1') || answerValue.toLowerCase() === 'a') {
+                            answer = 'A';
+                        }
+                        else if (answerValue.toLowerCase().includes('option 2') || answerValue.toLowerCase().includes('option_2') || answerValue.toLowerCase() === 'b') {
+                            answer = 'B';
+                        }
+                        else if (answerValue.toLowerCase().includes('option 3') || answerValue.toLowerCase().includes('option_3') || answerValue.toLowerCase() === 'c') {
+                            answer = 'C';
+                        }
+                        else if (answerValue.toLowerCase().includes('option 4') || answerValue.toLowerCase().includes('option_4') || answerValue.toLowerCase() === 'd') {
+                            answer = 'D';
+                        }
+                        // Try to match against option text values
+                        else {
+                            const opt1 = (row[colIndices.option_1] || '').toString().trim().toLowerCase();
+                            const opt2 = (row[colIndices.option_2] || '').toString().trim().toLowerCase();
+                            const opt3 = (row[colIndices.option_3] || '').toString().trim().toLowerCase();
+                            const opt4 = (row[colIndices.option_4] || '').toString().trim().toLowerCase();
+                            
+                            if (answerValue.toLowerCase() === opt1) answer = 'A';
+                            else if (answerValue.toLowerCase() === opt2) answer = 'B';
+                            else if (answerValue.toLowerCase() === opt3) answer = 'C';
+                            else if (answerValue.toLowerCase() === opt4) answer = 'D';
+                        }
+                    }
+                }
+                
+                question.answer = answer;
                 
                 questions.push(question);
             }
@@ -2049,62 +2107,216 @@ const server = http.createServer(async (req, res) => {
     <meta charset="UTF-8">
     <title>Exam Results - Peter Harvard International Schools</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { text-align: center; color: #1a1a1a; }
-        .header { text-align: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #4CAF50; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0; 
+            padding: 40px;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            font-size: 11px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #dc2626;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+        
+        .header .meta {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-card .label {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px;
+            font-size: 11px;
+        }
+        
+        th { 
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        th:first-child { border-top-left-radius: 6px; }
+        th:last-child { border-top-right-radius: 6px; }
+        
+        td { 
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        tr:nth-child(even) { background-color: #f9fafb; }
+        tr:hover { background-color: #f3f4f6; }
+        
+        .score-high { color: #059669; font-weight: 600; }
+        .score-medium { color: #d97706; font-weight: 600; }
+        .score-low { color: #dc2626; font-weight: 600; }
+        
+        .footer { 
+            margin-top: 40px; 
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center; 
+            font-size: 10px; 
+            color: #6b7280;
+        }
+        
+        .footer p { margin: 4px 0; }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        
         @media print {
-            body { margin: 0; }
+            body { margin: 0; padding: 0; background: white; }
+            .container { box-shadow: none; border-radius: 0; padding: 20px; }
             table { page-break-inside: auto; }
             tr { page-break-inside: avoid; }
+            .summary { page-break-inside: avoid; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Peter Harvard International Schools</h1>
-        <h2>Exam Results Report</h2>
-        <p>Generated: ${new Date().toLocaleString()}</p>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Student ID</th>
-                <th>Class</th>
-                <th>Exam</th>
-                <th>Subject</th>
-                <th>Score</th>
-                <th>Total</th>
-                <th>Percentage</th>
-                <th>Tab Violations</th>
-                <th>Submitted At</th>
-            </tr>
-        </thead>
-        <tbody>
-            ${formattedResults.map(r => `
+    <div class="container">
+        <div class="header">
+            <h1>Peter Harvard International Schools</h1>
+            <h2>Exam Results Report</h2>
+            <div class="meta">Generated: ${new Date().toLocaleString()}</div>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-card">
+                <div class="label">Total Results</div>
+                <div class="value">${formattedResults.length}</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Average Score</div>
+                <div class="value">${formattedResults.length > 0 ? Math.round(formattedResults.reduce((a, b) => a + b.percentage, 0) / formattedResults.length) : 0}%</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Highest Score</div>
+                <div class="value">${formattedResults.length > 0 ? Math.max(...formattedResults.map(r => r.percentage)) : 0}%</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Total Violations</div>
+                <div class="value">${formattedResults.reduce((a, b) => a + (b.tabViolations || 0), 0)}</div>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
                 <tr>
-                    <td>${r.student}</td>
+                    <th>Student Name</th>
+                    <th>Student ID</th>
+                    <th>Class</th>
+                    <th>Exam</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Total</th>
+                    <th>Percentage</th>
+                    <th>Violations</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${formattedResults.map(r => {
+                    const scoreClass = r.percentage >= 70 ? 'score-high' : r.percentage >= 50 ? 'score-medium' : 'score-low';
+                    const badgeClass = r.percentage >= 70 ? 'badge-success' : r.percentage >= 50 ? 'badge-warning' : 'badge-danger';
+                    return `
+                <tr>
+                    <td><strong>${r.student}</strong></td>
                     <td>${r.studentId}</td>
-                    <td>${r.studentClass}</td>
+                    <td><span class="badge badge-success">${r.studentClass}</span></td>
                     <td>${r.exam}</td>
                     <td>${r.subject}</td>
                     <td>${r.score}</td>
                     <td>${r.total}</td>
-                    <td>${r.percentage}%</td>
-                    <td>${r.tabViolations}</td>
+                    <td><span class="${scoreClass}">${r.percentage}%</span></td>
+                    <td>${r.tabViolations > 0 ? `<span class="badge badge-danger">${r.tabViolations}</span>` : '<span class="badge badge-success">0</span>'}</td>
                     <td>${r.submittedAt}</td>
                 </tr>
-            `).join('')}
-        </tbody>
-    </table>
-    <div class="footer">
-        <p>Total Results: ${formattedResults.length}</p>
-        <p>Peter Harvard International Schools - Exam System v${VERSION}</p>
+            `}).join('')}
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            <p><strong>Peter Harvard International Schools</strong> - Exam System v${VERSION}</p>
+            <p>Powered by AnoByte | Generated on ${new Date().toLocaleDateString()}</p>
+        </div>
     </div>
 </body>
 </html>`;

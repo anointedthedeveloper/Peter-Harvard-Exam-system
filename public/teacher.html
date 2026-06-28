@@ -2911,10 +2911,25 @@ function downloadResultsPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'landscape' });
     
-    doc.setFontSize(18);
-    doc.text('Exam Results - All Students', 14, 22);
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(31, 41, 55);
+    doc.text('Peter Harvard International Schools', 14, 20);
+    doc.setFontSize(14);
+    doc.setTextColor(107, 114, 128);
+    doc.text('Exam Results - All Students', 14, 28);
+    doc.setFontSize(9);
+    doc.setTextColor(156, 163, 175);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 35);
+    
+    // Summary stats
+    const avgScore = allResults.length > 0 ? Math.round(allResults.reduce((a, b) => a + b.percentage, 0) / allResults.length) : 0;
+    const maxScore = allResults.length > 0 ? Math.max(...allResults.map(r => r.percentage)) : 0;
+    const totalViolations = allResults.reduce((a, b) => a + (b.tabViolations || 0), 0);
+    
     doc.setFontSize(10);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 30);
+    doc.setTextColor(31, 41, 55);
+    doc.text(`Total: ${allResults.length} | Avg: ${avgScore}% | Highest: ${maxScore}% | Violations: ${totalViolations}`, 14, 42);
     
     const tableColumn = ['Student', 'ID', 'Class', 'Exam', 'Subject', 'Score', '%', 'Violations'];
     const tableRows = [];
@@ -2936,10 +2951,21 @@ function downloadResultsPDF() {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 35,
+      startY: 48,
       styles: { fontSize: 8 },
-      headStyles: { fillColor: [220, 38, 38] }
+      headStyles: { fillColor: [220, 38, 38], textColor: 255 },
+      alternateRowStyles: { fillColor: [249, 250, 251] }
     });
+    
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(107, 114, 128);
+      doc.text('Powered by AnoByte', 14, doc.internal.pageSize.height - 10);
+      doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10, { align: 'right' });
+    }
     
     doc.save(`all_results_${new Date().toISOString().slice(0,10)}.pdf`);
     toast('PDF downloaded successfully', 'ok');
@@ -2963,6 +2989,13 @@ function downloadResultsFilteredPDF() {
     const subjectFilter = document.getElementById('filterSubject').value;
     const examFilter = document.getElementById('filterExam').value;
     
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(31, 41, 55);
+    doc.text('Peter Harvard International Schools', 14, 20);
+    doc.setFontSize(14);
+    doc.setTextColor(107, 114, 128);
+    
     let title = 'Exam Results';
     if (classFilter || subjectFilter || examFilter) {
       title += ' - Filtered:';
@@ -2970,11 +3003,19 @@ function downloadResultsFilteredPDF() {
       if (subjectFilter) title += ` Subject:${subjectFilter}`;
       if (examFilter) title += ` Exam:${examFilter}`;
     }
+    doc.text(title, 14, 28);
+    doc.setFontSize(9);
+    doc.setTextColor(156, 163, 175);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 35);
     
-    doc.setFontSize(16);
-    doc.text(title, 14, 22);
-    doc.setFontSize(8);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 30);
+    // Summary stats
+    const avgScore = filteredResults.length > 0 ? Math.round(filteredResults.reduce((a, b) => a + b.percentage, 0) / filteredResults.length) : 0;
+    const maxScore = filteredResults.length > 0 ? Math.max(...filteredResults.map(r => r.percentage)) : 0;
+    const totalViolations = filteredResults.reduce((a, b) => a + (b.tabViolations || 0), 0);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(31, 41, 55);
+    doc.text(`Total: ${filteredResults.length} | Avg: ${avgScore}% | Highest: ${maxScore}% | Violations: ${totalViolations}`, 14, 42);
     
     const tableColumn = ['Student', 'ID', 'Class', 'Exam', 'Subject', 'Score', '%', 'Violations'];
     const tableRows = [];
@@ -2996,10 +3037,21 @@ function downloadResultsFilteredPDF() {
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 35,
+      startY: 48,
       styles: { fontSize: 8 },
-      headStyles: { fillColor: [220, 38, 38] }
+      headStyles: { fillColor: [220, 38, 38], textColor: 255 },
+      alternateRowStyles: { fillColor: [249, 250, 251] }
     });
+    
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(107, 114, 128);
+      doc.text('Powered by AnoByte', 14, doc.internal.pageSize.height - 10);
+      doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10, { align: 'right' });
+    }
     
     doc.save(`filtered_results_${new Date().toISOString().slice(0,10)}.pdf`);
     toast('PDF downloaded successfully', 'ok');
@@ -3020,25 +3072,47 @@ function downloadSingleResultPDF(id, studentName) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    doc.setFontSize(20);
-    doc.text('Exam Result', 105, 20, { align: 'center' });
+    // Header
+    doc.setFontSize(18);
+    doc.setTextColor(31, 41, 55);
+    doc.text('Peter Harvard International Schools', 105, 20, { align: 'center' });
+    doc.setFontSize(14);
+    doc.setTextColor(107, 114, 128);
+    doc.text('Exam Result', 105, 30, { align: 'center' });
+    doc.setFontSize(9);
+    doc.setTextColor(156, 163, 175);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 105, 38, { align: 'center' });
     
+    // Student info
     doc.setFontSize(12);
-    doc.text(`Student: ${result.student}`, 20, 40);
-    doc.text(`Student ID: ${result.studentId || 'N/A'}`, 20, 50);
-    doc.text(`Class: ${result.studentClass || result.examClass || 'N/A'}`, 20, 60);
-    doc.text(`Exam: ${result.exam}`, 20, 70);
-    doc.text(`Subject: ${result.subject || 'N/A'}`, 20, 80);
+    doc.setTextColor(31, 41, 55);
+    doc.text(`Student: ${result.student}`, 20, 60);
+    doc.text(`Student ID: ${result.studentId || 'N/A'}`, 20, 72);
+    doc.text(`Class: ${result.studentClass || result.examClass || 'N/A'}`, 20, 84);
+    doc.text(`Exam: ${result.exam}`, 20, 96);
+    doc.text(`Subject: ${result.subject || 'N/A'}`, 20, 108);
     
+    // Score with color coding
     doc.setFontSize(16);
-    doc.text(`Score: ${result.score}/${result.total} (${result.percentage}%)`, 20, 100);
+    if (result.percentage >= 70) {
+      doc.setTextColor(5, 150, 105);
+    } else if (result.percentage >= 50) {
+      doc.setTextColor(217, 119, 6);
+    } else {
+      doc.setTextColor(220, 38, 38);
+    }
+    doc.text(`Score: ${result.score}/${result.total} (${result.percentage}%)`, 20, 130);
     
+    // Additional info
     doc.setFontSize(12);
-    doc.text(`Tab Violations: ${result.tabViolations || 0}`, 20, 120);
-    doc.text(`Submitted: ${result.submittedAt ? new Date(result.submittedAt).toLocaleString() : 'N/A'}`, 20, 130);
+    doc.setTextColor(31, 41, 55);
+    doc.text(`Tab Violations: ${result.tabViolations || 0}`, 20, 155);
+    doc.text(`Submitted: ${result.submittedAt ? new Date(result.submittedAt).toLocaleString() : 'N/A'}`, 20, 167);
     
+    // Footer
     doc.setFontSize(8);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, 20, 280);
+    doc.setTextColor(107, 114, 128);
+    doc.text('Powered by AnoByte', 105, 280, { align: 'center' });
     
     doc.save(`result_${studentName || 'student'}_${new Date().toISOString().slice(0,10)}.pdf`);
     toast('PDF downloaded successfully', 'ok');

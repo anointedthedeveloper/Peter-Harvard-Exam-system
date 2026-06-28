@@ -42,17 +42,27 @@ function parseExcelFile(filePath) {
     header.forEach((col, index) => {
         // Exact match for question column (avoid 'question type', 'question level')
         if (col === 'question' || col === 'questions') colIndices.question = index;
-        // Match option columns with various formats
-        else if (col === 'option 1' || col === 'option1' || col === 'option_1') colIndices.option_1 = index;
-        else if (col === 'option 2' || col === 'option2' || col === 'option_2') colIndices.option_2 = index;
-        else if (col === 'option 3' || col === 'option3' || col === 'option_3') colIndices.option_3 = index;
-        else if (col === 'option 4' || col === 'option4' || col === 'option_4') colIndices.option_4 = index;
+        // Match option columns with various formats (only if not already set)
+        else if ((col === 'option 1' || col === 'option1' || col === 'option_1') && colIndices.option_1 === undefined) colIndices.option_1 = index;
+        else if ((col === 'option 2' || col === 'option2' || col === 'option_2') && colIndices.option_2 === undefined) colIndices.option_2 = index;
+        else if ((col === 'option 3' || col === 'option3' || col === 'option_3') && colIndices.option_3 === undefined) colIndices.option_3 = index;
+        else if ((col === 'option 4' || col === 'option4' || col === 'option_4') && colIndices.option_4 === undefined) colIndices.option_4 = index;
         // Match answer column
         else if (col === 'answer' || col === 'correct_answer' || col === 'correct') colIndices.answer = index;
         // Match class/group columns
         else if (col === 'group' || col === 'class') colIndices.group = index;
         else if (col === 'level') colIndices.level = index;
     });
+    
+    // Fallback: if option columns are missing, try to find them by position after 'mark' column
+    const markIndex = header.findIndex(h => h === 'mark');
+    if (markIndex !== -1) {
+        if (colIndices.option_1 === undefined) colIndices.option_1 = markIndex + 1;
+        if (colIndices.option_2 === undefined) colIndices.option_2 = markIndex + 2;
+        if (colIndices.option_3 === undefined) colIndices.option_3 = markIndex + 3;
+        if (colIndices.option_4 === undefined) colIndices.option_4 = markIndex + 4;
+    }
+    
     
     // Extract class from first data row - try multiple column names
     let examClass = '';
@@ -86,12 +96,51 @@ function parseExcelFile(filePath) {
         };
         
         // Parse answer
-        const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().toLowerCase() : '';
-        if (answerValue.includes('option 1') || answerValue.includes('option_1') || answerValue === 'a') question.answer = 'A';
-        else if (answerValue.includes('option 2') || answerValue.includes('option_2') || answerValue === 'b') question.answer = 'B';
-        else if (answerValue.includes('option 3') || answerValue.includes('option_3') || answerValue === 'c') question.answer = 'C';
-        else if (answerValue.includes('option 4') || answerValue.includes('option_4') || answerValue === 'd') question.answer = 'D';
-        else question.answer = 'A';
+        const answerValue = colIndices.answer !== undefined ? (row[colIndices.answer] || '').toString().trim() : '';
+        let answer = 'A';
+        
+        if (answerValue) {
+            // Try to match numeric answers (1, 2, 3, 4)
+            const numMatch = answerValue.match(/^([1-4])$/);
+            if (numMatch) {
+                const num = parseInt(numMatch[1]);
+                answer = ['A', 'B', 'C', 'D'][num - 1];
+            }
+            // Try to match letter patterns
+            else {
+                const letterMatch = answerValue.match(/^([a-dA-D])\)?/);
+                if (letterMatch) {
+                    answer = letterMatch[1].toUpperCase();
+                }
+                // Try to match option text patterns
+                else if (answerValue.toLowerCase().includes('option 1') || answerValue.toLowerCase().includes('option_1') || answerValue.toLowerCase() === 'a') {
+                    answer = 'A';
+                }
+                else if (answerValue.toLowerCase().includes('option 2') || answerValue.toLowerCase().includes('option_2') || answerValue.toLowerCase() === 'b') {
+                    answer = 'B';
+                }
+                else if (answerValue.toLowerCase().includes('option 3') || answerValue.toLowerCase().includes('option_3') || answerValue.toLowerCase() === 'c') {
+                    answer = 'C';
+                }
+                else if (answerValue.toLowerCase().includes('option 4') || answerValue.toLowerCase().includes('option_4') || answerValue.toLowerCase() === 'd') {
+                    answer = 'D';
+                }
+                // Try to match against option text values
+                else {
+                    const opt1 = (row[colIndices.option_1] || '').toString().trim().toLowerCase();
+                    const opt2 = (row[colIndices.option_2] || '').toString().trim().toLowerCase();
+                    const opt3 = (row[colIndices.option_3] || '').toString().trim().toLowerCase();
+                    const opt4 = (row[colIndices.option_4] || '').toString().trim().toLowerCase();
+                    
+                    if (answerValue.toLowerCase() === opt1) answer = 'A';
+                    else if (answerValue.toLowerCase() === opt2) answer = 'B';
+                    else if (answerValue.toLowerCase() === opt3) answer = 'C';
+                    else if (answerValue.toLowerCase() === opt4) answer = 'D';
+                }
+            }
+        }
+        
+        question.answer = answer;
         
         questions.push(question);
     }
@@ -156,7 +205,7 @@ function importExamFile(filePath, fileName) {
         
         // Update exam status
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-        examStatus[saveName] = true;
+        examStatus[saveName] = { teacherEnabled: true, adminDisabled: false };
         writeJSON(EXAM_STATUS_FILE, examStatus);
         
         console.log(`  ✓ Imported successfully`);

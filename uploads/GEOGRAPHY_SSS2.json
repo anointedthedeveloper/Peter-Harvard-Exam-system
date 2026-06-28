@@ -197,7 +197,7 @@
       "answer": "A"
     },
     {
-      "question": "Which type of scale type is written as ",
+      "question": "Which type of scale type is written as \"1 cm to 1km\"?",
       "A": "linear scale",
       "B": "bar scale",
       "C": "Rational scale",
@@ -342,10 +342,10 @@
     },
     {
       "question": "The World population reached 6 billion in ____________.  ",
-      "A": "1964",
-      "B": "1974",
-      "C": "1984",
-      "D": "1999",
+      "A": 1964,
+      "B": 1974,
+      "C": 1984,
+      "D": 1999,
       "answer": "D"
     },
     {

@@ -1,7 +1,7 @@
 {
   "exam": "ECONOMICS SSS2",
   "subject": "ECONOMICS",
-  "class": "SS 2",
+  "class": "SSS2",
   "duration": 60,
   "questions": [
     {
@@ -198,7 +198,7 @@
     },
     {
       "question": "Economics has no certain definition. ",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the above",
       "D": "all of the above",
@@ -302,7 +302,7 @@
     },
     {
       "question": " A decrease in supply without any change in demand will lead to excess of demand over supply.",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the above",
       "D": "all of the above",
@@ -374,7 +374,7 @@
     },
     {
       "question": "Most west African export crops are handled by marketing boards. ",
-      "A": "true",
+      "A": true,
       "B": "",
       "C": "none of the above",
       "D": "not sure",

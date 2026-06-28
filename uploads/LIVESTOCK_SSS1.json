@@ -1,7 +1,7 @@
 {
   "exam": "LIVESTOCK SSS1",
   "subject": "LIVESTOCK",
-  "class": "SS 1",
+  "class": "ss1",
   "duration": 60,
   "questions": [
     {
@@ -18,7 +18,7 @@
       "B": "bull",
       "C": "heifer",
       "D": "calf",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "A young female cattle that has not calved is",
@@ -26,7 +26,7 @@
       "B": "heifer ",
       "C": "bull",
       "D": "steer",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Extensive system of cattle farming involves",
@@ -34,7 +34,7 @@
       "B": "Indoor feeding",
       "C": "housing only                                 ",
       "D": "free range grazing    ",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "Zero grazing is practiced in",
@@ -42,7 +42,7 @@
       "B": "semi-intensive    ",
       "C": "intensive system ",
       "D": "nomadic system",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Artificial insemination involves",
@@ -50,7 +50,7 @@
       "B": "surgical breeding   ",
       "C": "use of collected semen  ",
       "D": "cloning",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Cross breeding improves",
@@ -58,7 +58,7 @@
       "B": "productivity",
       "C": "weakness",
       "D": "infertility",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Gestation period of cattle is about",
@@ -66,7 +66,7 @@
       "B": "150 days     ",
       "C": "280 days       ",
       "D": "365 days",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "A disease common in cattle is    ",
@@ -74,7 +74,7 @@
       "B": "Mastitis",
       "C": "cholera",
       "D": "rabies",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Foot and mouth disease affects",
@@ -82,7 +82,7 @@
       "B": "mouth and hooves      ",
       "C": "lungs",
       "D": "eyes",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Vaccination helps to   ",
@@ -90,7 +90,7 @@
       "B": "prevent disease     ",
       "C": "cause infection",
       "D": "reduce feeding",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Pig farming is also called   ",
@@ -98,7 +98,7 @@
       "B": "pisciculture",
       "C": "piggering",
       "D": "poultry",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "A female pig is called   ",
@@ -114,7 +114,7 @@
       "B": "boar",
       "C": "ram",
       "D": "bull",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Pig gestation period is about     ",
@@ -122,7 +122,7 @@
       "B": "60 days         ",
       "C": "114 days            ",
       "D": "200 days",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Pig feed should be rich in    ",
@@ -130,7 +130,7 @@
       "B": "protein and energy       ",
       "C": "water only          ",
       "D": "ash only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Rabbits are reared mainly for   ",
@@ -154,7 +154,7 @@
       "B": "doe",
       "C": "ewe",
       "D": "hen",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Rabbit house is called   ",
@@ -162,7 +162,7 @@
       "B": "coop",
       "C": "hutch",
       "D": "sty",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Record of sales is called   ",
@@ -170,7 +170,7 @@
       "B": "sales record     ",
       "C": "feeding record     ",
       "D": "health record",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Government policy may support farmers through    ",
@@ -178,7 +178,7 @@
       "B": "subsidies",
       "C": "banning farming                       ",
       "D": "importation only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Artificial insemination reduces   ",
@@ -194,7 +194,7 @@
       "B": "ready to mate            ",
       "C": "sleeping",
       "D": "eating",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Feed conversion efficiency refers to    ",
@@ -202,7 +202,7 @@
       "B": "disease",
       "C": "growth from feed          ",
       "D": "feeding cost",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "Livestock farming can create    ",
@@ -226,7 +226,7 @@
       "B": "value addition     ",
       "C": "storage",
       "D": "marketi",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Animal health management includes",
@@ -234,7 +234,7 @@
       "B": "vaccination and treatment    ",
       "C": "housing only                 ",
       "D": "breeding only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Livestock farming contributes to  ",
@@ -242,7 +242,7 @@
       "B": "food security       ",
       "C": "pollution only  ",
       "D": "unemployment",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Disease caused by bacteria in cattle is    ",
@@ -258,7 +258,7 @@
       "B": " ticks       ",
       "C": "worms",
       "D": "flies",
-      "answer": "A"
+      "answer": "C"
     },
     {
       "question": "External parasites include   ",
@@ -266,7 +266,7 @@
       "B": "ticks",
       "C": "bacteria",
       "D": "viruses",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Castration is done to    ",
@@ -274,7 +274,7 @@
       "B": "control breeding   ",
       "C": "cause disease     ",
       "D": "reduce growth",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Dehorning prevents  ",
@@ -290,7 +290,7 @@
       "B": "separating young from mother   ",
       "C": "mating",
       "D": "vaccination",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Balanced diet contains   ",
@@ -298,7 +298,7 @@
       "B": "all nutrients    ",
       "C": "water only       ",
       "D": "minerals only",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Silage is  ",
@@ -306,7 +306,7 @@
       "B": "preserved green feed     ",
       "C": "water",
       "D": "grain",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Hay is    ",
@@ -314,7 +314,7 @@
       "B": "dried grass        ",
       "C": "meat",
       "D": "fish",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Livestock business provides    ",
@@ -322,7 +322,7 @@
       "B": "income",
       "C": "poverty",
       "D": "disease",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Rabbits are herbivores because they eat",
@@ -330,7 +330,7 @@
       "B": "plants",
       "C": "fish",
       "D": " insects",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Grass cutter is also known as",
@@ -346,7 +346,7 @@
       "B": "grasses",
       "C": "grains",
       "D": "ish",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Grass cutter farming is profitable due to",
@@ -354,7 +354,7 @@
       "B": "high reproduction",
       "C": "slow growth    ",
       "D": "poor meat",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Housing for pigs is called",
@@ -362,7 +362,7 @@
       "B": "coop",
       "C": "hutch",
       "D": "sty",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "Good farm record helps in     ",
@@ -370,7 +370,7 @@
       "B": "planning",
       "C": "disease spread           ",
       "D": "confusion",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Marketing of livestock involves",
@@ -378,7 +378,7 @@
       "B": "selling animals/products   ",
       "C": "breeding only      ",
       "D": "housing",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "Value addition means    ",
@@ -386,7 +386,7 @@
       "B": "storing only",
       "C": "wasting product    ",
       "D": "improving product quality  ",
-      "answer": "A"
+      "answer": "D"
     },
     {
       "question": "Cooperative societies help farmers to   ",
@@ -394,7 +394,7 @@
       "B": "access loans     ",
       "C": "increase cost      ",
       "D": "reduce",
-      "answer": "A"
+      "answer": "B"
     },
     {
       "question": "One example of livestock product is   ",
@@ -402,7 +402,7 @@
       "B": "milk",
       "C": "sand  ",
       "D": "wood",
-      "answer": "A"
+      "answer": "B"
     }
   ]
 }
