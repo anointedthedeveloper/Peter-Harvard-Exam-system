@@ -2440,17 +2440,19 @@ async function loadOverview() {
 // EXAMS
 async function loadExams() {
   const exams = await api('/api/exams');
+  console.log('Loaded exams:', exams);
   const results = await api('/api/results');
   const rArr = Array.isArray(results) ? results : [];
-  
+
   const examCounts = {};
   rArr.forEach(r => { if (r.examFilename) examCounts[r.examFilename] = (examCounts[r.examFilename] || 0) + 1; });
-  
+
   document.getElementById('examTableWrap').innerHTML = Array.isArray(exams) && exams.length ? `
     <table>
       <thead><tr><th>Exam Name</th><th>Subject</th><th>Class</th><th>Questions</th><th>Taken</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>${exams.map(e => {
         const takenCount = examCounts[e.filename] || 0;
+        console.log(`Exam ${e.filename}: active=${e.active}, teacherEnabled=${e.teacherEnabled}, adminDisabled=${e.adminDisabled}`);
         return `<tr>
           <td><strong>${e.name}</strong></td>
           <td>${e.subject || '—'}</td>
@@ -2472,11 +2474,23 @@ async function loadExams() {
 }
 
 async function toggleExamStatus(filename, active) {
-  await fetch('/api/exam-status/' + encodeURIComponent(filename), {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ active, teacherId: teacherId })
-  });
-  toast(active ? 'Exam activated' : 'Exam deactivated', 'ok');
+  try {
+    const res = await api('/api/exam-status/' + encodeURIComponent(filename), {
+      method: 'POST',
+      body: JSON.stringify({ active, teacherId: teacherId })
+    });
+    console.log('Toggle response:', res);
+    if (res.ok) {
+      toast(active ? 'Exam activated' : 'Exam deactivated', 'ok');
+      // Small delay to ensure file write completes before reloading
+      setTimeout(() => loadExams(), 100);
+    } else {
+      toast('Failed to update exam status: ' + (res.error || 'Unknown error'), 'err');
+    }
+  } catch (e) {
+    console.error('Toggle error:', e);
+    toast('Error updating exam status', 'err');
+  }
 }
 
 function deleteExam(filename, name) {

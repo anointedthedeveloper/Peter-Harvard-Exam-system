@@ -1,5 +1,797 @@
 [
   {
+    "id": 1782770192511.2915,
+    "time": "2026-06-29T21:56:32.511Z",
+    "action": "LOGIN",
+    "actor": "607403",
+    "detail": "student \"ABANG EMMANUELLA BOMBUM\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782770160181.8704,
+    "time": "2026-06-29T21:56:00.181Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: BIOLOGY SSS2",
+    "metadata": {
+      "filename": "BIOLOGY_SSS2.json",
+      "questions": 50
+    }
+  },
+  {
+    "id": 1782770145816.8523,
+    "time": "2026-06-29T21:55:45.816Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782770126010.4746,
+    "time": "2026-06-29T21:55:26.010Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782770050424.0305,
+    "time": "2026-06-29T21:54:10.424Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782770030022.9727,
+    "time": "2026-06-29T21:53:50.022Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782770023160.0642,
+    "time": "2026-06-29T21:53:43.160Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: COMMERCE SS2",
+    "metadata": {
+      "filename": "COMMERCE_SS2.json",
+      "questions": 51
+    }
+  },
+  {
+    "id": 1782770009536.1777,
+    "time": "2026-06-29T21:53:29.536Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769951420.2058,
+    "time": "2026-06-29T21:52:31.420Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769921760.2075,
+    "time": "2026-06-29T21:52:01.760Z",
+    "action": "EXAM_EDIT",
+    "actor": "teacher",
+    "detail": "Edited exam: BIOLOGY SSS2",
+    "metadata": {
+      "filename": "BIOLOGY_SSS2.json",
+      "questions": 50
+    }
+  },
+  {
+    "id": 1782769883983.392,
+    "time": "2026-06-29T21:51:23.983Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769881118.9907,
+    "time": "2026-06-29T21:51:21.118Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769880002.1323,
+    "time": "2026-06-29T21:51:20.002Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769879359.668,
+    "time": "2026-06-29T21:51:19.359Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769878948.355,
+    "time": "2026-06-29T21:51:18.948Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"LIVESTOCK_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "LIVESTOCK_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769877552.1838,
+    "time": "2026-06-29T21:51:17.552Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"MATHEMATICS_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "MATHEMATICS_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769875060.488,
+    "time": "2026-06-29T21:51:15.060Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769873660.635,
+    "time": "2026-06-29T21:51:13.660Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769872982.9465,
+    "time": "2026-06-29T21:51:12.982Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"COMMERCE_SS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "COMMERCE_SS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769872255.2424,
+    "time": "2026-06-29T21:51:12.255Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"COMMERCE_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "COMMERCE_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769871452.3875,
+    "time": "2026-06-29T21:51:11.452Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769870625.7532,
+    "time": "2026-06-29T21:51:10.625Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769865582.8997,
+    "time": "2026-06-29T21:51:05.582Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769860106.149,
+    "time": "2026-06-29T21:51:00.106Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769845143.9453,
+    "time": "2026-06-29T21:50:45.143Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769796389.0378,
+    "time": "2026-06-29T21:49:56.389Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769790840.0642,
+    "time": "2026-06-29T21:49:50.840Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769675610.1875,
+    "time": "2026-06-29T21:47:55.610Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769670168.8867,
+    "time": "2026-06-29T21:47:50.168Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769596611.836,
+    "time": "2026-06-29T21:46:36.611Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"MATHEMATICS_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "MATHEMATICS_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769588903.782,
+    "time": "2026-06-29T21:46:28.904Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769579715.8298,
+    "time": "2026-06-29T21:46:19.715Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769576064.4912,
+    "time": "2026-06-29T21:46:16.064Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769498392.9622,
+    "time": "2026-06-29T21:44:58.392Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"MATHEMATICS_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "MATHEMATICS_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769490256.4746,
+    "time": "2026-06-29T21:44:50.256Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769476029.597,
+    "time": "2026-06-29T21:44:36.029Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769468063.2993,
+    "time": "2026-06-29T21:44:28.063Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769462233.93,
+    "time": "2026-06-29T21:44:22.233Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769353693.198,
+    "time": "2026-06-29T21:42:33.693Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769353484.1228,
+    "time": "2026-06-29T21:42:33.484Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769353286.155,
+    "time": "2026-06-29T21:42:33.286Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769352448.117,
+    "time": "2026-06-29T21:42:32.448Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769350935.0908,
+    "time": "2026-06-29T21:42:30.935Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769331269.678,
+    "time": "2026-06-29T21:42:11.269Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769330457.853,
+    "time": "2026-06-29T21:42:10.457Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769329326.2927,
+    "time": "2026-06-29T21:42:09.326Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769326262.5457,
+    "time": "2026-06-29T21:42:06.262Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769323068.6187,
+    "time": "2026-06-29T21:42:03.068Z",
+    "action": "LOGIN_FAIL",
+    "actor": "collins",
+    "detail": "Failed login attempt for role: teacher",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782769310525.4412,
+    "time": "2026-06-29T21:41:50.525Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769305622.2512,
+    "time": "2026-06-29T21:41:45.622Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769299539.98,
+    "time": "2026-06-29T21:41:39.539Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782769295540.587,
+    "time": "2026-06-29T21:41:35.540Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782769293894.3364,
+    "time": "2026-06-29T21:41:33.894Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782768376305.0261,
+    "time": "2026-06-29T21:26:16.305Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782768351190.5618,
+    "time": "2026-06-29T21:25:51.190Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.2"
+    }
+  },
+  {
+    "id": 1782768327409.6714,
+    "time": "2026-06-29T21:25:27.409Z",
+    "action": "LOGIN",
+    "actor": "607403",
+    "detail": "student \"ABANG EMMANUELLA BOMBUM\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782768255016.0588,
+    "time": "2026-06-29T21:24:15.016Z",
+    "action": "LOGIN",
+    "actor": "113133",
+    "detail": "student \"NNAEKWE MUNACHI GIFT\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "192.168.18.8"
+    }
+  },
+  {
+    "id": 1782768131912.6965,
+    "time": "2026-06-29T21:22:11.912Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"MATHEMATICS_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "MATHEMATICS_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768131344.9648,
+    "time": "2026-06-29T21:22:11.344Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"LIVESTOCK_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "LIVESTOCK_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768130764.611,
+    "time": "2026-06-29T21:22:10.764Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768105283.2686,
+    "time": "2026-06-29T21:21:45.283Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"GEOGRAPHY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "GEOGRAPHY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768104763.795,
+    "time": "2026-06-29T21:21:44.763Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768104070.4045,
+    "time": "2026-06-29T21:21:44.070Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"ECONOMICS_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "ECONOMICS_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768022328.7104,
+    "time": "2026-06-29T21:20:22.328Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768021171.37,
+    "time": "2026-06-29T21:20:21.171Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS2.json\" teacher set to DISABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "teacherEnabled": false
+    }
+  },
+  {
+    "id": 1782768020697.1165,
+    "time": "2026-06-29T21:20:20.697Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768018796.3452,
+    "time": "2026-06-29T21:20:18.796Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"DIGITAL_TECHNOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "DIGITAL_TECHNOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768016773.678,
+    "time": "2026-06-29T21:20:16.773Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"COMMERCE_SS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "COMMERCE_SS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768009262.8223,
+    "time": "2026-06-29T21:20:09.262Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"COMMERCE_SS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "COMMERCE_SS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768008635.5056,
+    "time": "2026-06-29T21:20:08.635Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS2.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS2.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768007968.8772,
+    "time": "2026-06-29T21:20:07.968Z",
+    "action": "EXAM_STATUS_CHANGE",
+    "actor": "teacher",
+    "detail": "Exam \"BIOLOGY_SSS1.json\" teacher set to ENABLED",
+    "metadata": {
+      "filename": "BIOLOGY_SSS1.json",
+      "teacherEnabled": true
+    }
+  },
+  {
+    "id": 1782768000779.844,
+    "time": "2026-06-29T21:20:00.779Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1782691229880.7285,
     "time": "2026-06-29T00:00:29.880Z",
     "action": "LOGIN",

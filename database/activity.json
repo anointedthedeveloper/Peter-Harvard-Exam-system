@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "time": "2026-06-29T21:24:15.030Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:25:27.440Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:25:51.212Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:26:16.315Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:51:24.098Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:52:31.426Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:53:50.026Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:54:10.428Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:55:26.015Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:56:32.513Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  }
+]

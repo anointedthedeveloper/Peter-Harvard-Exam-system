@@ -1,1 +1,38 @@
-[]
+{
+  "ECONOMICS_SSS1.json": {
+    "teacherEnabled": true
+  },
+  "DIGITAL_TECHNOLOGY_SSS2.json": {
+    "teacherEnabled": true
+  },
+  "DIGITAL_TECHNOLOGY_SSS1.json": {
+    "teacherEnabled": true
+  },
+  "COMMERCE_SS2.json": {
+    "teacherEnabled": true
+  },
+  "COMMERCE_SS1.json": {
+    "teacherEnabled": true
+  },
+  "BIOLOGY_SSS2.json": {
+    "teacherEnabled": true
+  },
+  "BIOLOGY_SSS1.json": {
+    "teacherEnabled": true
+  },
+  "MATHEMATICS_SS2.json": {
+    "teacherEnabled": true
+  },
+  "LIVESTOCK_SSS1.json": {
+    "teacherEnabled": true
+  },
+  "GEOGRAPHY_SSS2.json": {
+    "teacherEnabled": true
+  },
+  "GEOGRAPHY_SSS1.json": {
+    "teacherEnabled": true
+  },
+  "ECONOMICS_SSS2.json": {
+    "teacherEnabled": true
+  }
+}

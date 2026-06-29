@@ -1,7 +1,7 @@
 {
   "exam": "BIOLOGY SSS2",
   "subject": "BIOLOGY",
-  "class": "ss2",
+  "class": "SS 2",
   "duration": 60,
   "questions": [
     {
@@ -294,7 +294,7 @@
     },
     {
       "question": "Birth rate increases population   ",
-      "A": true,
+      "A": "true",
       "B": "",
       "C": "Not sure         ",
       "D": "None",
@@ -304,7 +304,7 @@
       "question": "Death rate decreases population   ",
       "A": "",
       "B": "not sure ",
-      "C": true,
+      "C": "true",
       "D": "None",
       "answer": "C"
     },

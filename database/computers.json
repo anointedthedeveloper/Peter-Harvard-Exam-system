@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "ip": "192.168.18.8",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "A-Server",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-06-29T21:24:15.006Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "firstSeen": "2026-06-29T21:24:15.006Z",
+    "lastSeen": "2026-06-29T21:55:26.003Z"
+  },
+  {
+    "ip": "127.0.0.1",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "A-Server",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-06-29T21:25:27.397Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "firstSeen": "2026-06-29T21:25:27.398Z",
+    "lastSeen": "2026-06-29T21:56:32.496Z"
+  },
+  {
+    "ip": "192.168.18.2",
+    "mac": "90:de:80:32:df:71",
+    "hostname": "A-Server",
+    "interface": "WiFi",
+    "platform": "win32",
+    "timestamp": "2026-06-29T21:25:51.172Z",
+    "studentId": "113133",
+    "studentName": "NNAEKWE MUNACHI GIFT",
+    "firstSeen": "2026-06-29T21:25:51.172Z",
+    "lastSeen": "2026-06-29T21:25:51.172Z"
+  }
+]

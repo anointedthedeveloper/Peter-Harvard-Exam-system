@@ -46,8 +46,13 @@ const loginAttempts = new Map(); // IP -> { count, lastAttempt }
 
 // Initialize files
 const files = [RESULTS_FILE, LOGS_FILE, ACTIVITY_FILE, RESETS_FILE, AUDIT_FILE, 
-               EXAM_STATUS_FILE, SESSIONS_FILE, COMPUTERS_FILE, SUBMITTED_EXAMS_FILE];
+               SESSIONS_FILE, COMPUTERS_FILE, SUBMITTED_EXAMS_FILE];
 files.forEach(f => { if (!fs.existsSync(f)) fs.writeFileSync(f, '[]'); });
+
+// exam_status.json should be an object, not an array
+if (!fs.existsSync(EXAM_STATUS_FILE)) {
+    fs.writeFileSync(EXAM_STATUS_FILE, '{}');
+}
 
 // Create initial users
 if (!fs.existsSync(USERS_FILE)) {
@@ -1499,14 +1504,19 @@ const server = http.createServer(async (req, res) => {
             // Handle both old format (true) and new format ({teacherEnabled, adminDisabled})
             const adminDisabled = status.adminDisabled === true;
             const teacherEnabled = status.teacherEnabled === true || status === true;
-            
+
             // Exam is unavailable if admin disabled it OR teacher hasn't enabled it
             if (adminDisabled || !teacherEnabled) return false;
             if (takenExams.includes(f)) return false;
-            
+
             const data = readJSON(path.join(UPLOADS_DIR, f));
-            if (data?.class && studentClass && data.class.toLowerCase() !== studentClass.toLowerCase()) return false;
-            
+            // Use normalizeClassName for consistent class matching
+            if (data?.class && studentClass) {
+                const normalizedExamClass = normalizeClassName(data.class);
+                const normalizedStudentClass = normalizeClassName(studentClass);
+                if (normalizedExamClass && normalizedStudentClass && normalizedExamClass !== normalizedStudentClass) return false;
+            }
+
             return true;
         });
         
@@ -1532,23 +1542,36 @@ const server = http.createServer(async (req, res) => {
     if ((req.method === 'POST' || req.method === 'PATCH') && pathname.startsWith('/api/exam-status/')) {
         const filename = decodeURIComponent(pathname.replace('/api/exam-status/', ''));
         const body = await parseBody(req);
-        const examStatus = readJSON(EXAM_STATUS_FILE) || {};
-        
+        let examStatus = readJSON(EXAM_STATUS_FILE);
+
+        // Handle case where file contains an array instead of object
+        if (Array.isArray(examStatus)) {
+            examStatus = {};
+        } else if (!examStatus) {
+            examStatus = {};
+        }
+
+        console.log(`Toggle exam status: filename=${filename}, body=`, body);
+        console.log(`Current examStatus[${filename}]:`, examStatus[filename]);
+
         // Initialize status object if it doesn't exist
         if (!examStatus[filename]) {
             examStatus[filename] = {};
         }
-        
+
         // Teacher can enable/disable their exams
         if (body.teacherEnabled !== undefined) {
             examStatus[filename].teacherEnabled = body.teacherEnabled === true || body.teacherEnabled === 'true';
         }
-        
+
         // Legacy support for old 'active' field
         if (body.active !== undefined) {
             examStatus[filename].teacherEnabled = body.active === true || body.active === 'true';
         }
-        
+
+        console.log(`After update, examStatus[${filename}]:`, examStatus[filename]);
+        console.log(`Writing to ${EXAM_STATUS_FILE}:`, JSON.stringify(examStatus, null, 2));
+
         writeJSON(EXAM_STATUS_FILE, examStatus);
         sysLog('EXAM_STATUS', `${filename}: teacherEnabled=${examStatus[filename].teacherEnabled}`, body.teacherId || 'teacher');
         auditLog('EXAM_STATUS_CHANGE', body.teacherId || 'teacher', `Exam "${filename}" teacher set to ${examStatus[filename].teacherEnabled ? 'ENABLED' : 'DISABLED'}`, { filename, teacherEnabled: examStatus[filename].teacherEnabled });

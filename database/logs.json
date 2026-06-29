@@ -10,5 +10,431 @@
     "action": "LOGIN",
     "detail": "teacher: teacher (Teacher)",
     "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:00.738Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:07.965Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:08.632Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:09.256Z",
+    "action": "EXAM_STATUS",
+    "detail": "COMMERCE_SS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:16.769Z",
+    "action": "EXAM_STATUS",
+    "detail": "COMMERCE_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:18.792Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:20.691Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:21.168Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS2.json: teacherEnabled=false",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:20:22.323Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:21:44.063Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:21:44.758Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:21:45.279Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:22:10.760Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:22:11.336Z",
+    "action": "EXAM_STATUS",
+    "detail": "LIVESTOCK_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:22:11.910Z",
+    "action": "EXAM_STATUS",
+    "detail": "MATHEMATICS_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:24:15.011Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:25:27.407Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-29T21:25:51.175Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:26:16.300Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:41:33.736Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:41:35.138Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:41:39.533Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:41:45.615Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:41:50.515Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:06.255Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:09.322Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:10.443Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:11.259Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:30.930Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:32.444Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:33.282Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:33.480Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:42:33.690Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:44:22.016Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:44:28.057Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:44:36.022Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:44:50.249Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:44:58.388Z",
+    "action": "EXAM_STATUS",
+    "detail": "MATHEMATICS_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:46:16.057Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:46:19.712Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:46:28.897Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:46:36.608Z",
+    "action": "EXAM_STATUS",
+    "detail": "MATHEMATICS_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:47:50.165Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:47:55.604Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:49:50.837Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:49:56.384Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:50:45.139Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:00.089Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:05.575Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:10.613Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:11.437Z",
+    "action": "EXAM_STATUS",
+    "detail": "DIGITAL_TECHNOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:12.249Z",
+    "action": "EXAM_STATUS",
+    "detail": "COMMERCE_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:12.969Z",
+    "action": "EXAM_STATUS",
+    "detail": "COMMERCE_SS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:13.652Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:15.044Z",
+    "action": "EXAM_STATUS",
+    "detail": "BIOLOGY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:17.544Z",
+    "action": "EXAM_STATUS",
+    "detail": "MATHEMATICS_SS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:18.938Z",
+    "action": "EXAM_STATUS",
+    "detail": "LIVESTOCK_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:19.354Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:19.999Z",
+    "action": "EXAM_STATUS",
+    "detail": "GEOGRAPHY_SSS1.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:21.100Z",
+    "action": "EXAM_STATUS",
+    "detail": "ECONOMICS_SSS2.json: teacherEnabled=true",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:51:23.976Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:52:01.756Z",
+    "action": "EDIT_EXAM",
+    "detail": "Edited exam: BIOLOGY_SSS2.json",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:52:31.415Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:53:29.531Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:53:43.153Z",
+    "action": "EDIT_EXAM",
+    "detail": "Edited exam: COMMERCE_SS2.json",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:53:50.016Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:54:10.419Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:55:26.007Z",
+    "action": "LOGIN",
+    "detail": "student: 113133 (NNAEKWE MUNACHI GIFT)",
+    "actor": "113133"
+  },
+  {
+    "time": "2026-06-29T21:55:45.807Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:56:00.176Z",
+    "action": "EDIT_EXAM",
+    "detail": "Edited exam: BIOLOGY_SSS2.json",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T21:56:32.504Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
   }
 ]
