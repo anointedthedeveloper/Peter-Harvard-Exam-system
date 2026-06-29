@@ -1,0 +1,424 @@
+{
+  "exam": "COMMERCE SS1 EXAM",
+  "subject": "COMMERCE",
+  "class": "ss1",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "Which of the following is the best way to define a career objective?",
+      "A": "A list of all jobs you have had.",
+      "B": "A personal statement defining specific professional goals.",
+      "C": "A request for a specific salary.",
+      "D": "A copy of your job description.",
+      "answer": "B"
+    },
+    {
+      "question": "When researching career opportunities, what should be your primary focus?",
+      "A": "Only the salary offered.",
+      "B": "The company's location.",
+      "C": "Aligning opportunities with your skills, goals, and priorities.",
+      "D": "Finding the easiest job.",
+      "answer": "C"
+    },
+    {
+      "question": "What is the main purpose of a \"career objective\" statement on a resume?",
+      "A": "To tell the employer what you want from them.",
+      "B": "To outline what you intend to achieve and bring to the role.",
+      "C": "To meet formatting requirements.",
+      "D": "To list your education.",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following factors does not typically determine your suitability for a career?",
+      "A": "Experience",
+      "B": "Education",
+      "C": "Natural Talent",
+      "D": "Hobbies.",
+      "answer": "D"
+    },
+    {
+      "question": "What is the most important attribute employers look for in candidates?",
+      "A": "Highest possible qualification",
+      "B": "Motivation/attitude",
+      "C": "Years of experience",
+      "D": "Technical skills",
+      "answer": "B"
+    },
+    {
+      "question": "A voluntary organisation in which individuals, businessmen and traders with common interest pool their resources together to promote the economic and welfare interest of their members is known as:",
+      "A": "Cooperative society",
+      "B": "destructive society",
+      "C": "Secret society",
+      "D": "troublesome society",
+      "answer": "A"
+    },
+    {
+      "question": "Cooperative societies have an objective of;",
+      "A": "causing chaos every where",
+      "B": "Promoting members interests",
+      "C": "Supporting terrorism",
+      "D": "Promoting indiscipline",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a type of cooperative society?",
+      "A": "whole sale corporative society.",
+      "B": "Fraudulent society",
+      "C": "Manipulative society",
+      "D": "embarrassing society",
+      "answer": "A"
+    },
+    {
+      "question": "A corporative society owned and operated by a group of ultimate consumers who pool their resources together to purchase goods and services in large quantities and distribute to members is called;",
+      "A": "consumers corporative society",
+      "B": "Slaves corporative society",
+      "C": "identify society",
+      "D": "None of the above",
+      "answer": "A"
+    },
+    {
+      "question": "A cooperative society formed by existing cooperative societies is known as;",
+      "A": "misterious society",
+      "B": "malade society.",
+      "C": "hidden Society",
+      "D": "multipurpose society",
+      "answer": "D"
+    },
+    {
+      "question": "An association of low income income earners is known as;",
+      "A": "Credit and thrift society",
+      "B": "Choatic society",
+      "C": "troublesome society",
+      "D": "abnormal society",
+      "answer": "A"
+    },
+    {
+      "question": "A society formed by producers of similar products is known as;",
+      "A": "Producer cooperative society",
+      "B": "Juvenile society",
+      "C": "teenagers society",
+      "D": "lazy society",
+      "answer": "A"
+    },
+    {
+      "question": "A contractual organisation formed by many small independent retailers is known as",
+      "A": "Fraudulent society",
+      "B": "Inconsistent society",
+      "C": "Retail cooperative society",
+      "D": "Indigo society",
+      "answer": "C"
+    },
+    {
+      "question": "One advantage of cooperative societies is that they are;",
+      "A": "democratic in nature",
+      "B": "Violent in nature",
+      "C": "destructive",
+      "D": "Wasters",
+      "answer": "A"
+    },
+    {
+      "question": "A large scale business organisation set up, owned and financed by the government of a country mainly to provide services to the members of the public is called;",
+      "A": "public enterprises",
+      "B": "Illegal institution.",
+      "C": "unconstitutional body",
+      "D": "Opposing party",
+      "answer": "A"
+    },
+    {
+      "question": "Public enterprises help in ;",
+      "A": "Providing employment opportunities.",
+      "B": "Providing weapons",
+      "C": "Support terrorism",
+      "D": "Support corruption",
+      "answer": "A"
+    },
+    {
+      "question": "A legal person or entity created by the association of people in accordance with the law for the purpose of a defined objective is known as;",
+      "A": "Company",
+      "B": "Theory",
+      "C": "deception",
+      "D": "Catastrophe",
+      "answer": "A"
+    },
+    {
+      "question": "A company where the liability of the members are unlimited to the amount of capital they contributed is called;",
+      "A": "unlimited company",
+      "B": "unserious company",
+      "C": "terrible company",
+      "D": "misterious company",
+      "answer": "A"
+    },
+    {
+      "question": "An entity that is not formed with the objective of engaging in trading activities is called;",
+      "A": "company limited by guarantee",
+      "B": "reluctant company",
+      "C": "unskillful company",
+      "D": "irregular company",
+      "answer": "A"
+    },
+    {
+      "question": "An association in which the loss on the business is limited to the amount of capital contributed is known as;",
+      "A": "company lited by shares",
+      "B": "rigid company",
+      "C": "cumbersome company",
+      "D": "Mal functioning company",
+      "answer": "A"
+    },
+    {
+      "question": "A company that limits it's membership from 2 to 50, is known as a;",
+      "A": "strict company.",
+      "B": "juvenile company",
+      "C": "indecent company",
+      "D": "private company",
+      "answer": "D"
+    },
+    {
+      "question": "A company that allows the public to subscribe to its shares is referred to as;",
+      "A": "public limited liability company",
+      "B": "fragile company",
+      "C": "unrealistic company",
+      "D": "stingy company",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a source of income to a private company?",
+      "A": "loans and overdrafts",
+      "B": "alms from people",
+      "C": "bribery and corruption",
+      "D": "stealing",
+      "answer": "A"
+    },
+    {
+      "question": "A document used in forming the constitution of a company and defining the objectives and powers with regard to its dealing with the outside world is known as; ",
+      "A": "Memorandum of association",
+      "B": "Utility Association",
+      "C": "Forceful Association",
+      "D": "Uneducated Association",
+      "answer": "A"
+    },
+    {
+      "question": "Private limited liability companies have a benefit of;",
+      "A": "being a legal entity",
+      "B": "being a forum for corruption",
+      "C": "being unnecessary",
+      "D": "being a barrier to business",
+      "answer": "A"
+    },
+    {
+      "question": "An association of traders or producers engaged in the same line of trade is known as;",
+      "A": "Trade association",
+      "B": "fighters associations",
+      "C": "Jobless association",
+      "D": "unemployed association",
+      "answer": "A"
+    },
+    {
+      "question": "The coming together of merchants, manufacturers and business men from various lines of businesses with the aim of representing and protecting their business interests are known as;",
+      "A": "Chamber of commerce",
+      "B": "house of trouble",
+      "C": "terrorists zone",
+      "D": "manipulation club",
+      "answer": "A"
+    },
+    {
+      "question": "A monopolistic type of organisation established originally by producers of similar products for the main purpose of restricting of members in order to keep up the price of their products.",
+      "A": "Cartel",
+      "B": "hotel",
+      "C": "motel",
+      "D": "abattoir",
+      "answer": "A"
+    },
+    {
+      "question": "Cartels are formed for the purpose of;",
+      "A": "keeping the price of their products",
+      "B": "causing societal problems",
+      "C": "encouraging violence",
+      "D": "promoting favoritism",
+      "answer": "A"
+    },
+    {
+      "question": "The chamber of commerce help to ;",
+      "A": "educate members on conditions of trade and industry",
+      "B": "cause disagreement among members",
+      "C": "making much trouble",
+      "D": "manipulating results",
+      "answer": "A"
+    },
+    {
+      "question": "Anything that is generally acceptable as a medium of exchange and in settlement of debt is called;",
+      "A": "cards",
+      "B": "printer",
+      "C": "money",
+      "D": "huddle",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a function of money?",
+      "A": "it's a medium of exchange",
+      "B": "it's a license to crime",
+      "C": "it's a tool for violence",
+      "D": "it's a medium of theft.",
+      "answer": "A"
+    },
+    {
+      "question": "A form of payment which by law, a creditor must accept in settlement of a debt is called;",
+      "A": "legal tender",
+      "B": "illegal behaviour",
+      "C": "illicit actions",
+      "D": "notorious actions",
+      "answer": "A"
+    },
+    {
+      "question": "An advantage of money over commodities is that;",
+      "A": "it is generally acceptable",
+      "B": "it's unnecessary",
+      "C": "it's not useful",
+      "D": "it is useless",
+      "answer": "A"
+    },
+    {
+      "question": "The process of conveying goods and people from one place to another is known as;",
+      "A": "Govenance",
+      "B": "nutrition",
+      "C": "elimination",
+      "D": "transportation",
+      "answer": "D"
+    },
+    {
+      "question": "In commerce, which of the following can be used to convey people and goods from one place to another?",
+      "A": "ship",
+      "B": "factory",
+      "C": "office",
+      "D": "air conditioner",
+      "answer": "A"
+    },
+    {
+      "question": "Which mode of transport is best for carrying heavy and bulky goods over long distances?",
+      "A": "Air transport",
+      "B": "Road transport",
+      "C": "Rail transport",
+      "D": "Water transport",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a function of money? ",
+      "A": "Medium of exchange",
+      "B": "Means of production",
+      "C": "Source of raw materials",
+      "D": "Method of transportation",
+      "answer": "A"
+    },
+    {
+      "question": "The institution that accepts deposits and grants loans is called a:",
+      "A": "Insurance company",
+      "B": "Bank",
+      "C": "Transport company",
+      "D": "Communication agency",
+      "answer": "B"
+    },
+    {
+      "question": "Which of these is a modern means of communication?",
+      "A": "Drum beating",
+      "B": "Smoke signals",
+      "C": "Internet",
+      "D": "Town crier",
+      "answer": "C"
+    },
+    {
+      "question": "The part of commerce that deals with the exchange of goods and services is:",
+      "A": "Production",
+      "B": "Trade",
+      "C": "Banking",
+      "D": "Insurance",
+      "answer": "B"
+    },
+    {
+      "question": "A document issued by a bank to a customer to withdraw money is a:",
+      "A": "Receipt",
+      "B": "Cheque",
+      "C": "Invoice",
+      "D": "Bill",
+      "answer": "B"
+    },
+    {
+      "question": "Sending and receiving messages is the main function of:",
+      "A": "Banking",
+      "B": "Insurance",
+      "C": "Communication",
+      "D": "Advertising",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a benefit of advertising?",
+      "A": "It increases the price of goods",
+      "B": "It creates awareness for new products",
+      "C": "It encourages unnecessary spending",
+      "D": "It reduces competition",
+      "answer": "B"
+    },
+    {
+      "question": "A consumer who is aware of their rights and responsibilities is considered:",
+      "A": "A careless consumer",
+      "B": "An educated consumer",
+      "C": "A wasteful consumer",
+      "D": "An ignorant consumer",
+      "answer": "B"
+    },
+    {
+      "question": "The process of converting raw materials into finished goods is part of:",
+      "A": "Commerce",
+      "B": "Trade",
+      "C": "Production",
+      "D": "Distribution",
+      "answer": "C"
+    },
+    {
+      "question": "Which of these is an example of services rendered ?",
+      "A": "Export of crude oil",
+      "B": "Import of cars",
+      "C": "Tourism services",
+      "D": "Sale of clothes",
+      "answer": "C"
+    },
+    {
+      "question": "Telephones, emails, and social media are all forms of:",
+      "A": "Transportation",
+      "B": "Advertising",
+      "C": "Communication",
+      "D": "Banking",
+      "answer": "C"
+    },
+    {
+      "question": "The main aim of advertising is to:",
+      "A": "Entertain people",
+      "B": "Persuade people to buy products",
+      "C": "Provide news",
+      "D": "Educate the public on health matters",
+      "answer": "B"
+    },
+    {
+      "question": "Consumer rights include the right to safety, the right to be informed, and the right to:",
+      "A": "Spend carelessly",
+      "B": "Choose",
+      "C": "Ignore warnings",
+      "D": "cause problems",
+      "answer": "B"
+    },
+    {
+      "question": "The term 'commerce' primarily deals with:",
+      "A": "Destroying goods",
+      "B": "Extracting fake materials",
+      "C": "The distribution of goods and services",
+      "D": "Farming activities",
+      "answer": "C"
+    },
+    {
+      "question": "Which of these is a modern means of communication? ",
+      "A": "Drum beating",
+      "B": "Smoke signals",
+      "C": "Internet",
+      "D": "Town crier",
+      "answer": "C"
+    }
+  ]
+}
