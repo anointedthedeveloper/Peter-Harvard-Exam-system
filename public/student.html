@@ -913,6 +913,37 @@ input:focus, select:focus {
   color: #1e1e1e; 
   margin-bottom: 32px; 
 }
+
+/* Question Table Styling */
+.question-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.question-table th {
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #1e1e1e;
+  font-size: 14px;
+}
+.question-table td {
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+  color: #1e1e1e;
+  font-size: 14px;
+}
+.question-table tr:first-child td {
+  background: #f8f8f8;
+  font-weight: 600;
+}
 .options-list { display: flex; flex-direction: column; gap: 12px; }
 .opt {
   display: flex;
@@ -2286,7 +2317,17 @@ function renderQuestion() {
   const answered = Object.keys(S.answers).length;
 
   document.getElementById('qNum').innerHTML = `<i class="fa fa-question-circle"></i> QUESTION ${S.current + 1} OF ${total}`;
-  document.getElementById('qText').textContent = q.question;
+  
+  // Render table if present
+  let tableHTML = '';
+  if (q.Table && q.Table.headers && q.Table.data) {
+    tableHTML = '<table class="question-table">';
+    tableHTML += '<tr>' + q.Table.headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+    tableHTML += '<tr>' + q.Table.data.map(d => `<td>${d}</td>`).join('') + '</tr>';
+    tableHTML += '</table>';
+  }
+  
+  document.getElementById('qText').innerHTML = tableHTML + q.question;
 
   const markBtn = document.getElementById('markBtn');
   markBtn.className = 'q-mark-btn' + (S.marked.has(S.current) ? ' marked' : '');

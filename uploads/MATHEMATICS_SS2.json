@@ -1,0 +1,392 @@
+{
+  "exam": "MATHEMATICS SS2",
+  "subject": "MATHEMATICS",
+  "class": "SS 2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "If the equation x² + mx + 11 = 0, find the value of m.",
+      "A": "7",
+      "B": "8",
+      "C": "9",
+      "D": "10",
+      "answer": "D"
+    },
+    {
+      "question": "In how many ways can 3 prefects be chosen out of 8 prefects?",
+      "A": "6",
+      "B": "24",
+      "C": "56",
+      "D": "336",
+      "answer": "C"
+    },
+    {
+      "question": "Use the data below to answer questions 3-8: Find the Standard deviation of the numbers 3, 6, 2, 17 and 5. The mean of the data is:",
+      "A": "8",
+      "B": "9",
+      "C": "6.6",
+      "D": "5",
+      "answer": "C"
+    },
+    {
+      "question": "The median of the given data is:",
+      "A": "17",
+      "B": "5",
+      "C": "3",
+      "D": "2",
+      "answer": "B"
+    },
+    {
+      "question": "What is the mode?",
+      "A": "3",
+      "B": "6",
+      "C": "17",
+      "D": "NONE",
+      "answer": "D"
+    },
+    {
+      "question": "Find the standard deviation of the numbers?",
+      "A": "2.16",
+      "B": "2.00",
+      "C": "2.50",
+      "D": "2.56",
+      "answer": "D"
+    },
+    {
+      "question": "Class intervals: 11-15, 16-20, 21-25, 26-30, 31-35, 36-40. Freq: 8, 12, 15, 27, 20, 18. Find the median.",
+      "A": "51",
+      "B": "50",
+      "C": "52",
+      "D": "70",
+      "answer": "C"
+    },
+    {
+      "question": "In an examination Kofi scored X% in physics, 50% in chemistry and 70% in biology. If the mean score for the 3 subjects was 55%, find X.",
+      "A": "45",
+      "B": "46",
+      "C": "55",
+      "D": "60",
+      "answer": "B"
+    },
+    {
+      "question": "Which of the following is a measure of Central Tendency?",
+      "A": "Range",
+      "B": "Percentile",
+      "C": "Quartile",
+      "D": "Median",
+      "answer": "D"
+    },
+    {
+      "question": "In how many ways can 3 prefects be chosen out of 8 prefects?",
+      "A": "6",
+      "B": "2",
+      "C": "56",
+      "D": "336",
+      "answer": "C"
+    },
+    {
+      "question": "The following are scores obtained by some students in a test: Score: 8, 18, 10, 14, 9, 20. Freq: 7, 1, 2, 4, 5, 9. Find the mode.",
+      "A": "8",
+      "B": "18",
+      "C": "20",
+      "D": "9",
+      "answer": "C"
+    },
+    {
+      "question": "Find x if the mean of the numbers 13, 2x, 0, 5x and 11 is 9.",
+      "A": "3",
+      "B": "0",
+      "C": "13",
+      "D": "11",
+      "answer": "A"
+    },
+    {
+      "question": "A man is four times as old as his son. The difference between their ages is 36 years. Find the sum of their ages.",
+      "A": "72",
+      "B": "60",
+      "C": "48",
+      "D": "40",
+      "answer": "B"
+    },
+    {
+      "question": "What is the range of the distribution 3/4, 5/6, 7/12 and 2/3?",
+      "A": "1/4",
+      "B": "3/4",
+      "C": "2/3",
+      "D": "7/12",
+      "answer": "A"
+    },
+    {
+      "Table": {
+        "headers": ["Age/years", "13", "14", "15", "16", "17"],
+        "data": ["Frequency", "10", "24", "8", "5", "3"]
+      },
+      "question": "The table above shows the age of students in a club. How many students are in the club?",
+      "A": "50",
+      "B": "55",
+      "C": "60",
+      "D": "65",
+      "answer": "A"
+    },
+    {
+      "Table": {
+        "headers": ["Age/years", "13", "14", "15", "16", "17"],
+        "data": ["Frequency", "10", "24", "8", "5", "3"]
+      },
+      "question": "The table above shows the age of students in a club, Find the median age from the table.",
+      "A": "13",
+      "B": "14",
+      "C": "15",
+      "D": "16",
+      "answer": "B"
+    },
+    {
+      "question": "Find the mean of the whole numbers between 5 and 20 inclusive which are divisible by 2 or 3.",
+      "A": "13.2",
+      "B": "12.8",
+      "C": "12.0",
+      "D": "11.2",
+      "answer": "B"
+    },
+    {
+      "question": "Find the sum of the median and the range of these numbers: 6, 2, 4, 3, 8, 4, 2.",
+      "A": "12",
+      "B": "10",
+      "C": "8",
+      "D": "6",
+      "answer": "A"
+    },
+    {
+      "question": "Find the upper quartile of 2, 4, 5, 7, 8, 9, 10.",
+      "A": "10",
+      "B": "9",
+      "C": "8",
+      "D": "7",
+      "answer": "B"
+    },
+    {
+      "question": "The average number of goals scored by a football team in 6 matches is 2.5. How many more goals must the team score in the next match to bring the average to 3?",
+      "A": "4",
+      "B": "5",
+      "C": "6",
+      "D": "7",
+      "answer": "C"
+    },
+    {
+      "question": "Find the mean deviation of 1, 2, 3, 4 and 5.",
+      "A": "1.2",
+      "B": "1.5",
+      "C": "2.0",
+      "D": "3.0",
+      "answer": "A"
+    },
+    {
+      "question": "Calculate the mean of the following ages of 5 children: 3yrs and 4months, 2yrs and 2months, 5yrs and 1month, 1yr and 8months, 2yrs and 9months.",
+      "A": "3yrs",
+      "B": "3yrs and 2months",
+      "C": "4yrs",
+      "D": "4yrs and 3months",
+      "answer": "B"
+    },
+    {
+      "question": "What is the median height (in cm) of ten students having the following heights: 145, 163, 159, 162, 167, 149, 150, 160, 170 and 155.",
+      "A": "149.5cm",
+      "B": "154.5cm",
+      "C": "159.5cm",
+      "D": "164.5cm",
+      "answer": "C"
+    },
+    {
+      "question": "The mean of 4, 8, 6, p and q is 6. Find the mean of p+1 and q-3.",
+      "A": "5",
+      "B": "6",
+      "C": "7",
+      "D": "8",
+      "answer": "A"
+    },
+    {
+      "question": "Calculate the variance of 2, 3, 3, 4, 5, 5, 5, 7, 7 and 9.",
+      "A": "2.2",
+      "B": "3.4",
+      "C": "4.0",
+      "D": "4.2",
+      "answer": "C"
+    },
+    {
+      "question": "Calculate the mean deviation of the data 1, 3, 5, 7, 9, 11.",
+      "A": "3",
+      "B": "2",
+      "C": "-2",
+      "D": "3",
+      "answer": "A"
+    },
+    {
+      "question": "The average age of ten members of a committee is the same as it was four years ago because an old member has replaced by a young member. Find how much younger is the new member to the old member.",
+      "A": "25",
+      "B": "30",
+      "C": "35",
+      "D": "40",
+      "answer": "D"
+    },
+    {
+      "question": "Obtain the range of the following numbers: -1.57, 2.66, 12.08, -3.45, 10.26 and -0.72.",
+      "A": "8.63",
+      "B": "15.53",
+      "C": "-15.53",
+      "D": "-8.63",
+      "answer": "B"
+    },
+    {
+      "question": "Simplify: (3√5 × 4√6)/(2√2 × 3√3).",
+      "A": "√2",
+      "B": "√5",
+      "C": "2√2",
+      "D": "2√5",
+      "answer": "A"
+    },
+    {
+      "question": "If √50 − K√8 = 2/√2, find K.",
+      "A": "-2",
+      "B": "-1",
+      "C": "1",
+      "D": "2",
+      "answer": "C"
+    },
+    {
+      "question": "Simplify: √2(√6 + 2√2) − 2√3.",
+      "A": "4",
+      "B": "√3 + 4",
+      "C": "4√2",
+      "D": "4√3 + 4",
+      "answer": "D"
+    },
+    {
+      "question": "Simplify: √108 + √125 − √75.",
+      "A": "√3 + 5√5",
+      "B": "6√3 − 5√5",
+      "C": "6√3 + √2",
+      "D": "6√3 − √2",
+      "answer": "A"
+    },
+    {
+      "question": "Evaluate: √20 × (√5)^3.",
+      "A": "10",
+      "B": "20",
+      "C": "25",
+      "D": "50",
+      "answer": "D"
+    },
+    {
+      "question": "If K√28 + √63 − √7 = 0, find K.",
+      "A": "-2",
+      "B": "-1",
+      "C": "1",
+      "D": "2",
+      "answer": "A"
+    },
+    {
+      "question": "Simplify: 3√12 + 10√3 − 6/√3.",
+      "A": "7√3",
+      "B": "10√3",
+      "C": "14√3",
+      "D": "18√3",
+      "answer": "C"
+    },
+    {
+      "question": "Given that √128 + √18 − √k = 7√2, find k.",
+      "A": "8",
+      "B": "16",
+      "C": "32",
+      "D": "48",
+      "answer": "B"
+    },
+    {
+      "question": "Simplify: 5/√3 − 3/√2.",
+      "A": "(5√3−3√2)/6",
+      "B": "(15√3−6√2)/6",
+      "C": "(3√2−√3)/6",
+      "D": "(10√3−9√2)/6",
+      "answer": "A"
+    },
+    {
+      "question": "Simplify: 20/(5√28−2√63).",
+      "A": "5√7/7",
+      "B": "5√5/7",
+      "C": "7√5/5",
+      "D": "7√7/5",
+      "answer": "A"
+    },
+    {
+      "question": "Simplify: 10/√32.",
+      "A": "5√2/4",
+      "B": "4√2/5",
+      "C": "5√2/16",
+      "D": "16√2/5",
+      "answer": "A"
+    },
+    {
+      "question": "Simplify: (4√18)/√8.",
+      "A": "2",
+      "B": "3",
+      "C": "6",
+      "D": "12",
+      "answer": "C"
+    },
+    {
+      "question": "Evaluate: 2√28 − 3√50 + √72.",
+      "A": "4√7−21√2",
+      "B": "4√7−11√2",
+      "C": "4√7−9√2",
+      "D": "4√7+√2",
+      "answer": "B"
+    },
+    {
+      "question": "If 2^a=√64 and b/a=3, evaluate a²+b².",
+      "A": "250",
+      "B": "160",
+      "C": "90",
+      "D": "48",
+      "answer": "C"
+    },
+    {
+      "question": "Given that (√3+√5)/√5 = x + y√15, find x+y.",
+      "A": "1⅔",
+      "B": "1⅖",
+      "C": "1⅕",
+      "D": "1/5",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is not a rational number?",
+      "A": "-5",
+      "B": "√4",
+      "C": "3¾",
+      "D": "√90",
+      "answer": "D"
+    },
+    {
+      "question": "Simplify: 2√7 − 14/√7 + 7/√21.",
+      "A": "√21/21",
+      "B": "7√21/3",
+      "C": "√21/3",
+      "D": "3√21",
+      "answer": "C"
+    },
+    {
+      "question": "If √24 + √96 − √600 = y√6, find y.",
+      "A": "4",
+      "B": "2",
+      "C": "-2",
+      "D": "-4",
+      "answer": "C"
+    },
+    {
+      "question": "Simplify: 3√12 + 10√3 − 6/√3.",
+      "A": "14√3",
+      "B": "18√3",
+      "C": "10√3",
+      "D": "7√3",
+      "answer": "C"
+    }
+  ]
+}

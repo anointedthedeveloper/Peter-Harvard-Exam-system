@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-06-28T23:16:17.123Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  },
+  {
+    "time": "2026-06-29T00:00:29.870Z",
+    "action": "LOGIN",
+    "detail": "teacher: teacher (Teacher)",
+    "actor": "teacher"
+  }
+]

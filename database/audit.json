@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1782691229880.7285,
+    "time": "2026-06-29T00:00:29.880Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
+    "id": 1782688577137.8164,
+    "time": "2026-06-28T23:16:17.137Z",
+    "action": "LOGIN",
+    "actor": "teacher",
+    "detail": "teacher \"Teacher\" logged in",
+    "metadata": {
+      "role": "teacher",
+      "ip": "127.0.0.1"
+    }
+  }
+]
