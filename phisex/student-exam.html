@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Exam Room – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Exam">
+<style>
+.screen { display: flex; min-height: 100vh; }
+#s-exam { flex-direction: column; background: #f8f8f8; }
+
+.exam-topbar {
+  background: white;
+  border-bottom: 2px solid #f0f0f0;
+  padding: 0 32px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.et-left { display: flex; flex-direction: column; }
+.et-examname { 
+  font-size: 18px; 
+  font-weight: 700; 
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.et-examname i {
+  color: #dc2626;
+  font-size: 16px;
+}
+.et-student { 
+  font-size: 13px; 
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.et-student i {
+  color: #dc2626;
+  font-size: 12px;
+}
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+.timer i {
+  color: #dc2626;
+  font-size: 20px;
+}
+.timer.warn { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
+.timer.danger { border-color: #dc2626; color: #dc2626; background: #fef2f2; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.8} }
+.et-right { display: flex; align-items: center; gap: 16px; }
+.violation-badge {
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.violation-badge i {
+  color: #dc2626;
+}
+.violation-badge.warn { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
+
+.exam-layout { display: flex; flex: 1; overflow: hidden; }
+
+/* Question nav sidebar */
+.q-sidebar {
+  width: 260px;
+  background: white;
+  border-right: 2px solid #f0f0f0;
+  padding: 24px 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.qs-label { 
+  font-size: 13px; 
+  font-weight: 600; 
+  color: #666; 
+  letter-spacing: 0.5px; 
+  text-transform: uppercase; 
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.qs-label i {
+  color: #dc2626;
+  font-size: 12px;
+}
+.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
+.qb {
+  height: 44px;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qb:hover { border-color: #dc2626; color: #dc2626; }
+.qb.answered { 
+  background: #1e1e1e;
+  border-color: #1e1e1e;
+  color: white;
+}
+.qb.marked { 
+  background: white;
+  border-color: #dc2626;
+  color: #dc2626;
+}
+.qb.current { 
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
+  font-weight: 700;
+}
+.sidebar-legend { display: flex; flex-direction: column; gap: 8px; }
+.leg-item { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  font-size: 12px; 
+  color: #666;
+}
+.leg-dot { 
+  width: 16px; 
+  height: 16px; 
+  border-radius: 4px; 
+  border: 2px solid #e0e0e0;
+  flex-shrink: 0; 
+}
+.leg-dot.answered { background: #1e1e1e; border-color: #1e1e1e; }
+.leg-dot.marked { background: white; border-color: #dc2626; }
+.leg-dot.current { background: #fef2f2; border-color: #dc2626; }
+.progress-bar-wrap { margin-bottom: 20px; }
+.progress-bar-track { 
+  background: #f0f0f0; 
+  border-radius: 4px; 
+  height: 8px; 
+  overflow: hidden; 
+}
+.progress-bar-fill { 
+  height: 100%; 
+  background: #dc2626; 
+  border-radius: 4px; 
+  transition: width 0.3s ease; 
+}
+.progress-text { 
+  font-size: 13px; 
+  color: #666; 
+  margin-bottom: 8px; 
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.progress-text i {
+  color: #dc2626;
+  font-size: 12px;
+}
+
+/* Main exam area */
+.exam-main { flex: 1; overflow-y: auto; padding: 32px; }
+.question-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.q-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.q-num { 
+  font-size: 14px; 
+  font-weight: 600; 
+  color: #666; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.q-num i {
+  color: #dc2626;
+}
+.q-mark-btn {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 40px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.q-mark-btn i {
+  color: #dc2626;
+  font-size: 12px;
+}
+.q-mark-btn.marked { 
+  border-color: #dc2626; 
+  color: #dc2626; 
+  background: #fef2f2;
+}
+.q-mark-btn:hover { 
+  border-color: #dc2626;
+  transform: translateY(-1px);
+}
+.q-text { 
+  font-size: 20px; 
+  font-weight: 500; 
+  line-height: 1.7; 
+  color: #1e1e1e; 
+  margin-bottom: 32px; 
+}
+
+/* Question Table Styling */
+.question-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.question-table th {
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #1e1e1e;
+  font-size: 14px;
+}
+.question-table td {
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+  color: #1e1e1e;
+  font-size: 14px;
+}
+.question-table tr:first-child td {
+  background: #f8f8f8;
+  font-weight: 600;
+}
+.options-list { display: flex; flex-direction: column; gap: 12px; }
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.opt:hover { 
+  border-color: #dc2626; 
+  background: #fef2f2;
+  transform: translateX(4px);
+}
+.opt.selected { 
+  border-color: #1e1e1e; 
+  background: #f8f8f8;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.opt-key {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  flex-shrink: 0;
+  background: white;
+}
+.opt.selected .opt-key { 
+  background: #1e1e1e; 
+  border-color: #1e1e1e; 
+  color: white; 
+}
+.opt-text { font-size: 16px; color: #1e1e1e; line-height: 1.6; }
+
+.exam-controls {
+  max-width: 800px;
+  margin: 24px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.btn-nav {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-nav i {
+  font-size: 12px;
+  color: #dc2626;
+}
+.btn-nav:hover { 
+  border-color: #dc2626; 
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.1);
+}
+.btn-nav:disabled { 
+  opacity: 0.4; 
+  cursor: not-allowed; 
+  transform: none;
+  border-color: #e0e0e0;
+}
+.btn-submit-exam {
+  background: #1e1e1e;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.btn-submit-exam i {
+  font-size: 14px;
+}
+.btn-submit-exam:hover { 
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
+}
+
+/* TAB WARNING BAR */
+.tab-warning-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #dc2626;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  z-index: 10000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+.tab-warning-bar i {
+  margin: 0 8px;
+}
+.tab-warning-bar.show { transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .q-sidebar { width: 200px; min-width: 160px; }
+  .exam-main { padding: 20px; }
+  .question-card { padding: 24px; }
+  .q-text { font-size: 18px; }
+  .timer { font-size: 22px; padding: 8px 16px; }
+}
+@media (max-width: 560px) {
+  .q-sidebar { display: none; }
+  .exam-topbar { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text"><i class="fa fa-spinner"></i> <span id="loaderText">Loading…</span></div>
+</div>
+
+<!-- TAB WARNING BAR -->
+<div class="tab-warning-bar" id="tabWarningBar">
+  <i class="fa fa-exclamation-triangle"></i> <span id="tabWarningText">WARNING: You left the exam tab! <strong>If you leave again, your exam will be submitted immediately!</strong></span>
+</div>
+
+<!-- EXAM ROOM SCREEN -->
+<div class="screen active" id="s-exam">
+  <div class="exam-topbar">
+    <div class="et-left">
+      <div class="et-examname"><i class="fa fa-file-text"></i> <span id="etExamName">Exam</span></div>
+      <div class="et-student"><i class="fa fa-user"></i> <span id="etStudent">Student</span></div>
+    </div>
+    <div class="timer" id="timer"><i class="fa fa-hourglass-half"></i> <span>00:00</span></div>
+    <div class="et-right">
+      <div class="violation-badge" id="violBadge"><i class="fa fa-exclamation-triangle"></i> <span>0</span></div>
+      <div class="net-indicator" id="netIndicator2">
+        <i class="fa fa-wifi" id="netIcon2"></i>
+        <span id="netLabel2">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-layout">
+    <!-- Sidebar -->
+    <div class="q-sidebar">
+      <div class="progress-text"><i class="fa fa-pie-chart"></i> <span id="progressText">0 of 0 answered</span></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="progFill" style="width:0%"></div></div>
+      </div>
+      <div class="qs-label"><i class="fa fa-th-large"></i> Questions</div>
+      <div class="q-grid" id="qGrid"></div>
+      <div class="sidebar-legend">
+        <div class="leg-item"><div class="leg-dot current"></div> Current</div>
+        <div class="leg-item"><div class="leg-dot answered"></div> Answered</div>
+        <div class="leg-item"><div class="leg-dot marked"></div> Marked</div>
+        <div class="leg-item"><div class="leg-dot" style="background:white;"></div> Unanswered</div>
+      </div>
+      <button class="btn-submit-exam" id="btnSubmitSidebar" onclick="confirmSubmit()" style="opacity:0.4;pointer-events:none;">
+        <i class="fa fa-upload"></i> Submit Exam
+      </button>
+      <div class="submit-lock-info" id="submitLockInfo" style="font-size:12px;color:#666;text-align:center;margin-top:8px;">Answer 60% to unlock</div>
+    </div>
+
+    <!-- Main -->
+    <div class="exam-main">
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-num"><i class="fa fa-question-circle"></i> <span id="qNum">QUESTION 1 OF 1</span></div>
+          <button class="q-mark-btn" id="markBtn" onclick="toggleMark()">
+            <i class="fa fa-flag"></i> Mark for Review
+          </button>
+        </div>
+        <div class="q-text" id="qText"></div>
+        <div class="options-list" id="optsList"></div>
+      </div>
+      <div class="exam-controls">
+        <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">
+          <i class="fa fa-arrow-left"></i> Previous
+        </button>
+        <div style="font-size:12px;color:#666;display:flex;gap:16px;">
+          <span><i class="fa fa-keyboard-o"></i> P prev · N next</span>
+          <span><i class="fa fa-font"></i> A B C D select</span>
+        </div>
+        <button class="btn-nav" id="btnNext" onclick="navigate(1)">
+          Next <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Submit Confirm -->
+<div class="modal-overlay" id="modalSubmit">
+  <div class="modal">
+    <div class="modal-header">
+      <i class="fa fa-upload"></i>
+      <h3>Submit Exam?</h3>
+      <p id="modalSubmitMsg">You are about to submit your exam. This action cannot be undone.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions">
+        <button onclick="closeModal('modalSubmit')">Cancel</button>
+        <button class="primary" onclick="doSubmit()">Submit Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Tab Warning -->
+<div class="modal-overlay" id="modalTabWarn">
+  <div class="modal danger-modal">
+    <div class="modal-header">
+      <i class="fa fa-exclamation-triangle"></i>
+      <h3><i class="fa fa-warning"></i> TAB VIOLATION WARNING</h3>
+      <p><strong>You have left or are attempting to leave the exam tab!</strong></p>
+      <p style="margin-top:12px;color:#dc2626;font-weight:700;">If you leave or switch tabs again, your exam will be AUTOMATICALLY SUBMITTED.</p>
+      <p style="margin-top:8px;font-size:13px;color:#555;">Stay on this tab to continue your exam safely.</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions">
+        <button class="primary" onclick="closeModal('modalTabWarn')">Stay &amp; Continue Exam</button>
+        <button class="danger" onclick="closeModal('modalTabWarn');doSubmit()">Submit Exam Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/common.js"></script>
+<script src="js/student.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  
+  if (!hasSession) {
+    window.location.href = 'student-login.html';
+    return;
+  }
+  
+  // Load exam info from localStorage
+  S.examFile = localStorage.getItem('examFile');
+  S.examName = localStorage.getItem('examName');
+  
+  if (!S.examFile) {
+    window.location.href = 'student-dashboard.html';
+    return;
+  }
+  
+  beginExam();
+});
+</script>
+</body>
+</html>

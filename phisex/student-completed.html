@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>All Exams Completed – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Exam">
+<style>
+.screen { display: flex; min-height: 100vh; }
+#s-completed {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  padding: 24px;
+}
+.completed-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.completed-header {
+  background: #1e1e1e;
+  padding: 48px 40px 40px;
+  color: white;
+}
+.check-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.2);
+  border: 3px solid #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.check-circle i {
+  font-size: 40px;
+  color: #dc2626;
+}
+.completed-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+.completed-header p { font-size: 16px; opacity: 0.9; }
+.completed-body { padding: 40px; }
+.completed-stats {
+  background: #f8f8f8;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.completed-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 2px solid #f0f0f0;
+}
+.completed-stat-item:last-child { border-bottom: none; }
+.completed-stat-label { 
+  font-size: 14px; 
+  color: #666; 
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.completed-stat-label i {
+  color: #dc2626;
+}
+.completed-stat-value { 
+  font-size: 16px; 
+  color: #1e1e1e; 
+  font-weight: 700; 
+}
+.btn-back-home {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-back-home i {
+  font-size: 14px;
+}
+.btn-back-home:hover { 
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
+}
+.completed-footer {
+  padding: 20px 40px;
+  background: #f8f8f8;
+  border-top: 2px solid #f0f0f0;
+  font-size: 13px;
+  color: #666;
+}
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text"><i class="fa fa-spinner"></i> <span id="loaderText">Loading…</span></div>
+</div>
+
+<!-- ALL EXAMS COMPLETED SCREEN -->
+<div class="screen active" id="s-completed">
+  <div class="completed-card">
+    <div class="completed-header">
+      <div class="check-circle">
+        <i class="fa fa-smile-o"></i>
+      </div>
+      <h2>All Exams Completed!</h2>
+      <p>You've finished all available exams</p>
+    </div>
+    <div class="completed-body">
+      <div class="completed-stats">
+        <div class="completed-stat-item">
+          <span class="completed-stat-label"><i class="fa fa-clipboard"></i> Total Exams Taken</span>
+          <span class="completed-stat-value" id="completedTotal">0</span>
+        </div>
+        <div class="completed-stat-item">
+          <span class="completed-stat-label"><i class="fa fa-line-chart"></i> Average Score</span>
+          <span class="completed-stat-value" id="completedAvg">0%</span>
+        </div>
+      </div>
+      <button class="btn-back-home" onclick="doLogout()">
+        <i class="fa fa-sign-out"></i> Sign Out
+      </button>
+    </div>
+    <div class="completed-footer">
+      <div>Thank you for participating!</div>
+      <div class="dev-tag"><i class="fa fa-code"></i> Developed by <span>anointedthedeveloper</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/common.js"></script>
+<script src="js/student.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  
+  if (!hasSession) {
+    window.location.href = 'student-login.html';
+    return;
+  }
+  
+  await showCompletionScreen();
+  
+  // Auto logout after 10 seconds
+  setTimeout(() => {
+    doLogout();
+  }, 10000);
+});
+</script>
+</body>
+</html>

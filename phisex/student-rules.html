@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Exam Rules – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Exam">
+<style>
+.screen { display: flex; min-height: 100vh; }
+#s-rules { flex-direction: column; align-items: center; justify-content: center; background: #f8f8f8; padding: 24px; }
+
+.rules-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.rules-header {
+  background: #1e1e1e;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+.rules-header i {
+  font-size: 48px;
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+.rules-header h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.rules-header p { font-size: 16px; opacity: 0.8; }
+.rules-body { padding: 32px 40px; }
+.rules-exam-info {
+  background: #f8f8f8;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-around;
+}
+.rei { text-align: center; }
+.rei .val { 
+  font-size: 28px; 
+  font-weight: 700; 
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.rei .val i {
+  color: #dc2626;
+  font-size: 20px;
+}
+.rei .lbl { 
+  font-size: 13px; 
+  color: #666; 
+  font-weight: 600; 
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rules-list { list-style: none; margin-bottom: 32px; }
+.rules-list li {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 2px solid #f0f0f0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1e1e1e;
+  align-items: flex-start;
+}
+.rules-list li:last-child { border-bottom: none; }
+.rules-list li i {
+  color: #dc2626;
+  font-size: 16px;
+  margin-top: 3px;
+  min-width: 20px;
+}
+.rule-highlight {
+  background: #fef2f2;
+  color: #dc2626;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+.rules-footer { text-align: center; padding: 0 40px 40px; }
+.btn-begin {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-begin i {
+  font-size: 16px;
+}
+.btn-begin:hover { 
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
+}
+.btn-back-rules {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-family: inherit;
+  text-decoration: underline;
+  transition: all 0.2s ease;
+}
+.btn-back-rules:hover { color: #dc2626; }
+
+@media (max-width: 768px) {
+  .rules-card { margin: 0 12px; }
+  .rules-body { padding: 24px; }
+  .rules-footer { padding: 0 24px 24px; }
+}
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text"><i class="fa fa-spinner"></i> <span id="loaderText">Loading…</span></div>
+</div>
+
+<!-- RULES SCREEN -->
+<div class="screen active" id="s-rules">
+  <div class="rules-card">
+    <div class="rules-header">
+      <i class="fa fa-file-text-o"></i>
+      <h2>Exam Instructions</h2>
+      <p id="rulesExamName">Please read carefully before starting</p>
+    </div>
+    <div class="rules-body">
+      <div class="rules-exam-info">
+        <div class="rei">
+          <div class="val"><i class="fa fa-question-circle"></i> <span id="rulesQcount">—</span></div>
+          <div class="lbl">Questions</div>
+        </div>
+        <div class="rei">
+          <div class="val"><i class="fa fa-clock-o"></i> <span id="rulesDuration">—</span></div>
+          <div class="lbl">Minutes</div>
+        </div>
+        <div class="rei">
+          <div class="val"><i class="fa fa-check-square-o"></i> MCQ</div>
+          <div class="lbl">Type</div>
+        </div>
+      </div>
+      <ul class="rules-list">
+        <li><i class="fa fa-wifi"></i> Ensure you are connected to the school network before starting.</li>
+        <li><i class="fa fa-eye"></i> Read each question carefully before selecting your answer.</li>
+        <li><i class="fa fa-flag"></i> Use the Mark for Review button to flag questions.</li>
+        <li><i class="fa fa-exclamation-triangle" style="color:#dc2626;"></i> <strong>IMPORTANT:</strong> Do NOT switch tabs or leave this window! <span class="rule-highlight">Auto-submit on tab switch</span></li>
+        <li><i class="fa fa-ban" style="color:#dc2626;"></i> If you leave this tab, your exam will be <strong>SUBMITTED IMMEDIATELY</strong>.</li>
+        <li><i class="fa fa-mouse-pointer"></i> Copying, right-clicking, and keyboard shortcuts are disabled.</li>
+        <li><i class="fa fa-hourglass-end"></i> When the timer reaches zero, your exam will be auto-submitted.</li>
+      </ul>
+    </div>
+    <div class="rules-footer">
+      <button class="btn-begin" onclick="beginExam()">
+        <i class="fa fa-play"></i> I Understand — Start Exam
+      </button>
+      <button class="btn-back-rules" onclick="backToSelect()">
+        <i class="fa fa-arrow-left"></i> Choose a different exam
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/common.js"></script>
+<script src="js/student.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  
+  if (!hasSession) {
+    window.location.href = 'student-login.html';
+    return;
+  }
+  
+  // Load exam info from localStorage
+  S.examFile = localStorage.getItem('examFile');
+  S.examName = localStorage.getItem('examName');
+  const qcount = localStorage.getItem('examQcount');
+  const duration = localStorage.getItem('examDuration');
+  
+  document.getElementById('rulesExamName').textContent = S.examName || 'Exam';
+  document.getElementById('rulesQcount').textContent = qcount || '—';
+  document.getElementById('rulesDuration').textContent = duration || '—';
+});
+</script>
+</body>
+</html>

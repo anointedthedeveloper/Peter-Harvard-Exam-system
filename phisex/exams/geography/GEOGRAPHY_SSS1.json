@@ -1,0 +1,408 @@
+{
+  "exam": "GEOGRAPHY SSS1",
+  "subject": "GEOGRAPHY",
+  "class": "SSS2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "which mode of transportation is most suitable for carrying bulky goods over long distances at relatively low cost? ",
+      "A": "air transport",
+      "B": "road transport",
+      "C": "rail transport",
+      "D": "pipeline transport",
+      "answer": "A"
+    },
+    {
+      "question": "which meansof transport is generally the fastest for international travel?",
+      "A": "water transport",
+      "B": "rail transport",
+      "C": "air transport",
+      "D": "road transport",
+      "answer": "A"
+    },
+    {
+      "question": "pipelines are mainly used for transporting:",
+      "A": "passengers",
+      "B": "crude oil and natural gas",
+      "C": "",
+      "D": "manufactured goods",
+      "answer": "A"
+    },
+    {
+      "question": "A seaport is primarily used for:",
+      "A": "Air travel",
+      "B": "water transportation",
+      "C": "railway service",
+      "D": "pipeline distribution",
+      "answer": "A"
+    },
+    {
+      "question": "which of the following is an advantage of road transport?",
+      "A": "it cannot reach rural areas",
+      "B": "it provides door- to- door services",
+      "C": "it is always cheaper than rail transport",
+      "D": "it depends entirely on waterways",
+      "answer": "A"
+    },
+    {
+      "question": "The movement of goods and people from one place to another is known as:",
+      "A": "Communication",
+      "B": "Transportation",
+      "C": "Navigation",
+      "D": "Commerce",
+      "answer": "A"
+    },
+    {
+      "question": "which factor greatly influences the development of transportation?",
+      "A": "Climate only",
+      "B": "Relief and topography",
+      "C": "Population alone ",
+      "D": "Language",
+      "answer": "A"
+    },
+    {
+      "question": "Industries that convert raw materials into finished goods are known as:",
+      "A": "Extractive industries",
+      "B": "Manufacturing industries",
+      "C": "Commercial industries",
+      "D": "Tourism industries",
+      "answer": "A"
+    },
+    {
+      "question": "Mining is an example of :",
+      "A": "Manufacturing industry",
+      "B": "Extractive industry",
+      "C": "Construction industry",
+      "D": "Service industry",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a raw material for the textile industry?",
+      "A": "Coal ",
+      "B": "Cotton",
+      "C": "Limestone",
+      "D": "iron ore",
+      "answer": "A"
+    },
+    {
+      "question": "One major factor influencing the location of industries is: ",
+      "A": "Availability of raw materials",
+      "B": "National anthem",
+      "C": "Time zone",
+      "D": "Ocean tides only",
+      "answer": "A"
+    },
+    {
+      "question": "Which transport system is most affected by traffic congestion?",
+      "A": "Air transport",
+      "B": "Rail transport",
+      "C": "Road transport",
+      "D": "Pipeline transport",
+      "answer": "A"
+    },
+    {
+      "question": "The construction of railways mainly encourages:",
+      "A": "Faster movement of heavy goods",
+      "B": "increased rainfall",
+      "C": "Ocean currents",
+      "D": "Desert formation",
+      "answer": "A"
+    },
+    {
+      "question": "Which industry is directly involved in processing crude oil into petrol and diesel?",
+      "A": "Textile industry",
+      "B": "Food processing industry",
+      "C": "Petroleum refining industry",
+      "D": "Timber industry",
+      "answer": "A"
+    },
+    {
+      "question": "Which mode of transportation is most suitable for transporting petroleum products over land continuously? ",
+      "A": "Pipeline transport",
+      "B": "Bicycle transport",
+      "C": "Rail transport",
+      "D": "Air transport",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a disadvantage of air transport?",
+      "A": "It is slow",
+      "B": "It is relatively expensive",
+      "C": "It cannot cross mountains",
+      "D": "It cannot be used internationally",
+      "answer": "A"
+    },
+    {
+      "question": "Industries provide economic benefits mainly by:",
+      "A": "Reducing employment",
+      "B": "Creating jobs and producing goods",
+      "C": "Preventing trade",
+      "D": "Discouraging innovation",
+      "answer": "A"
+    },
+    {
+      "question": "Which source of energy is commonly used in many industries?",
+      "A": "Electricity",
+      "B": "Chalk",
+      "C": "Sand",
+      "D": "Rainwater",
+      "answer": "A"
+    },
+    {
+      "question": "A country with an efficient transportation network is more likely to:",
+      "A": "Experience reduced trade",
+      "B": "Facilitate economic development ",
+      "C": "Eliminate industrial activities",
+      "D": "Stop population growth",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following best describes an industrial region?",
+      "A": "An area where only farming takes place",
+      "B": "An area with a concentration of manufacturing and processing activities",
+      "C": "An area reserved only for housing",
+      "D": "An area with no economic activity",
+      "answer": "A"
+    },
+    {
+      "question": "What does GIS stand for?",
+      "A": "Global Information Service ",
+      "B": "Geographic Information System",
+      "C": "General Information Service ",
+      "D": "Geographical Internet Service",
+      "answer": "A"
+    },
+    {
+      "question": "A Geographic Information System  ( GIS) is mainly used to:",
+      "A": "Repair computers ",
+      "B": "Store, analyze, and display spatial data",
+      "C": "Manufacture maps only",
+      "D": "Predict eartquakes only",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a major component of GIS?",
+      "A": "Software",
+      "B": "Television",
+      "C": "Radio",
+      "D": "Calculator",
+      "answer": "A"
+    },
+    {
+      "question": "Which GIS component refers to the physical equipment used to run the system?",
+      "A": "Data",
+      "B": "Hardware",
+      "C": "People",
+      "D": "Procedures",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is not a component of GIS?",
+      "A": "Hardware",
+      "B": "Software",
+      "C": "Data",
+      "D": "Refrigerator",
+      "answer": "A"
+    },
+    {
+      "question": "The information collected and stored in a GIS is known as:",
+      "A": "Programs",
+      "B": "Data",
+      "C": "Devices",
+      "D": "Networks",
+      "answer": "A"
+    },
+    {
+      "question": "Who uses GIS to collect, manage, and interpret geographic information?",
+      "A": "People (users)",
+      "B": "Cars",
+      "C": "Animals",
+      "D": "Satellites only",
+      "answer": "A"
+    },
+    {
+      "question": "Which component of GIS includes the rules and methods for collecting and analyzing data?",
+      "A": "Procedures",
+      "B": "Buildings",
+      "C": "Roads",
+      "D": "Electricity",
+      "answer": "A"
+    },
+    {
+      "question": "GIS helps users to make decisions by:",
+      "A": "Destroying maps",
+      "B": "Providing spatial analysis and visualization",
+      "C": "Replacing satellites",
+      "D": "Printing books only",
+      "answer": "A"
+    },
+    {
+      "question": "An example of GIS application is:",
+      "A": "Planning road networks",
+      "B": "Cooking food",
+      "C": "Playing football",
+      "D": "Writing novels",
+      "answer": "A"
+    },
+    {
+      "question": "The wearing away of the Earth's surface by natural agents is called:",
+      "A": "Deposition ",
+      "B": "Erosion",
+      "C": "Folding",
+      "D": "Volcanism",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is an external process that shapes the Earth's surface?",
+      "A": "Earthquake",
+      "B": "Volcanic eruption",
+      "C": "Weathering",
+      "D": "Plate movement",
+      "answer": "A"
+    },
+    {
+      "question": "The breakdown of rocks without movement is known as:",
+      "A": "Transportation",
+      "B": "Deposition ",
+      "C": "Weathering",
+      "D": "Sedimentation",
+      "answer": "A"
+    },
+    {
+      "question": "Which agents of erosion is most active in desert regions?",
+      "A": "Rivers",
+      "B": "Glaciers ",
+      "C": "Wind",
+      "D": "Ocean waves",
+      "answer": "A"
+    },
+    {
+      "question": "The process by which wind picks up and carries loose particles is called:",
+      "A": "Evaporation",
+      "B": "Deflation",
+      "C": "Condensation",
+      "D": "Oxidation",
+      "answer": "A"
+    },
+    {
+      "question": "Sand particles carried by wind can wear away rocks through:",
+      "A": "Hydraulic action",
+      "B": "Abrasion",
+      "C": "Solution",
+      "D": "Sublimation",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following landforms is mainly formed by wind deposition?",
+      "A": "Delta",
+      "B": "Sand dune",
+      "C": "Waterfall",
+      "D": "Gorge",
+      "answer": "A"
+    },
+    {
+      "question": "A mushroom rock is formed mainly formed by wind deposition?",
+      "A": "River erosion ",
+      "B": "Wind abrasion",
+      "C": "Glacial deposition",
+      "D": "Marine action",
+      "answer": "A"
+    },
+    {
+      "question": "Loess is best described as:",
+      "A": "Coarse gravel deposited by rivers",
+      "B": "Fine dust deposited by wind",
+      "C": "Ice deposited by glaciers",
+      "D": "Mud deposited by oceans",
+      "answer": "A"
+    },
+    {
+      "question": "The movement of weathered materials downslope under gravity is known as:",
+      "A": "Mass wasting",
+      "B": "Condensation",
+      "C": "Evaporation",
+      "D": "Infiltration",
+      "answer": "A"
+    },
+    {
+      "question": "A glacier is:",
+      "A": "A fast-flowing river",
+      "B": "A large mass of moving ice",
+      "C": "An underground stream",
+      "D": "A frozen lake only",
+      "answer": "A"
+    },
+    {
+      "question": "Glaciers are commonly found in:",
+      "A": "Tropical rainforests",
+      "B": "Hot deserts",
+      "C": "Polar  and high mountain regions",
+      "D": "Coastal plains",
+      "answer": "A"
+    },
+    {
+      "question": "Which process involves glaciers carrying rock materials from one place to another?",
+      "A": "Transportation",
+      "B": "Weathering",
+      "C": "Condensation",
+      "D": "Evaporation",
+      "answer": "A"
+    },
+    {
+      "question": "A U-shaped valley is a landform typically created by:",
+      "A": "Rivers",
+      "B": "Ocean waves",
+      "C": "Wind",
+      "D": "Glaciers",
+      "answer": "A"
+    },
+    {
+      "question": "A bowl-shaped hollow formed by glacial erosion is called a:",
+      "A": "Delta",
+      "B": "Cirque",
+      "C": "Canyon",
+      "D": "Levee",
+      "answer": "A"
+    },
+    {
+      "question": "Deposits of rocks and sediments left behind by glaciers are known as:",
+      "A": "Moraines",
+      "B": "Meanders",
+      "C": "Dunes",
+      "D": "Estuaries",
+      "answer": "A"
+    },
+    {
+      "question": "Which  of the following is not an agent of external geomorphic processes?",
+      "A": "Wind ",
+      "B": "Running water",
+      "C": "Glaciers",
+      "D": "Magma movement within the earth",
+      "answer": "A"
+    },
+    {
+      "question": "The main source of energy driving external processes on earth is:",
+      "A": "The Moon ",
+      "B": "The sun",
+      "C": "Earth's core ",
+      "D": "Tides",
+      "answer": "A"
+    },
+    {
+      "question": "Which landform is most likely associated with glacial deposition?",
+      "A": "Moraines",
+      "B": "Inselberg",
+      "C": "Mushroom rock",
+      "D": "Yardang",
+      "answer": "A"
+    },
+    {
+      "question": "Wind erosion is most effective in areas that are:",
+      "A": "Densely forested",
+      "B": "Covered with thick vegetation",
+      "C": "Dry, bare, and sparsely vegetated",
+      "D": "Permanently waterlogged",
+      "answer": "A"
+    }
+  ]
+}

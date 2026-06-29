@@ -1,0 +1,408 @@
+{
+  "exam": "ECONOMICS SSS1",
+  "subject": "ECONOMICS",
+  "class": "SSS1",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "Cost that does not change with output is:  ",
+      "A": "Variable cost ",
+      "B": "Fixed cost",
+      "C": "Marginal cost",
+      "D": "Total cost",
+      "answer": "B"
+    },
+    {
+      "question": "Total cost is the sum of ________",
+      "A": "Fixed and marginal cost ",
+      "B": "Fixed + variable cost ",
+      "C": "Variable and average cost",
+      "D": "Fixed and average cost ",
+      "answer": "B"
+    },
+    {
+      "question": "Cost per unit of output is _______",
+      "A": "Marginal cost ",
+      "B": "Total cost ",
+      "C": "Fixed cost ",
+      "D": "Average variable cost",
+      "answer": "D"
+    },
+    {
+      "question": "Formula for Total revenue is equals: ",
+      "A": "FC + VC ",
+      "B": "Cost × Output ",
+      "C": "Profit × Output ",
+      "D": "Revenue × Price ",
+      "answer": "A"
+    },
+    {
+      "question": "If cost price of one book is 2000 naira. The seller sold 8 books and made 500 naira on each of the 8 books. How much is the total profit? ",
+      "A": 5000,
+      "B": 4000,
+      "C": 3000,
+      "D": 3500,
+      "answer": "B"
+    },
+    {
+      "question": "Combination of private and public ownership is known as? ",
+      "A": "Market economy ",
+      "B": "Mixed economy",
+      "C": "Traditional economy ",
+      "D": "Command economy",
+      "answer": "B"
+    },
+    {
+      "question": "Nigeria operates a ________ economic system: ",
+      "A": "capitalist system ",
+      "B": "socialist system ",
+      "C": "mixed economy",
+      "D": "traditional system",
+      "answer": "C"
+    },
+    {
+      "question": "Reward for labor is:",
+      "A": "rent",
+      "B": "interest",
+      "C": "wages",
+      "D": "profit",
+      "answer": "C"
+    },
+    {
+      "question": "Supply of labor depends on: ",
+      "A": "Wage rate ",
+      "B": "Weather",
+      "C": "capital",
+      "D": "land",
+      "answer": "A"
+    },
+    {
+      "question": "The reward for land is? ",
+      "A": "salary",
+      "B": "wages",
+      "C": "rent",
+      "D": "land",
+      "answer": "C"
+    },
+    {
+      "question": "Skilled labor requires: ",
+      "A": "No training ",
+      "B": "special trainning",
+      "C": "Physical strength only ",
+      "D": "land",
+      "answer": "B"
+    },
+    {
+      "question": "Unemployment means: ",
+      "A": "Working less ",
+      "B": "no job",
+      "C": "low wages",
+      "D": "high wages",
+      "answer": "B"
+    },
+    {
+      "question": "Nigeria labor congress (NLC) protects: ",
+      "A": "Employers",
+      "B": "workers",
+      "C": "government",
+      "D": "consumers",
+      "answer": "B"
+    },
+    {
+      "question": "Wage determination depends on: ",
+      "A": "Demand and supply of labor ",
+      "B": "weather",
+      "C": "population",
+      "D": "capital",
+      "answer": "A"
+    },
+    {
+      "question": "Labor mobility refers to: ",
+      "A": "Movement of workers ",
+      "B": "Wage increase ",
+      "C": "Skill development ",
+      "D": "production",
+      "answer": "A"
+    },
+    {
+      "question": "What are revenues?  ",
+      "A": "incomes coming to your business ",
+      "B": "money going out of the business",
+      "C": "money not accounted for ",
+      "D": "Migration of goods",
+      "answer": "A"
+    },
+    {
+      "question": " Utility means:",
+      "A": "satisfaction",
+      "B": "Cost × Output ",
+      "C": "Profit × Output ",
+      "D": "outfit",
+      "answer": "A"
+    },
+    {
+      "question": "  Total utility is:",
+      "A": "extra satisfaction",
+      "B": "total satisfaction",
+      "C": "cost",
+      "D": "profit",
+      "answer": "B"
+    },
+    {
+      "question": " Marginal utility is",
+      "A": "total satisfaction",
+      "B": "extra satisfaction",
+      "C": "average satisfaction",
+      "D": "profit",
+      "answer": "B"
+    },
+    {
+      "question": "All of the followings are types of revenue, except _________:",
+      "A": "total revenue",
+      "B": "average revenue",
+      "C": "marginal revenue",
+      "D": "extra revenue",
+      "answer": "D"
+    },
+    {
+      "question": "  The change in total income sold from an extra unit of commodity is known as ________ ",
+      "A": "marginal revenue",
+      "B": "total revenue",
+      "C": "average revenue",
+      "D": "fixed revenue",
+      "answer": "A"
+    },
+    {
+      "question": "  __________ is defined as an arrangement specifying how production and consumption are controlled in a society.",
+      "A": "mixed system",
+      "B": "economic system",
+      "C": "private system",
+      "D": "none of the above",
+      "answer": "B"
+    },
+    {
+      "question": "A type of economy where all means of production are owned and controlled by private individuals is known as? ",
+      "A": "mixed economy",
+      "B": "capitalist economy",
+      "C": "socialist economy",
+      "D": "none of the above",
+      "answer": "B"
+    },
+    {
+      "question": "A type of economy where all means of production are owned and controlled by government is known as? ",
+      "A": "mixed economy",
+      "B": "capitalist economy",
+      "C": "socialist economy",
+      "D": "none of the above",
+      "answer": "C"
+    },
+    {
+      "question": " Perfect competition has:",
+      "A": "one seller",
+      "B": "many sellers",
+      "C": "few sellers",
+      "D": "no sellers",
+      "answer": "B"
+    },
+    {
+      "question": "Monopoly has: ",
+      "A": "many sellers",
+      "B": "one seller",
+      "C": "few sellers",
+      "D": "no sellers",
+      "answer": "B"
+    },
+    {
+      "question": "A place where buyers and sellers come in close contact is known as __________",
+      "A": "Market ",
+      "B": "labour force",
+      "C": "demand market",
+      "D": "supply market",
+      "answer": "A"
+    },
+    {
+      "question": "The total number of workers an employer is willing and ready to employ is known as:",
+      "A": "demand for supply",
+      "B": "demand for labor",
+      "C": "labor market",
+      "D": "employers",
+      "answer": "B"
+    },
+    {
+      "question": "The size of a market can affect the demand for labor.",
+      "A": true,
+      "B": "",
+      "C": "none of the above",
+      "D": "all of the above",
+      "answer": "A"
+    },
+    {
+      "question": "Price is determined by: ",
+      "A": "demand only ",
+      "B": "supply only",
+      "C": "demand and supply of goods and services",
+      "D": "governent",
+      "answer": "C"
+    },
+    {
+      "question": " Labor refers to:",
+      "A": "machines",
+      "B": "human efforts",
+      "C": "land",
+      "D": "capital",
+      "answer": "B"
+    },
+    {
+      "question": " The more the number of industries, the more __________is required to do the job.",
+      "A": "labor",
+      "B": "money going out of the business",
+      "C": "machine",
+      "D": "constant",
+      "answer": "A"
+    },
+    {
+      "question": "One of the followings is not a determinant of wages:",
+      "A": " the forces of demand and supply in a market economy",
+      "B": " government activities and policies",
+      "C": " the activities of trade union",
+      "D": "the supply policy",
+      "answer": "D"
+    },
+    {
+      "question": "Another name for channels of distribution is called? ",
+      "A": "chain of distribution",
+      "B": "division of labor",
+      "C": "anchor of distribution",
+      "D": "locomotive distribution",
+      "answer": "A"
+    },
+    {
+      "question": "A trade union is formed by workers to __________",
+      "A": "go against workers",
+      "B": "go against employers",
+      "C": "go against companies",
+      "D": "go against unions",
+      "answer": "B"
+    },
+    {
+      "question": "Who buys goods in small quantities from the wholesaler? ",
+      "A": "ratailer ",
+      "B": "consumer",
+      "C": "agent",
+      "D": "middle man",
+      "answer": "A"
+    },
+    {
+      "question": "All of the followings are tools for economic analysis except________ ",
+      "A": "graphs",
+      "B": "charts",
+      "C": "tables",
+      "D": "circles",
+      "answer": "D"
+    },
+    {
+      "question": "Marginal revenue is: ",
+      "A": " TR ÷ Q",
+      "B": "Change in TR",
+      "C": "Price × Output ",
+      "D": " TR − TC",
+      "answer": "A"
+    },
+    {
+      "question": " Extra cost of producing one more unit is:",
+      "A": "average cost",
+      "B": "fixed cost",
+      "C": "marginal cost",
+      "D": "total cost",
+      "answer": "C"
+    },
+    {
+      "question": "Rent paid on factory building is: ",
+      "A": "Variable cost ",
+      "B": "fixed cost",
+      "C": "marginal cost",
+      "D": "opportunity cost",
+      "answer": "B"
+    },
+    {
+      "question": "Debt is __________",
+      "A": "money owed",
+      "B": "money given to someone",
+      "C": "money returned from a business",
+      "D": "money paid back",
+      "answer": "A"
+    },
+    {
+      "question": "The extraction of crude oil from the earth leads to ________ pollution. ",
+      "A": "land pollution",
+      "B": "sky pollution",
+      "C": "noise pollution",
+      "D": "pipe pollution",
+      "answer": "A"
+    },
+    {
+      "question": "______ is a general name for resources formed naturally under the earth.",
+      "A": "mineral resources",
+      "B": "crude oil",
+      "C": "coal",
+      "D": "gold",
+      "answer": "A"
+    },
+    {
+      "question": "Another name for instrument of business finance is known as ________ ",
+      "A": "fianacial instruments",
+      "B": "funding hedges",
+      "C": "debentures",
+      "D": "hedge funds",
+      "answer": "A"
+    },
+    {
+      "question": "  All of the followings are tools for economic analysis except________ ",
+      "A": "graphs",
+      "B": "charts",
+      "C": "tables",
+      "D": "money ",
+      "answer": "A"
+    },
+    {
+      "question": " Mining is ________ industrial sector",
+      "A": "primary",
+      "B": "secondary",
+      "C": "tertiary",
+      "D": "none of the above",
+      "answer": "A"
+    },
+    {
+      "question": " Telecommunication is ________ industrial sector",
+      "A": "primary",
+      "B": "secondary",
+      "C": "tertiary",
+      "D": "none of the above",
+      "answer": "B"
+    },
+    {
+      "question": "the total amount of money available for us in the economy at a given time is known as __________",
+      "A": "demand for money",
+      "B": "supply of money",
+      "C": "sufficiend fund",
+      "D": "economic supply",
+      "answer": "B"
+    },
+    {
+      "question": "An economy controlled by government is: ",
+      "A": "market economy ",
+      "B": "Mixed economy",
+      "C": "command economy",
+      "D": "traditional economy",
+      "answer": "B"
+    },
+    {
+      "question": "EFCC stands for __________",
+      "A": "economic financial crime common ",
+      "B": " economic and financial crime commission ",
+      "C": " economic and financial crime corporation",
+      "D": "economic and financial crime caption",
+      "answer": "D"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Student Dashboard – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Exam">
+<style>
+.screen { display: flex; min-height: 100vh; }
+#s-select { flex-direction: column; background: #f8f8f8; }
+
+.topbar {
+  background: white;
+  border-bottom: 2px solid #f0f0f0;
+  padding: 0 32px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { width: 48px; height: 48px; border-radius: 8px; object-fit: contain; background: white; padding: 4px; border: 2px solid #f0f0f0; }
+.topbar-logo-fb { width: 48px; height: 48px; border-radius: 8px; background: #dc2626; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px; }
+.topbar-name { font-size: 16px; font-weight: 700; color: #1e1e1e; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.student-chip {
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.student-chip i {
+  color: #dc2626;
+  margin-right: 6px;
+}
+.class-badge {
+  background: #1e1e1e;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.class-badge i {
+  margin-right: 4px;
+}
+
+.select-body { flex: 1; max-width: 900px; width: 100%; margin: 0 auto; padding: 40px 24px; }
+.select-heading { 
+  font-size: 28px; 
+  font-weight: 700; 
+  margin-bottom: 8px; 
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.select-heading i {
+  color: #dc2626;
+  font-size: 32px;
+}
+.select-sub { 
+  font-size: 16px; 
+  color: #666; 
+  margin-bottom: 32px;
+  border-left: 4px solid #dc2626;
+  padding-left: 16px;
+}
+.exam-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  animation: slideIn 0.5s ease;
+}
+.exam-card:hover { 
+  transform: translateY(-2px);
+  border-color: #dc2626;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.1);
+}
+.exam-card.taken {
+  opacity: 0.7;
+  background: #f8f8f8;
+  border-color: #e0e0e0;
+  cursor: default;
+}
+.exam-card.taken:hover {
+  transform: none;
+  border-color: #e0e0e0;
+  box-shadow: none;
+}
+.exam-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #f8f8f8;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #dc2626;
+  flex-shrink: 0;
+}
+.exam-info { flex: 1; }
+.exam-name { 
+  font-size: 18px; 
+  font-weight: 700; 
+  color: #1e1e1e; 
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.exam-meta { 
+  display: flex; 
+  gap: 20px; 
+  font-size: 13px; 
+  color: #666; 
+  font-weight: 500; 
+  flex-wrap: wrap; 
+}
+.exam-meta i {
+  color: #dc2626;
+  margin-right: 4px;
+  font-size: 12px;
+}
+.btn-start {
+  background: #1e1e1e;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-start i {
+  font-size: 12px;
+}
+.btn-start:hover { 
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+.btn-start:disabled {
+  background: #999;
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+.empty-exams {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border: 2px dashed #e0e0e0;
+  border-radius: 16px;
+  color: #666;
+  font-size: 16px;
+}
+.empty-exams i {
+  font-size: 48px;
+  color: #dc2626;
+  margin-bottom: 16px;
+  display: block;
+}
+
+@media (max-width: 560px) {
+  .topbar-logo, .topbar-logo-fb { display: none !important; }
+  .topbar { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+  .student-chip { max-width: 150px; }
+}
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text"><i class="fa fa-spinner"></i> <span id="loaderText">Loading…</span></div>
+</div>
+
+<!-- EXAM SELECT SCREEN -->
+<div class="screen active" id="s-select">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="Badgejet.jpg" class="topbar-logo" alt="Logo" onerror="this.style.display='none';document.getElementById('tbFb').style.display='flex'">
+      <div class="topbar-logo-fb" id="tbFb" style="display:none">PH</div>
+      <div class="topbar-name">Peter Harvard Int'l Schools</div>
+    </div>
+    <div class="topbar-right">
+      <div class="net-indicator" id="netIndicator">
+        <i class="fa fa-wifi" id="netIcon"></i>
+        <span id="netLabel">Checking…</span>
+      </div>
+      <div class="student-chip" id="studentChip"><i class="fa fa-user"></i> Student</div>
+      <span class="class-badge" id="studentClassBadge"><i class="fa fa-users"></i> SS 1</span>
+      <button class="btn-ghost" onclick="doLogout()">
+        <i class="fa fa-sign-out"></i> Sign Out
+      </button>
+    </div>
+  </div>
+  <div class="select-body">
+    <div class="select-heading">
+      <i class="fa fa-clipboard-list"></i>
+      Available Exams
+    </div>
+    <div class="select-sub" id="selectSub">Select an exam to begin</div>
+    <div id="examList"><div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading exams…</div></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/common.js"></script>
+<script src="js/student.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  
+  if (!hasSession) {
+    window.location.href = 'student-login.html';
+    return;
+  }
+  
+  document.getElementById('studentChip').innerHTML = `<i class="fa fa-user"></i> ${S.studentName}`;
+  document.getElementById('studentClassBadge').innerHTML = `<i class="fa fa-users"></i> ${S.studentClass || 'SS 1'}`;
+  
+  updateNetIndicator();
+  S.netInterval = setInterval(updateNetIndicator, 15000);
+  loadExams();
+  
+  if (S.examPollInterval) clearInterval(S.examPollInterval);
+  S.examPollInterval = setInterval(loadExams, 30000);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Console – Peter Harvard International Schools</title>
+<link rel="icon" type="image/png" href="Badgejet.jpg">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#dc2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHIS Admin">
+<style>
+.screen { display: flex; min-height: 100vh; }
+
+/* LOGIN SCREEN - Split Layout */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: rotate(30deg);
+  animation: shimmer 4s infinite linear;
+  z-index: 0;
+}
+.login-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.5) 0%, rgba(185, 28, 28, 0.6) 50%, rgba(153, 27, 27, 0.5) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  z-index: 0;
+}
+.login-left-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  text-align: center;
+}
+.login-left h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  animation: slideUp 0.6s ease;
+}
+.login-left h1 span {
+  display: block;
+  font-weight: 300;
+  font-size: 24px;
+  opacity: 0.9;
+  margin-top: 8px;
+  animation: fadeIn 0.8s ease 0.3s both;
+}
+.login-left p {
+  font-size: 18px;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+.login-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.login-feature {
+  text-align: center;
+  animation: slideUp 0.5s ease both;
+}
+.login-feature:nth-child(1) { animation-delay: 0.4s; }
+.login-feature:nth-child(2) { animation-delay: 0.5s; }
+.login-feature:nth-child(3) { animation-delay: 0.6s; }
+.login-feature:nth-child(4) { animation-delay: 0.7s; }
+.login-feature i {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: white;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+.login-feature:hover i {
+  animation: float 1s ease infinite;
+  color: #ffd700;
+}
+.login-feature span {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.login-right {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+.login-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+}
+.login-card .subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+}
+.field {
+  margin-bottom: 24px;
+}
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field label i {
+  color: #dc2626;
+  margin-right: 6px;
+  font-size: 12px;
+}
+.field input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1e1e1e;
+  background: white;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.field input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.field input:hover {
+  border-color: #999;
+}
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.login-error i {
+  font-size: 16px;
+}
+.login-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f0f0f0;
+  font-size: 13px;
+  color: #666;
+}
+
+@media (max-width: 900px) {
+  #loginScreen { flex-direction: column; }
+  .login-left { padding: 40px 24px; }
+  .login-left h1 { font-size: 36px; }
+  .login-features { grid-template-columns: 1fr; gap: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="loader-overlay" id="loaderOverlay" style="display:none">
+  <div class="loader-spinner"></div>
+  <div class="loader-text"><i class="fa fa-spinner"></i> <span id="loaderText">Loading…</span></div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="screen active" id="loginScreen">
+  <div class="login-left">
+    <div class="login-left-content">
+      <h1>Peter Harvard<br><span>International Schools</span></h1>
+      <p>Admin Console</p>
+      <div class="login-features">
+        <div class="login-feature">
+          <i class="fa fa-shield"></i>
+          <span>User Management</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-cogs"></i>
+          <span>System Settings</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-history"></i>
+          <span>Audit Trail</span>
+        </div>
+        <div class="login-feature">
+          <i class="fa fa-database"></i>
+          <span>Data Management</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-card">
+      <h2>Admin Sign In</h2>
+      <div class="subtitle">Enter your credentials to access the admin console</div>
+      <div class="login-error" id="loginErr">
+        <i class="fa fa-exclamation-circle"></i> Invalid credentials. Please try again.
+      </div>
+      <div class="field">
+        <label><i class="fa fa-user"></i> ADMIN ID</label>
+        <input type="text" id="inId" placeholder="e.g. admin" autocomplete="off">
+      </div>
+      <div class="field">
+        <label><i class="fa fa-lock"></i> PASSWORD</label>
+        <input type="password" id="inPassword" placeholder="Enter your password" autocomplete="off">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">
+        <span>Sign In to Console</span>
+        <i class="fa fa-arrow-right"></i>
+      </button>
+      <div class="login-footer">
+        <div><i class="fa fa-copyright"></i> 2026 Peter Harvard International Schools</div>
+        <div class="dev-tag"><i class="fa fa-bolt"></i> Powered by <span>AnoByte</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/common.js"></script>
+<script src="js/admin.js"></script>
+<script>
+// Boot
+document.getElementById('inId').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+window.addEventListener('load', async () => {
+  showLoader('Checking session…');
+  const hasSession = await checkSession();
+  hideLoader();
+  if (hasSession) {
+    window.location.href = 'admin-dashboard.html';
+  }
+});
+</script>
+</body>
+</html>
