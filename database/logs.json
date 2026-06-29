@@ -436,5 +436,29 @@
     "action": "LOGIN",
     "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
     "actor": "607403"
+  },
+  {
+    "time": "2026-06-29T21:58:56.062Z",
+    "action": "LOGIN",
+    "detail": "student: 607403 (ABANG EMMANUELLA BOMBUM)",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-29T22:00:01.670Z",
+    "action": "TAB_VIOLATION",
+    "detail": "ABANG EMMANUELLA BOMBUM - #1 in COMMERCE SS2",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-29T22:00:13.371Z",
+    "action": "TAB_VIOLATION",
+    "detail": "ABANG EMMANUELLA BOMBUM - #2 in COMMERCE SS2",
+    "actor": "607403"
+  },
+  {
+    "time": "2026-06-29T22:00:14.390Z",
+    "action": "SUBMIT",
+    "detail": "Student: ABANG EMMANUELLA BOMBUM | Exam: COMMERCE SS2 | Score: 0/51 (0%) | Class: SS 2",
+    "actor": "607403"
   }
 ]

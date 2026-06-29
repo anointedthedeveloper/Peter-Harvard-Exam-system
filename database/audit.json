@@ -1,5 +1,53 @@
 [
   {
+    "id": 1782770414400.356,
+    "time": "2026-06-29T22:00:14.400Z",
+    "action": "EXAM_SUBMIT",
+    "actor": "607403",
+    "detail": "Submitted \"COMMERCE SS2\" — Score: 0/51 (0%)",
+    "metadata": {
+      "exam": "COMMERCE SS2",
+      "score": 0,
+      "total": 51,
+      "percentage": 0,
+      "tabViolations": 2,
+      "studentClass": "SS 2"
+    }
+  },
+  {
+    "id": 1782770413379.9277,
+    "time": "2026-06-29T22:00:13.379Z",
+    "action": "TAB_VIOLATION",
+    "actor": "607403",
+    "detail": "Tab switch violation #2 during \"COMMERCE SS2\"",
+    "metadata": {
+      "exam": "COMMERCE SS2",
+      "count": 2
+    }
+  },
+  {
+    "id": 1782770401674.1921,
+    "time": "2026-06-29T22:00:01.674Z",
+    "action": "TAB_VIOLATION",
+    "actor": "607403",
+    "detail": "Tab switch violation #1 during \"COMMERCE SS2\"",
+    "metadata": {
+      "exam": "COMMERCE SS2",
+      "count": 1
+    }
+  },
+  {
+    "id": 1782770337413.7666,
+    "time": "2026-06-29T21:58:57.413Z",
+    "action": "LOGIN",
+    "actor": "607403",
+    "detail": "student \"ABANG EMMANUELLA BOMBUM\" logged in",
+    "metadata": {
+      "role": "student",
+      "ip": "127.0.0.1"
+    }
+  },
+  {
     "id": 1782770192511.2915,
     "time": "2026-06-29T21:56:32.511Z",
     "action": "LOGIN",

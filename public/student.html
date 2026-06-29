@@ -2095,16 +2095,10 @@ function backToSelect() {
 async function beginExam() {
   showLoader('Loading exam questions…');
   try {
-    const data = await fetch('/api/exam/' + encodeURIComponent(S.examFile)).then(r => r.json());
+    const data = await fetch('/api/exam/' + encodeURIComponent(S.examFile) + '?class=' + encodeURIComponent(S.studentClass)).then(r => r.json());
     hideLoader();
     if (data.error) { alert(data.error || 'Exam unavailable.'); return; }
     if (!data || !data.questions || !data.questions.length) { alert('Could not load exam questions. Try again.'); return; }
-
-    if (data.class && S.studentClass && data.class.toLowerCase() !== S.studentClass.toLowerCase()) {
-      alert('This exam is not available for your class.');
-      backToSelect();
-      return;
-    }
 
     S.questions = shuffle(data.questions).map((q, i) => ({ ...q, _idx: i, _options: shuffleOpts(q) }));
     S.answers = {};

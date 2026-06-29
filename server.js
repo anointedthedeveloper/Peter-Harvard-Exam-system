@@ -1029,20 +1029,31 @@ const server = http.createServer(async (req, res) => {
         const filename = decodeURIComponent(pathname.replace('/api/exam/', ''));
         const filePath = path.join(UPLOADS_DIR, filename);
         if (!fs.existsSync(filePath)) { send(req, res, 404, { error: 'Exam not found' }); return; }
-        
+
         const examStatus = readJSON(EXAM_STATUS_FILE) || {};
         const status = examStatus[filename] || {};
         // Handle both old format (true) and new format ({teacherEnabled, adminDisabled})
         const adminDisabled = status.adminDisabled === true;
         const teacherEnabled = status.teacherEnabled === true || status === true;
-        
+
         // Exam is unavailable if admin disabled it OR teacher hasn't enabled it
         if (adminDisabled || !teacherEnabled) {
             send(req, res, 403, { error: 'This exam is currently unavailable' });
             return;
         }
-        
+
         const examData = readJSON(filePath);
+
+        // Check if student's class matches exam class
+        const studentClass = url.searchParams.get('class');
+        if (examData?.class && studentClass) {
+            const normalizedExamClass = normalizeClassName(examData.class);
+            const normalizedStudentClass = normalizeClassName(studentClass);
+            if (normalizedExamClass && normalizedStudentClass && normalizedExamClass !== normalizedStudentClass) {
+                send(req, res, 403, { error: 'This exam is not available for your class' });
+                return;
+            }
+        }
         
         // Randomize questions for each student
         if (examData && examData.questions) {

@@ -68,5 +68,33 @@
     "studentName": "ABANG EMMANUELLA BOMBUM",
     "action": "LOGIN",
     "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T21:58:57.965Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-06-29T22:00:01.665Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: COMMERCE SS2 | Violation #1"
+  },
+  {
+    "time": "2026-06-29T22:00:13.324Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "TAB_VIOLATION",
+    "detail": "Exam: COMMERCE SS2 | Violation #2"
+  },
+  {
+    "time": "2026-06-29T22:00:14.416Z",
+    "studentId": "607403",
+    "studentName": "ABANG EMMANUELLA BOMBUM",
+    "action": "SUBMIT",
+    "detail": "Exam: COMMERCE SS2 | Score: 0/51 (0%) | Class: SS 2"
   }
 ]
