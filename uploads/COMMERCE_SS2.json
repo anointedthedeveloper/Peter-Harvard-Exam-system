@@ -1,0 +1,416 @@
+{
+  "exam": "COMMERCE SS2",
+  "subject": "COMMERCE",
+  "class": "ss2",
+  "duration": 60,
+  "questions": [
+    {
+      "question": "A commercial institution which performs various financial activities such as accepting and handling various financial activities of it's customer is known as;",
+      "A": "a bank",
+      "B": "detention hall",
+      "C": "correctional center",
+      "D": "operation theatre",
+      "answer": "A"
+    },
+    {
+      "question": "Financial institutions which accept deposits and other valuables from the public for safe keeping are called;",
+      "A": "Commercial banks",
+      "B": "building materials",
+      "C": "ammunitions center",
+      "D": "center of mass destruction",
+      "answer": "A"
+    },
+    {
+      "question": "Accepting deposits from customers is a key function of;",
+      "A": "correctional centers",
+      "B": "waste management centers",
+      "C": "Commercial banks",
+      "D": "detention centers",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is NOT a division of commerce?",
+      "A": "Trade",
+      "B": "Aids to trade",
+      "C": "Production",
+      "D": "Banking",
+      "answer": "C"
+    },
+    {
+      "question": "The process of making goods and services available to satisfy human wants is known as:",
+      "A": "Commerce",
+      "B": "Production",
+      "C": "Trade",
+      "D": "Marketing",
+      "answer": "A"
+    },
+    {
+      "question": "Buying and selling of goods within a country is called:",
+      "A": "Foreign trade",
+      "B": "Home trade",
+      "C": "International trade",
+      "D": "Export trade",
+      "answer": "B"
+    },
+    {
+      "question": "Which of these is an example of an aid to trade?",
+      "A": "Farming",
+      "B": "Manufacturing",
+      "C": "Transportation",
+      "D": "Mining",
+      "answer": "C"
+    },
+    {
+      "question": "The exchange of goods and services between two or more countries is known as:",
+      "A": "Retail trade",
+      "B": "Wholesale trade",
+      "C": "Foreign trade",
+      "D": "Home trade",
+      "answer": "C"
+    },
+    {
+      "question": "A person who buys goods in large quantities from manufacturers and sells to retailers is a:",
+      "A": "Retailer",
+      "B": "Consumer",
+      "C": "Wholesaler",
+      "D": "Producer",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a function of money?",
+      "A": "Medium of exchange",
+      "B": "Means of production",
+      "C": "Source of raw materials",
+      "D": "Method of transportation",
+      "answer": "A"
+    },
+    {
+      "question": "The institution that accepts deposits and grants loans is called a:",
+      "A": "Insurance company",
+      "B": "Bank",
+      "C": "Transport company",
+      "D": "Communication agency",
+      "answer": "B"
+    },
+    {
+      "question": "The part of commerce that deals with the exchange of goods and services is:",
+      "A": "Production",
+      "B": "Trade",
+      "C": "Banking",
+      "D": "Insurance",
+      "answer": "B"
+    },
+    {
+      "question": "Which of these is NOT a form of home trade?",
+      "A": "Retail trade",
+      "B": "Wholesale trade",
+      "C": "Import trade",
+      "D": "Street hawking",
+      "answer": "C"
+    },
+    {
+      "question": "A document issued by a bank to a customer to withdraw money is a:",
+      "A": "Receipt",
+      "B": "Cheque",
+      "C": "Invoice",
+      "D": "Bill",
+      "answer": "B"
+    },
+    {
+      "question": "The premium is the amount paid by the insured to the insurance company for:",
+      "A": "Compensation",
+      "B": "Coverage",
+      "C": "Loan",
+      "D": "Interest",
+      "answer": "B"
+    },
+    {
+      "question": "Which mode of transport is best for carrying heavy and bulky goods over long distances?",
+      "A": "Air transport",
+      "B": "Road transport",
+      "C": "Rail transport",
+      "D": "Water transport",
+      "answer": "D"
+    },
+    {
+      "question": "Sending and receiving messages is the main function of:",
+      "A": "Banking",
+      "B": "Insurance",
+      "C": "Communication",
+      "D": "Advertising",
+      "answer": "C"
+    },
+    {
+      "question": "Which of the following is a benefit of advertising?",
+      "A": "It increases the price of goods",
+      "B": "It creates awareness for new products",
+      "C": "It encourages unnecessary spending",
+      "D": "It reduces competition",
+      "answer": "B"
+    },
+    {
+      "question": "A consumer who is aware of their rights and responsibilities is considered:",
+      "A": "A careless consumer",
+      "B": "An educated consumer",
+      "C": "A wasteful consumer",
+      "D": "An ignorant consumer",
+      "answer": "B"
+    },
+    {
+      "question": "The process of converting raw materials into finished goods is part of:",
+      "A": "Commerce",
+      "B": "Trade",
+      "C": "Production",
+      "D": "Distribution",
+      "answer": "C"
+    },
+    {
+      "question": "Which of these is an example of an invisible trade?",
+      "A": "Export of crude oil",
+      "B": "Import of cars",
+      "C": "Tourism services",
+      "D": "Sale of clothes",
+      "answer": "C"
+    },
+    {
+      "question": "The central bank of a country is responsible for:",
+      "A": "Granting loans to individuals",
+      "B": "Controlling the money supply",
+      "C": "Providing insurance services",
+      "D": "Transporting goods",
+      "answer": "B"
+    },
+    {
+      "question": "A contract of insurance is an agreement between the insured and the:",
+      "A": "Government",
+      "B": "Bank",
+      "C": "Insurer",
+      "D": "Broker",
+      "answer": "C"
+    },
+    {
+      "question": "Which of these is a disadvantage of air transport?",
+      "A": "It is slow",
+      "B": "It is expensive",
+      "C": "It cannot carry perishable goods",
+      "D": "It is not suitable for long distances",
+      "answer": "B"
+    },
+    {
+      "question": "Telephones, emails, and social media are all forms of:",
+      "A": "Transportation",
+      "B": "Advertising",
+      "C": "Communication",
+      "D": "Banking",
+      "answer": "C"
+    },
+    {
+      "question": "The main aim of advertising is to:",
+      "A": "Entertain people",
+      "B": "Persuade people to buy products",
+      "C": "Provide news",
+      "D": "Educate the public on health matters",
+      "answer": "B"
+    },
+    {
+      "question": "Consumer rights include the right to safety, the right to be informed, and the right to:",
+      "A": "Spend freely",
+      "B": "Choose",
+      "C": "Ignore warnings",
+      "D": "Demand discounts",
+      "answer": "B"
+    },
+    {
+      "question": "The term 'commerce' primarily deals with:",
+      "A": "Manufacturing goods",
+      "B": "Extracting raw materials",
+      "C": "The distribution of goods and services",
+      "D": "Farming activities",
+      "answer": "C"
+    },
+    {
+      "question": "Which of following result in an offer-",
+      "A": "A declaration of intention",
+      "B": "an invitation to offer",
+      "C": "an advertisement offering reward to anyone who finds lost dog of the advertise",
+      "D": "an offer made in a joke",
+      "answer": "C"
+    },
+    {
+      "question": "A legal relationship that exists between two parties when one called the agent is employed by another called the principal to bring the principal into a legal relationship with the third party is called;",
+      "A": "An agency",
+      "B": "a prison house",
+      "C": "a road",
+      "D": "a machine",
+      "answer": "A"
+    },
+    {
+      "question": "An agent who has the authority to act in all matters of a particular business is called;",
+      "A": "a general agent",
+      "B": "spiritual agent",
+      "C": "fraud agent",
+      "D": "lost agent",
+      "answer": "A"
+    },
+    {
+      "question": "One performing the duty of an agent and has unrestricted authority to enter into a contract on behalf of the principal is known as;",
+      "A": "a universal agent",
+      "B": "a troublesome agent",
+      "C": "aa angry agent",
+      "D": "a dangerous agent",
+      "answer": "A"
+    },
+    {
+      "question": "An agent appointed for a particular purpose normally not part of his or her normal business activity and is therefore given unlimited powers is called;",
+      "A": "Special agent",
+      "B": "unknown agent",
+      "C": "hiding agent",
+      "D": "unqualified agent",
+      "answer": "A"
+    },
+    {
+      "question": "An agent who undertakes to indemnify the principal against any loss arising from the failure of the people to pay for goods sold is known as;",
+      "A": "an unqualified agent",
+      "B": "a Del credere agent",
+      "C": "a destructive agent",
+      "D": "a bad agent",
+      "answer": "B"
+    },
+    {
+      "question": "A merchant who buys goods on commission is called;",
+      "A": "a commission agent",
+      "B": "an insane agent",
+      "C": "an incompetent agent",
+      "D": "a criminal agent",
+      "answer": "A"
+    },
+    {
+      "question": "A person who has the authority to sell goods or cosign goods for the purpose of sale or to buy goods or to raise money for the security of the goods on his or her possession is known as;",
+      "A": "a factor",
+      "B": "an enemy",
+      "C": "an insane person",
+      "D": "a terrorist",
+      "answer": "A"
+    },
+    {
+      "question": "One who acts as an agent on behalf of a principal is called;",
+      "A": "a broker",
+      "B": "a troublesome agent",
+      "C": "an unknown agent",
+      "D": "a lost agent",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a right of an agent?",
+      "A": "right to retain goods",
+      "B": "right to kill the innocent",
+      "C": "right to terrorism",
+      "D": "right to be destructive",
+      "answer": "A"
+    },
+    {
+      "question": "Which of these qualities is best for an agent?",
+      "A": "being honest and law abiding",
+      "B": "being fraudulent",
+      "C": "being destructive",
+      "D": "being violent",
+      "answer": "A"
+    },
+    {
+      "question": "A set up in which the allocation of responsibilities and functions to different components of an organisation and delegating authority to each position in order to ensure the smooth operation of business to achieve set goals is known as;",
+      "A": "Organisational set up",
+      "B": "unlawful gathering",
+      "C": "destructive group",
+      "D": "illegal set of individuals",
+      "answer": "A"
+    },
+    {
+      "question": "Which of the following is a principle of management?",
+      "A": "clarity of objective",
+      "B": "criminality",
+      "C": "brutality",
+      "D": "fatality",
+      "answer": "A"
+    },
+    {
+      "question": "An important quality in an organization that will encourage order is;",
+      "A": "discipline",
+      "B": "lawlessness",
+      "C": "corruption",
+      "D": "drug abuse",
+      "answer": "A"
+    },
+    {
+      "question": "The part of the company that performs the duty of selecting qualified candidates for employment is called;",
+      "A": "an administrator",
+      "B": "a petty trader",
+      "C": "a cobbler",
+      "D": "a cleaner",
+      "answer": "A"
+    },
+    {
+      "question": "The department responsible for creating awareness and sales of the company's products is known as;",
+      "A": "Marketer",
+      "B": "bus driver",
+      "C": "security guard",
+      "D": "police officer",
+      "answer": "A"
+    },
+    {
+      "question": "The section or department in a company that produces goods is called;",
+      "A": "the production department",
+      "B": "the criminal department",
+      "C": "the police department",
+      "D": "the military department",
+      "answer": "A"
+    },
+    {
+      "question": "A diagram or chart that shows the various organs or positions in an organisation is called;",
+      "A": "Organisational chart",
+      "B": "black book",
+      "C": "unclear record",
+      "D": "unseen records",
+      "answer": "A"
+    },
+    {
+      "question": "The department in an organisation that have the responsibility of paying salaries of workers and prepares books of a counts is called;",
+      "A": "Accounts department",
+      "B": "cleaning department",
+      "C": "sanitation department",
+      "D": "medical department",
+      "answer": "A"
+    },
+    {
+      "question": "A major function of management is ;",
+      "A": "planning",
+      "B": "fighting",
+      "C": "stealing funds",
+      "D": "corrupt practices",
+      "answer": "A"
+    },
+    {
+      "question": "An important function in am organisation which involves bringing or arranging resources together to achieve set goals on an organisation is known as;",
+      "A": "Organizing",
+      "B": "corrupt practice",
+      "C": "fraudulent practice",
+      "D": "criminal practice",
+      "answer": "A"
+    },
+    {
+      "question": "The concept that points that customers are to be treated as kings is called;",
+      "A": "Marketing",
+      "B": "bribery",
+      "C": "corruption",
+      "D": "partiality",
+      "answer": "A"
+    },
+    {
+      "question": "A collection of controllable factors that can be used to influence the behaviour of customers or consumers is known as;",
+      "A": "Marketing mix",
+      "B": "drug abuse",
+      "C": "drug trafficking",
+      "D": "child abuse",
+      "answer": "A"
+    }
+  ]
+}
