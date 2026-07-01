@@ -1,1 +1,8 @@
-{}
+{
+  "COMMERCE_SS1.json": {
+    "teacherEnabled": false
+  },
+  "BIOLOGY_SSS1.json": {
+    "teacherEnabled": true
+  }
+}

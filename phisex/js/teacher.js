@@ -205,3 +205,146 @@ async function loadResults() {
     document.getElementById('resultsList').innerHTML = `<div class="empty-exams"><i class="fa fa-exclamation-triangle"></i>Could not load results.</div>`;
   }
 }
+
+// LOAD ACTIVE STUDENTS
+let allActiveStudents = [];
+
+async function loadActiveStudents() {
+  document.getElementById('activeStudentsList').innerHTML = '<div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading active students…</div>';
+  try {
+    const students = await fetch('/api/active-students').then(r => r.json());
+    allActiveStudents = students;
+    renderActiveStudents(students);
+  } catch {
+    document.getElementById('activeStudentsList').innerHTML = `<div class="empty-exams"><i class="fa fa-exclamation-triangle"></i>Could not load active students.</div>`;
+  }
+}
+
+function renderActiveStudents(students) {
+  if (!students.length) {
+    document.getElementById('activeStudentsList').innerHTML = `<div class="empty-exams"><i class="fa fa-folder-open"></i>No active students found.</div>`;
+    return;
+  }
+  
+  document.getElementById('activeStudentsList').innerHTML = students.map(s => `
+    <div class="student-item">
+      <div class="student-info">
+        <div class="student-name">${s.name} (${s.id})</div>
+        <div class="student-meta">
+          <span><i class="fa fa-users"></i> ${s.class || 'N/A'}</span>
+          ${s.exam ? `<span><i class="fa fa-file-text"></i> ${s.exam}</span>` : ''}
+          <span><i class="fa fa-clock-o"></i> ${formatLastSeen(s.lastSeen)}</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        ${s.exam ? `<span class="student-status in-exam">In Exam</span>` : '<span class="student-status">Online</span>'}
+        <button class="btn-sm btn-danger" onclick="logoutStudent('${s.token}', '${s.id}', '${s.name.replace(/'/g, "\\'")}')">
+          <i class="fa fa-sign-out"></i> Logout
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function formatLastSeen(timestamp) {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  return `${Math.floor(seconds / 3600)}h ago`;
+}
+
+// FILTER AND SEARCH STUDENTS
+function filterStudents() {
+  const searchTerm = document.getElementById('searchStudents').value.toLowerCase();
+  const classFilter = document.getElementById('filterClass').value;
+  
+  const filtered = allActiveStudents.filter(s => {
+    const matchesSearch = s.name.toLowerCase().includes(searchTerm) || 
+                         s.id.toLowerCase().includes(searchTerm);
+    const matchesClass = !classFilter || s.class === classFilter;
+    return matchesSearch && matchesClass;
+  });
+  
+  renderActiveStudents(filtered);
+}
+
+// LOGOUT STUDENT
+async function logoutStudent(token, studentId, studentName) {
+  if (!confirm(`Are you sure you want to logout ${studentName}?`)) return;
+  
+  showLoader('Logging out student…');
+  try {
+    const res = await fetch('/api/force-logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: studentId })
+    });
+    const data = await res.json();
+    
+    hideLoader();
+    if (data.ok) {
+      toast(`${studentName} logged out successfully`, 'ok');
+      loadActiveStudents();
+      loadAllStudents();
+    } else {
+      toast('Failed to logout student', 'err');
+    }
+  } catch {
+    hideLoader();
+    toast('Error logging out student', 'err');
+  }
+}
+
+// LOAD ALL STUDENTS
+let allStudentsList = [];
+
+async function loadAllStudents() {
+  document.getElementById('allStudentsList').innerHTML = '<div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading all students…</div>';
+  try {
+    const students = await fetch('/api/students').then(r => r.json());
+    allStudentsList = students;
+    renderAllStudents(students);
+  } catch {
+    document.getElementById('allStudentsList').innerHTML = `<div class="empty-exams"><i class="fa fa-exclamation-triangle"></i>Could not load students.</div>`;
+  }
+}
+
+function renderAllStudents(students) {
+  if (!students.length) {
+    document.getElementById('allStudentsList').innerHTML = `<div class="empty-exams"><i class="fa fa-folder-open"></i>No students found.</div>`;
+    return;
+  }
+  
+  document.getElementById('allStudentsList').innerHTML = students.map(s => `
+    <div class="student-item">
+      <div class="student-info">
+        <div class="student-name">${s.name} (${s.id})</div>
+        <div class="student-meta">
+          <span><i class="fa fa-users"></i> ${s.class || 'N/A'}</span>
+          <span><i class="fa fa-venus-mars"></i> ${s.gender || 'N/A'}</span>
+          ${s.isActive ? `<span><i class="fa fa-circle" style="color:#059669;font-size:8px;"></i> Online</span>` : '<span><i class="fa fa-circle" style="color:#9ca3af;font-size:8px;"></i> Offline</span>'}
+          ${s.currentExam ? `<span><i class="fa fa-file-text"></i> ${s.currentExam}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        ${s.isActive ? `<span class="student-status in-exam">Active</span>` : '<span class="student-status">Inactive</span>'}
+        ${s.isActive ? `<button class="btn-sm btn-danger" onclick="logoutStudent('', '${s.id}', '${s.name.replace(/'/g, "\\'")}')">
+          <i class="fa fa-sign-out"></i> Logout
+        </button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// FILTER AND SEARCH ALL STUDENTS
+function filterAllStudents() {
+  const searchTerm = document.getElementById('searchAllStudents').value.toLowerCase();
+  const classFilter = document.getElementById('filterAllClass').value;
+  
+  const filtered = allStudentsList.filter(s => {
+    const matchesSearch = s.name.toLowerCase().includes(searchTerm) || 
+                         s.id.toLowerCase().includes(searchTerm);
+    const matchesClass = !classFilter || s.class === classFilter;
+    return matchesSearch && matchesClass;
+  });
+  
+  renderAllStudents(filtered);
+}

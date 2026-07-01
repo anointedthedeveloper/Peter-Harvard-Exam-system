@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "time": "2026-07-01T17:03:21.422Z",
+    "studentId": "675786",
+    "studentName": "IBRAHIM MOHAMMED ALKASIM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-07-01T17:06:09.683Z",
+    "studentId": "675786",
+    "studentName": "IBRAHIM MOHAMMED ALKASIM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  },
+  {
+    "time": "2026-07-01T17:09:44.972Z",
+    "studentId": "675786",
+    "studentName": "IBRAHIM MOHAMMED ALKASIM",
+    "action": "LOGIN",
+    "detail": "Student logged in"
+  }
+]

@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "ip": "127.0.0.1",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "A-Server",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-07-01T17:03:21.395Z",
+    "studentId": "675786",
+    "studentName": "IBRAHIM MOHAMMED ALKASIM",
+    "firstSeen": "2026-07-01T17:03:21.395Z",
+    "lastSeen": "2026-07-01T17:03:21.395Z"
+  },
+  {
+    "ip": "192.168.18.10",
+    "mac": "00:00:00:00:00:00",
+    "hostname": "A-Server",
+    "interface": "Unknown",
+    "platform": "win32",
+    "timestamp": "2026-07-01T17:06:09.672Z",
+    "studentId": "675786",
+    "studentName": "IBRAHIM MOHAMMED ALKASIM",
+    "firstSeen": "2026-07-01T17:06:09.672Z",
+    "lastSeen": "2026-07-01T17:09:44.958Z"
+  }
+]

@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const XLSX = require('xlsx');
+const puppeteer = require('puppeteer');
 
 const PORT = process.env.PORT || 5000;
 const VERSION = '2.1.0';
@@ -22,6 +23,7 @@ const EXAM_STATUS_FILE = path.join(DATABASE_DIR, 'exam_status.json');
 const SESSIONS_FILE = path.join(DATABASE_DIR, 'sessions.json');
 const COMPUTERS_FILE = path.join(DATABASE_DIR, 'computers.json');
 const SUBMITTED_EXAMS_FILE = path.join(DATABASE_DIR, 'submitted_exams.json');
+const PDF_DIR = path.join(DATABASE_DIR, 'pdf_reports');
 
 // Live sessions
 const liveSessions = {};
@@ -40,7 +42,7 @@ initializeActiveTokens();
 const loginAttempts = new Map(); // IP -> { count, lastAttempt }
 
 // Create directories
-[PUBLIC_DIR, UPLOADS_DIR, DATABASE_DIR].forEach(d => {
+[PUBLIC_DIR, UPLOADS_DIR, DATABASE_DIR, PDF_DIR].forEach(d => {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
 });
 
@@ -484,12 +486,13 @@ function saveSession(token, data) {
         activeTokens.delete(userId);
     }
     
-    // Save new session with extended expiry (7 days for persistence across reloads)
+    // Save new session with shorter expiry (2 hours for active sessions)
     sessions[token] = { 
         ...data, 
         lastAccessed: Date.now(),
+        lastHeartbeat: Date.now(),
         createdAt: Date.now(),
-        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+        expiresAt: Date.now() + (2 * 60 * 60 * 1000) // 2 hours
     };
     
     activeTokens.set(userId, token);
@@ -505,6 +508,15 @@ function getSession(token) {
         // Check if session is expired
         if (Date.now() > session.expiresAt) {
             // Session expired, clean it up
+            activeTokens.delete(session.id);
+            delete sessions[token];
+            writeJSON(SESSIONS_FILE, sessions);
+            return null;
+        }
+        
+        // Check if heartbeat is stale (no heartbeat for 2 minutes = disconnected)
+        if (session.lastHeartbeat && Date.now() - session.lastHeartbeat > 120000) {
+            // Session stale due to disconnection, clean it up
             activeTokens.delete(session.id);
             delete sessions[token];
             writeJSON(SESSIONS_FILE, sessions);
@@ -577,8 +589,14 @@ function cleanupSessions() {
     const now = Date.now();
     
     for (const [token, data] of Object.entries(sessions)) {
-        // Remove expired sessions (7 days)
+        // Remove expired sessions (2 hours)
         if (data.expiresAt && now > data.expiresAt) {
+            activeTokens.delete(data.id);
+            delete sessions[token];
+            changed = true;
+        }
+        // Remove stale sessions (no heartbeat for 2 minutes)
+        if (data.lastHeartbeat && now - data.lastHeartbeat > 120000) {
             activeTokens.delete(data.id);
             delete sessions[token];
             changed = true;
@@ -588,7 +606,7 @@ function cleanupSessions() {
     if (changed) writeJSON(SESSIONS_FILE, sessions);
 }
 
-setInterval(cleanupSessions, 3600000);
+setInterval(cleanupSessions, 30000); // Check every 30 seconds for stale sessions
 cleanupSessions(); // Run cleanup on startup
 
 // Cleanup rate limiting map periodically
@@ -612,6 +630,28 @@ function cleanupLiveSessions() {
     }
 }
 setInterval(cleanupLiveSessions, 30000); // Every 30 seconds
+
+// Periodic PDF regeneration (every 5 minutes if no new exams/results added)
+let lastResultsCount = 0;
+let lastExamsCount = 0;
+setInterval(async () => {
+    try {
+        const currentResults = getAllExamResults();
+        const currentExams = fs.readdirSync(UPLOADS_DIR).filter(f => f.endsWith('.json'));
+        
+        // Only regenerate if counts haven't changed (no new data)
+        if (currentResults.length === lastResultsCount && currentExams.length === lastExamsCount) {
+            if (currentResults.length > 0) {
+                await autoGeneratePDF();
+            }
+        }
+        
+        lastResultsCount = currentResults.length;
+        lastExamsCount = currentExams.length;
+    } catch (e) {
+        console.error('Periodic PDF check error:', e.message);
+    }
+}, 300000); // Every 5 minutes
 
 // Computers tracking
 function trackComputer(ip, studentId, studentName) {
@@ -652,6 +692,69 @@ function saveSubmittedExam(data) {
 
 function getSubmittedExams() {
     return readJSON(SUBMITTED_EXAMS_FILE) || [];
+}
+
+// PDF Generation
+async function generateResultsPDF() {
+    let browser;
+    try {
+        browser = await puppeteer.launch({ 
+            headless: 'new',
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        const page = await browser.newPage();
+        
+        const url = `http://localhost:${PORT}/api/results/pdf`;
+        await page.goto(url, { waitUntil: 'networkidle0' });
+        
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+        const filename = `results_${timestamp}.pdf`;
+        const filepath = path.join(PDF_DIR, filename);
+        
+        await page.pdf({
+            path: filepath,
+            format: 'A4',
+            printBackground: true,
+            margin: {
+                top: '20px',
+                right: '20px',
+                bottom: '20px',
+                left: '20px'
+            }
+        });
+        
+        await browser.close();
+        
+        // Keep only the last 10 PDF files
+        const pdfFiles = fs.readdirSync(PDF_DIR)
+            .filter(f => f.endsWith('.pdf'))
+            .sort()
+            .reverse();
+        
+        if (pdfFiles.length > 10) {
+            for (const oldFile of pdfFiles.slice(10)) {
+                try {
+                    fs.unlinkSync(path.join(PDF_DIR, oldFile));
+                } catch (e) {}
+            }
+        }
+        
+        console.log(`PDF generated: ${filename}`);
+        return filename;
+    } catch (e) {
+        console.error('Error generating PDF:', e.message);
+        if (browser) await browser.close();
+        return null;
+    }
+}
+
+// Auto-generate PDF after exam submission
+async function autoGeneratePDF() {
+    try {
+        await generateResultsPDF();
+    } catch (e) {
+        console.error('Auto PDF generation failed:', e.message);
+    }
 }
 
 // Shuffle array (for question randomization)
@@ -871,6 +974,24 @@ const server = http.createServer(async (req, res) => {
         
         if (session) {
             send(req, res, 200, { ok: true, ...session });
+        } else {
+            send(req, res, 401, { ok: false });
+        }
+        return;
+    }
+
+    // AUTH - Heartbeat (update lastHeartbeat timestamp)
+    if (req.method === 'POST' && pathname === '/api/heartbeat') {
+        const body = await parseBody(req);
+        const token = body.token;
+        const sessions = readJSON(SESSIONS_FILE) || {};
+        const session = sessions[token];
+        
+        if (session) {
+            session.lastHeartbeat = Date.now();
+            sessions[token] = session;
+            writeJSON(SESSIONS_FILE, sessions);
+            send(req, res, 200, { ok: true });
         } else {
             send(req, res, 401, { ok: false });
         }
@@ -1787,6 +1908,63 @@ const server = http.createServer(async (req, res) => {
         const now = Date.now();
         const active = Object.values(liveSessions).filter(s => now - s.lastSeen < 90000);
         send(req, res, 200, active); return;
+    }
+
+    // GET ACTIVE SESSIONS WITH STUDENT INFO
+    if (req.method === 'GET' && pathname === '/api/active-students') {
+        const sessions = readJSON(SESSIONS_FILE) || {};
+        const users = readJSON(USERS_FILE);
+        const now = Date.now();
+        
+        const activeStudents = [];
+        for (const [token, session] of Object.entries(sessions)) {
+            if (session.role === 'student' && session.lastHeartbeat && now - session.lastHeartbeat < 120000) {
+                const student = (users?.students || []).find(s => s.id === session.id);
+                activeStudents.push({
+                    id: session.id,
+                    name: session.name,
+                    class: session.class || (student?.class || ''),
+                    lastSeen: session.lastHeartbeat,
+                    exam: session.exam || '',
+                    token: token
+                });
+            }
+        }
+        
+        send(req, res, 200, activeStudents);
+        return;
+    }
+
+    // GET ALL STUDENTS (for teacher to manage)
+    if (req.method === 'GET' && pathname === '/api/students') {
+        const users = readJSON(USERS_FILE);
+        const sessions = readJSON(SESSIONS_FILE) || {};
+        const now = Date.now();
+        
+        const students = (users?.students || []).map(s => {
+            const isActive = Object.values(sessions).some(session => 
+                session.id === s.id && 
+                session.lastHeartbeat && 
+                now - session.lastHeartbeat < 120000
+            );
+            const activeSession = Object.values(sessions).find(session => 
+                session.id === s.id && 
+                session.lastHeartbeat && 
+                now - session.lastHeartbeat < 120000
+            );
+            return {
+                id: s.id,
+                name: s.name,
+                class: s.class || '',
+                gender: s.gender || '',
+                isActive: isActive,
+                currentExam: activeSession?.exam || '',
+                lastSeen: activeSession?.lastHeartbeat || null
+            };
+        });
+        
+        send(req, res, 200, students);
+        return;
     }
 
     // TAB VIOLATION

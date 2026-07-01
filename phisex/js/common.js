@@ -46,9 +46,14 @@ function showScreen(id) {
   if (screen) screen.style.display = 'flex';
 }
 
-// Shuffle array
+// Shuffle array (Fisher-Yates algorithm for proper randomization)
 function shuffle(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
+  const array = [...arr];
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 // Network indicator

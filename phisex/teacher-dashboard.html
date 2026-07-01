@@ -240,6 +240,51 @@
   color: #dc2626;
 }
 
+.student-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+.student-item:hover {
+  border-color: #dc2626;
+  transform: translateY(-2px);
+}
+.student-info { flex: 1; }
+.student-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 4px;
+}
+.student-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #666;
+}
+.student-meta i {
+  color: #dc2626;
+  margin-right: 4px;
+}
+.student-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #d1fae5;
+  color: #065f46;
+}
+.student-status.in-exam {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 @media (max-width: 768px) {
   .main-content { padding: 20px; }
   .stats-grid { grid-template-columns: 1fr; }
@@ -314,6 +359,46 @@
       </div>
       <div id="resultsList"><div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading results…</div></div>
     </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fa fa-users"></i>
+          Active Students
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <input type="text" id="searchStudents" placeholder="Search students..." style="padding:8px 12px;border:2px solid #e0e0e0;border-radius:6px;font-size:13px;width:200px;">
+          <select id="filterClass" style="padding:8px 12px;border:2px solid #e0e0e0;border-radius:6px;font-size:13px;">
+            <option value="">All Classes</option>
+            <option value="SS 1">SS 1</option>
+            <option value="SS 2">SS 2</option>
+            <option value="SS 3">SS 3</option>
+            <option value="Basic 2">Basic 2</option>
+          </select>
+        </div>
+      </div>
+      <div id="activeStudentsList"><div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading active students…</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fa fa-graduation-cap"></i>
+          All Students
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <input type="text" id="searchAllStudents" placeholder="Search all students..." style="padding:8px 12px;border:2px solid #e0e0e0;border-radius:6px;font-size:13px;width:200px;">
+          <select id="filterAllClass" style="padding:8px 12px;border:2px solid #e0e0e0;border-radius:6px;font-size:13px;">
+            <option value="">All Classes</option>
+            <option value="SS 1">SS 1</option>
+            <option value="SS 2">SS 2</option>
+            <option value="SS 3">SS 3</option>
+            <option value="Basic 2">Basic 2</option>
+          </select>
+        </div>
+      </div>
+      <div id="allStudentsList"><div class="empty-exams"><i class="fa fa-spinner fa-spin"></i>Loading all students…</div></div>
+    </div>
   </div>
 </div>
 
@@ -337,6 +422,18 @@ window.addEventListener('load', async () => {
   
   loadExams();
   loadResults();
+  loadActiveStudents();
+  loadAllStudents();
+  
+  // Add event listeners for search and filter
+  document.getElementById('searchStudents').addEventListener('input', filterStudents);
+  document.getElementById('filterClass').addEventListener('change', filterStudents);
+  document.getElementById('searchAllStudents').addEventListener('input', filterAllStudents);
+  document.getElementById('filterAllClass').addEventListener('change', filterAllStudents);
+  
+  // Refresh active students every 30 seconds
+  setInterval(loadActiveStudents, 30000);
+  setInterval(loadAllStudents, 30000);
 });
 </script>
 </body>

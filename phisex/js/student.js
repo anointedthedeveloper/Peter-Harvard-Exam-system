@@ -11,7 +11,10 @@ const S = {
   sessionToken: localStorage.getItem('examSessionToken') || null,
   isLeaving: false,
   tabWarnedOnce: false,
-  tabCountdownTimer: null
+  tabCountdownTimer: null,
+  heartbeatInterval: null,
+  submitRetries: 0,
+  maxSubmitRetries: 3
 };
 
 // SESSION CHECK
@@ -38,6 +41,24 @@ async function checkSession() {
   localStorage.removeItem('examSessionToken');
   S.sessionToken = null;
   return false;
+}
+
+// HEARTBEAT - Send periodic heartbeat to maintain session
+function startHeartbeat() {
+  clearInterval(S.heartbeatInterval);
+  S.heartbeatInterval = setInterval(async () => {
+    if (!S.sessionToken) {
+      clearInterval(S.heartbeatInterval);
+      return;
+    }
+    try {
+      await fetch('/api/heartbeat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: S.sessionToken })
+      });
+    } catch {}
+  }, 30000); // Send heartbeat every 30 seconds
 }
 
 // AUTH
@@ -74,6 +95,8 @@ async function doLogin() {
       
       document.getElementById('loginErr').style.display = 'none';
       
+      startHeartbeat();
+      
       window.location.href = 'student-dashboard.html';
     } else if (res.error === 'User already logged in on another device') {
       document.getElementById('loginErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> This account is already logged in on another device.';
@@ -102,6 +125,7 @@ async function doLogout() {
   clearInterval(S.timer); 
   clearInterval(S.sessionInterval); 
   clearInterval(S.netInterval);
+  clearInterval(S.heartbeatInterval);
   document.removeEventListener('visibilitychange', onVisibilityChange);
   window.removeEventListener('beforeunload', onBeforeUnload);
   document.exitFullscreen?.();
@@ -112,6 +136,7 @@ async function doLogout() {
     questions:[], answers:{}, marked:new Set(), 
     current:0, timeLeft:0, timer:null, 
     sessionInterval:null, sessionToken: null,
+    heartbeatInterval: null,
     isLeaving: false
   });
   
@@ -286,6 +311,7 @@ async function beginExam() {
     startSessionPing();
     setupTabTracking();
 
+    window.scrollTo(0, 0);
     document.documentElement.requestFullscreen?.().catch(() => {});
   } catch (e) {
     hideLoader();
@@ -553,6 +579,7 @@ async function doSubmit() {
   
   clearInterval(S.timer);
   clearInterval(S.sessionInterval);
+  clearInterval(S.heartbeatInterval);
   document.getElementById('tabWarningBar').classList.remove('show');
   closeModal('modalSubmit'); closeModal('modalTabWarn');
   document.removeEventListener('visibilitychange', onVisibilityChange);
@@ -569,37 +596,98 @@ async function doSubmit() {
   const total = S.questions.length;
   const pct = Math.round((score / total) * 100);
 
-  try {
-    const res = await fetch('/api/submit', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        student: S.studentName, studentId: S.studentId, exam: S.examName,
-        examFilename: S.examFile,
-        score, total, percentage: pct, answers: answerArr,
-        tabViolations: S.tabViolations
-      })
-    });
-    const data = await res.json();
-    
-    if (data.highestMark !== undefined) {
-      const highestMarkEl = document.getElementById('highestMarkDisplay');
-      if (highestMarkEl) {
-        highestMarkEl.textContent = `Class Highest: ${data.highestMark}%`;
-        highestMarkEl.style.display = 'block';
-      }
-    }
-  } catch {}
+  S.submitRetries = 0;
+  const submitSuccess = await submitWithRetry({
+    student: S.studentName, studentId: S.studentId, exam: S.examName,
+    examFilename: S.examFile,
+    score, total, percentage: pct, answers: answerArr,
+    tabViolations: S.tabViolations
+  });
 
-  hideLoader();
-  clearDraft();
-  document.exitFullscreen?.().catch(() => {});
-  
-  const availableCount = await getAvailableExamsCount();
-  if (availableCount > 0) {
-    window.location.href = 'student-submitted.html';
+  if (submitSuccess) {
+    hideLoader();
+    clearDraft();
+    document.exitFullscreen?.().catch(() => {});
+    
+    const availableCount = await getAvailableExamsCount();
+    if (availableCount > 0) {
+      window.location.href = 'student-submitted.html';
+    } else {
+      window.location.href = 'student-completed.html';
+    }
   } else {
-    window.location.href = 'student-completed.html';
+    hideLoader();
+    S.submitted = false;
+    showSubmitErrorModal();
   }
+}
+
+async function submitWithRetry(submitData) {
+  for (let attempt = 1; attempt <= S.maxSubmitRetries; attempt++) {
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submitData)
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        
+        if (data.highestMark !== undefined) {
+          const highestMarkEl = document.getElementById('highestMarkDisplay');
+          if (highestMarkEl) {
+            highestMarkEl.textContent = `Class Highest: ${data.highestMark}%`;
+            highestMarkEl.style.display = 'block';
+          }
+        }
+        return true;
+      }
+    } catch (e) {
+      console.error(`Submit attempt ${attempt} failed:`, e.message);
+    }
+    
+    if (attempt < S.maxSubmitRetries) {
+      showLoader(`Connection failed. Retrying in 10 seconds... (${attempt}/${S.maxSubmitRetries})`);
+      await new Promise(resolve => setTimeout(resolve, 10000));
+    }
+  }
+  return false;
+}
+
+function showSubmitErrorModal() {
+  const errorModal = document.createElement('div');
+  errorModal.className = 'modal-overlay';
+  errorModal.style.display = 'flex';
+  errorModal.innerHTML = `
+    <div class="modal danger-modal">
+      <div class="modal-header">
+        <i class="fa fa-exclamation-triangle"></i>
+        <h3>Submission Failed</h3>
+        <p><strong>Not connected to server. Contact admin.</strong></p>
+        <p style="margin-top:8px;font-size:13px;color:#555;">Your exam answers have been saved locally. Please try again when connection is restored.</p>
+      </div>
+      <div class="modal-body">
+        <div class="modal-actions">
+          <button class="primary" onclick="retrySubmit()">Try Again</button>
+          <button onclick="closeSubmitErrorModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  `;
+  errorModal.id = 'modalSubmitError';
+  document.body.appendChild(errorModal);
+}
+
+function closeSubmitErrorModal() {
+  const modal = document.getElementById('modalSubmitError');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+async function retrySubmit() {
+  closeSubmitErrorModal();
+  await doSubmit();
 }
 
 function backToSelect() {
